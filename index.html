@@ -15,7 +15,6 @@
       position: relative; overflow-x: hidden;
     }
 
-    /* Soft Animated Clouds */
     body::before {
       content: ""; position: fixed; inset: 0;
       background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%),
@@ -49,7 +48,6 @@
     /* Game Main Wrapper */
     #gameArea { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
 
-    /* Top Branding */
     .app-title {
       font-size: 26px; font-weight: 900; letter-spacing: 0.5px;
       background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b);
@@ -58,7 +56,6 @@
       margin-bottom: 4px; text-align: center;
     }
 
-    /* Top Bar */
     .top-controls {
       width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
     }
@@ -76,7 +73,6 @@
       border-radius: 15px; font-weight: 900; font-size: 14px; box-shadow: 0 2px 6px rgba(255,165,0,0.4);
     }
 
-    /* Status HUD */
     .status-panel { text-align: center; margin-bottom: 6px; }
     .timer-badge { font-size: 20px; font-weight: 900; color: #004b91; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
     .message-text { font-size: 12px; color: #0d3b66; font-weight: bold; }
@@ -99,7 +95,6 @@
     }
     .bet-counter { font-size: 11px; color: #b8860b; font-weight: 900; }
 
-    /* Circular Slots */
     .item-card {
       position: absolute; width: 66px; height: 66px; border-radius: 50%;
       background: radial-gradient(circle, #ffffff, #eaf5fc);
@@ -126,18 +121,18 @@
       display: none; border: 1.5px solid #fff;
     }
 
-    /* Chips */
+    /* Chips Bar: 100, 1000, 2000, 5000 */
     .chips-bar { display: flex; gap: 8px; margin-bottom: 8px; }
     .chip {
-      width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 13px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
     }
-    .chip-10 { background: #00bcd4; }
-    .chip-50 { background: #ff9800; }
-    .chip-100 { background: #e91e63; }
-    .chip-500 { background: #9c27b0; }
-    .chip.selected { outline: 3px solid #ffd700; transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255, 170, 0, 0.6); }
+    .chip-100 { background: #00bcd4; }
+    .chip-1000 { background: #ff9800; }
+    .chip-2000 { background: #e91e63; }
+    .chip-5000 { background: #9c27b0; }
+    .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255, 170, 0, 0.7); }
 
     /* Bottom History Strip */
     .history-card {
@@ -162,7 +157,7 @@
   <div id="authModal">
     <div class="auth-card">
       <div class="auth-title">Greedy Coin game</div>
-      <p id="authSubtitle" style="font-size: 13px; color: #555; margin-bottom: 12px;">अपना नाम दर्ज करके ID बनाएं</p>
+      <p style="font-size: 13px; color: #555; margin-bottom: 12px;">अपना नाम दर्ज करके ID बनाएं</p>
       <input type="text" id="usernameInput" placeholder="नाम / Name" maxlength="15">
       <input type="password" id="passwordInput" placeholder="पासवर्ड">
       <button onclick="handleLogin()" id="authBtn">प्ले करें</button>
@@ -171,13 +166,11 @@
 
   <!-- Game Main Screen -->
   <div id="gameArea">
-    <!-- Top Gold App Title -->
     <div class="app-title">Greedy Coin game</div>
 
-    <!-- Header bar with ID, coins, language -->
     <div class="top-controls">
       <div class="user-badge">🆔 <span id="userIdDisplay">#000000</span></div>
-      <div class="coins-badge">🪙 <span id="coinsDisplay">1000</span></div>
+      <div class="coins-badge">🪙 <span id="coinsDisplay">10000</span></div>
       <select class="lang-select" id="langSelector" onchange="changeLanguage(this.value)">
         <option value="hi">हिंदी</option>
         <option value="mr">मराठी</option>
@@ -194,108 +187,115 @@
       <div class="message-text" id="statusMessage">दांव लगाएं (अधिकतम 6 बेट्स)</div>
     </div>
 
-    <!-- Circular Roulette Wheel (Sequence: मुर्गी -> टमाटर -> मेंढी -> शिमला -> मच्छी -> गाजर -> झींगा -> भुट्टा) -->
+    <!-- Circular Roulette Wheel (Sequence & Multipliers as Requested) -->
     <div class="wheel-container">
       <div class="wheel-center-hud">
         <div style="font-size: 20px;">👑</div>
         <div class="bet-counter" id="activeBetsCounter">बेट्स: 0/6</div>
       </div>
 
-      <!-- 1. मुर्गी (10x) - Top -->
+      <!-- 1. मुर्गा (25x) - Top -->
       <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)">
         <span class="my-bet-badge" id="badge-1">0</span>
         <div class="item-icon">🐓</div>
-        <div class="item-rate">10x</div>
+        <div class="item-rate">25x</div>
       </div>
-      <!-- 2. टमाटर (1x) - Top Right -->
+      <!-- 2. टमाटर (4x) - Top Right -->
       <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)">
         <span class="my-bet-badge" id="badge-2">0</span>
         <div class="item-icon">🍅</div>
-        <div class="item-rate">1x</div>
+        <div class="item-rate">4x</div>
       </div>
-      <!-- 3. मेंढी (5x) - Right -->
+      <!-- 3. मेंढी (14x) - Right -->
       <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)">
         <span class="my-bet-badge" id="badge-3">0</span>
         <div class="item-icon">🐑</div>
-        <div class="item-rate">5x</div>
+        <div class="item-rate">14x</div>
       </div>
-      <!-- 4. शिमला (1x) - Bottom Right -->
+      <!-- 4. शिमला (4x) - Bottom Right -->
       <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)">
         <span class="my-bet-badge" id="badge-4">0</span>
         <div class="item-icon">🫑</div>
-        <div class="item-rate">1x</div>
+        <div class="item-rate">4x</div>
       </div>
-      <!-- 5. मच्छी (3x) - Bottom -->
+      <!-- 5. मच्छी (19x) - Bottom -->
       <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)">
         <span class="my-bet-badge" id="badge-5">0</span>
         <div class="item-icon">🐟</div>
-        <div class="item-rate">3x</div>
+        <div class="item-rate">19x</div>
       </div>
-      <!-- 6. गाजर (1x) - Bottom Left -->
+      <!-- 6. गाजर (4x) - Bottom Left -->
       <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)">
         <span class="my-bet-badge" id="badge-6">0</span>
         <div class="item-icon">🥕</div>
-        <div class="item-rate">1x</div>
+        <div class="item-rate">4x</div>
       </div>
-      <!-- 7. झींगा (2x) - Left -->
+      <!-- 7. झींगा (9x) - Left -->
       <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)">
         <span class="my-bet-badge" id="badge-7">0</span>
         <div class="item-icon">🦐</div>
-        <div class="item-rate">2x</div>
+        <div class="item-rate">9x</div>
       </div>
-      <!-- 8. भुट्टा (1x) - Top Left -->
+      <!-- 8. भुट्टा (4x) - Top Left -->
       <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)">
         <span class="my-bet-badge" id="badge-8">0</span>
         <div class="item-icon">🌽</div>
-        <div class="item-rate">1x</div>
+        <div class="item-rate">4x</div>
       </div>
     </div>
 
-    <!-- Chips Select -->
+    <!-- Chips Select: 100, 1000, 2000, 5000 -->
     <div class="chips-bar">
-      <div class="chip chip-10 selected" onclick="selectChip(10, this)">10</div>
-      <div class="chip chip-50" onclick="selectChip(50, this)">50</div>
-      <div class="chip chip-100" onclick="selectChip(100, this)">100</div>
-      <div class="chip chip-500" onclick="selectChip(500, this)">500</div>
+      <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
+      <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
+      <div class="chip chip-2000" onclick="selectChip(2000, this)">2000</div>
+      <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
     </div>
 
-    <!-- Bottom Bet Result History -->
+    <!-- History -->
     <div class="history-card">
       <div class="history-label" id="historyLabel">📜 पिछली बेट हिस्ट्री:</div>
-      <div class="history-items-row" id="historyRow">
-        <!-- New results will appear here from left to right -->
-      </div>
+      <div class="history-items-row" id="historyRow"></div>
     </div>
   </div>
 
   <script>
     const socket = io();
-    let coins = 1000;
-    let selectedChip = 10;
+    
+    // कॉइन हमेशा सुरक्षित रखें (लोकल स्टोरेज से लोड करें, डिफ़ॉल्ट 10,000)
+    let savedCoins = localStorage.getItem("greedy_coins");
+    let coins = (savedCoins !== null) ? parseInt(savedCoins) : 10000;
+    
+    let selectedChip = 100;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
 
-    // 8 Items Map
+    function updateCoinsUI(amount) {
+      coins = amount;
+      localStorage.setItem("greedy_coins", coins);
+      document.getElementById("coinsDisplay").innerText = coins;
+    }
+
+    // 8 Items Map with Exact Multipliers
     const itemData = {
-      1: { icon: "🐓", rate: 10 },
-      2: { icon: "🍅", rate: 1 },
-      3: { icon: "🐑", rate: 5 },
-      4: { icon: "🫑", rate: 1 },
-      5: { icon: "🐟", rate: 3 },
-      6: { icon: "🥕", rate: 1 },
-      7: { icon: "🦐", rate: 2 },
-      8: { icon: "🌽", rate: 1 }
+      1: { icon: "🐓", rate: 25 },
+      2: { icon: "🍅", rate: 4 },
+      3: { icon: "🐑", rate: 14 },
+      4: { icon: "🫑", rate: 4 },
+      5: { icon: "🐟", rate: 19 },
+      6: { icon: "🥕", rate: 4 },
+      7: { icon: "🦐", rate: 9 },
+      8: { icon: "🌽", rate: 4 }
     };
 
-    // Multi-Language Strings
     const translations = {
-      hi: { time: "समय", placeBet: "दांव लगाएं (अधिकतम 6 बेट्स)", rolling: "चक्का घूम रहा है...", win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:", play: "प्ले करें" },
-      mr: { time: "वेळ", placeBet: "पैज लावा (कमाल 6 पर्याय)", rolling: "चक्र फिरत आहे...", win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:", play: "सुरू करा" },
-      gu: { time: "સમય", placeBet: "શરત લગાવો (મહત્તમ 6)", rolling: "ચક્ર ફરી રહ્યું છે...", win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:", play: "રમો" },
-      en: { time: "Time", placeBet: "Place Bets (Max 6)", rolling: "Wheel Spinning...", win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:", play: "Play" },
-      kn: { time: "ಸಮಯ", placeBet: "ಬೆಟ್ ಹಾಕಿ (ಗರಿಷ್ಠ 6)", rolling: "ಚಕ್ರ ತಿರುಗುತ್ತಿದೆ...", win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:", play: "ಪ್ಲೇ ಮಾಡಿ" },
-      te: { time: "సమయం", placeBet: "బెట్ వేయండి (గరిష్టంగా 6)", rolling: "వీల్ తిరుగుతోంది...", win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:", play: "ఆడండి" },
-      ta: { time: "நேரம்", placeBet: "பந்தயம் வைக்கவும் (அதிகபட்சம் 6)", rolling: "சுழல்கிறது...", win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:", play: "விளையாடு" }
+      hi: { time: "समय", placeBet: "दांव लगाएं (अधिकतम 6 बेट्स)", rolling: "चक्का घूम रहा है...", win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:" },
+      mr: { time: "वेळ", placeBet: "पैज लावा (कमाल 6 पर्याय)", rolling: "चक्र फिरत आहे...", win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:" },
+      gu: { time: "સમય", placeBet: "શરત લગાવો (મહત્તમ 6)", rolling: "ચક્ર ફરી રહ્યું છે...", win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:" },
+      en: { time: "Time", placeBet: "Place Bets (Max 6)", rolling: "Wheel Spinning...", win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:" },
+      kn: { time: "ಸಮಯ", placeBet: "ಬೆಟ್ ಹಾಕಿ (ಗರಿಷ್ಠ 6)", rolling: "ಚಕ್ರ ತಿರುಗುತ್ತಿದೆ...", win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:" },
+      te: { time: "సమయం", placeBet: "బెట్ వేయండి (గరిష్టంగా 6)", rolling: "వీల్ తిరుగుతోంది...", win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:" },
+      ta: { time: "நேரம்", placeBet: "பந்தயம் வைக்கவும் (அதிகபட்சம் 6)", rolling: "சுழல்கிறது...", win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:" }
     };
     let currentLang = "hi";
 
@@ -304,7 +304,7 @@
       document.getElementById("historyLabel").innerText = translations[lang].history;
     }
 
-    // Audio
+    // Audio Context
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -338,7 +338,6 @@
       }
     }
 
-    // User ID generator
     function handleLogin() {
       const username = document.getElementById("usernameInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
@@ -352,6 +351,7 @@
       }
 
       document.getElementById("userIdDisplay").innerText = userId;
+      updateCoinsUI(coins);
       document.getElementById("authModal").style.display = "none";
       document.getElementById("gameArea").style.display = "flex";
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -378,9 +378,9 @@
         return;
       }
 
-      coins -= selectedChip;
+      // सही चिप मान के अनुसार सिक्के तुरंत काटना
+      updateCoinsUI(coins - selectedChip);
       bets[boxId] += selectedChip;
-      document.getElementById("coinsDisplay").innerText = coins;
 
       const badge = document.getElementById("badge-" + boxId);
       badge.style.display = "block";
@@ -407,7 +407,7 @@
       }
     });
 
-    // Spin animation & history append
+    // Spin animation & Exact Math Payout
     socket.on("gameResult", (data) => {
       let currentHighlight = 1;
       let totalSteps = 24 + data.winner;
@@ -429,23 +429,25 @@
           const winCard = document.getElementById("card-" + data.winner);
           winCard.classList.add("winner");
 
-          // Add to History line (Newest to left)
+          // Add to History line
           const historyRow = document.getElementById("historyRow");
           const pill = document.createElement("div");
           pill.className = "history-pill";
           pill.innerText = itemData[data.winner].icon;
           historyRow.insertBefore(pill, historyRow.firstChild);
 
+          // सटीक पेआउट: दांव * मल्टीप्लायर (उदा: 100 * 25 = 2500 कुल सिक्के)
           const userBetOnWinner = bets[data.winner];
+
           if (userBetOnWinner > 0) {
             playSound('win');
-            const winAmount = userBetOnWinner * itemData[data.winner].rate;
-            coins += winAmount;
-            document.getElementById("coinsDisplay").innerText = coins;
-            setTimeout(() => alert(`${translations[currentLang].win} +${winAmount} सिक्के`), 300);
+            
+            const totalReturn = userBetOnWinner * itemData[data.winner].rate;
+            updateCoinsUI(coins + totalReturn);
+            setTimeout(() => alert(`${translations[currentLang].win} +${totalReturn} सिक्के`), 300);
           }
 
-          // Reset round
+          // रीसेट राउंड
           setTimeout(() => {
             winCard.classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -465,6 +467,7 @@
       if (savedId) {
         document.getElementById("userIdDisplay").innerText = savedId;
       }
+      updateCoinsUI(coins);
     };
   </script>
 </body>
