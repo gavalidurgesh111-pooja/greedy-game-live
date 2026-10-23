@@ -10,17 +10,16 @@
 
     /* Login Flow Container */
     #authFlowContainer {
-      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
-      background: #fff; /* Default white for inner pages */
+      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #fff;
     }
 
     /* Screen 1: Main Landing with Photo */
     #screenMain {
       flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
       padding: 30px 20px 25px;
-      /* Background Image (User's Photo) */
+      /* Background Image - Pointing to the uploaded bg.jpg */
       background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.75)), 
-                  url('https://i.ibb.co/1K5P8rW/1000158800.png') center/cover no-repeat;
+                  url('bg.jpg') center/cover no-repeat;
     }
     .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .lang-select-login {
@@ -32,10 +31,13 @@
       border: 1px solid rgba(255,255,255,0.6); display: flex; align-items: center;
       justify-content: center; color: #fff; font-size: 18px; cursor: pointer;
     }
+    
+    /* Updated Brand Title */
     .brand-title {
-      font-size: 50px; font-weight: 900; color: #ffffff; letter-spacing: 2px;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-top: 40px;
+      font-size: 42px; font-weight: 900; color: #ffd700; letter-spacing: 1px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.8); margin-top: 40px; text-align: center;
     }
+    
     .auth-bottom-panel { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .btn-login {
       width: 100%; height: 50px; border-radius: 25px; border: none; font-size: 16px;
@@ -55,14 +57,12 @@
       display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px;
     }
 
-    /* Screen 2: Phone Input */
+    /* Screen 2 & 3 */
     #screenPhone { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; }
     .back-btn { font-size: 24px; color: #000; cursor: pointer; margin-bottom: 20px; }
     .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
     .step-subtitle { font-size: 14px; color: #666; margin-bottom: 30px; }
-    .input-box {
-      display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 12px 16px;
-    }
+    .input-box { display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 12px 16px; }
     .country-code { font-size: 16px; font-weight: bold; color: #000; margin-right: 12px; }
     .phone-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; }
     .next-btn-container { position: absolute; bottom: 30px; right: 20px; }
@@ -71,13 +71,9 @@
       display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;
       box-shadow: 0 4px 10px rgba(208, 163, 255, 0.5); cursor: pointer;
     }
-
-    /* Screen 3: Password Input */
     #screenPass { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
     .pass-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; letter-spacing: 2px; }
     .forgot-pass { color: #8a2be2; font-size: 14px; font-weight: 600; text-align: center; margin-top: 20px; cursor: pointer; }
-    
-    /* Loading Spinner */
     #loadingOverlay {
       display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.5);
       align-items: center; justify-content: center; z-index: 10;
@@ -89,9 +85,7 @@
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
     /* Main Game UI */
-    body.game-active {
-      background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%);
-    }
+    body.game-active { background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%); }
     body.game-active::before {
       content: ""; position: fixed; inset: 0;
       background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%),
@@ -101,7 +95,6 @@
       pointer-events: none; z-index: 0;
     }
     #gameArea { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
-    
     .app-title {
       font-size: 26px; font-weight: 900; letter-spacing: 0.5px;
       background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b);
@@ -109,19 +102,14 @@
     }
     .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
     .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; }
-    .coins-badge {
-      background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px;
-      font-weight: 900; font-size: 14px; transition: transform 0.2s;
-    }
+    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
     .coins-badge.gain { transform: scale(1.15); }
     .settings-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 
-    /* Circular Roulette Arena */
     .wheel-container {
       position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%;
       background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%);
-      border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25);
-      display: flex; align-items: center; justify-content: center;
+      border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25); display: flex; align-items: center; justify-content: center;
     }
     .wheel-center-hud {
       width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff, #e8f4fa);
@@ -130,39 +118,24 @@
     #timerDisplay { font-size: 28px; font-weight: 900; color: #ff1a1a; }
 
     .item-card {
-      position: absolute; width: 66px; height: 66px; border-radius: 50%;
-      background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.15s;
+      position: absolute; width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #eaf5fc);
+      border: 2.5px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.15s;
     }
     .item-card.highlight { border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700); transform: scale(1.18); }
     .item-card.winner { border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676); transform: scale(1.25); }
     .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
     .item-rate { font-size: 10px; color: #b8860b; font-weight: 900; margin-top: 1px; }
-    .my-bet-badge {
-      position: absolute; top: -4px; right: -4px; background: #ff2255; color: white;
-      font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px; display: none;
-    }
+    .my-bet-badge { position: absolute; top: -4px; right: -4px; background: #ff2255; color: white; font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px; display: none; }
 
     .chips-bar { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
-    .chip {
-      width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff;
-    }
-    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; }
-    .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
+    .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; }
+    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
     .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
 
-    .history-card {
-      width: 100%; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #ffd700;
-      border-radius: 14px; padding: 6px 10px; display: flex; flex-direction: column;
-    }
+    .history-card { width: 100%; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #ffd700; border-radius: 14px; padding: 6px 10px; display: flex; flex-direction: column; }
     .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 4px; }
     .history-items-row { display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; }
-    .history-pill {
-      min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff;
-      border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center; font-size: 18px;
-    }
+    .history-pill { min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff; border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 
     /* Settings Modal */
     #settingsModal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; z-index: 120; }
@@ -172,13 +145,20 @@
     .settings-close { position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .settings-row:last-child { border-bottom: none; }
+    .settings-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
+    .settings-label p { font-size: 11px; color: #d6bbfb; margin-top: 2px; }
+    .switch { position: relative; display: inline-block; width: 50px; height: 26px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #3f196a; transition: .3s; border-radius: 34px; border: 1.5px solid rgba(255,255,255,0.3); }
+    .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2.5px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: #00e676; border-color: #00e676; }
+    input:checked + .slider:before { transform: translateX(24px); }
   </style>
 </head>
 <body>
 
   <!-- Auth Flow Container -->
   <div id="authFlowContainer">
-    
     <!-- Screen 1: Main Landing with Photo -->
     <div id="screenMain">
       <div class="auth-top-bar">
@@ -190,7 +170,7 @@
         </select>
         <div class="help-icon">💬</div>
       </div>
-      <div class="brand-title">MIKA</div>
+      <div class="brand-title">Greedy Coin</div>
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="quickLogin()">
           <svg width="22" height="22" fill="#fff" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -240,7 +220,6 @@
         <button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button>
       </div>
     </div>
-
   </div>
 
   <!-- Main Game Screen -->
@@ -277,10 +256,40 @@
     </div>
   </div>
 
+  <!-- Settings Modal -->
+  <div id="settingsModal">
+    <div class="settings-card">
+      <div class="settings-header">
+        <div class="settings-title" id="stgTitle">Game Settings</div>
+        <div class="settings-close" onclick="closeSettings()">✕</div>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <h4 id="stgSoundTitle">Game Sound Effects</h4>
+          <p id="stgSoundSub">Game sound effects</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggleSound" checked onchange="toggleSoundSetting(this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <h4 id="stgHapticTitle">Haptic Feedback</h4>
+          <p id="stgHapticSub">Vibration upon successful bet</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggleHaptic" checked onchange="toggleHapticSetting(this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="settings-row">
+        <div class="settings-label">
+          <h4 id="stgTrendTitle">Winning Trend</h4>
+          <p id="stgTrendSub">Show lottery results</p>
+        </div>
+        <label class="switch"><input type="checkbox" id="toggleTrend" checked onchange="toggleTrendSetting(this.checked)"><span class="slider"></span></label>
+      </div>
+    </div>
+  </div>
+
   <script>
     const socket = io();
     
-    // --- LOGIN NAVIGATION LOGIC ---
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
@@ -302,12 +311,11 @@
     function doFinalLogin() {
       const pass = document.getElementById("passInput").value;
       if (pass.length < 3) { alert("Please enter a valid password."); return; }
-      
       document.getElementById("loadingOverlay").style.display = "flex";
       setTimeout(() => {
         document.getElementById("loadingOverlay").style.display = "none";
         finishAuth();
-      }, 1500); // Fake loading for 1.5 sec like screenshot
+      }, 1500);
     }
 
     function finishAuth() {
@@ -315,7 +323,6 @@
       document.getElementById("authFlowContainer").style.display = "none";
       document.getElementById("gameArea").style.display = "flex";
       if (audioCtx.state === 'suspended') audioCtx.resume();
-      
       let userId = localStorage.getItem("greedy_user_id");
       if (!userId) {
         userId = "#" + Math.floor(100000 + Math.random() * 900000);
@@ -324,8 +331,6 @@
       document.getElementById("userIdDisplay").innerText = userId;
     }
 
-
-    // --- GAME LOGIC ---
     let savedCoins = localStorage.getItem("greedy_coins");
     let coins = (savedCoins !== null) ? parseInt(savedCoins) : 10000;
     let selectedChip = 100;
@@ -399,7 +404,6 @@
         document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
         document.getElementById("card-" + currentHighlight).classList.add("highlight");
         playSound('tick');
-
         totalSteps--;
         currentHighlight = (currentHighlight % 8) + 1;
 
