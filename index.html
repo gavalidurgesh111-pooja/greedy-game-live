@@ -8,13 +8,91 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-    body {
-      background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%);
-      color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; overflow-x: hidden;
+    /* Login Flow Container */
+    #authFlowContainer {
+      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column;
+      background: #fff; /* Default white for inner pages */
     }
 
-    body::before {
+    /* Screen 1: Main Landing with Photo */
+    #screenMain {
+      flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+      padding: 30px 20px 25px;
+      /* Background Image (User's Photo) */
+      background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.75)), 
+                  url('https://i.ibb.co/1K5P8rW/1000158800.png') center/cover no-repeat;
+    }
+    .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+    .lang-select-login {
+      background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.7); border-radius: 18px;
+      padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none;
+    }
+    .help-icon {
+      width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.6); display: flex; align-items: center;
+      justify-content: center; color: #fff; font-size: 18px; cursor: pointer;
+    }
+    .brand-title {
+      font-size: 50px; font-weight: 900; color: #ffffff; letter-spacing: 2px;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.6); margin-top: 40px;
+    }
+    .auth-bottom-panel { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .btn-login {
+      width: 100%; height: 50px; border-radius: 25px; border: none; font-size: 16px;
+      font-weight: 700; display: flex; align-items: center; justify-content: center;
+      gap: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.1s;
+    }
+    .btn-login:active { transform: scale(0.98); }
+    .btn-facebook { background: #1877F2; color: #fff; }
+    .btn-google { background: #ffffff; color: #222; }
+    .more-options-btn {
+      background: none; border: none; color: #fff; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px;
+    }
+    .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
+    .terms-text {
+      font-size: 11px; color: rgba(255, 255, 255, 0.85); text-align: center; line-height: 1.4;
+      display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px;
+    }
+
+    /* Screen 2: Phone Input */
+    #screenPhone { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; }
+    .back-btn { font-size: 24px; color: #000; cursor: pointer; margin-bottom: 20px; }
+    .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
+    .step-subtitle { font-size: 14px; color: #666; margin-bottom: 30px; }
+    .input-box {
+      display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 12px 16px;
+    }
+    .country-code { font-size: 16px; font-weight: bold; color: #000; margin-right: 12px; }
+    .phone-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; }
+    .next-btn-container { position: absolute; bottom: 30px; right: 20px; }
+    .btn-round-next {
+      width: 60px; height: 60px; border-radius: 50%; background: #d0a3ff; border: none;
+      display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px;
+      box-shadow: 0 4px 10px rgba(208, 163, 255, 0.5); cursor: pointer;
+    }
+
+    /* Screen 3: Password Input */
+    #screenPass { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
+    .pass-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; letter-spacing: 2px; }
+    .forgot-pass { color: #8a2be2; font-size: 14px; font-weight: 600; text-align: center; margin-top: 20px; cursor: pointer; }
+    
+    /* Loading Spinner */
+    #loadingOverlay {
+      display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.5);
+      align-items: center; justify-content: center; z-index: 10;
+    }
+    .spinner {
+      width: 60px; height: 60px; border-radius: 50%; border: 5px solid #fff;
+      border-top-color: #8a2be2; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Main Game UI */
+    body.game-active {
+      background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%);
+    }
+    body.game-active::before {
       content: ""; position: fixed; inset: 0;
       background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%),
                   radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.65), transparent 70%),
@@ -22,278 +100,170 @@
                   radial-gradient(ellipse 150px 75px at 85% 78%, rgba(255,255,255,0.6), transparent 70%);
       pointer-events: none; z-index: 0;
     }
-
-    /* Auth Screen */
-    #authModal {
-      position: fixed; inset: 0; background: rgba(0, 30, 60, 0.75); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center; z-index: 100;
-    }
-    .auth-card {
-      background: linear-gradient(145deg, #ffffff, #eaf6fc); border: 3px solid #ffd700;
-      border-radius: 24px; padding: 22px; width: 90%; max-width: 340px; text-align: center;
-      box-shadow: 0 10px 30px rgba(0, 100, 200, 0.3); z-index: 101; position: relative;
-    }
-    .auth-lang-row { display: flex; justify-content: flex-end; margin-bottom: 8px; }
-    .lang-select {
-      background: #fff; border: 1.5px solid #d4af37; border-radius: 12px; padding: 4px 8px;
-      font-size: 12px; font-weight: bold; color: #333; outline: none; cursor: pointer;
-    }
-    .auth-title { font-size: 24px; font-weight: 900; color: #d4af37; text-shadow: 0 1px 2px #fff, 0 2px 4px rgba(0,0,0,0.2); margin-bottom: 6px; }
-    .auth-card input {
-      width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1.5px solid #89cff0;
-      background: #f7fcff; color: #222; font-size: 16px; outline: none;
-    }
-    .auth-card button {
-      width: 100%; padding: 12px; margin-top: 10px; border-radius: 12px; border: none;
-      background: linear-gradient(45deg, #ffd700, #ff9900); color: #4a2800; font-size: 18px; font-weight: 900; cursor: pointer;
-      box-shadow: 0 4px 12px rgba(255,165,0,0.4);
-    }
-
-    /* Game Main Wrapper */
     #gameArea { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
-
+    
     .app-title {
       font-size: 26px; font-weight: 900; letter-spacing: 0.5px;
       background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
-      margin-bottom: 12px; text-align: center;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px;
     }
-
-    .top-controls {
-      width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-    }
-    .user-badge {
-      background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px;
-      font-size: 13px; font-weight: bold; color: #1e3c72; border: 1px solid #89cff0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+    .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; }
     .coins-badge {
-      background: linear-gradient(45deg, #ffd700, #ff9900); color: #4a2800; padding: 5px 12px;
-      border-radius: 15px; font-weight: 900; font-size: 14px; box-shadow: 0 2px 6px rgba(255,165,0,0.4);
-      transition: transform 0.2s;
+      background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px;
+      font-weight: 900; font-size: 14px; transition: transform 0.2s;
     }
-    .coins-badge.gain {
-      transform: scale(1.15);
-    }
-    .settings-btn {
-      width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2px solid #d4af37;
-      display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+    .coins-badge.gain { transform: scale(1.15); }
+    .settings-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; }
 
     /* Circular Roulette Arena */
     .wheel-container {
-      position: relative; width: 320px; height: 320px; margin: 4px auto 10px;
-      border-radius: 50%;
+      position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%;
       background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%);
-      border: 5px solid #ffd700;
-      box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25), inset 0 0 15px rgba(255, 215, 0, 0.3);
+      border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25);
       display: flex; align-items: center; justify-content: center;
     }
     .wheel-center-hud {
-      width: 110px; height: 110px; border-radius: 50%;
-      background: radial-gradient(circle, #fff, #e8f4fa);
-      border: 3px dashed #ffd700; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+      width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff, #e8f4fa);
+      border: 3px dashed #ffd700; display: flex; align-items: center; justify-content: center;
     }
-    
-    /* Center Timer Style (Reduced size & Red color) */
-    #timerDisplay {
-      font-size: 28px; font-weight: 900; color: #ff1a1a; 
-      text-shadow: 0 2px 4px rgba(255, 0, 0, 0.2);
-    }
+    #timerDisplay { font-size: 28px; font-weight: 900; color: #ff1a1a; }
 
     .item-card {
       position: absolute; width: 66px; height: 66px; border-radius: 50%;
-      background: radial-gradient(circle, #ffffff, #eaf5fc);
-      border: 2.5px solid #d4af37; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      transition: transform 0.15s, border-color 0.15s;
+      background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.15s;
     }
-    .item-card.highlight {
-      border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700);
-      box-shadow: 0 0 25px #ffaa00; transform: scale(1.18);
-    }
-    .item-card.winner {
-      border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676);
-      box-shadow: 0 0 30px #00c853; transform: scale(1.25); animation: pulse 0.4s infinite alternate;
-    }
-    @keyframes pulse { from { transform: scale(1.15); } to { transform: scale(1.28); } }
-
+    .item-card.highlight { border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700); transform: scale(1.18); }
+    .item-card.winner { border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676); transform: scale(1.25); }
     .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
     .item-rate { font-size: 10px; color: #b8860b; font-weight: 900; margin-top: 1px; }
     .my-bet-badge {
       position: absolute; top: -4px; right: -4px; background: #ff2255; color: white;
-      font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px;
-      display: none; border: 1.5px solid #fff;
+      font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px; display: none;
     }
 
-    /* Chips Bar */
     .chips-bar { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
     .chip {
       width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff;
     }
-    .chip-100 { background: #00bcd4; }
-    .chip-1000 { background: #ff9800; }
-    .chip-2000 { background: #e91e63; }
-    .chip-5000 { background: #9c27b0; }
-    .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255, 170, 0, 0.7); }
+    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; }
+    .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
+    .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
 
-    /* Bottom History Strip */
     .history-card {
       width: 100%; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #ffd700;
-      border-radius: 14px; padding: 6px 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-      display: flex; flex-direction: column; align-items: flex-start;
+      border-radius: 14px; padding: 6px 10px; display: flex; flex-direction: column;
     }
     .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 4px; }
-    .history-items-row {
-      display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none;
-    }
+    .history-items-row { display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; }
     .history-pill {
       min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff;
-      border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center;
-      font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); flex-shrink: 0;
+      border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center; font-size: 18px;
     }
 
     /* Settings Modal */
-    #settingsModal {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
-      display: none; align-items: center; justify-content: center; z-index: 120;
-    }
-    .settings-card {
-      background: linear-gradient(180deg, #9b51e0 0%, #6b26b9 40%, #521896 100%);
-      border: 3px solid #ff7ee3; border-radius: 28px; width: 90%; max-width: 360px;
-      padding: 18px 20px; box-shadow: 0 0 30px rgba(180, 70, 255, 0.6); position: relative;
-      color: #fff;
-    }
-    .settings-header {
-      display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 18px;
-    }
-    .settings-title { font-size: 22px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
-    .settings-close {
-      position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
-      background: radial-gradient(circle, #ff3399, #cc0066); border: 2px solid #fff;
-      color: #fff; font-weight: bold; font-size: 16px; display: flex; align-items: center;
-      justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-    .settings-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    }
+    #settingsModal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); align-items: center; justify-content: center; z-index: 120; }
+    .settings-card { background: linear-gradient(180deg, #9b51e0 0%, #6b26b9 40%, #521896 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 90%; max-width: 360px; padding: 18px 20px; color: #fff; }
+    .settings-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 18px; }
+    .settings-title { font-size: 22px; font-weight: 900; color: #ffee55; }
+    .settings-close { position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .settings-row:last-child { border-bottom: none; }
-    .settings-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
-    .settings-label p { font-size: 11px; color: #d6bbfb; margin-top: 2px; }
-
-    .switch { position: relative; display: inline-block; width: 50px; height: 26px; flex-shrink: 0; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider {
-      position: absolute; cursor: pointer; inset: 0; background-color: #3f196a;
-      transition: .3s; border-radius: 34px; border: 1.5px solid rgba(255,255,255,0.3);
-    }
-    .slider:before {
-      position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2.5px;
-      background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    input:checked + .slider { background-color: #00e676; border-color: #00e676; }
-    input:checked + .slider:before { transform: translateX(24px); }
   </style>
 </head>
 <body>
 
-  <!-- Login Modal -->
-  <div id="authModal">
-    <div class="auth-card">
-      <div class="auth-lang-row">
-        <select class="lang-select" id="loginLangSelector" onchange="changeLanguage(this.value)">
+  <!-- Auth Flow Container -->
+  <div id="authFlowContainer">
+    
+    <!-- Screen 1: Main Landing with Photo -->
+    <div id="screenMain">
+      <div class="auth-top-bar">
+        <select class="lang-select-login" id="loginLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
           <option value="gu">ગુજરાતી</option>
           <option value="en">English</option>
-          <option value="kn">ಕನ್ನಡ (ಕರ್ನಾಟಕ)</option>
-          <option value="te">తెలుగు (సాउथ)</option>
-          <option value="ta">தமிழ் (साउथ)</option>
         </select>
+        <div class="help-icon">💬</div>
       </div>
-      <div class="auth-title">Greedy Coin game</div>
-      <p id="authSubtitle" style="font-size: 13px; color: #555; margin-bottom: 12px;">अपना नाम दर्ज करके ID बनाएं</p>
-      <input type="text" id="usernameInput" placeholder="नाम / Name" maxlength="15">
-      <input type="password" id="passwordInput" placeholder="पासवर्ड">
-      <button onclick="handleLogin()" id="authBtn">प्ले करें</button>
+      <div class="brand-title">MIKA</div>
+      <div class="auth-bottom-panel">
+        <button class="btn-login btn-facebook" onclick="quickLogin()">
+          <svg width="22" height="22" fill="#fff" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Sign in with Facebook
+        </button>
+        <button class="btn-login btn-google" onclick="quickLogin()">
+          <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 12s.7 2.3 1.9 4.7l3.7-2.9z"/><path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16c1.8 3.7 5.6 7 10.1 7z"/></svg>
+          Sign in with Google
+        </button>
+        <button class="more-options-btn" onclick="showScreen('screenPhone')">
+          More Options <span class="last-login-tag">Last login</span>
+        </button>
+        <div class="terms-text">
+          <input type="checkbox" checked id="termsCheck">
+          <span>By continuing, you agree to the <u>Terms and Conditions</u> & <u>Privacy Policy</u></span>
+        </div>
+      </div>
     </div>
+
+    <!-- Screen 2: Phone Number Input -->
+    <div id="screenPhone">
+      <div class="back-btn" onclick="showScreen('screenMain')">❮</div>
+      <div class="step-title">Register / log in</div>
+      <div class="step-subtitle">Enter your phone number</div>
+      <div class="input-box">
+        <div class="country-code">+91 ▼</div>
+        <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number" maxlength="10">
+      </div>
+      <div class="next-btn-container">
+        <button class="btn-round-next" onclick="goToPassword()">➔</button>
+      </div>
+    </div>
+
+    <!-- Screen 3: Password Input with Loading -->
+    <div id="screenPass">
+      <div id="loadingOverlay">
+        <div class="spinner"></div>
+      </div>
+      <div class="back-btn" onclick="showScreen('screenPhone')">❮</div>
+      <div class="step-title">Log in</div>
+      <div class="step-subtitle">Enter Password</div>
+      <div class="input-box">
+        <input type="password" class="pass-input" id="passInput" placeholder="Password">
+      </div>
+      <div class="forgot-pass">Forgot password</div>
+      <div class="next-btn-container">
+        <button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Game Main Screen -->
+  <!-- Main Game Screen -->
   <div id="gameArea">
     <div class="app-title">Greedy Coin game</div>
-
     <div class="top-controls">
       <div class="user-badge">🆔 <span id="userIdDisplay">#000000</span></div>
       <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
       <div class="settings-btn" onclick="openSettings()">⚙️</div>
     </div>
 
-    <!-- Circular Roulette Wheel -->
     <div class="wheel-container">
-      <div class="wheel-center-hud">
-        <div id="timerDisplay">30s</div>
-      </div>
-
-      <!-- 1. मुर्गा (25x) -->
-      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)">
-        <span class="my-bet-badge" id="badge-1">0</span>
-        <div class="item-icon">🐓</div>
-        <div class="item-rate">25x</div>
-      </div>
-      <!-- 2. टमाटर (4x) -->
-      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)">
-        <span class="my-bet-badge" id="badge-2">0</span>
-        <div class="item-icon">🍅</div>
-        <div class="item-rate">4x</div>
-      </div>
-      <!-- 3. मेंढी (14x) -->
-      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)">
-        <span class="my-bet-badge" id="badge-3">0</span>
-        <div class="item-icon">🐑</div>
-        <div class="item-rate">14x</div>
-      </div>
-      <!-- 4. शिमला (4x) -->
-      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)">
-        <span class="my-bet-badge" id="badge-4">0</span>
-        <div class="item-icon">🫑</div>
-        <div class="item-rate">4x</div>
-      </div>
-      <!-- 5. मच्छी (19x) -->
-      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)">
-        <span class="my-bet-badge" id="badge-5">0</span>
-        <div class="item-icon">🐟</div>
-        <div class="item-rate">19x</div>
-      </div>
-      <!-- 6. गाजर (4x) -->
-      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)">
-        <span class="my-bet-badge" id="badge-6">0</span>
-        <div class="item-icon">🥕</div>
-        <div class="item-rate">4x</div>
-      </div>
-      <!-- 7. झींगा (9x) -->
-      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)">
-        <span class="my-bet-badge" id="badge-7">0</span>
-        <div class="item-icon">🦐</div>
-        <div class="item-rate">9x</div>
-      </div>
-      <!-- 8. भुट्टा (4x) -->
-      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)">
-        <span class="my-bet-badge" id="badge-8">0</span>
-        <div class="item-icon">🌽</div>
-        <div class="item-rate">4x</div>
-      </div>
+      <div class="wheel-center-hud"><div id="timerDisplay">30s</div></div>
+      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1">0</span><div class="item-icon">🐓</div><div class="item-rate">25x</div></div>
+      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2">0</span><div class="item-icon">🍅</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3">0</span><div class="item-icon">🐑</div><div class="item-rate">14x</div></div>
+      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4">0</span><div class="item-icon">🫑</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5">0</span><div class="item-icon">🐟</div><div class="item-rate">19x</div></div>
+      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6">0</span><div class="item-icon">🥕</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7">0</span><div class="item-icon">🦐</div><div class="item-rate">9x</div></div>
+      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8">0</span><div class="item-icon">🌽</div><div class="item-rate">4x</div></div>
     </div>
 
-    <!-- Chips Select -->
     <div class="chips-bar">
       <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
       <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
@@ -301,74 +271,75 @@
       <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
     </div>
 
-    <!-- History -->
     <div class="history-card" id="historyCard">
       <div class="history-label" id="historyLabel">📜 पिछली बेट हिस्ट्री:</div>
       <div class="history-items-row" id="historyRow"></div>
     </div>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal">
-    <div class="settings-card">
-      <div class="settings-header">
-        <div class="settings-title" id="stgTitle">Game Settings</div>
-        <div class="settings-close" onclick="closeSettings()">✕</div>
-      </div>
-      <div class="settings-row">
-        <div class="settings-label">
-          <h4 id="stgSoundTitle">Game Sound Effects</h4>
-          <p id="stgSoundSub">Game sound effects</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="toggleSound" checked onchange="toggleSoundSetting(this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="settings-row">
-        <div class="settings-label">
-          <h4 id="stgHapticTitle">Haptic Feedback</h4>
-          <p id="stgHapticSub">Vibration upon successful bet</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="toggleHaptic" checked onchange="toggleHapticSetting(this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="settings-row">
-        <div class="settings-label">
-          <h4 id="stgTrendTitle">Winning Trend</h4>
-          <p id="stgTrendSub">Show lottery results</p>
-        </div>
-        <label class="switch">
-          <input type="checkbox" id="toggleTrend" checked onchange="toggleTrendSetting(this.checked)">
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-  </div>
-
   <script>
     const socket = io();
     
+    // --- LOGIN NAVIGATION LOGIC ---
+    function showScreen(screenId) {
+      document.getElementById('screenMain').style.display = 'none';
+      document.getElementById('screenPhone').style.display = 'none';
+      document.getElementById('screenPass').style.display = 'none';
+      document.getElementById(screenId).style.display = 'flex';
+    }
+
+    function quickLogin() {
+      if(!document.getElementById('termsCheck').checked) { alert("Please agree to terms."); return; }
+      finishAuth();
+    }
+
+    function goToPassword() {
+      const ph = document.getElementById("phoneInput").value;
+      if (ph.length < 10) { alert("Please enter a valid 10-digit number."); return; }
+      showScreen('screenPass');
+    }
+
+    function doFinalLogin() {
+      const pass = document.getElementById("passInput").value;
+      if (pass.length < 3) { alert("Please enter a valid password."); return; }
+      
+      document.getElementById("loadingOverlay").style.display = "flex";
+      setTimeout(() => {
+        document.getElementById("loadingOverlay").style.display = "none";
+        finishAuth();
+      }, 1500); // Fake loading for 1.5 sec like screenshot
+    }
+
+    function finishAuth() {
+      document.body.classList.add("game-active");
+      document.getElementById("authFlowContainer").style.display = "none";
+      document.getElementById("gameArea").style.display = "flex";
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      let userId = localStorage.getItem("greedy_user_id");
+      if (!userId) {
+        userId = "#" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("greedy_user_id", userId);
+      }
+      document.getElementById("userIdDisplay").innerText = userId;
+    }
+
+
+    // --- GAME LOGIC ---
     let savedCoins = localStorage.getItem("greedy_coins");
     let coins = (savedCoins !== null) ? parseInt(savedCoins) : 10000;
     let selectedChip = 100;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
 
-    let isSoundEnabled = true;
-    let isHapticEnabled = true;
-
     function updateCoinsUI(amount, animate = false) {
       coins = amount;
       localStorage.setItem("greedy_coins", coins);
-      const el = document.getElementById("coinsDisplay");
-      const container = document.getElementById("coinsContainer");
-      el.innerText = coins;
+      document.getElementById("coinsDisplay").innerText = coins;
       if (animate) {
-        container.classList.add("gain");
-        setTimeout(() => container.classList.remove("gain"), 300);
+        const c = document.getElementById("coinsContainer");
+        c.classList.add("gain");
+        setTimeout(() => c.classList.remove("gain"), 300);
       }
     }
 
@@ -379,57 +350,7 @@
       7: { icon: "🦐", rate: 9 }, 8: { icon: "🌽", rate: 4 }
     };
 
-    const translations = {
-      hi: {
-        subtitle: "अपना नाम दर्ज करके ID बनाएं", playBtn: "प्ले करें", history: "📜 पिछली बेट हिस्ट्री:",
-        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
-      },
-      mr: {
-        subtitle: "नाव प्रविष्ट करून ID तयार करा", playBtn: "सुरू करा", history: "📜 मागील निकाल:",
-        stgTitle: "Game Settings", sndTitle: "गेमचे ध्वनी प्रभाव", sndSub: "गेम ध्वनी", hapTitle: "हॅप्टिक फीडबॅक", hapSub: "दांव लावल्यावर कंपन", trdTitle: "विजयी ट्रेंड", trdSub: "निकाल पट्टी दाखवा"
-      },
-      gu: {
-        subtitle: "નામ દાખલ કરીને ID બનાવો", playBtn: "રમો", history: "📜 અગાઉના પરિણામો:",
-        stgTitle: "Game Settings", sndTitle: "ધ્વનિ અસરો", sndSub: "ગેમ સાઉન્ડ", hapTitle: "હેપ્ટિક ફીડબેક", hapSub: "શરત પર વાઇબ્રેશન", trdTitle: "વિજેતા ટ્રેન્ડ", trdSub: "પરિણામો બતાવો"
-      },
-      en: {
-        subtitle: "Enter name to create ID", playBtn: "Play", history: "📜 Bet History:",
-        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
-      },
-      kn: {
-        subtitle: "ಹೆಸರು ನಮೂದಿಸಿ ID ಪಡೆಯಿರಿ", playBtn: "ಪ್ಲೇ ಮಾಡಿ", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:",
-        stgTitle: "Game Settings", sndTitle: "ಗೇಮ್ ಸೌಂಡ್ಸ್", sndSub: "ಧ್ವನಿ ಪರಿಣಾಮಗಳು", hapTitle: "ಹ್ಯಾಪ್ಟಿಕ್ ಫೀಡ್‌ಬ್ಯಾಕ್", hapSub: "ಕಂಪನ", trdTitle: "ಗೆಲುವಿನ ಟ್ರೆಂಡ್", trdSub: "ಫಲಿತಾಂಶ ತೋರಿಸಿ"
-      },
-      te: {
-        subtitle: "పేరు నమోదు చేసి ID పొందండి", playBtn: "ఆడండి", history: "📜 మునుపటి ఫలితాలు:",
-        stgTitle: "Game Settings", sndTitle: "గేమ్ శబ్దాలు", sndSub: "సౌండ్ ఎఫెక్ట్స్", hapTitle: "హాప్టిక్ ఫీడ్‌బ్యాక్", hapSub: "వైబ్రేషన్", trdTitle: "విజయం ట్రెండ్", trdSub: "ఫలితాలు చూపించు"
-      },
-      ta: {
-        subtitle: "பெயரை உள்ளிட்டு ID உருவாக்கவும்", playBtn: "விளையாடு", history: "📜 முந்தைய முடிவுகள்:",
-        stgTitle: "Game Settings", sndTitle: "ஒலி விளைவுகள்", sndSub: "கேம் சவுண்ட்", hapTitle: "தொடு உணர்வு (ஹேப்டிக்)", hapSub: "அதிர்வு", trdTitle: "வெற்றி ட்ரெண்ட்", trdSub: "முடிவுகளைக் காட்டு"
-      }
-    };
-    let currentLang = "hi";
-
-    function changeLanguage(lang) {
-      currentLang = lang;
-      localStorage.setItem("greedy_lang", lang);
-      document.getElementById("loginLangSelector").value = lang;
-      
-      const t = translations[lang];
-      document.getElementById("authSubtitle").innerText = t.subtitle;
-      document.getElementById("authBtn").innerText = t.playBtn;
-      document.getElementById("historyLabel").innerText = t.history;
-      
-      document.getElementById("stgTitle").innerText = t.stgTitle;
-      document.getElementById("stgSoundTitle").innerText = t.sndTitle;
-      document.getElementById("stgSoundSub").innerText = t.sndSub;
-      document.getElementById("stgHapticTitle").innerText = t.hapTitle;
-      document.getElementById("stgHapticSub").innerText = t.hapSub;
-      document.getElementById("stgTrendTitle").innerText = t.trdTitle;
-      document.getElementById("stgTrendSub").innerText = t.trdSub;
-    }
-
+    let isSoundEnabled = true;
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
       if (!isSoundEnabled) return;
@@ -437,71 +358,22 @@
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
       osc.connect(gain); gain.connect(audioCtx.destination);
-
-      if (type === 'chip') {
-        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
-      } else if (type === 'tick') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      if (type === 'tick') {
+        osc.type = 'triangle'; osc.frequency.setValueAtTime(600, audioCtx.currentTime);
         gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.035);
         osc.start(); osc.stop(audioCtx.currentTime + 0.035);
-      } else if (type === 'win') {
-        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-          const winOsc = audioCtx.createOscillator();
-          const winGain = audioCtx.createGain();
-          winOsc.type = 'sine'; winOsc.frequency.value = freq;
-          winGain.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.1);
-          winGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i * 0.1 + 0.3);
-          winOsc.connect(winGain); winGain.connect(audioCtx.destination);
-          winOsc.start(audioCtx.currentTime + i * 0.1); winOsc.stop(audioCtx.currentTime + i * 0.1 + 0.3);
-        });
       }
-    }
-
-    function openSettings() { document.getElementById("settingsModal").style.display = "flex"; }
-    function closeSettings() { document.getElementById("settingsModal").style.display = "none"; }
-    function toggleSoundSetting(val) { isSoundEnabled = val; }
-    function toggleHapticSetting(val) { isHapticEnabled = val; }
-    function toggleTrendSetting(val) { document.getElementById("historyCard").style.display = val ? "flex" : "none"; }
-
-    function triggerHaptic() {
-      if (isHapticEnabled && window.navigator && window.navigator.vibrate) { window.navigator.vibrate(40); }
-    }
-
-    function handleLogin() {
-      const username = document.getElementById("usernameInput").value.trim();
-      const password = document.getElementById("passwordInput").value.trim();
-      if (!username || password.length < 3) return;
-
-      let userId = localStorage.getItem("greedy_user_id");
-      if (!userId) {
-        userId = "#" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("greedy_user_id", userId);
-      }
-
-      document.getElementById("userIdDisplay").innerText = userId;
-      updateCoinsUI(coins);
-      document.getElementById("authModal").style.display = "none";
-      document.getElementById("gameArea").style.display = "flex";
-      if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function selectChip(amount, el) {
       selectedChip = amount;
       document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
       el.classList.add("selected");
-      playSound('chip');
-      triggerHaptic();
     }
 
     function placeBet(boxId) {
       if (currentGameState !== "BETTING") return;
-
       const currentBetBoxes = Object.keys(bets).filter(id => bets[id] > 0);
       if (bets[boxId] === 0 && currentBetBoxes.length >= 6) return;
       if (coins < selectedChip) return;
@@ -510,22 +382,12 @@
       bets[boxId] += selectedChip;
       document.getElementById("badge-" + boxId).style.display = "block";
       document.getElementById("badge-" + boxId).innerText = bets[boxId];
-
-      playSound('chip');
-      triggerHaptic();
     }
 
     socket.on("timerUpdate", (data) => {
       currentGameState = data.gameState;
       const timerEl = document.getElementById("timerDisplay");
-
-      if (data.gameState === "BETTING") {
-        timerEl.innerText = `${data.timeLeft}s`;
-        timerEl.style.color = "#ff1a1a";
-      } else {
-        timerEl.innerText = `⏳`;
-        timerEl.style.color = "#ff1a1a";
-      }
+      timerEl.innerText = data.gameState === "BETTING" ? `${data.timeLeft}s` : `⏳`;
     });
 
     socket.on("gameResult", (data) => {
@@ -546,49 +408,28 @@
           setTimeout(spinStep, delay);
         } else {
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-          const winCard = document.getElementById("card-" + data.winner);
-          winCard.classList.add("winner");
+          document.getElementById("card-" + data.winner).classList.add("winner");
 
-          const historyRow = document.getElementById("historyRow");
           const pill = document.createElement("div");
           pill.className = "history-pill";
           pill.innerText = itemData[data.winner].icon;
-          historyRow.insertBefore(pill, historyRow.firstChild);
+          document.getElementById("historyRow").prepend(pill);
 
-          const userBetOnWinner = bets[data.winner];
-
-          if (userBetOnWinner > 0) {
-            playSound('win');
-            if (isHapticEnabled && window.navigator && window.navigator.vibrate) {
-              window.navigator.vibrate([100, 50, 100]);
-            }
-            const totalReturn = userBetOnWinner * itemData[data.winner].rate;
-            updateCoinsUI(coins + totalReturn, true);
+          if (bets[data.winner] > 0) {
+            updateCoinsUI(coins + (bets[data.winner] * itemData[data.winner].rate), true);
           }
 
           setTimeout(() => {
-            winCard.classList.remove("winner");
+            document.getElementById("card-" + data.winner).classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-            document.querySelectorAll(".my-bet-badge").forEach(b => {
-              b.style.display = "none";
-              b.innerText = "0";
-            });
+            document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
           }, 3500);
         }
       }
       spinStep();
     });
 
-    window.onload = () => {
-      const savedLang = localStorage.getItem("greedy_lang") || "hi";
-      changeLanguage(savedLang);
-
-      const savedId = localStorage.getItem("greedy_user_id");
-      if (savedId) {
-        document.getElementById("userIdDisplay").innerText = savedId;
-      }
-      updateCoinsUI(coins);
-    };
+    window.onload = () => { updateCoinsUI(coins); };
   </script>
 </body>
 </html>
