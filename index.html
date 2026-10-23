@@ -18,18 +18,20 @@
     }
     .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .lang-select-login { background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.8); border-radius: 18px; padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none; cursor: pointer; }
-    .brand-title { font-size: 46px; font-weight: 900; color: #ffd700; letter-spacing: 1px; text-shadow: 0 4px 20px rgba(0,0,0,0.95), 0 0 10px rgba(255,215,0,0.4); margin-top: 40px; text-align: center; }
-    .auth-bottom-panel { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
     
-    .btn-login { width: 100%; height: 50px; border-radius: 25px; border: none; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: transform 0.1s; }
-    .btn-login:active { transform: scale(0.98); }
+    /* Glowing Gold Title */
+    .brand-title { font-size: 46px; font-weight: 900; color: #ffd700; letter-spacing: 1px; text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00, 0 0 30px #ff4500; animation: glow 1.5s infinite alternate; margin-top: 40px; text-align: center; }
+    @keyframes glow { from { text-shadow: 0 0 10px #ffd700, 0 0 20px #ff8c00; } to { text-shadow: 0 0 20px #ffea00, 0 0 30px #ff4500, 0 0 40px #ff0000; } }
+
+    .auth-bottom-panel { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .btn-login { width: 100%; height: 50px; border-radius: 25px; border: none; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
     .btn-facebook { background: #1877F2; color: #fff; }
     .btn-google { background: #ffffff; color: #222; }
     .social-logo-svg { width: 22px; height: 22px; flex-shrink: 0; }
 
-    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 10px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
-    .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; line-height: 1.4; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+    .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; }
     .terms-link { color: #ffd700; text-decoration: underline; cursor: pointer; font-weight: 600; }
 
     /* Policy Pages */
@@ -40,23 +42,22 @@
     .policy-section { margin-bottom: 18px; }
     .policy-section h3 { font-size: 15px; font-weight: bold; color: #000; margin-bottom: 6px; }
 
-    /* More Options Bottom Sheet Modal */
+    /* More Options Bottom Sheet */
     #moreOptionsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 120; align-items: flex-end; justify-content: center; }
-    .options-sheet { width: 100%; max-width: 480px; background: #ffffff; border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 30px 20px 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 -10px 30px rgba(0,0,0,0.3); position: relative; }
-
-    .btn-sheet-phone { width: 100%; height: 52px; border-radius: 26px; border: none; background: #00cd00; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; position: relative; box-shadow: 0 4px 12px rgba(0,205,0,0.35); }
-    .btn-sheet-email { width: 100%; height: 52px; border-radius: 26px; border: none; background: #ffa500; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,165,0,0.35); }
+    .options-sheet { width: 100%; max-width: 480px; background: #ffffff; border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 30px 20px 25px; display: flex; flex-direction: column; gap: 15px; position: relative; }
+    .btn-sheet-phone { width: 100%; height: 52px; border-radius: 26px; border: none; background: #00cd00; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; position: relative; }
+    .btn-sheet-email { width: 100%; height: 52px; border-radius: 26px; border: none; background: #ffa500; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; }
     .sheet-last-login { position: absolute; right: 15px; background: #ff2a85; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px; }
-    .btn-sheet-cancel { width: 100%; background: none; border: none; font-size: 16px; font-weight: 800; color: #111; padding: 12px; cursor: pointer; text-align: center; margin-top: 5px; }
+    .btn-sheet-cancel { width: 100%; background: none; border: none; font-size: 16px; font-weight: 800; color: #111; padding: 12px; cursor: pointer; text-align: center; }
 
     #screenPhone { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
     .back-btn { font-size: 24px; color: #000; cursor: pointer; margin-bottom: 20px; }
     .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
     .input-box { display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 10px 14px; gap: 8px; }
-    .country-code-select { font-size: 15px; font-weight: bold; color: #000; border: none; background: transparent; outline: none; cursor: pointer; max-width: 140px; text-overflow: ellipsis; }
+    .country-code-select { font-size: 14px; font-weight: bold; color: #000; border: none; background: #e0e0e0; padding: 6px 10px; border-radius: 10px; outline: none; cursor: pointer; width: 160px; }
     .phone-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; }
     .next-btn-container { position: absolute; bottom: 30px; right: 20px; }
-    .btn-round-next { width: 60px; height: 60px; border-radius: 50%; background: #d0a3ff; border: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; box-shadow: 0 4px 10px rgba(208,163,255,0.5); cursor: pointer; }
+    .btn-round-next { width: 60px; height: 60px; border-radius: 50%; background: #d0a3ff; border: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; cursor: pointer; }
     
     #screenPass { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
     .pass-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; letter-spacing: 2px; }
@@ -64,63 +65,25 @@
     .spinner { width: 60px; height: 60px; border-radius: 50%; border: 5px solid #fff; border-top-color: #8a2be2; animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
 
-    /* Profile Dashboard Screen */
-    #screenProfile { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; padding-bottom: 25px; }
-    .profile-cover { width: 100%; height: 230px; background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
-    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 12px; }
-    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
-    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
-    
+    /* Profile Screen */
+    #screenProfile { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; padding-bottom: 40px; }
+    .profile-cover { width: 100%; height: 200px; background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
     .profile-header-area { display: flex; flex-direction: column; align-items: flex-start; padding: 0 20px; margin-top: -50px; position: relative; z-index: 2; }
-    .avatar-wrapper { position: relative; width: 96px; height: 96px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
+    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    .avatar-frame { position: absolute; inset: -6px; border-radius: 50%; pointer-events: none; border: 3.5px solid transparent; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; margin-top: 10px; }
     
-    .frame-gold { border-color: #ffd700; box-shadow: 0 0 15px #ffd700, inset 0 0 8px #ffd700; }
-    .frame-neon { border-color: #00f3ff; box-shadow: 0 0 15px #00f3ff, inset 0 0 8px #00f3ff; }
-    .frame-rainbow { border-color: #ff007f; box-shadow: 0 0 18px #ff007f, inset 0 0 8px #7928ca; }
+    .profile-menu-list { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .profile-menu-item { display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8f9fa; border-radius: 14px; cursor: pointer; font-weight: bold; font-size: 15px; border: 1px solid #eee; }
+    .profile-menu-item:active { background: #f0f0f0; }
+    .btn-logout-bottom { margin: 10px 20px; padding: 15px; background: #ff3366; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 14px; cursor: pointer; text-align: center; box-shadow: 0 4px 12px rgba(255,51,102,0.35); }
 
-    .accompany-badge { position: absolute; right: 20px; top: 22px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; box-shadow: 0 4px 12px rgba(255,75,43,0.4); }
-    .accompany-badge span { font-size: 14px; font-weight: 900; }
-
-    .user-name-box { margin-top: 12px; display: flex; align-items: center; gap: 8px; }
-    .user-name { font-size: 24px; font-weight: 900; color: #111; letter-spacing: 0.5px; }
-    .edit-name-icon { font-size: 16px; color: #777; cursor: pointer; }
-    
-    .tags-row { display: flex; gap: 8px; margin-top: 6px; }
-    .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 2px 10px; border-radius: 12px; border: 1px solid #ff758c; }
-    .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 12px; border: 1px solid #b2ebf2; }
-
-    .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 14px; padding: 0 20px; }
-    .follow-counts { display: flex; gap: 20px; }
-    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; }
-    .f-num { font-size: 17px; font-weight: 900; color: #111; }
-    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
-    .profile-action-btns { display: flex; gap: 8px; }
-    .btn-follow { background: linear-gradient(45deg, #8a2be2, #4a00e0); color: #fff; border: none; padding: 7px 18px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; box-shadow: 0 2px 8px rgba(138,43,226,0.3); }
-    .btn-text-msg { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 7px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
-
-    .stats-container { display: flex; justify-content: space-around; margin: 18px 20px; padding: 16px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
-    .stat-item { text-align: center; }
-    .stat-val { font-size: 20px; font-weight: 900; color: #222; display: flex; align-items: center; justify-content: center; gap: 4px; }
-    .stat-label { font-size: 12px; color: #718096; margin-top: 4px; font-weight: bold; }
-
-    .cards-wrapper { padding: 5px 20px; display: flex; flex-direction: column; gap: 14px; }
-    .action-card { width: 100%; border-radius: 18px; padding: 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.1); color: #fff; transition: transform 0.15s; }
-    .action-card:active { transform: scale(0.97); }
-    .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: 1.5px solid #89cff0; }
-    .card-recharge { background: linear-gradient(135deg, #f12711 0%, #f5af19 100%); border: 1.5px solid #ffd700; }
-    .card-text h3 { font-size: 20px; font-weight: 900; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-    .card-text p { font-size: 12px; font-weight: 600; opacity: 0.95; }
-    .card-icon { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
-
-    /* Messages / Chat History Screen (Screenshot Match) */
+    /* Messages / Chat History Screen */
     #screenMessages { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; }
     .msg-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; }
     .msg-top-title { font-size: 22px; font-weight: 900; }
     .msg-list { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-    .msg-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; }
-    .msg-item:active { background: #fafafa; }
+    .msg-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
     .msg-left { display: flex; align-items: center; gap: 14px; }
     .msg-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ddd; }
     .msg-info { display: flex; flex-direction: column; gap: 3px; }
@@ -130,7 +93,7 @@
     .msg-snippet { font-size: 13px; color: #666; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .msg-time { font-size: 12px; color: #999; font-weight: 600; }
 
-    /* Inbox Chat Window Modal/Screen */
+    /* Inbox Chat Window */
     #screenInbox { display: none; position: fixed; inset: 0; z-index: 180; background: #f9f9f9; flex-direction: column; max-width: 480px; margin: 0 auto; }
     .inbox-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #fff; border-bottom: 1px solid #ddd; }
     .inbox-user-info { display: flex; align-items: center; gap: 10px; cursor: pointer; }
@@ -140,118 +103,36 @@
     .chat-bubble { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
     .chat-incoming { background: #fff; color: #333; align-self: flex-start; border: 1px solid #e0e0e0; }
     .chat-outgoing { background: #8a2be2; color: #fff; align-self: flex-end; }
-    
     .inbox-input-bar { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: #fff; border-top: 1px solid #ddd; }
     .inbox-input-bar input { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 14px; }
     .inbox-action-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #666; }
-
-    /* Logout Screen Page */
-    #screenLogout { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #ffffff; padding: 30px 20px; text-align: center; }
-    .logout-box { width: 100%; max-width: 360px; background: #fafafa; border-radius: 24px; padding: 30px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border: 1.5px solid #eaeaea; }
-    .logout-icon { font-size: 54px; margin-bottom: 15px; }
-    .logout-title { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 8px; }
-    .logout-sub { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.4; }
-    .logout-btn-group { display: flex; flex-direction: column; gap: 12px; }
-    .btn-exit { width: 100%; padding: 14px; background: #ff3366; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,51,102,0.35); }
-    .btn-stay { width: 100%; padding: 14px; background: #e0e0e0; color: #333; font-size: 16px; font-weight: bold; border: none; border-radius: 14px; cursor: pointer; }
 
     /* Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 150; }
     .custom-modal { background: #fff; border-radius: 24px; width: 90%; max-width: 350px; padding: 24px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto; }
     .close-modal { position: absolute; right: 15px; top: 15px; width: 30px; height: 30px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #555; }
-    .modal-title-dark { font-size: 20px; font-weight: 900; color: #111; margin-bottom: 15px; text-align: center; }
-    
     .edit-input { width: 100%; padding: 12px; border: 1.5px solid #ccc; border-radius: 12px; font-size: 16px; margin-bottom: 15px; outline: none; }
     .btn-save { width: 100%; padding: 12px; background: #8a2be2; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; }
-    
-    .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-    .avatar-opt { width: 60px; height: 60px; border-radius: 50%; border: 2.5px solid #eee; overflow: hidden; cursor: pointer; }
-    .avatar-opt.selected { border-color: #8a2be2; transform: scale(1.08); box-shadow: 0 0 10px rgba(138,43,226,0.5); }
-    .avatar-opt img { width: 100%; height: 100%; object-fit: cover; }
 
-    .frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-    .frame-opt { height: 95px; border-radius: 16px; background: #f9f9f9; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; gap: 6px; font-size: 13px; font-weight: bold; }
-    .frame-preview { width: 44px; height: 44px; border-radius: 50%; }
-
-    /* Main Game UI */
+    /* Main Game Arena */
     body.game-active { background: linear-gradient(180deg, #ff8c42 0%, #ff5722 50%, #e64a19 100%); }
-    body.game-active::before { content: ""; position: fixed; inset: 0; background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.2), transparent 70%), radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.15), transparent 70%); pointer-events: none; z-index: 0; }
-    
     #gameArea { display: none; width: 100%; max-width: 430px; margin: 0 auto; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
     .app-title { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
     .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .top-right-btns { display: flex; gap: 8px; align-items: center; }
-    .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; cursor: pointer; }
-    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
-    .coins-badge.gain { transform: scale(1.15); }
-    .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2.5px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
-
-    .wheel-container { position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%); border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25); display: flex; align-items: center; justify-content: center; }
+    .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; cursor: pointer; }
+    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; }
+    .wheel-container { position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%); border: 5px solid #ffd700; display: flex; align-items: center; justify-content: center; }
     .wheel-center-hud { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff, #e8f4fa); border: 3px dashed #ffd700; display: flex; align-items: center; justify-content: center; }
     #timerDisplay { font-size: 28px; font-weight: 900; color: #ff1a1a; }
-    .item-card { position: absolute; width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.15s; }
-    .item-card.highlight { border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700); transform: scale(1.18); }
-    .item-card.winner { border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676); transform: scale(1.25); }
-    .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
-    .item-rate { font-size: 10px; color: #b8860b; font-weight: 900; margin-top: 1px; }
-    .my-bet-badge { position: absolute; top: -4px; right: -4px; background: #ff2255; color: white; font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px; display: none; }
-    .chips-bar { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
-    .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;}
-    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
-    .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
-
-    .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; margin-bottom: 15px; }
-    .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 6px; }
-    .history-items-row { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none; }
-    .history-pill { min-width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid #89cff0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
-    .history-pill .pill-icon { font-size: 18px; line-height: 1; }
-    .history-pill .pill-rate { font-size: 9px; font-weight: 900; color: #b8860b; margin-top: 1px; }
-
-    /* Win Ranking Section */
-    .win-ranking-box { width: 100%; background: #d84315; border-radius: 18px; padding: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); border: 2px solid #ffccbc; margin-top: 10px; margin-bottom: 25px; }
-    .ranking-header { text-align: center; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-bottom: 10px; background: linear-gradient(90deg, #ffb300, #ff8f00); padding: 6px; border-radius: 12px; }
-    .ranking-sub-banner { display: flex; justify-content: space-between; align-items: center; background: #bf360c; padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #ffe0b2; margin-bottom: 12px; font-weight: bold; }
-    .ranking-tabs { display: flex; background: #870000; border-radius: 20px; padding: 3px; margin-bottom: 15px; }
-    .rank-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; color: #ffccbc; cursor: pointer; border-radius: 18px; }
-    .rank-tab.active { background: linear-gradient(180deg, #ffa726, #fb8c00); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-    
-    .ranking-list { display: flex; flex-direction: column; gap: 10px; }
-    .rank-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.15); padding: 8px 12px; border-radius: 12px; color: #fff; }
-    .rank-user-info { display: flex; align-items: center; gap: 10px; }
-    .rank-badge { width: 24px; font-weight: 900; font-size: 14px; text-align: center; color: #ffeb3b; }
-    .rank-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ffccbc; }
-    .rank-name { font-size: 14px; font-weight: bold; }
-    .rank-score { font-size: 13px; font-weight: 900; color: #ffeb3b; display: flex; align-items: center; gap: 4px; }
-
-    /* Game Settings Modal */
-    .game-settings-card { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
-    .stg-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 22px; }
-    .stg-title { font-size: 24px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-    .stg-close { position: absolute; right: -2px; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; font-weight: bold; }
-    .stg-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
-    .stg-row:last-child { border-bottom: none; }
-    .stg-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
-    .stg-label p { font-size: 11px; color: #f0d8ff; margin-top: 2px; }
-
-    .switch { position: relative; display: inline-block; width: 52px; height: 28px; flex-shrink: 0; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; inset: 0; background-color: #5c1c9e; transition: .3s; border-radius: 34px; border: 1.5px solid rgba(255,255,255,0.4); }
-    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2.5px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-    input:checked + .slider { background-color: #00e676; border-color: #00e676; }
-    input:checked + .slider:before { transform: translateX(23px); }
-
-    .custom-card-game { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
-    .modal-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; }
-    .modal-title { font-size: 22px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
-    .modal-close { position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; font-weight: bold; }
-    .rules-body { max-height: 380px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: #f5e8ff; padding-right: 5px; }
-    .rule-item { margin-bottom: 12px; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 12px; border-left: 3px solid #ffee55; }
-    .rule-item b { color: #ffee55; }
+    .item-card { position: absolute; width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .chips-bar { display: flex; gap: 8px; margin: 10px 0; }
+    .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; cursor: pointer; }
+    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; }
   </style>
 </head>
 <body>
 
-  <!-- 1. Authentication Screens (Default: English) -->
+  <!-- 1. Authentication Screens -->
   <div id="authFlowContainer">
     <div id="screenMain">
       <div class="auth-top-bar">
@@ -264,48 +145,48 @@
       </div>
       <div class="brand-title" id="txtBrandTitle">Greedy Coin</div>
       <div class="auth-bottom-panel">
-        
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff">
-            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-          </svg>
-          <span id="txtBtnFb">Sign in with Facebook</span>
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Sign in with Facebook
         </button>
-
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
-            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/>
-            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/>
-            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
-          </svg>
-          <span id="txtBtnGoogle">Sign in with Google</span>
+          <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          Sign in with Google
         </button>
-
-        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span id="txtMoreOpts">More Options</span> <span class="last-login-tag" id="txtLastLogin">Last login</span></button>
-        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span id="txtAgreeTerms">Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()">More Options <span class="last-login-tag">Last login</span></button>
+        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
       </div>
     </div>
 
-    <!-- More Options Bottom Sheet Modal -->
+    <!-- More Options Bottom Sheet -->
     <div id="moreOptionsModal">
       <div class="options-sheet">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()">
-          📞 <span id="txtSheetPhone">Sign in with Phone</span>
-          <span class="sheet-last-login" id="txtSheetLastLogin">Last login</span>
-        </button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()">
-          ✉️ <span id="txtSheetEmail">Sign in with Email</span>
-        </button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" id="txtSheetCancel">Cancel</button>
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()">📞 Sign in with Phone <span class="sheet-last-login">Last login</span></button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()">Cancel</button>
       </div>
     </div>
 
+    <!-- Phone Registration with All Country Codes -->
     <div id="screenPhone">
       <div class="back-btn" onclick="showScreenMainWithHistory()">❮</div>
-      <div class="step-title" id="txtRegTitle">Register / log in</div>
+      <div class="step-title">Register / log in</div>
       <div class="input-box">
-        <select class="country-code-select"><option value="+91">🇮🇳 India (+91)</option></select>
+        <select class="country-code-select">
+          <option value="+91">🇮🇳 India (+91)</option>
+          <option value="+1">🇺🇸 USA/Canada (+1)</option>
+          <option value="+44">🇬🇧 UK (+44)</option>
+          <option value="+971">🇦🇪 UAE (+971)</option>
+          <option value="+966">🇸🇦 Saudi Arabia (+966)</option>
+          <option value="+61">🇦🇺 Australia (+61)</option>
+          <option value="+81">🇯🇵 Japan (+81)</option>
+          <option value="+49">🇩🇪 Germany (+49)</option>
+          <option value="+33">🇫🇷 France (+33)</option>
+          <option value="+86">🇨🇳 China (+86)</option>
+          <option value="+7">🇷🇺 Russia (+7)</option>
+          <option value="+55">🇧🇷 Brazil (+55)</option>
+          <option value="+27">🇿🇦 South Africa (+27)</option>
+        </select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number">
       </div>
       <div class="next-btn-container"><button class="btn-round-next" onclick="goToPasswordWithHistory()">➔</button></div>
@@ -314,170 +195,73 @@
     <div id="screenPass">
       <div id="loadingOverlay"><div class="spinner"></div></div>
       <div class="back-btn" onclick="showScreenPhoneWithHistory()">❮</div>
-      <div class="step-title" id="txtLogTitle">Log in</div>
+      <div class="step-title">Log in</div>
       <div class="input-box"><input type="password" class="pass-input" id="passInput" placeholder="Password"></div>
       <div class="next-btn-container"><button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button></div>
     </div>
 
     <!-- Terms Page -->
     <div id="termsPage" class="policy-page">
-      <div class="policy-header">
-        <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div>
-        <h2>Terms & Conditions</h2>
-      </div>
-      <div class="policy-content">
-        <div class="policy-section">
-          <h3>1. Acceptance of Terms</h3>
-          <p>By accessing and playing Greedy Coin, you agree to comply with and be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our application.</p>
-        </div>
-      </div>
+      <div class="policy-header"><div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div><h2>Terms & Conditions</h2></div>
+      <div class="policy-content"><div class="policy-section"><h3>1. Acceptance of Terms</h3><p>By accessing and playing Greedy Coin, you agree to comply with and be bound by these Terms and Conditions.</p></div></div>
     </div>
 
     <!-- Privacy Policy Page -->
     <div id="privacyPage" class="policy-page">
-      <div class="policy-header">
-        <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div>
-        <h2>Privacy Policy</h2>
-      </div>
-      <div class="policy-content">
-        <div class="policy-section">
-          <h3>1. Information We Collect</h3>
-          <p>We collect basic identifiers such as your generated User ID, chosen display name, avatar selections, and game progression statistics to ensure smooth gameplay sessions.</p>
-        </div>
-      </div>
+      <div class="policy-header"><div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div><h2>Privacy Policy</h2></div>
+      <div class="policy-content"><div class="policy-section"><h3>1. Information We Collect</h3><p>We collect basic identifiers such as your generated User ID and game progression statistics.</p></div></div>
     </div>
-
   </div>
 
-  <!-- 2. Profile Screen -->
+  <!-- 2. Profile Home Page -->
   <div id="screenProfile">
-    <div class="profile-cover">
-      <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
-      <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Avatar">⚙️</div>
-      </div>
-    </div>
-    
+    <div class="profile-cover"></div>
     <div class="profile-header-area">
-      <div class="avatar-wrapper" onclick="openFrames()" title="Tap to change frame">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
-        <div class="avatar-frame" id="profAvatarFrame"></div>
-      </div>
-      <div class="user-name-box">
-        <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-        <div class="edit-name-icon" onclick="openEditProfile()">✏️</div>
-      </div>
-      <div class="tags-row">
-        <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
-        <div class="tag-id">🆔 <span id="profId">#000000</span></div>
-      </div>
+      <div class="avatar-wrapper"><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg"></div>
+      <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
     </div>
 
-    <div class="accompany-badge">Active: <span id="profDays">1</span> Days ✨</div>
-
-    <div class="follow-stats-row">
-      <div class="follow-counts">
-        <div class="f-count-item">
-          <span class="f-num" id="followersCount">142</span>
-          <span class="f-lbl">Followers</span>
-        </div>
-        <div class="f-count-item">
-          <span class="f-num" id="followingCount">35</span>
-          <span class="f-lbl">Following</span>
-        </div>
-      </div>
-      <div class="profile-action-btns">
-        <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
-        <button class="btn-text-msg" onclick="openMessagesScreen()">💬 Text</button>
-      </div>
+    <div class="profile-menu-list">
+      <div class="profile-menu-item" onclick="enterGameFromProfile()">🎮 Play Game Arena ➔</div>
+      <div class="profile-menu-item" onclick="openRechargeModal()">💳 Recharge Coins ➔</div>
+      <div class="profile-menu-item" onclick="openMessagesScreen()">💬 Messages & Chat ➔</div>
     </div>
 
-    <div class="stats-container">
-      <div class="stat-item">
-        <div class="stat-val">🪙 <span id="profBalance">10000</span></div>
-        <div class="stat-label">Wallet Balance</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">🏆 <span id="profWon">0</span></div>
-        <div class="stat-label">Total Won Coins</div>
-      </div>
-    </div>
-
-    <div class="cards-wrapper">
-      <div class="action-card card-play" onclick="enterGameFromProfile()">
-        <div class="card-text"><h3>🎮 Play Greedy Coin</h3><p>Enter wheel arena to place bets</p></div>
-        <div class="card-icon">🎰</div>
-      </div>
-      <div class="action-card card-recharge" onclick="openRecharge()">
-        <div class="card-text"><h3>💎 Recharge Coins</h3><p>1 Lakh = +20 Lv | 2 Lakh = +40 Lv</p></div>
-        <div class="card-icon">💰</div>
-      </div>
-    </div>
+    <button class="btn-logout-bottom" onclick="exitToLogout()">Log Out / Exit Link</button>
   </div>
 
-  <!-- 3. Messages / Chat History Screen (Screenshot Match) -->
+  <!-- 3. Messages Screen -->
   <div id="screenMessages">
     <div class="msg-top-bar">
       <div class="back-btn" style="margin-bottom:0; color:#fff;" onclick="goBackToProfile()">❮</div>
       <div class="msg-top-title">Messages</div>
       <div style="width:24px;"></div>
     </div>
-    <div class="msg-list" id="chatListContainer">
+    <div class="msg-list">
       <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1', 'Family')">
         <div class="msg-left">
           <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="msg-avatar">
           <div class="msg-info">
             <div class="msg-name-row"><span class="msg-name">Blacku</span><span class="msg-tag">Family</span></div>
-            <div class="msg-snippet">🔱Shree🔱: 🔱Shree🔱 is broadcasting</div>
+            <div class="msg-snippet">🔱Shree🔱 is broadcasting</div>
           </div>
         </div>
         <div class="msg-time">21:07</div>
-      </div>
-      <div class="msg-item" onclick="openChat('90000', 'https://api.dicebear.com/7.x/bottts/svg?seed=King2', '')">
-        <div class="msg-left">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="msg-avatar">
-          <div class="msg-info">
-            <div class="msg-name-row"><span class="msg-name">90000</span></div>
-            <div class="msg-snippet">Last day to claim your rewards! Hurry up!</div>
-          </div>
-        </div>
-        <div class="msg-time">Yesterday</div>
-      </div>
-      <div class="msg-item" onclick="openChat('Family Assistant', 'https://api.dicebear.com/7.x/bottts/svg?seed=Queen3', '')">
-        <div class="msg-left">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="msg-avatar">
-          <div class="msg-info">
-            <div class="msg-name-row"><span class="msg-name">Family Assistant</span></div>
-            <div class="msg-snippet">Reward points 130</div>
-          </div>
-        </div>
-        <div class="msg-time">26-10-01</div>
       </div>
       <div class="msg-item" onclick="openChat('SolidJAATNI', 'https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4', '(145)')">
         <div class="msg-left">
           <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="msg-avatar">
           <div class="msg-info">
             <div class="msg-name-row"><span class="msg-name">SolidJAATNI (145)</span></div>
-            <div class="msg-snippet">Party room for 3 users active now...</div>
+            <div class="msg-snippet">Party room active now...</div>
           </div>
         </div>
         <div class="msg-time">20:57</div>
       </div>
-      <div class="msg-item" onclick="openChat('POWER', 'https://api.dicebear.com/7.x/bottts/svg?seed=Lion5', '')">
-        <div class="msg-left">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lion5" class="msg-avatar">
-          <div class="msg-info">
-            <div class="msg-name-row"><span class="msg-name">POWER</span></div>
-            <div class="msg-snippet">🎁 PARO is broadcasting</div>
-          </div>
-        </div>
-        <div class="msg-time">18:24</div>
-      </div>
     </div>
   </div>
 
-  <!-- Inbox Chat Window (With Photo & Voice Options) -->
+  <!-- Inbox Chat Window -->
   <div id="screenInbox">
     <div class="inbox-header">
       <div class="inbox-user-info" onclick="openFriendProfile()">
@@ -489,77 +273,32 @@
     </div>
     <div class="inbox-messages-area" id="inboxMessagesList">
       <div class="chat-bubble chat-incoming">Hello! Welcome to Greedy Coin chat.</div>
-      <div class="chat-bubble chat-outgoing">Hi there! Let's play the wheel game.</div>
     </div>
     <div class="inbox-input-bar">
       <button class="inbox-action-btn" onclick="sendPhotoInChat()" title="Send Photo">📷</button>
-      <button class="inbox-action-btn" onclick="sendVoiceInChat()" title="Send Voice Note">🎙️</button>
+      <button class="inbox-action-btn" onclick="sendVoiceInChat()" title="Send Voice">🎙️</button>
       <input type="text" id="chatInputBox" placeholder="Type a message...">
       <button class="inbox-action-btn" onclick="sendTextMessage()" style="color:#8a2be2; font-weight:bold;">➤</button>
     </div>
   </div>
 
-  <!-- Friend Profile Modal from Chat -->
+  <!-- Friend Profile Modal -->
   <div id="modalFriendProfile" class="modal-overlay">
     <div class="custom-modal" style="text-align:center;">
       <div class="close-modal" onclick="closeFriendProfile()">✕</div>
       <img src="" id="modalFriendAvatar" style="width:90px; height:90px; border-radius:50%; object-fit:cover; margin-bottom:10px; border:3px solid #8a2be2;">
       <h3 id="modalFriendName" style="font-size:20px; font-weight:900; margin-bottom:5px;">User Name</h3>
-      <p style="font-size:12px; color:#666; margin-bottom:15px;">ID: #839201 | Level: 12</p>
       <button class="btn-save" onclick="closeFriendProfile()">Send Message</button>
     </div>
   </div>
 
-  <!-- Dedicated Log Out Screen -->
-  <div id="screenLogout">
-    <div class="logout-box">
-      <div class="logout-icon">🚪</div>
-      <div class="logout-title" id="txtLogoutTitle">Log Out / Exit</div>
-      <div class="logout-sub" id="txtLogoutSub">Are you sure you want to log out of your profile?</div>
-      <div class="logout-btn-group">
-        <button class="btn-exit" onclick="confirmLogout()" id="txtBtnYesLogout">Yes, Log Out</button>
-        <button class="btn-stay" onclick="stayInProfile()" id="txtBtnStay">Stay on Profile</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modals -->
-  <div id="modalEditProfile" class="modal-overlay">
-    <div class="custom-modal">
-      <div class="close-modal" onclick="closeEditProfile()">✕</div>
-      <div class="modal-title-dark">Choose Safe Avatar</div>
-      <div class="avatar-grid" id="avatarPickerGrid"></div>
-      <label style="font-size:12px; color:#555; font-weight:bold; margin-bottom:5px; display:block;">Enter Name (any language / emoji)</label>
-      <input type="text" id="nameInputEdit" class="edit-input" placeholder="e.g. 🦋DURGESH🦋">
-      <button class="btn-save" onclick="saveProfile()">Save Changes</button>
-    </div>
-  </div>
-
-  <div id="modalFrames" class="modal-overlay">
-    <div class="custom-modal">
-      <div class="close-modal" onclick="closeFrames()">✕</div>
-      <div class="modal-title-dark">Select Round Frame</div>
-      <div class="frame-grid">
-        <div class="frame-opt" onclick="selectFrame('none')">🚫 No Frame</div>
-        <div class="frame-opt" onclick="selectFrame('gold')"><div class="frame-preview frame-gold"></div>Gold</div>
-        <div class="frame-opt" onclick="selectFrame('neon')"><div class="frame-preview frame-neon"></div>Neon Blue</div>
-        <div class="frame-opt" onclick="selectFrame('rainbow')"><div class="frame-preview frame-rainbow"></div>Magic Glow</div>
-      </div>
-    </div>
-  </div>
-
+  <!-- Recharge Modal -->
   <div id="modalRecharge" class="modal-overlay">
     <div class="custom-modal">
-      <div class="close-modal" onclick="closeRecharge()">✕</div>
-      <div class="modal-title-dark">Recharge Coins</div>
-      <p style="font-size:13px; color:#666; margin-bottom:15px; text-align:center;">
-        <b>Level Reward:</b><br>
-        1,00,000 Coins = <b>+20 Level</b><br>
-        2,00,000 Coins = <b>+40 Level</b><br>
-        3,00,000 Coins = <b>+60 Level</b>
-      </p>
-      <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter Coins (e.g. 100000)">
-      <button class="btn-save" onclick="processRecharge()">Recharge Now</button>
+      <div class="close-modal" onclick="closeRechargeModal()">✕</div>
+      <h3>Recharge Coins</h3>
+      <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter amount">
+      <button class="btn-save" onclick="processRecharge()">Add Coins</button>
     </div>
   </div>
 
@@ -568,250 +307,73 @@
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
       <div class="user-badge" onclick="goBackToProfile()">❮ 👤 Profile</div>
-      <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
-      <div class="top-right-btns">
-        <div class="icon-btn" onclick="openRules()" title="Rules">📜</div>
-        <div class="icon-btn" onclick="openGameSettings()" title="Settings">⚙️</div>
-      </div>
+      <div class="coins-badge">🪙 <span id="coinsDisplay">10000</span></div>
     </div>
-
     <div class="wheel-container">
       <div class="wheel-center-hud"><div id="timerDisplay">30s</div></div>
-      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1">0</span><div class="item-icon">🐓</div><div class="item-rate">25x</div></div>
-      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2">0</span><div class="item-icon">🍅</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3">0</span><div class="item-icon">🐑</div><div class="item-rate">14x</div></div>
-      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4">0</span><div class="item-icon">🫑</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5">0</span><div class="item-icon">🐟</div><div class="item-rate">19x</div></div>
-      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6">0</span><div class="item-icon">🥕</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7">0</span><div class="item-icon">🦐</div><div class="item-rate">9x</div></div>
-      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8">0</span><div class="item-icon">🌽</div><div class="item-rate">4x</div></div>
-    </div>
-
-    <div class="chips-bar">
-      <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
-      <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
-      <div class="chip chip-2000" onclick="selectChip(2000, this)">2000</div>
-      <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
-    </div>
-
-    <div class="history-card" id="historyCard">
-      <div class="history-label">📜 Bet History (Previous Results):</div>
-      <div class="history-items-row" id="historyRow"></div>
-    </div>
-
-    <!-- Win Ranking Section -->
-    <div class="win-ranking-box">
-      <div class="ranking-header">🏆 Win Ranking</div>
-      <div class="ranking-sub-banner">
-        <span>Today's Top 10 get rewards up to 🐱 126000</span>
-        <span style="cursor:pointer;" onclick="alert('More leaderboard details coming soon!')">More &gt;</span>
-      </div>
-      <div class="ranking-tabs">
-        <div class="rank-tab active" id="tabToday" onclick="switchRankTab('today')">Today</div>
-        <div class="rank-tab" id="tabYesterday" onclick="switchRankTab('yesterday')">Yesterday</div>
-      </div>
-      <div class="ranking-list" id="rankingListContainer">
-        <div class="rank-item">
-          <div class="rank-user-info">
-            <span class="rank-badge">1</span>
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="rank-avatar">
-            <span class="rank-name">AJ cool</span>
-          </div>
-          <div class="rank-score">🐱 339947860</div>
-        </div>
-        <div class="rank-item">
-          <div class="rank-user-info">
-            <span class="rank-badge">2</span>
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="rank-avatar">
-            <span class="rank-name">DARLING STRANGER</span>
-          </div>
-          <div class="rank-score">🐱 134454860</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Game Settings Modal -->
-  <div id="gameSettingsModal" class="modal-overlay">
-    <div class="game-settings-card">
-      <div class="stg-header">
-        <div class="stg-title">Game Settings</div>
-        <div class="stg-close" onclick="closeGameSettings()">✕</div>
-      </div>
-      <div class="stg-row">
-        <div class="stg-label">
-          <h4>Game Sound Effects</h4>
-          <p>Game sound effects</p>
-        </div>
-        <label class="switch"><input type="checkbox" id="toggleSound" checked onchange="toggleSoundSetting(this.checked)"><span class="slider"></span></label>
-      </div>
-      <div class="stg-row">
-        <div class="stg-label">
-          <h4>Haptic Feedback</h4>
-          <p>Vibration upon successful bet</p>
-        </div>
-        <label class="switch"><input type="checkbox" id="toggleHaptic" checked onchange="toggleHapticSetting(this.checked)"><span class="slider"></span></label>
-      </div>
-      <div class="stg-row">
-        <div class="stg-label">
-          <h4>Winning Trend</h4>
-          <p>Show lottery results</p>
-        </div>
-        <label class="switch"><input type="checkbox" id="toggleTrend" checked onchange="toggleTrendSetting(this.checked)"><span class="slider"></span></label>
-      </div>
-    </div>
-  </div>
-
-  <!-- Rules Modal -->
-  <div id="rulesModal" class="modal-overlay">
-    <div class="custom-card-game">
-      <div class="modal-header">
-        <div class="modal-title">Rules:</div>
-        <div class="modal-close" onclick="closeRules()">✕</div>
-      </div>
-      <div class="rules-body">
-        <div class="rule-item"><b>1.</b> Choose chip amounts (100, 1000, 2000, or 5000) and place your bets on items before the timer ends.</div>
-        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> in each round. You can place bets on a maximum of <b>6 slots</b> per round.</div>
-      </div>
     </div>
   </div>
 
   <script>
     const socket = io();
-    let isGameStarted = false;
+    let coins = 10000;
     let currentChatUser = { name: "User", avatar: "" };
 
-    const translations = {
-      en: {
-        brand: "Greedy Coin",
-        btnFb: "Sign in with Facebook",
-        btnGoogle: "Sign in with Google",
-        moreOpts: "More Options",
-        lastLogin: "Last login",
-        agree: "Agree to",
-        terms: "Terms",
-        privacy: "Privacy Policy",
-        sheetPhone: "Sign in with Phone",
-        sheetEmail: "Sign in with Email",
-        cancel: "Cancel",
-        regTitle: "Register / log in",
-        logTitle: "Log in",
-        logoutTitle: "Log Out / Exit",
-        logoutSub: "Are you sure you want to log out of your profile?",
-        btnYesLogout: "Yes, Log Out",
-        btnStay: "Stay on Profile"
-      }
-    };
-
-    function changeLanguage(lang) {
-      localStorage.setItem("greedy_lang", lang);
-      document.getElementById("loginLangSelector").value = lang;
-      const t = translations[lang] || translations.en;
-      document.getElementById("txtBrandTitle").innerText = t.brand;
-      document.getElementById("txtBtnFb").innerText = t.btnFb;
-      document.getElementById("txtBtnGoogle").innerText = t.btnGoogle;
-      document.getElementById("txtMoreOpts").innerText = t.moreOpts;
-      document.getElementById("txtLastLogin").innerText = t.lastLogin;
-      document.getElementById("txtSheetPhone").innerText = t.sheetPhone;
-      document.getElementById("txtSheetLastLogin").innerText = t.lastLogin;
-      document.getElementById("txtSheetEmail").innerText = t.sheetEmail;
-      document.getElementById("txtSheetCancel").innerText = t.cancel;
-      document.getElementById("txtRegTitle").innerText = t.regTitle;
-      document.getElementById("txtLogTitle").innerText = t.logTitle;
-      document.getElementById("txtLogoutTitle").innerText = t.logoutTitle;
-      document.getElementById("txtLogoutSub").innerText = t.logoutSub;
-      document.getElementById("txtBtnYesLogout").innerText = t.btnYesLogout;
-      document.getElementById("txtBtnStay").innerText = t.btnStay;
-    }
-
-    const safeAvatars = [
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=King2",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Queen3",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Lion5",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Gold8",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Silver9",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Hero10",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Star11",
-      "https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1"
-    ];
-
-    let userId = localStorage.getItem("greedy_user_id") || ("#" + Math.floor(100000 + Math.random() * 900000));
-    let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
-    let userLevel = parseInt(localStorage.getItem("greedy_level")) || 1;
-    let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
-    let coins = parseInt(localStorage.getItem("greedy_coins")) || 10000;
-    let userFrame = localStorage.getItem("greedy_frame") || "none";
-    let userAvatar = localStorage.getItem("greedy_avatar") || safeAvatars[11];
-    let activeDays = parseInt(localStorage.getItem("greedy_days")) || 1;
-    let totalLossAccumulator = parseInt(localStorage.getItem("greedy_loss_acc")) || 0;
-    let followersCount = parseInt(localStorage.getItem("greedy_followers")) || 142;
-    let followingCount = parseInt(localStorage.getItem("greedy_following")) || 35;
-    let isFollowed = localStorage.getItem("greedy_is_followed") === "true";
-    let lastLogin = localStorage.getItem("greedy_last_login");
-
-    function checkDailyLogin() {
-      const today = new Date().toDateString();
-      if (lastLogin !== today) {
-        if(lastLogin) activeDays++;
-        localStorage.setItem("greedy_last_login", today);
-        localStorage.setItem("greedy_days", activeDays);
-      }
-    }
-
-    function initProfileUI() {
-      document.getElementById("profId").innerText = userId;
-      document.getElementById("profNameDisplay").innerText = userName;
-      document.getElementById("profLevel").innerText = userLevel;
-      document.getElementById("profWon").innerText = totalWon;
-      document.getElementById("profBalance").innerText = coins;
-      document.getElementById("profDays").innerText = activeDays;
-      document.getElementById("profAvatarImg").src = userAvatar;
-      document.getElementById("followersCount").innerText = followersCount;
-      document.getElementById("followingCount").innerText = followingCount;
-      
-      const fBtn = document.getElementById("followBtn");
-      fBtn.innerText = isFollowed ? "Following" : "+ Follow";
-      fBtn.style.background = isFollowed ? "#555" : "linear-gradient(45deg, #8a2be2, #4a00e0)";
-      
-      applyFrameUI(userFrame);
-    }
-
+    function changeLanguage(lang) { localStorage.setItem("greedy_lang", lang); }
     function openDoc(type) {
-      if(type === 'terms') {
-        document.getElementById('termsPage').style.display = 'flex';
-        history.pushState({page: 'terms'}, "", "");
-      } else if(type === 'privacy') {
-        document.getElementById('privacyPage').style.display = 'flex';
-        history.pushState({page: 'privacy'}, "", "");
-      }
+      if(type === 'terms') document.getElementById('termsPage').style.display = 'flex';
+      if(type === 'privacy') document.getElementById('privacyPage').style.display = 'flex';
     }
     function closeDoc(id) { document.getElementById(id).style.display = 'none'; }
 
-    function openMoreOptionsSheet() {
-      document.getElementById("moreOptionsModal").style.display = "flex";
-      history.pushState({page: 'sheet'}, "", "");
-    }
+    function openMoreOptionsSheet() { document.getElementById("moreOptionsModal").style.display = "flex"; }
     function closeMoreOptionsSheet() { document.getElementById("moreOptionsModal").style.display = "none"; }
-    function selectPhoneOption() { closeMoreOptionsSheet(); showScreenPhoneWithHistory(); }
-    function selectEmailOption() { closeMoreOptionsSheet(); alert("Email login option will be available soon!"); }
-    function socialLoginNotice(provider) { alert(`${provider} login API is not connected yet! Please tap 'More Options' below.`); }
+    function selectPhoneOption() { closeMoreOptionsSheet(); showScreen('screenPhone'); }
+    function selectEmailOption() { closeMoreOptionsSheet(); alert("Email login coming soon!"); }
+    function socialLoginNotice(p) { alert(`${p} login coming soon! Use More Options.`); }
 
-    function toggleFollow() {
-      if (!isFollowed) { followersCount++; isFollowed = true; } else { followersCount--; isFollowed = false; }
-      localStorage.setItem("greedy_followers", followersCount);
-      localStorage.setItem("greedy_is_followed", isFollowed);
-      initProfileUI();
+    function showScreen(id) {
+      document.getElementById('screenMain').style.display = 'none';
+      document.getElementById('screenPhone').style.display = 'none';
+      document.getElementById('screenPass').style.display = 'none';
+      document.getElementById(id).style.display = 'flex';
+    }
+    function showScreenPhoneWithHistory() { showScreen('screenPhone'); }
+    function showScreenMainWithHistory() { showScreen('screenMain'); }
+    function goToPasswordWithHistory() { showScreen('screenPass'); }
+
+    function doFinalLogin() {
+      document.getElementById("loadingOverlay").style.display = "flex";
+      setTimeout(() => {
+        document.getElementById("loadingOverlay").style.display = "none";
+        document.getElementById("authFlowContainer").style.display = "none";
+        document.getElementById("screenProfile").style.display = "flex";
+      }, 1000);
     }
 
-    // Messages Screen Handling
+    function exitToLogout() {
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("authFlowContainer").style.display = "flex";
+      showScreen('screenMain');
+    }
+
+    function enterGameFromProfile() {
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("gameArea").style.display = "flex";
+      document.body.classList.add("game-active");
+    }
+
+    function goBackToProfile() {
+      document.body.classList.remove("game-active");
+      document.getElementById("gameArea").style.display = "none";
+      document.getElementById("screenMessages").style.display = "none";
+      document.getElementById("screenInbox").style.display = "none";
+      document.getElementById("screenProfile").style.display = "flex";
+    }
+
     function openMessagesScreen() {
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenMessages").style.display = "flex";
-      history.pushState({page: 'messages'}, "", "");
     }
 
     function openChat(name, avatar, tag) {
@@ -820,7 +382,6 @@
       document.getElementById("inboxUserAvatar").src = avatar;
       document.getElementById("screenMessages").style.display = "none";
       document.getElementById("screenInbox").style.display = "flex";
-      history.pushState({page: 'inbox'}, "", "");
     }
 
     function closeChat() {
@@ -870,272 +431,15 @@
       list.scrollTop = list.scrollHeight;
     }
 
-    function openGameSettings() { document.getElementById("gameSettingsModal").style.display = "flex"; }
-    function closeGameSettings() { document.getElementById("gameSettingsModal").style.display = "none"; }
-    function toggleSoundSetting(val) {}
-    function toggleHapticSetting(val) {}
-    function toggleTrendSetting(val) { document.getElementById("historyCard").style.display = val ? "flex" : "none"; }
-
-    function switchRankTab(tab) {
-      document.getElementById("tabToday").className = "rank-tab" + (tab === 'today' ? " active" : "");
-      document.getElementById("tabYesterday").className = "rank-tab" + (tab === 'yesterday' ? " active" : "");
-    }
-
-    function showScreen(screenId) {
-      document.getElementById('screenMain').style.display = 'none';
-      document.getElementById('screenPhone').style.display = 'none';
-      document.getElementById('screenPass').style.display = 'none';
-      document.getElementById(screenId).style.display = 'flex';
-    }
-
-    function showScreenPhoneWithHistory() { history.pushState({page: 'phone'}, "", ""); showScreen('screenPhone'); }
-    function showScreenMainWithHistory() { history.pushState({page: 'main'}, "", ""); showScreen('screenMain'); }
-
-    function goToPasswordWithHistory() {
-      const ph = document.getElementById("phoneInput").value;
-      if (ph.length < 5) { alert("Please enter a valid phone number."); return; }
-      history.pushState({page: 'pass'}, "", "");
-      showScreen('screenPass');
-    }
-
-    function doFinalLogin() {
-      const pass = document.getElementById("passInput").value;
-      if (pass.length < 3) { alert("Please enter a valid password."); return; }
-      document.getElementById("loadingOverlay").style.display = "flex";
-      setTimeout(() => { document.getElementById("loadingOverlay").style.display = "none"; finishAuth(); }, 1200);
-    }
-
-    function finishAuth() {
-      checkDailyLogin();
-      initProfileUI();
-      document.getElementById("authFlowContainer").style.display = "none";
-      document.getElementById("gameArea").style.display = "none";
-      document.getElementById("screenLogout").style.display = "none";
-      document.getElementById("screenMessages").style.display = "none";
-      document.getElementById("screenProfile").style.display = "flex";
-      document.body.style.background = "#f4f6f9";
-      history.pushState({page: 'profile'}, "", "");
-    }
-
-    function enterGameFromProfile() {
-      isGameStarted = true;
-      document.getElementById("screenProfile").style.display = "none";
-      document.getElementById("gameArea").style.display = "flex";
-      document.body.classList.add("game-active");
-      updateCoinsUI(coins);
-      history.pushState({page: 'game'}, "", "");
-    }
-
-    function goBackToProfile() {
-      document.body.classList.remove("game-active");
-      document.getElementById("gameArea").style.display = "none";
-      document.getElementById("screenProfile").style.display = "flex";
-      initProfileUI();
-      history.pushState({page: 'profile'}, "", "");
-    }
-
-    window.onpopstate = function (event) {
-      const profileScreen = document.getElementById("screenProfile");
-      const gameScreen = document.getElementById("gameArea");
-      const logoutScreen = document.getElementById("screenLogout");
-      const msgScreen = document.getElementById("screenMessages");
-      const inboxScreen = document.getElementById("screenInbox");
-      const phoneScreen = document.getElementById("screenPhone");
-      const passScreen = document.getElementById("screenPass");
-      const modalSheet = document.getElementById("moreOptionsModal");
-
-      if (inboxScreen.style.display === "flex") { closeChat(); return; }
-      if (msgScreen.style.display === "flex") { goBackToProfile(); return; }
-      if (modalSheet.style.display === "flex") { closeMoreOptionsSheet(); return; }
-      if (logoutScreen.style.display === "flex") { stayInProfile(); history.pushState({page: 'profile'}, "", ""); return; }
-      if (gameScreen.style.display === "flex") { openMessagesScreen(); return; }
-      if (profileScreen.style.display === "flex") { openLogoutScreen(); history.pushState({page: 'logout'}, "", ""); return; }
-      if (passScreen.style.display === "flex") { showScreen('screenPhone'); return; }
-      if (phoneScreen.style.display === "flex") { showScreen('screenMain'); return; }
-    };
-
-    function openLogoutScreen() {
-      document.getElementById("screenProfile").style.display = "none";
-      document.getElementById("screenLogout").style.display = "flex";
-    }
-
-    function stayInProfile() {
-      document.getElementById("screenLogout").style.display = "none";
-      document.getElementById("screenProfile").style.display = "flex";
-    }
-
-    function confirmLogout() {
-      document.getElementById("screenLogout").style.display = "none";
-      document.getElementById("authFlowContainer").style.display = "flex";
-      showScreen('screenMain');
-      history.pushState({page: 'main'}, "", "");
-    }
-
-    function openEditProfile() {
-      document.getElementById("nameInputEdit").value = userName;
-      const grid = document.getElementById("avatarPickerGrid");
-      grid.innerHTML = "";
-      safeAvatars.forEach(url => {
-        const d = document.createElement("div");
-        d.className = "avatar-opt" + (userAvatar === url ? " selected" : "");
-        d.innerHTML = `<img src="${url}">`;
-        d.onclick = () => {
-          document.querySelectorAll(".avatar-opt").forEach(x => x.classList.remove("selected"));
-          d.classList.add("selected");
-          userAvatar = url;
-        };
-        grid.appendChild(d);
-      });
-      document.getElementById("modalEditProfile").style.display = "flex";
-    }
-    function closeEditProfile() { document.getElementById("modalEditProfile").style.display = "none"; }
-    
-    function saveProfile() {
-      userName = document.getElementById("nameInputEdit").value.trim() || "🦋DURGESH🦋";
-      localStorage.setItem("greedy_name", userName);
-      localStorage.setItem("greedy_avatar", userAvatar);
-      initProfileUI();
-      closeEditProfile();
-    }
-
-    function openFrames() { document.getElementById("modalFrames").style.display = "flex"; }
-    function closeFrames() { document.getElementById("modalFrames").style.display = "none"; }
-    function selectFrame(type) {
-      userFrame = type;
-      localStorage.setItem("greedy_frame", type);
-      applyFrameUI(type);
-      closeFrames();
-    }
-    function applyFrameUI(type) {
-      const fr = document.getElementById("profAvatarFrame");
-      fr.className = "avatar-frame";
-      if(type !== 'none') fr.classList.add("frame-" + type);
-    }
-
-    function openRecharge() { document.getElementById("modalRecharge").style.display = "flex"; }
-    function closeRecharge() { document.getElementById("modalRecharge").style.display = "none"; }
+    function openRechargeModal() { document.getElementById("modalRecharge").style.display = "flex"; }
+    function closeRechargeModal() { document.getElementById("modalRecharge").style.display = "none"; }
     function processRecharge() {
-      const val = parseInt(document.getElementById("rechargeInput").value);
-      if(!val || val <= 0) return;
-      coins += val;
-      let gainedLevels = Math.floor(val / 100000) * 20;
-      if (gainedLevels === 0 && val >= 5000) { gainedLevels = Math.floor(val / 5000); }
-      userLevel += gainedLevels;
-      localStorage.setItem("greedy_coins", coins);
-      localStorage.setItem("greedy_level", userLevel);
-      initProfileUI();
-      closeRecharge();
-      alert(`Recharge Successful! Added ${val} coins. Level boosted by +${gainedLevels} Lv!`);
-    }
-
-    function openRules() { document.getElementById("rulesModal").style.display = "flex"; history.pushState({page: 'rules'}, "", ""); }
-    function closeRules() { document.getElementById("rulesModal").style.display = "none"; }
-
-    let selectedChip = 100;
-    let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-    let currentGameState = "BETTING";
-
-    function updateCoinsUI(amount, animate = false) {
-      coins = amount;
-      localStorage.setItem("greedy_coins", coins);
+      const amt = parseInt(document.getElementById("rechargeInput").value) || 0;
+      coins += amt;
       document.getElementById("coinsDisplay").innerText = coins;
-      if(document.getElementById("profBalance")) document.getElementById("profBalance").innerText = coins;
-      if (animate) {
-        const c = document.getElementById("coinsContainer");
-        c.classList.add("gain");
-        setTimeout(() => c.classList.remove("gain"), 300);
-      }
+      closeRechargeModal();
+      alert(`Successfully added ${amt} coins!`);
     }
-
-    const itemData = {
-      1: { icon: "🐓", rate: 25 }, 2: { icon: "🍅", rate: 4 },
-      3: { icon: "🐑", rate: 14 }, 4: { icon: "🫑", rate: 4 },
-      5: { icon: "🐟", rate: 19 }, 6: { icon: "🥕", rate: 4 },
-      7: { icon: "🦐", rate: 9 }, 8: { icon: "🌽", rate: 4 }
-    };
-
-    function selectChip(amount, el) {
-      selectedChip = amount;
-      document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
-      el.classList.add("selected");
-    }
-
-    function placeBet(boxId) {
-      if (currentGameState !== "BETTING") return;
-      const currentBetBoxes = Object.keys(bets).filter(id => bets[id] > 0);
-      if (bets[boxId] === 0 && currentBetBoxes.length >= 6) return;
-      if (coins < selectedChip) return;
-      updateCoinsUI(coins - selectedChip);
-      bets[boxId] += selectedChip;
-      document.getElementById("badge-" + boxId).style.display = "block";
-      document.getElementById("badge-" + boxId).innerText = bets[boxId];
-    }
-
-    socket.on("timerUpdate", (data) => {
-      currentGameState = data.gameState;
-      document.getElementById("timerDisplay").innerText = data.gameState === "BETTING" ? `${data.timeLeft}s` : `⏳`;
-    });
-
-    socket.on("gameResult", (data) => {
-      let currentHighlight = 1;
-      let totalSteps = 24 + data.winner;
-      
-      function spinStep() {
-        document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-        document.getElementById("card-" + currentHighlight).classList.add("highlight");
-        totalSteps--;
-        currentHighlight = (currentHighlight % 8) + 1;
-
-        if (totalSteps > 0) { setTimeout(spinStep, totalSteps < 10 ? 75 : 40); } 
-        else {
-          document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-          document.getElementById("card-" + data.winner).classList.add("winner");
-          
-          const row = document.getElementById("historyRow");
-          const pill = document.createElement("div");
-          pill.className = "history-pill";
-          pill.innerHTML = `
-            <span class="pill-icon">${itemData[data.winner].icon}</span>
-            <span class="pill-rate">${itemData[data.winner].rate}x</span>
-          `;
-          row.insertBefore(pill, row.firstChild);
-
-          let totalBetThisRound = Object.values(bets).reduce((a, b) => a + b, 0);
-          let wonBet = bets[data.winner];
-
-          if (wonBet > 0) {
-            let wonAmount = wonBet * itemData[data.winner].rate;
-            updateCoinsUI(coins + wonAmount, true);
-            totalWon += wonAmount;
-            localStorage.setItem("greedy_won", totalWon);
-            userLevel += 1;
-            localStorage.setItem("greedy_level", userLevel);
-          } else if (totalBetThisRound > 0) {
-            totalLossAccumulator += totalBetThisRound;
-            if (totalLossAccumulator >= 100000) {
-              let bonusLevels = Math.floor(totalLossAccumulator / 100000) * 40;
-              userLevel += bonusLevels;
-              totalLossAccumulator = totalLossAccumulator % 100000;
-              localStorage.setItem("greedy_level", userLevel);
-            }
-            localStorage.setItem("greedy_loss_acc", totalLossAccumulator);
-          }
-
-          setTimeout(() => {
-            document.getElementById("card-" + data.winner).classList.remove("winner");
-            bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-            document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
-          }, 3500);
-        }
-      }
-      if(isGameStarted) spinStep();
-    });
-
-    window.onload = () => { 
-      localStorage.setItem("greedy_user_id", userId);
-      history.pushState({page: 'main'}, "", "");
-      changeLanguage('en');
-    };
   </script>
 </body>
 </html>
