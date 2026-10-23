@@ -182,7 +182,6 @@
       <div class="brand-title">Greedy Coin</div>
       <div class="auth-bottom-panel">
         
-        <!-- Facebook Button with Real Logo & Guarded Click -->
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
           <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -190,7 +189,6 @@
           Sign in with Facebook
         </button>
 
-        <!-- Google Button with Real Logo & Guarded Click -->
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
           <svg class="social-logo-svg" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
@@ -201,24 +199,24 @@
           Sign in with Google
         </button>
 
-        <button class="more-options-btn" onclick="showScreen('screenPhone')">More Options <span class="last-login-tag">Last login</span></button>
+        <button class="more-options-btn" onclick="showScreenPhoneWithHistory()">More Options <span class="last-login-tag">Last login</span></button>
         <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
       </div>
     </div>
 
     <div id="screenPhone">
-      <div class="back-btn" onclick="showScreen('screenMain')">❮</div>
+      <div class="back-btn" onclick="showScreenMainWithHistory()">❮</div>
       <div class="step-title">Register / log in</div>
       <div class="input-box">
         <select class="country-code-select"><option value="+91">🇮🇳 India (+91)</option></select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number">
       </div>
-      <div class="next-btn-container"><button class="btn-round-next" onclick="goToPassword()">➔</button></div>
+      <div class="next-btn-container"><button class="btn-round-next" onclick="goToPasswordWithHistory()">➔</button></div>
     </div>
 
     <div id="screenPass">
       <div id="loadingOverlay"><div class="spinner"></div></div>
-      <div class="back-btn" onclick="showScreen('screenPhone')">❮</div>
+      <div class="back-btn" onclick="showScreenPhoneWithHistory()">❮</div>
       <div class="step-title">Log in</div>
       <div class="input-box"><input type="password" class="pass-input" id="passInput" placeholder="Password"></div>
       <div class="next-btn-container"><button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button></div>
@@ -252,7 +250,6 @@
 
     <div class="accompany-badge">Active: <span id="profDays">1</span> Days ✨</div>
 
-    <!-- Follow & Text Feature Bar -->
     <div class="follow-stats-row">
       <div class="follow-counts">
         <div class="f-count-item">
@@ -392,7 +389,7 @@
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
         <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
-        <div class="rule-item"><b>3.</b> यूज़र जब तक खेलना चाहे खेल सकता है, बाहर आने के लिए ऊपर <b>`❮ Profile`</b> बटन दबाएं।</div>
+        <div class="rule-item"><b>3.</b> खेल से बाहर आने के लिए फोन का बैक बटन दबाएं, जिससे आप प्रोफाइल पर आएंगे और फिर लॉग-आउट कर सकेंगे।</div>
         <div class="rule-item"><b>4. Level Rewards:</b><br>
           • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
           • Win each round = <b>+1 Level</b><br>
@@ -462,7 +459,6 @@
       applyFrameUI(userFrame);
     }
 
-    // Guarded Social Login
     function socialLoginNotice(provider) {
       alert(`${provider} login API is not connected yet! Please tap 'More Options' below to sign in securely with your phone number.`);
     }
@@ -487,17 +483,28 @@
       }
     }
 
-    // Smooth Step-by-Step Navigation & Back Handling
+    // Step-by-step History Navigation Support
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
       document.getElementById('screenPass').style.display = 'none';
       document.getElementById(screenId).style.display = 'flex';
     }
-    
-    function goToPassword() {
+
+    function showScreenPhoneWithHistory() {
+      history.pushState({page: 'phone'}, "", "");
+      showScreen('screenPhone');
+    }
+
+    function showScreenMainWithHistory() {
+      history.pushState({page: 'main'}, "", "");
+      showScreen('screenMain');
+    }
+
+    function goToPasswordWithHistory() {
       const ph = document.getElementById("phoneInput").value;
       if (ph.length < 5) { alert("Please enter a valid phone number."); return; }
+      history.pushState({page: 'pass'}, "", "");
       showScreen('screenPass');
     }
 
@@ -516,6 +523,8 @@
       document.getElementById("screenLogout").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
+      
+      history.pushState({page: 'profile'}, "", "");
     }
 
     function enterGameFromProfile() {
@@ -524,6 +533,7 @@
       document.getElementById("gameArea").style.display = "flex";
       document.body.classList.add("game-active");
       updateCoinsUI(coins);
+      history.pushState({page: 'game'}, "", "");
     }
 
     function goBackToProfile() {
@@ -531,9 +541,47 @@
       document.getElementById("gameArea").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       initProfileUI();
+      history.pushState({page: 'profile'}, "", "");
     }
 
-    // Logout Screen Management
+    // Phone Hardware Back Button Handler for Step-by-Step Navigation & Logout Flow
+    window.onpopstate = function (event) {
+      const profileScreen = document.getElementById("screenProfile");
+      const gameScreen = document.getElementById("gameArea");
+      const logoutScreen = document.getElementById("screenLogout");
+      const phoneScreen = document.getElementById("screenPhone");
+      const passScreen = document.getElementById("screenPass");
+      const mainScreen = document.getElementById("screenMain");
+      const authContainer = document.getElementById("authFlowContainer");
+
+      if (logoutScreen.style.display === "flex") {
+        stayInProfile();
+        history.pushState({page: 'profile'}, "", "");
+        return;
+      }
+
+      if (gameScreen.style.display === "flex") {
+        goBackToProfile();
+        return;
+      }
+
+      if (profileScreen.style.display === "flex") {
+        openLogoutScreen();
+        history.pushState({page: 'logout'}, "", "");
+        return;
+      }
+
+      if (passScreen.style.display === "flex") {
+        showScreen('screenPhone');
+        return;
+      }
+
+      if (phoneScreen.style.display === "flex") {
+        showScreen('screenMain');
+        return;
+      }
+    };
+
     function openLogoutScreen() {
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenLogout").style.display = "flex";
@@ -548,6 +596,7 @@
       document.getElementById("screenLogout").style.display = "none";
       document.getElementById("authFlowContainer").style.display = "flex";
       showScreen('screenMain');
+      history.pushState({page: 'main'}, "", "");
     }
 
     // Profile Settings Modals
@@ -717,7 +766,10 @@
       if(isGameStarted) spinStep();
     });
 
-    window.onload = () => { localStorage.setItem("greedy_user_id", userId); };
+    window.onload = () => { 
+      localStorage.setItem("greedy_user_id", userId);
+      history.pushState({page: 'main'}, "", "");
+    };
   </script>
 </body>
 </html>
