@@ -132,6 +132,7 @@
     #gameArea { display: none; width: 100%; max-width: 430px; margin: 0 auto; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
     .app-title { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
     .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .top-right-btns { display: flex; gap: 8px; align-items: center; }
     .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; cursor: pointer; }
     .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
     .coins-badge.gain { transform: scale(1.15); }
@@ -181,7 +182,7 @@
       <div class="brand-title">Greedy Coin</div>
       <div class="auth-bottom-panel">
         
-        <!-- Facebook Button with Real SVG Logo -->
+        <!-- Facebook Button with Real Logo & Guarded Click -->
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
           <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -189,7 +190,7 @@
           Sign in with Facebook
         </button>
 
-        <!-- Google Button with Real Colored SVG Logo -->
+        <!-- Google Button with Real Logo & Guarded Click -->
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
           <svg class="social-logo-svg" viewBox="0 0 24 24">
             <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
@@ -224,7 +225,7 @@
     </div>
   </div>
 
-  <!-- 2. Profile Screen (Full Colorful Dashboard) -->
+  <!-- 2. Profile Screen -->
   <div id="screenProfile">
     <div class="profile-cover">
       <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
@@ -310,10 +311,7 @@
     <div class="custom-modal">
       <div class="close-modal" onclick="closeEditProfile()">✕</div>
       <div class="modal-title-dark">Choose Safe Avatar</div>
-      <p style="font-size:12px; color:#666; margin-bottom:12px; text-align:center;">Pick an official character avatar:</p>
-      
       <div class="avatar-grid" id="avatarPickerGrid"></div>
-      
       <label style="font-size:12px; color:#555; font-weight:bold; margin-bottom:5px; display:block;">Enter Name (any language / emoji)</label>
       <input type="text" id="nameInputEdit" class="edit-input" placeholder="e.g. 🦋DURGESH🦋">
       <button class="btn-save" onclick="saveProfile()">Save Changes</button>
@@ -394,7 +392,7 @@
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
         <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
-        <div class="rule-item"><b>3. Automatic Return:</b> Result आने के 3 सेकंड बाद आप अपने-आप प्रोफाइल पेज पर वापस आ जाएंगे।</div>
+        <div class="rule-item"><b>3.</b> यूज़र जब तक खेलना चाहे खेल सकता है, बाहर आने के लिए ऊपर <b>`❮ Profile`</b> बटन दबाएं।</div>
         <div class="rule-item"><b>4. Level Rewards:</b><br>
           • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
           • Win each round = <b>+1 Level</b><br>
@@ -408,7 +406,6 @@
     const socket = io();
     let isGameStarted = false;
 
-    // Safe Characters List
     const safeAvatars = [
       "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1",
       "https://api.dicebear.com/7.x/bottts/svg?seed=King2",
@@ -424,7 +421,6 @@
       "https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1"
     ];
 
-    // Local Data Store
     let userId = localStorage.getItem("greedy_user_id") || ("#" + Math.floor(100000 + Math.random() * 900000));
     let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 1;
@@ -466,12 +462,11 @@
       applyFrameUI(userFrame);
     }
 
-    // Block social login until set
+    // Guarded Social Login
     function socialLoginNotice(provider) {
-      alert(`${provider} login will be connected soon! Please tap 'More Options' below to sign in with your phone number.`);
+      alert(`${provider} login API is not connected yet! Please tap 'More Options' below to sign in securely with your phone number.`);
     }
 
-    // Follow and Text Feature
     function toggleFollow() {
       if (!isFollowed) {
         followersCount++;
@@ -486,21 +481,29 @@
     }
 
     function openTextChat() {
-      let msg = prompt("Enter your message to send / चैट संदेश दर्ज करें:");
+      let msg = prompt("Enter your message / चैट संदेश दर्ज करें:");
       if(msg && msg.trim() !== "") {
-        alert("Message Sent! / आपका संदेश भेज दिया गया है!");
+        alert("Message sent successfully! / संदेश सफलतापूर्वक भेज दिया गया!");
       }
     }
 
-    // Navigation Flow
+    // Smooth Step-by-Step Navigation & Back Handling
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
       document.getElementById('screenPass').style.display = 'none';
       document.getElementById(screenId).style.display = 'flex';
     }
-    function goToPassword() { showScreen('screenPass'); }
+    
+    function goToPassword() {
+      const ph = document.getElementById("phoneInput").value;
+      if (ph.length < 5) { alert("Please enter a valid phone number."); return; }
+      showScreen('screenPass');
+    }
+
     function doFinalLogin() {
+      const pass = document.getElementById("passInput").value;
+      if (pass.length < 3) { alert("Please enter a valid password."); return; }
       document.getElementById("loadingOverlay").style.display = "flex";
       setTimeout(() => { document.getElementById("loadingOverlay").style.display = "none"; finishAuth(); }, 1200);
     }
@@ -513,16 +516,6 @@
       document.getElementById("screenLogout").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
-      
-      // Setup browser back trap for logout
-      history.pushState(null, null, location.href);
-      window.onpopstate = function () {
-        if (document.getElementById("screenProfile").style.display === "flex") {
-          openLogoutScreen();
-        } else if (document.getElementById("gameArea").style.display === "flex") {
-          goBackToProfile();
-        }
-      };
     }
 
     function enterGameFromProfile() {
@@ -540,7 +533,7 @@
       initProfileUI();
     }
 
-    // Logout Page Logic
+    // Logout Screen Management
     function openLogoutScreen() {
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenLogout").style.display = "flex";
@@ -557,7 +550,7 @@
       showScreen('screenMain');
     }
 
-    // Profile Settings
+    // Profile Settings Modals
     function openEditProfile() {
       document.getElementById("nameInputEdit").value = userName;
       const grid = document.getElementById("avatarPickerGrid");
@@ -684,7 +677,6 @@
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
           document.getElementById("card-" + data.winner).classList.add("winner");
           
-          // Add Result to Bet History
           const row = document.getElementById("historyRow");
           const pill = document.createElement("div");
           pill.className = "history-pill";
@@ -694,7 +686,6 @@
           `;
           row.insertBefore(pill, row.firstChild);
 
-          // Payout Calculation
           let totalBetThisRound = Object.values(bets).reduce((a, b) => a + b, 0);
           let wonBet = bets[data.winner];
 
@@ -703,7 +694,7 @@
             updateCoinsUI(coins + wonAmount, true);
             totalWon += wonAmount;
             localStorage.setItem("greedy_won", totalWon);
-            userLevel += 1; // +1 Level per win
+            userLevel += 1;
             localStorage.setItem("greedy_level", userLevel);
           } else if (totalBetThisRound > 0) {
             totalLossAccumulator += totalBetThisRound;
@@ -716,15 +707,11 @@
             localStorage.setItem("greedy_loss_acc", totalLossAccumulator);
           }
 
-          // AUTOMATIC RETURN TO PROFILE: परिणाम आने के 3 सेकंड बाद अपने-आप प्रोफाइल पर वापसी
           setTimeout(() => {
             document.getElementById("card-" + data.winner).classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
             document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
-            
-            // Auto back to profile screen
-            goBackToProfile();
-          }, 3000);
+          }, 3500);
         }
       }
       if(isGameStarted) spinStep();
