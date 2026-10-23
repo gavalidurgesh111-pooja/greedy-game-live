@@ -54,7 +54,10 @@
     .back-btn { font-size: 24px; color: #000; cursor: pointer; margin-bottom: 20px; }
     .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
     .input-box { display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 10px 14px; gap: 8px; }
-    .country-code-select { font-size: 14px; font-weight: bold; color: #000; border: none; background: #e0e0e0; padding: 6px 10px; border-radius: 10px; outline: none; cursor: pointer; width: 160px; }
+    
+    /* Comprehensive Country Code Select with All Countries */
+    .country-code-select { font-size: 13px; font-weight: bold; color: #000; border: none; background: #e0e0e0; padding: 6px 8px; border-radius: 10px; outline: none; cursor: pointer; width: 180px; }
+    
     .phone-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; }
     .next-btn-container { position: absolute; bottom: 30px; right: 20px; }
     .btn-round-next { width: 60px; height: 60px; border-radius: 50%; background: #d0a3ff; border: none; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; cursor: pointer; }
@@ -116,18 +119,53 @@
 
     /* Main Game Arena */
     body.game-active { background: linear-gradient(180deg, #ff8c42 0%, #ff5722 50%, #e64a19 100%); }
+    body.game-active::before { content: ""; position: fixed; inset: 0; background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.2), transparent 70%), radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.15), transparent 70%); pointer-events: none; z-index: 0; }
+    
     #gameArea { display: none; width: 100%; max-width: 430px; margin: 0 auto; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
     .app-title { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
     .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; cursor: pointer; }
-    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; }
-    .wheel-container { position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%); border: 5px solid #ffd700; display: flex; align-items: center; justify-content: center; }
+    .top-right-btns { display: flex; gap: 8px; align-items: center; }
+    .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; cursor: pointer; }
+    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
+    .coins-badge.gain { transform: scale(1.15); }
+    .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2.5px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+
+    .wheel-container { position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%); border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25); display: flex; align-items: center; justify-content: center; }
     .wheel-center-hud { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff, #e8f4fa); border: 3px dashed #ffd700; display: flex; align-items: center; justify-content: center; }
     #timerDisplay { font-size: 28px; font-weight: 900; color: #ff1a1a; }
-    .item-card { position: absolute; width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .chips-bar { display: flex; gap: 8px; margin: 10px 0; }
-    .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; cursor: pointer; }
-    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; }
+    .item-card { position: absolute; width: 66px; height: 66px; border-radius: 50%; background: radial-gradient(circle, #ffffff, #eaf5fc); border: 2.5px solid #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: transform 0.15s; }
+    .item-card.highlight { border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700); transform: scale(1.18); }
+    .item-card.winner { border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676); transform: scale(1.25); }
+    .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
+    .item-rate { font-size: 10px; color: #b8860b; font-weight: 900; margin-top: 1px; }
+    .my-bet-badge { position: absolute; top: -4px; right: -4px; background: #ff2255; color: white; font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px; display: none; }
+    .chips-bar { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
+    .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;}
+    .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
+    .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
+
+    .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; margin-bottom: 15px; }
+    .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 6px; }
+    .history-items-row { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none; }
+    .history-pill { min-width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid #89cff0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .history-pill .pill-icon { font-size: 18px; line-height: 1; }
+    .history-pill .pill-rate { font-size: 9px; font-weight: 900; color: #b8860b; margin-top: 1px; }
+
+    /* Win Ranking Section */
+    .win-ranking-box { width: 100%; background: #d84315; border-radius: 18px; padding: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); border: 2px solid #ffccbc; margin-top: 10px; margin-bottom: 25px; }
+    .ranking-header { text-align: center; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-bottom: 10px; background: linear-gradient(90deg, #ffb300, #ff8f00); padding: 6px; border-radius: 12px; }
+    .ranking-sub-banner { display: flex; justify-content: space-between; align-items: center; background: #bf360c; padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #ffe0b2; margin-bottom: 12px; font-weight: bold; }
+    .ranking-tabs { display: flex; background: #870000; border-radius: 20px; padding: 3px; margin-bottom: 15px; }
+    .rank-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; color: #ffccbc; cursor: pointer; border-radius: 18px; }
+    .rank-tab.active { background: linear-gradient(180deg, #ffa726, #fb8c00); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    
+    .ranking-list { display: flex; flex-direction: column; gap: 10px; }
+    .rank-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.15); padding: 8px 12px; border-radius: 12px; color: #fff; }
+    .rank-user-info { display: flex; align-items: center; gap: 10px; }
+    .rank-badge { width: 24px; font-weight: 900; font-size: 14px; text-align: center; color: #ffeb3b; }
+    .rank-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ffccbc; }
+    .rank-name { font-size: 14px; font-weight: bold; }
+    .rank-score { font-size: 13px; font-weight: 900; color: #ffeb3b; display: flex; align-items: center; gap: 4px; }
   </style>
 </head>
 <body>
@@ -186,6 +224,25 @@
           <option value="+7">🇷🇺 Russia (+7)</option>
           <option value="+55">🇧🇷 Brazil (+55)</option>
           <option value="+27">🇿🇦 South Africa (+27)</option>
+          <option value="+92">🇵🇰 Pakistan (+92)</option>
+          <option value="+880">🇧🇩 Bangladesh (+880)</option>
+          <option value="+94">🇱🇰 Sri Lanka (+94)</option>
+          <option value="+977">🇳🇵 Nepal (+977)</option>
+          <option value="+62">🇮🇩 Indonesia (+62)</option>
+          <option value="+60">🇲🇾 Malaysia (+60)</option>
+          <option value="+63">🇵🇭 Philippines (+63)</option>
+          <option value="+65">🇸🇬 Singapore (+65)</option>
+          <option value="+66">🇹🇭 Thailand (+66)</option>
+          <option value="+84">🇻🇳 Vietnam (+84)</option>
+          <option value="+82">🇰🇷 South Korea (+82)</option>
+          <option value="+34">🇪🇸 Spain (+34)</option>
+          <option value="+39">🇮🇹 Italy (+39)</option>
+          <option value="+52">🇲🇽 Mexico (+52)</option>
+          <option value="+54">🇦🇷 Argentina (+54)</option>
+          <option value="+20">🇪🇬 Egypt (+20)</option>
+          <option value="+234">🇳🇬 Nigeria (+234)</option>
+          <option value="+254">🇰🇪 Kenya (+254)</option>
+          <option value="+90">🇹🇷 Turkey (+90)</option>
         </select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number">
       </div>
@@ -213,7 +270,7 @@
     </div>
   </div>
 
-  <!-- 2. Profile Home Page -->
+  <!-- 2. Profile Screen -->
   <div id="screenProfile">
     <div class="profile-cover"></div>
     <div class="profile-header-area">
@@ -230,14 +287,14 @@
     <button class="btn-logout-bottom" onclick="exitToLogout()">Log Out / Exit Link</button>
   </div>
 
-  <!-- 3. Messages Screen -->
+  <!-- 3. Messages / Chat History Screen -->
   <div id="screenMessages">
     <div class="msg-top-bar">
       <div class="back-btn" style="margin-bottom:0; color:#fff;" onclick="goBackToProfile()">❮</div>
       <div class="msg-top-title">Messages</div>
       <div style="width:24px;"></div>
     </div>
-    <div class="msg-list">
+    <div class="msg-list" id="chatListContainer">
       <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1', 'Family')">
         <div class="msg-left">
           <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="msg-avatar">
@@ -307,10 +364,66 @@
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
       <div class="user-badge" onclick="goBackToProfile()">❮ 👤 Profile</div>
-      <div class="coins-badge">🪙 <span id="coinsDisplay">10000</span></div>
+      <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
+      <div class="top-right-btns">
+        <div class="icon-btn" onclick="openRules()" title="Rules">📜</div>
+        <div class="icon-btn" onclick="openGameSettings()" title="Settings">⚙️</div>
+      </div>
     </div>
+
     <div class="wheel-container">
       <div class="wheel-center-hud"><div id="timerDisplay">30s</div></div>
+      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1">0</span><div class="item-icon">🐓</div><div class="item-rate">25x</div></div>
+      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2">0</span><div class="item-icon">🍅</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3">0</span><div class="item-icon">🐑</div><div class="item-rate">14x</div></div>
+      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4">0</span><div class="item-icon">🫑</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5">0</span><div class="item-icon">🐟</div><div class="item-rate">19x</div></div>
+      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6">0</span><div class="item-icon">🥕</div><div class="item-rate">4x</div></div>
+      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7">0</span><div class="item-icon">🦐</div><div class="item-rate">9x</div></div>
+      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8">0</span><div class="item-icon">🌽</div><div class="item-rate">4x</div></div>
+    </div>
+
+    <div class="chips-bar">
+      <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
+      <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
+      <div class="chip chip-2000" onclick="selectChip(2000, this)">2000</div>
+      <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
+    </div>
+
+    <div class="history-card" id="historyCard">
+      <div class="history-label">📜 Bet History (Previous Results):</div>
+      <div class="history-items-row" id="historyRow"></div>
+    </div>
+
+    <!-- Win Ranking Section -->
+    <div class="win-ranking-box">
+      <div class="ranking-header">🏆 Win Ranking</div>
+      <div class="ranking-sub-banner">
+        <span>Today's Top 10 get rewards up to 🐱 126000</span>
+        <span style="cursor:pointer;" onclick="alert('More leaderboard details coming soon!')">More &gt;</span>
+      </div>
+      <div class="ranking-tabs">
+        <div class="rank-tab active" id="tabToday" onclick="switchRankTab('today')">Today</div>
+        <div class="rank-tab" id="tabYesterday" onclick="switchRankTab('yesterday')">Yesterday</div>
+      </div>
+      <div class="ranking-list" id="rankingListContainer">
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">1</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="rank-avatar">
+            <span class="rank-name">AJ cool</span>
+          </div>
+          <div class="rank-score">🐱 339947860</div>
+        </div>
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">2</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="rank-avatar">
+            <span class="rank-name">DARLING STRANGER</span>
+          </div>
+          <div class="rank-score">🐱 134454860</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -439,6 +552,11 @@
       document.getElementById("coinsDisplay").innerText = coins;
       closeRechargeModal();
       alert(`Successfully added ${amt} coins!`);
+    }
+
+    function switchRankTab(tab) {
+      document.getElementById("tabToday").className = "rank-tab" + (tab === 'today' ? " active" : "");
+      document.getElementById("tabYesterday").className = "rank-tab" + (tab === 'yesterday' ? " active" : "");
     }
   </script>
 </body>
