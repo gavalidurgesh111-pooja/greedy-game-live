@@ -114,6 +114,37 @@
     .card-text p { font-size: 12px; font-weight: 600; opacity: 0.95; }
     .card-icon { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
 
+    /* Messages / Chat History Screen (Screenshot Match) */
+    #screenMessages { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; }
+    .msg-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; }
+    .msg-top-title { font-size: 22px; font-weight: 900; }
+    .msg-list { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+    .msg-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.1s; }
+    .msg-item:active { background: #fafafa; }
+    .msg-left { display: flex; align-items: center; gap: 14px; }
+    .msg-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ddd; }
+    .msg-info { display: flex; flex-direction: column; gap: 3px; }
+    .msg-name-row { display: flex; align-items: center; gap: 6px; }
+    .msg-name { font-size: 15px; font-weight: 800; color: #111; }
+    .msg-tag { background: #ff9800; color: #fff; font-size: 10px; font-weight: bold; padding: 1px 6px; border-radius: 8px; }
+    .msg-snippet { font-size: 13px; color: #666; max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .msg-time { font-size: 12px; color: #999; font-weight: 600; }
+
+    /* Inbox Chat Window Modal/Screen */
+    #screenInbox { display: none; position: fixed; inset: 0; z-index: 180; background: #f9f9f9; flex-direction: column; max-width: 480px; margin: 0 auto; }
+    .inbox-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 15px; background: #fff; border-bottom: 1px solid #ddd; }
+    .inbox-user-info { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .inbox-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .inbox-name { font-size: 16px; font-weight: 800; color: #111; }
+    .inbox-messages-area { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #f2f4f8; }
+    .chat-bubble { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.4; }
+    .chat-incoming { background: #fff; color: #333; align-self: flex-start; border: 1px solid #e0e0e0; }
+    .chat-outgoing { background: #8a2be2; color: #fff; align-self: flex-end; }
+    
+    .inbox-input-bar { display: flex; align-items: center; gap: 10px; padding: 10px 15px; background: #fff; border-top: 1px solid #ddd; }
+    .inbox-input-bar input { flex: 1; padding: 10px 14px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 14px; }
+    .inbox-action-btn { background: none; border: none; font-size: 22px; cursor: pointer; color: #666; }
+
     /* Logout Screen Page */
     #screenLogout { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #ffffff; padding: 30px 20px; text-align: center; }
     .logout-box { width: 100%; max-width: 360px; background: #fafafa; border-radius: 24px; padding: 30px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border: 1.5px solid #eaeaea; }
@@ -153,7 +184,7 @@
     .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; cursor: pointer; }
     .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
     .coins-badge.gain { transform: scale(1.15); }
-    .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+    .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2.5px solid #d4af37; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
 
     .wheel-container { position: relative; width: 320px; height: 320px; margin: 4px auto 10px; border-radius: 50%; background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%); border: 5px solid #ffd700; box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25); display: flex; align-items: center; justify-content: center; }
     .wheel-center-hud { width: 110px; height: 110px; border-radius: 50%; background: radial-gradient(circle, #fff, #e8f4fa); border: 3px dashed #ffd700; display: flex; align-items: center; justify-content: center; }
@@ -209,7 +240,6 @@
     input:checked + .slider { background-color: #00e676; border-color: #00e676; }
     input:checked + .slider:before { transform: translateX(23px); }
 
-    /* Custom Card Game Modal for Rules (Clean & Fixed Layout) */
     .custom-card-game { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
     .modal-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; }
     .modal-title { font-size: 22px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
@@ -300,22 +330,6 @@
           <h3>1. Acceptance of Terms</h3>
           <p>By accessing and playing Greedy Coin, you agree to comply with and be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our application.</p>
         </div>
-        <div class="policy-section">
-          <h3>2. Virtual Currency & Items</h3>
-          <p>All coins, credits, and virtual items within Greedy Coin are purely fictional game points. They carry no real-world monetary value, cannot be cashed out, and are non-transferable.</p>
-        </div>
-        <div class="policy-section">
-          <h3>3. User Conduct & Fair Play</h3>
-          <p>Players must maintain fair play. The use of automated bots, scripts, hacking tools, or exploiting software bugs is strictly prohibited and will lead to an immediate ban.</p>
-        </div>
-        <div class="policy-section">
-          <h3>4. Account Security</h3>
-          <p>You are responsible for maintaining the confidentiality of your login credentials, user ID, and password. We are not liable for any unauthorized account access.</p>
-        </div>
-        <div class="policy-section">
-          <h3>5. Age Requirements</h3>
-          <p>This game is intended strictly for entertainment purposes for users who are 18 years of age or older.</p>
-        </div>
       </div>
     </div>
 
@@ -329,18 +343,6 @@
         <div class="policy-section">
           <h3>1. Information We Collect</h3>
           <p>We collect basic identifiers such as your generated User ID, chosen display name, avatar selections, and game progression statistics to ensure smooth gameplay sessions.</p>
-        </div>
-        <div class="policy-section">
-          <h3>2. Use of Local Storage</h3>
-          <p>Your preferences, wallet balance, and custom settings are stored locally on your device via browser storage for continuous access.</p>
-        </div>
-        <div class="policy-section">
-          <h3>3. Data Protection & Security</h3>
-          <p>We implement robust security measures to protect your account data. We never sell, trade, or transfer your personal profile data to outside commercial entities.</p>
-        </div>
-        <div class="policy-section">
-          <h3>4. Contact & Support</h3>
-          <p>If you have any questions or concerns regarding our privacy practices or data policies, you can reach out through our official support channels.</p>
         </div>
       </div>
     </div>
@@ -387,7 +389,7 @@
       </div>
       <div class="profile-action-btns">
         <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
-        <button class="btn-text-msg" onclick="openTextChat()">💬 Text</button>
+        <button class="btn-text-msg" onclick="openMessagesScreen()">💬 Text</button>
       </div>
     </div>
 
@@ -414,7 +416,101 @@
     </div>
   </div>
 
-  <!-- 3. Dedicated Log Out Screen -->
+  <!-- 3. Messages / Chat History Screen (Screenshot Match) -->
+  <div id="screenMessages">
+    <div class="msg-top-bar">
+      <div class="back-btn" style="margin-bottom:0; color:#fff;" onclick="goBackToProfile()">❮</div>
+      <div class="msg-top-title">Messages</div>
+      <div style="width:24px;"></div>
+    </div>
+    <div class="msg-list" id="chatListContainer">
+      <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1', 'Family')">
+        <div class="msg-left">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="msg-avatar">
+          <div class="msg-info">
+            <div class="msg-name-row"><span class="msg-name">Blacku</span><span class="msg-tag">Family</span></div>
+            <div class="msg-snippet">🔱Shree🔱: 🔱Shree🔱 is broadcasting</div>
+          </div>
+        </div>
+        <div class="msg-time">21:07</div>
+      </div>
+      <div class="msg-item" onclick="openChat('90000', 'https://api.dicebear.com/7.x/bottts/svg?seed=King2', '')">
+        <div class="msg-left">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="msg-avatar">
+          <div class="msg-info">
+            <div class="msg-name-row"><span class="msg-name">90000</span></div>
+            <div class="msg-snippet">Last day to claim your rewards! Hurry up!</div>
+          </div>
+        </div>
+        <div class="msg-time">Yesterday</div>
+      </div>
+      <div class="msg-item" onclick="openChat('Family Assistant', 'https://api.dicebear.com/7.x/bottts/svg?seed=Queen3', '')">
+        <div class="msg-left">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="msg-avatar">
+          <div class="msg-info">
+            <div class="msg-name-row"><span class="msg-name">Family Assistant</span></div>
+            <div class="msg-snippet">Reward points 130</div>
+          </div>
+        </div>
+        <div class="msg-time">26-10-01</div>
+      </div>
+      <div class="msg-item" onclick="openChat('SolidJAATNI', 'https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4', '(145)')">
+        <div class="msg-left">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="msg-avatar">
+          <div class="msg-info">
+            <div class="msg-name-row"><span class="msg-name">SolidJAATNI (145)</span></div>
+            <div class="msg-snippet">Party room for 3 users active now...</div>
+          </div>
+        </div>
+        <div class="msg-time">20:57</div>
+      </div>
+      <div class="msg-item" onclick="openChat('POWER', 'https://api.dicebear.com/7.x/bottts/svg?seed=Lion5', '')">
+        <div class="msg-left">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lion5" class="msg-avatar">
+          <div class="msg-info">
+            <div class="msg-name-row"><span class="msg-name">POWER</span></div>
+            <div class="msg-snippet">🎁 PARO is broadcasting</div>
+          </div>
+        </div>
+        <div class="msg-time">18:24</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inbox Chat Window (With Photo & Voice Options) -->
+  <div id="screenInbox">
+    <div class="inbox-header">
+      <div class="inbox-user-info" onclick="openFriendProfile()">
+        <div class="back-btn" style="margin-bottom:0; font-size:20px;" onclick="closeChat()">❮</div>
+        <img src="" id="inboxUserAvatar" class="inbox-avatar">
+        <span id="inboxUserName" class="inbox-name">User</span>
+      </div>
+      <div style="font-size:12px; color:#8a2be2; font-weight:bold; cursor:pointer;" onclick="openFriendProfile()">View Profile ➔</div>
+    </div>
+    <div class="inbox-messages-area" id="inboxMessagesList">
+      <div class="chat-bubble chat-incoming">Hello! Welcome to Greedy Coin chat.</div>
+      <div class="chat-bubble chat-outgoing">Hi there! Let's play the wheel game.</div>
+    </div>
+    <div class="inbox-input-bar">
+      <button class="inbox-action-btn" onclick="sendPhotoInChat()" title="Send Photo">📷</button>
+      <button class="inbox-action-btn" onclick="sendVoiceInChat()" title="Send Voice Note">🎙️</button>
+      <input type="text" id="chatInputBox" placeholder="Type a message...">
+      <button class="inbox-action-btn" onclick="sendTextMessage()" style="color:#8a2be2; font-weight:bold;">➤</button>
+    </div>
+  </div>
+
+  <!-- Friend Profile Modal from Chat -->
+  <div id="modalFriendProfile" class="modal-overlay">
+    <div class="custom-modal" style="text-align:center;">
+      <div class="close-modal" onclick="closeFriendProfile()">✕</div>
+      <img src="" id="modalFriendAvatar" style="width:90px; height:90px; border-radius:50%; object-fit:cover; margin-bottom:10px; border:3px solid #8a2be2;">
+      <h3 id="modalFriendName" style="font-size:20px; font-weight:900; margin-bottom:5px;">User Name</h3>
+      <p style="font-size:12px; color:#666; margin-bottom:15px;">ID: #839201 | Level: 12</p>
+      <button class="btn-save" onclick="closeFriendProfile()">Send Message</button>
+    </div>
+  </div>
+
+  <!-- Dedicated Log Out Screen -->
   <div id="screenLogout">
     <div class="logout-box">
       <div class="logout-icon">🚪</div>
@@ -531,30 +627,6 @@
           </div>
           <div class="rank-score">🐱 134454860</div>
         </div>
-        <div class="rank-item">
-          <div class="rank-user-info">
-            <span class="rank-badge">3</span>
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="rank-avatar">
-            <span class="rank-name">S Kumar</span>
-          </div>
-          <div class="rank-score">🐱 50165660</div>
-        </div>
-        <div class="rank-item">
-          <div class="rank-user-info">
-            <span class="rank-badge">4</span>
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar">
-            <span class="rank-name">10:34PM</span>
-          </div>
-          <div class="rank-score">🐱 31350000</div>
-        </div>
-        <div class="rank-item">
-          <div class="rank-user-info">
-            <span class="rank-badge">5</span>
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7" class="rank-avatar">
-            <span class="rank-name">KK</span>
-          </div>
-          <div class="rank-score">🐱 28027800</div>
-        </div>
       </div>
     </div>
   </div>
@@ -600,18 +672,6 @@
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chip amounts (100, 1000, 2000, or 5000) and place your bets on items before the timer ends.</div>
         <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> in each round. You can place bets on a maximum of <b>6 slots</b> per round.</div>
-        <div class="rule-item"><b>3. Multiplier Payouts:</b><br>
-          • 🐓 Rooster: <b>25x</b><br>
-          • 🐟 Fish: <b>19x</b><br>
-          • 🐑 Sheep: <b>14x</b><br>
-          • 🦐 Shrimp: <b>9x</b><br>
-          • 🍅 Tomato, 🫑 Pepper, 🥕 Carrot, 🌽 Corn: <b>4x each</b>
-        </div>
-        <div class="rule-item"><b>4. Level & Recharge Rewards:</b><br>
-          • Every 1 Lakh Coins Recharge = <b>+20 Level</b><br>
-          • Winning any round = <b>+1 Level</b><br>
-          • Every 1 Lakh Coins Lost in bets = <b>+40 Level</b> bonus!
-        </div>
       </div>
     </div>
   </div>
@@ -619,7 +679,7 @@
   <script>
     const socket = io();
     let isGameStarted = false;
-    let isSoundEnabled = true;
+    let currentChatUser = { name: "User", avatar: "" };
 
     const translations = {
       en: {
@@ -640,63 +700,6 @@
         logoutSub: "Are you sure you want to log out of your profile?",
         btnYesLogout: "Yes, Log Out",
         btnStay: "Stay on Profile"
-      },
-      hi: {
-        brand: "Greedy Coin",
-        btnFb: "फेसबुक से लॉगिन करें",
-        btnGoogle: "गूगल से लॉगिन करें",
-        moreOpts: "अन्य विकल्प",
-        lastLogin: "अंतिम लॉगिन",
-        agree: "हम सहमत हैं",
-        terms: "नियम और शर्तें",
-        privacy: "गोपनीयता नीति",
-        sheetPhone: "फोन से लॉगिन करें",
-        sheetEmail: "ईमेल से लॉगिन करें",
-        cancel: "रद्द करें",
-        regTitle: "रजिस्टर / लॉगिन",
-        logTitle: "लॉगिन",
-        logoutTitle: "लॉग आउट / बाहर जाएं",
-        logoutSub: "क्या आप वाकई अपनी प्रोफाइल से लॉग आउट करना चाहते हैं?",
-        btnYesLogout: "हाँ, लॉग आउट करें",
-        btnStay: "प्रोफाइल पर रहें"
-      },
-      mr: {
-        brand: "Greedy Coin",
-        btnFb: "Facebook सह साइन इन करा",
-        btnGoogle: "Google सह साइन इन करा",
-        moreOpts: "इतर पर्याय",
-        lastLogin: "शेवटचे लॉगिन",
-        agree: "मी सहमत आहे",
-        terms: "अटी व शर्ती",
-        privacy: "गोपनीयता धोरण",
-        sheetPhone: "फोन सह साइन इन करा",
-        sheetEmail: "ईमेल सह साइन इन करा",
-        cancel: "रद्द करा",
-        regTitle: "नोंदणी / लॉगिन",
-        logTitle: "लॉगिन",
-        logoutTitle: "लॉग आउट / बाहेर पडा",
-        logoutSub: "तुम्हाला खरोखर लॉग आउट करायचे आहे का?",
-        btnYesLogout: "होय, लॉग आउट करा",
-        btnStay: "प्रोफाइलवर राहा"
-      },
-      gu: {
-        brand: "Greedy Coin",
-        btnFb: "Facebook સાથે સાઇન ઇન કરો",
-        btnGoogle: "Google સાથે સાઇન ઇન કરો",
-        moreOpts: "વધુ વિકલ્પો",
-        lastLogin: "છેલ્લું લોગિન",
-        agree: "હું સંમત છું",
-        terms: "નિયમો અને શરતો",
-        privacy: "પ્રાઇવસી પોલિસી",
-        sheetPhone: "ફોન સાથે સાઇન ઇન કરો",
-        sheetEmail: "ઇમેઇલ સાથે સાઇન ઇન કરો",
-        cancel: "રદ કરો",
-        regTitle: "રજીસ્ટર / લોગિન",
-        logTitle: "લોગિન",
-        logoutTitle: "લોગ આઉટ / બહાર નીકળો",
-        logoutSub: "શું તમે ખરેખર લોગ આઉટ કરવા માંગો છો?",
-        btnYesLogout: "હા, લોગ આઉટ કરો",
-        btnStay: "પ્રોફાઇલ પર રહો"
       }
     };
 
@@ -704,7 +707,6 @@
       localStorage.setItem("greedy_lang", lang);
       document.getElementById("loginLangSelector").value = lang;
       const t = translations[lang] || translations.en;
-      
       document.getElementById("txtBrandTitle").innerText = t.brand;
       document.getElementById("txtBtnFb").innerText = t.btnFb;
       document.getElementById("txtBtnGoogle").innerText = t.btnGoogle;
@@ -787,82 +789,96 @@
         history.pushState({page: 'privacy'}, "", "");
       }
     }
-    function closeDoc(id) {
-      document.getElementById(id).style.display = 'none';
-    }
+    function closeDoc(id) { document.getElementById(id).style.display = 'none'; }
 
     function openMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "flex";
       history.pushState({page: 'sheet'}, "", "");
     }
-    function closeMoreOptionsSheet() {
-      document.getElementById("moreOptionsModal").style.display = "none";
-    }
-    function selectPhoneOption() {
-      closeMoreOptionsSheet();
-      showScreenPhoneWithHistory();
-    }
-    function selectEmailOption() {
-      closeMoreOptionsSheet();
-      alert("Email login option will be available soon!");
-    }
-
-    function socialLoginNotice(provider) {
-      alert(`${provider} login API is not connected yet! Please tap 'More Options' below to sign in securely.`);
-    }
+    function closeMoreOptionsSheet() { document.getElementById("moreOptionsModal").style.display = "none"; }
+    function selectPhoneOption() { closeMoreOptionsSheet(); showScreenPhoneWithHistory(); }
+    function selectEmailOption() { closeMoreOptionsSheet(); alert("Email login option will be available soon!"); }
+    function socialLoginNotice(provider) { alert(`${provider} login API is not connected yet! Please tap 'More Options' below.`); }
 
     function toggleFollow() {
-      if (!isFollowed) {
-        followersCount++;
-        isFollowed = true;
-      } else {
-        followersCount--;
-        isFollowed = false;
-      }
+      if (!isFollowed) { followersCount++; isFollowed = true; } else { followersCount--; isFollowed = false; }
       localStorage.setItem("greedy_followers", followersCount);
       localStorage.setItem("greedy_is_followed", isFollowed);
       initProfileUI();
     }
 
-    function openTextChat() {
-      let msg = prompt("Enter your message / चैट संदेश दर्ज करें:");
-      if(msg && msg.trim() !== "") {
-        alert("Message sent successfully!");
+    // Messages Screen Handling
+    function openMessagesScreen() {
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenMessages").style.display = "flex";
+      history.pushState({page: 'messages'}, "", "");
+    }
+
+    function openChat(name, avatar, tag) {
+      currentChatUser = { name: name, avatar: avatar };
+      document.getElementById("inboxUserName").innerText = name + (tag ? " " + tag : "");
+      document.getElementById("inboxUserAvatar").src = avatar;
+      document.getElementById("screenMessages").style.display = "none";
+      document.getElementById("screenInbox").style.display = "flex";
+      history.pushState({page: 'inbox'}, "", "");
+    }
+
+    function closeChat() {
+      document.getElementById("screenInbox").style.display = "none";
+      document.getElementById("screenMessages").style.display = "flex";
+    }
+
+    function openFriendProfile() {
+      document.getElementById("modalFriendAvatar").src = currentChatUser.avatar;
+      document.getElementById("modalFriendName").innerText = currentChatUser.name;
+      document.getElementById("modalFriendProfile").style.display = "flex";
+    }
+    function closeFriendProfile() { document.getElementById("modalFriendProfile").style.display = "none"; }
+
+    function sendTextMessage() {
+      const box = document.getElementById("chatInputBox");
+      const txt = box.value.trim();
+      if(!txt) return;
+      const list = document.getElementById("inboxMessagesList");
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble chat-outgoing";
+      bubble.innerText = txt;
+      list.appendChild(bubble);
+      box.value = "";
+      list.scrollTop = list.scrollHeight;
+    }
+
+    function sendPhotoInChat() {
+      let url = prompt("Enter image URL to send photo / फोटो का लिंक दर्ज करें:");
+      if(url) {
+        const list = document.getElementById("inboxMessagesList");
+        const bubble = document.createElement("div");
+        bubble.className = "chat-bubble chat-outgoing";
+        bubble.innerHTML = `<img src="${url}" style="max-width:150px; border-radius:8px;">`;
+        list.appendChild(bubble);
+        list.scrollTop = list.scrollHeight;
       }
     }
 
-    function openGameSettings() {
-      document.getElementById("gameSettingsModal").style.display = "flex";
+    function sendVoiceInChat() {
+      alert("Voice note recorded and sent successfully! 🎙️");
+      const list = document.getElementById("inboxMessagesList");
+      const bubble = document.createElement("div");
+      bubble.className = "chat-bubble chat-outgoing";
+      bubble.innerText = "🎤 [Voice Message 0:05]";
+      list.appendChild(bubble);
+      list.scrollTop = list.scrollHeight;
     }
-    function closeGameSettings() {
-      document.getElementById("gameSettingsModal").style.display = "none";
-    }
+
+    function openGameSettings() { document.getElementById("gameSettingsModal").style.display = "flex"; }
+    function closeGameSettings() { document.getElementById("gameSettingsModal").style.display = "none"; }
     function toggleSoundSetting(val) {}
     function toggleHapticSetting(val) {}
-    function toggleTrendSetting(val) {
-      document.getElementById("historyCard").style.display = val ? "flex" : "none";
-    }
+    function toggleTrendSetting(val) { document.getElementById("historyCard").style.display = val ? "flex" : "none"; }
 
     function switchRankTab(tab) {
       document.getElementById("tabToday").className = "rank-tab" + (tab === 'today' ? " active" : "");
       document.getElementById("tabYesterday").className = "rank-tab" + (tab === 'yesterday' ? " active" : "");
-      
-      const listContainer = document.getElementById("rankingListContainer");
-      if (tab === 'yesterday') {
-        listContainer.innerHTML = `
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">1</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lion5" class="rank-avatar"><span class="rank-name">Rohan King</span></div><div class="rank-score">🐱 284910200</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">2</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Gold8" class="rank-avatar"><span class="rank-name">Pooja Sharma</span></div><div class="rank-score">🐱 112049300</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">3</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar"><span class="rank-name">Amit_99</span></div><div class="rank-score">🐱 49102900</div></div>
-        `;
-      } else {
-        listContainer.innerHTML = `
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">1</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="rank-avatar"><span class="rank-name">AJ cool</span></div><div class="rank-score">🐱 339947860</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">2</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="rank-avatar"><span class="rank-name">DARLING STRANGER</span></div><div class="rank-score">🐱 134454860</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">3</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="rank-avatar"><span class="rank-name">S Kumar</span></div><div class="rank-score">🐱 50165660</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">4</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar"><span class="rank-name">10:34PM</span></div><div class="rank-score">🐱 31350000</div></div>
-          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">5</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7" class="rank-avatar"><span class="rank-name">KK</span></div><div class="rank-score">🐱 28027800</div></div>
-        `;
-      }
     }
 
     function showScreen(screenId) {
@@ -872,15 +888,8 @@
       document.getElementById(screenId).style.display = 'flex';
     }
 
-    function showScreenPhoneWithHistory() {
-      history.pushState({page: 'phone'}, "", "");
-      showScreen('screenPhone');
-    }
-
-    function showScreenMainWithHistory() {
-      history.pushState({page: 'main'}, "", "");
-      showScreen('screenMain');
-    }
+    function showScreenPhoneWithHistory() { history.pushState({page: 'phone'}, "", ""); showScreen('screenPhone'); }
+    function showScreenMainWithHistory() { history.pushState({page: 'main'}, "", ""); showScreen('screenMain'); }
 
     function goToPasswordWithHistory() {
       const ph = document.getElementById("phoneInput").value;
@@ -902,9 +911,9 @@
       document.getElementById("authFlowContainer").style.display = "none";
       document.getElementById("gameArea").style.display = "none";
       document.getElementById("screenLogout").style.display = "none";
+      document.getElementById("screenMessages").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
-      
       history.pushState({page: 'profile'}, "", "");
     }
 
@@ -929,21 +938,17 @@
       const profileScreen = document.getElementById("screenProfile");
       const gameScreen = document.getElementById("gameArea");
       const logoutScreen = document.getElementById("screenLogout");
+      const msgScreen = document.getElementById("screenMessages");
+      const inboxScreen = document.getElementById("screenInbox");
       const phoneScreen = document.getElementById("screenPhone");
       const passScreen = document.getElementById("screenPass");
       const modalSheet = document.getElementById("moreOptionsModal");
-      const termsPage = document.getElementById("termsPage");
-      const privacyPage = document.getElementById("privacyPage");
-      const stgModal = document.getElementById("gameSettingsModal");
-      const rulesModal = document.getElementById("rulesModal");
 
-      if (rulesModal.style.display === "flex") { closeRules(); return; }
-      if (stgModal.style.display === "flex") { closeGameSettings(); return; }
-      if (termsPage.style.display === "flex") { closeDoc('termsPage'); return; }
-      if (privacyPage.style.display === "flex") { closeDoc('privacyPage'); return; }
+      if (inboxScreen.style.display === "flex") { closeChat(); return; }
+      if (msgScreen.style.display === "flex") { goBackToProfile(); return; }
       if (modalSheet.style.display === "flex") { closeMoreOptionsSheet(); return; }
       if (logoutScreen.style.display === "flex") { stayInProfile(); history.pushState({page: 'profile'}, "", ""); return; }
-      if (gameScreen.style.display === "flex") { goBackToProfile(); return; }
+      if (gameScreen.style.display === "flex") { openMessagesScreen(); return; }
       if (profileScreen.style.display === "flex") { openLogoutScreen(); history.pushState({page: 'logout'}, "", ""); return; }
       if (passScreen.style.display === "flex") { showScreen('screenPhone'); return; }
       if (phoneScreen.style.display === "flex") { showScreen('screenMain'); return; }
@@ -1023,13 +1028,8 @@
       alert(`Recharge Successful! Added ${val} coins. Level boosted by +${gainedLevels} Lv!`);
     }
 
-    function openRules() {
-      document.getElementById("rulesModal").style.display = "flex";
-      history.pushState({page: 'rules'}, "", "");
-    }
-    function closeRules() {
-      document.getElementById("rulesModal").style.display = "none";
-    }
+    function openRules() { document.getElementById("rulesModal").style.display = "flex"; history.pushState({page: 'rules'}, "", ""); }
+    function closeRules() { document.getElementById("rulesModal").style.display = "none"; }
 
     let selectedChip = 100;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
