@@ -31,6 +31,16 @@
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
     .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; line-height: 1.4; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
+    /* Screenshot Match: More Options Bottom Sheet Modal */
+    #moreOptionsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 120; align-items: flex-end; justify-content: center; }
+    .options-sheet { width: 100%; max-width: 480px; background: #ffffff; border-top-left-radius: 28px; border-top-right-radius: 28px; padding: 30px 20px 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 -10px 30px rgba(0,0,0,0.3); animation: slideUp 0.25s ease-out; position: relative; }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .btn-sheet-phone { width: 100%; height: 52px; border-radius: 26px; border: none; background: #00cd00; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; position: relative; box-shadow: 0 4px 12px rgba(0,205,0,0.35); }
+    .btn-sheet-email { width: 100%; height: 52px; border-radius: 26px; border: none; background: #ffa500; color: #fff; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,165,0,0.35); }
+    .sheet-last-login { position: absolute; right: 15px; background: #ff2a85; color: #fff; font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 12px; }
+    .btn-sheet-cancel { width: 100%; background: none; border: none; font-size: 16px; font-weight: 800; color: #111; padding: 12px; cursor: pointer; text-align: center; margin-top: 5px; }
+
     #screenPhone { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
     .back-btn { font-size: 24px; color: #000; cursor: pointer; margin-bottom: 20px; }
     .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
@@ -50,7 +60,6 @@
     #screenProfile { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; padding-bottom: 25px; }
     .profile-cover { width: 100%; height: 230px; background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 12px; }
-    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
     
     .profile-header-area { display: flex; flex-direction: column; align-items: flex-start; padding: 0 20px; margin-top: -50px; position: relative; z-index: 2; }
@@ -73,7 +82,6 @@
     .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 2px 10px; border-radius: 12px; border: 1px solid #ff758c; }
     .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 12px; border: 1px solid #b2ebf2; }
 
-    /* Follow and Stats Area */
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 14px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 20px; }
     .f-count-item { display: flex; flex-direction: column; align-items: flex-start; }
@@ -199,8 +207,23 @@
           Sign in with Google
         </button>
 
-        <button class="more-options-btn" onclick="showScreenPhoneWithHistory()">More Options <span class="last-login-tag">Last login</span></button>
+        <!-- More Options triggers the exact screenshot modal sheet -->
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()">More Options <span class="last-login-tag">Last login</span></button>
         <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
+      </div>
+    </div>
+
+    <!-- More Options Bottom Sheet Modal (Screenshot Match) -->
+    <div id="moreOptionsModal">
+      <div class="options-sheet">
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()">
+          📞 Sign in with Phone
+          <span class="sheet-last-login">Last login</span>
+        </button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()">
+          ✉️ Sign in with Email
+        </button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()">Cancel</button>
       </div>
     </div>
 
@@ -459,8 +482,24 @@
       applyFrameUI(userFrame);
     }
 
+    // More Options Modal Sheet Management
+    function openMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "flex";
+    }
+    function closeMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+    }
+    function selectPhoneOption() {
+      closeMoreOptionsSheet();
+      showScreenPhoneWithHistory();
+    }
+    function selectEmailOption() {
+      closeMoreOptionsSheet();
+      alert("Email login option will be available soon!");
+    }
+
     function socialLoginNotice(provider) {
-      alert(`${provider} login API is not connected yet! Please tap 'More Options' below to sign in securely with your phone number.`);
+      alert(`${provider} login API is not connected yet! Please tap 'More Options' below to sign in securely.`);
     }
 
     function toggleFollow() {
@@ -483,7 +522,7 @@
       }
     }
 
-    // Step-by-step History Navigation Support
+    // Smooth Step-by-Step Navigation & Back Handling
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
@@ -551,8 +590,12 @@
       const logoutScreen = document.getElementById("screenLogout");
       const phoneScreen = document.getElementById("screenPhone");
       const passScreen = document.getElementById("screenPass");
-      const mainScreen = document.getElementById("screenMain");
-      const authContainer = document.getElementById("authFlowContainer");
+      const modalSheet = document.getElementById("moreOptionsModal");
+
+      if (modalSheet.style.display === "flex") {
+        closeMoreOptionsSheet();
+        return;
+      }
 
       if (logoutScreen.style.display === "flex") {
         stayInProfile();
