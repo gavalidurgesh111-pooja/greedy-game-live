@@ -3,104 +3,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Greedy Game</title>
+  <title>Golden Circle Greedy Game</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+    
+    /* Luxury Gold Sparkling Background */
     body {
-      background: radial-gradient(circle at center, #2e0854, #0f021e);
+      background: radial-gradient(circle at 50% 30%, #5a4210, #201502 60%, #0c0801 100%),
+                  radial-gradient(1px 1px at 20px 30px, #ffd700, rgba(0,0,0,0)),
+                  radial-gradient(2px 2px at 90px 80px, #ffffff, rgba(0,0,0,0)),
+                  radial-gradient(1.5px 1.5px at 150px 140px, #ffe066, rgba(0,0,0,0)),
+                  radial-gradient(2px 2px at 250px 60px, #ffd700, rgba(0,0,0,0)),
+                  radial-gradient(1.5px 1.5px at 320px 180px, #ffffff, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: cover, 180px 180px, 220px 220px, 160px 160px, 200px 200px, 240px 240px;
       color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      overflow-x: hidden;
     }
 
-    /* Login Modal */
+    /* Auth Screen */
     #authModal {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center; z-index: 99;
+      position: fixed; inset: 0; background: rgba(15, 10, 2, 0.9); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 100;
     }
     .auth-card {
-      background: linear-gradient(145deg, #1b0730, #310d54); border: 2px solid #ffd700;
+      background: linear-gradient(145deg, #2b1d07, #4a3410); border: 2px solid #ffd700;
       border-radius: 20px; padding: 25px; width: 90%; max-width: 340px; text-align: center;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
     }
     .auth-card h2 { color: #ffd700; margin-bottom: 12px; }
     .auth-card input {
-      width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #795290;
-      background: #120722; color: #fff; font-size: 16px; outline: none;
+      width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #c89d3f;
+      background: #140d02; color: #fff; font-size: 16px; outline: none;
     }
     .auth-card button {
       width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: none;
-      background: linear-gradient(45deg, #ff9900, #ff5500); color: #fff; font-size: 18px; font-weight: bold; cursor: pointer;
+      background: linear-gradient(45deg, #ffae00, #d47b00); color: #000; font-size: 18px; font-weight: 900; cursor: pointer;
     }
 
-    /* Game Area */
-    #gameArea { display: none; width: 100%; max-width: 420px; flex-direction: column; align-items: center; padding: 12px; }
-    
+    /* Game Container */
+    #gameArea { display: none; width: 100%; max-width: 440px; flex-direction: column; align-items: center; padding: 10px; }
+
     .header-bar {
       width: 100%; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(255, 255, 255, 0.08); padding: 10px 15px; border-radius: 14px; margin-bottom: 12px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
+      background: rgba(40, 28, 5, 0.85); padding: 8px 15px; border-radius: 25px; margin-bottom: 8px;
+      border: 1.5px solid #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
     }
-    .user-info { font-size: 15px; color: #ffd700; font-weight: bold; }
-    .coins-badge { background: #ffaa00; color: #000; padding: 6px 14px; border-radius: 20px; font-weight: 900; font-size: 16px; }
+    .user-info { font-size: 14px; color: #ffd700; font-weight: bold; }
+    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 15px; }
 
-    .status-panel { text-align: center; margin-bottom: 15px; }
-    .timer-badge { font-size: 22px; font-weight: 900; color: #00ffcc; text-shadow: 0 0 12px #00ffcc; }
-    .message-text { font-size: 14px; color: #bbb; margin-top: 4px; }
+    .status-panel { text-align: center; margin-bottom: 5px; }
+    .timer-badge { font-size: 20px; font-weight: 900; color: #ffd700; text-shadow: 0 0 10px #ffbb00; }
+    .message-text { font-size: 12px; color: #eedd82; }
 
-    /* 8 Grid Boxes */
-    .grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px;
+    /* Circular Roulette Arena */
+    .wheel-container {
+      position: relative; width: 330px; height: 330px; margin: 10px auto 15px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #2b1d06 45%, #160e02 70%);
+      border: 4px solid #ffd700;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(0,0,0,0.8);
+      display: flex; align-items: center; justify-content: center;
     }
+    .wheel-center-hud {
+      width: 120px; height: 120px; border-radius: 50%;
+      background: radial-gradient(circle, #4a3410, #1b1204);
+      border: 2px dashed #ffd700; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      box-shadow: inset 0 0 15px #000;
+    }
+    .wheel-center-hud .bet-counter { font-size: 11px; color: #ffd700; font-weight: bold; }
+
+    /* Circular Cards */
     .item-card {
-      background: linear-gradient(145deg, #381559, #1c0a2e);
-      border: 2px solid #5d2b8e; border-radius: 16px; padding: 12px 4px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; cursor: pointer; transition: transform 0.15s, border-color 0.15s;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-      min-height: 95px;
+      position: absolute; width: 68px; height: 68px; border-radius: 50%;
+      background: radial-gradient(circle, #422a07, #1e1302);
+      border: 2px solid #b8860b; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+      transition: transform 0.15s, border-color 0.15s;
     }
     .item-card.highlight {
-      border-color: #00ffcc; background: #58218a;
-      box-shadow: 0 0 20px #00ffcc, inset 0 0 10px #00ffcc; transform: scale(1.08);
+      border-color: #ffffff; background: radial-gradient(circle, #ffea80, #ff9900);
+      box-shadow: 0 0 22px #ffd700, 0 0 35px #ffffff; transform: scale(1.18);
     }
     .item-card.winner {
-      border-color: #ffd700; background: linear-gradient(45deg, #ff9900, #ff0055);
-      box-shadow: 0 0 30px #ffd700; transform: scale(1.12); animation: pulse 0.4s infinite alternate;
+      border-color: #00ffcc; background: radial-gradient(circle, #00ffcc, #ff0055);
+      box-shadow: 0 0 30px #00ffcc; transform: scale(1.25); animation: pulse 0.4s infinite alternate;
     }
-    @keyframes pulse {
-      from { transform: scale(1.08); }
-      to { transform: scale(1.15); }
-    }
+    @keyframes pulse { from { transform: scale(1.15); } to { transform: scale(1.28); } }
 
-    /* 3D Asset Icons */
-    .item-icon {
-      font-size: 42px; line-height: 1.1;
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.6));
-      pointer-events: none;
-      user-select: none;
-    }
-    .item-rate {
-      font-size: 13px; color: #ffd700; font-weight: 800; margin-top: 6px;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
-    }
+    .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
+    .item-rate { font-size: 10px; color: #ffd700; font-weight: 900; margin-top: 2px; }
     .my-bet-badge {
-      position: absolute; top: -6px; right: -6px; background: #ff2255; color: white;
-      font-size: 11px; font-weight: bold; border-radius: 12px; padding: 2px 7px;
-      display: none; border: 1.5px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+      position: absolute; top: -4px; right: -4px; background: #ff2255; color: white;
+      font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px;
+      display: none; border: 1.5px solid #fff;
     }
 
     /* Chips */
-    .chips-bar { display: flex; gap: 10px; margin-bottom: 10px; }
+    .chips-bar { display: flex; gap: 8px; margin-top: 5px; }
     .chip {
-      width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 14px; color: #000; border: 3px dashed #fff; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; color: #000; border: 3px dashed #fff; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
     }
     .chip-10 { background: #00ffcc; }
     .chip-50 { background: #ffcc00; }
     .chip-100 { background: #ff3366; color: #fff; }
     .chip-500 { background: #9933ff; color: #fff; }
-    .chip.selected { outline: 3px solid #fff; transform: translateY(-5px); box-shadow: 0 6px 15px rgba(255,255,255,0.6); }
+    .chip.selected { outline: 3px solid #ffd700; transform: translateY(-4px); box-shadow: 0 0 15px #ffd700; }
   </style>
 </head>
 <body>
@@ -108,11 +121,11 @@
   <!-- Login Modal -->
   <div id="authModal">
     <div class="auth-card">
-      <h2>🎰 GREEDY CASINO</h2>
-      <p style="font-size: 13px; color: #bbb; margin-bottom: 12px;">अपना नाम दर्ज करके गेम में प्रवेश करें</p>
+      <h2>✨ GOLD GREEDY</h2>
+      <p style="font-size: 13px; color: #eedd82; margin-bottom: 12px;">गोल्ड कसीनो में प्रवेश करें</p>
       <input type="text" id="usernameInput" placeholder="यूजरनेम" maxlength="15">
       <input type="password" id="passwordInput" placeholder="पासवर्ड">
-      <button onclick="handleLogin()">लॉगिन / खेलें</button>
+      <button onclick="handleLogin()">प्ले करें</button>
     </div>
   </div>
 
@@ -125,65 +138,64 @@
 
     <div class="status-panel">
       <div class="timer-badge" id="timerDisplay">समय: 30s</div>
-      <div class="message-text" id="statusMessage">दांव लगाएं (30 सेकंड)</div>
+      <div class="message-text" id="statusMessage">अधिकतम 6 दांव लगा सकते हैं</div>
     </div>
 
-    <!-- 8 Slots Grid (No text labels) -->
-    <div class="grid">
-      <!-- 1. सफेद मुर्गा लाल कलगी व चोंच -->
-      <div class="item-card" id="card-1" onclick="placeBet(1)">
+    <!-- Circular Arena (Roulette Mode) -->
+    <div class="wheel-container">
+      <div class="wheel-center-hud">
+        <div style="font-size: 20px;">👑</div>
+        <div class="bet-counter" id="activeBetsCounter">बेट्स: 0/6</div>
+      </div>
+
+      <!-- 8 Circular Slots in Circle Layout -->
+      <!-- 1. मुर्गा (1000x) - Top -->
+      <div class="item-card" id="card-1" style="top: 8px; left: 131px;" onclick="placeBet(1)">
         <span class="my-bet-badge" id="badge-1">0</span>
         <div class="item-icon">🐓</div>
-        <div class="item-rate">5x</div>
+        <div class="item-rate">1000x</div>
       </div>
-
-      <!-- 2. मेंढी / भेड़ -->
-      <div class="item-card" id="card-2" onclick="placeBet(2)">
+      <!-- 2. मेंढी (250x) - Top Right -->
+      <div class="item-card" id="card-2" style="top: 44px; left: 218px;" onclick="placeBet(2)">
         <span class="my-bet-badge" id="badge-2">0</span>
         <div class="item-icon">🐑</div>
-        <div class="item-rate">5x</div>
+        <div class="item-rate">250x</div>
       </div>
-
-      <!-- 3. झींगा -->
-      <div class="item-card" id="card-3" onclick="placeBet(3)">
+      <!-- 3. झींगा (125x) - Right -->
+      <div class="item-card" id="card-3" style="top: 131px; left: 254px;" onclick="placeBet(3)">
         <span class="my-bet-badge" id="badge-3">0</span>
         <div class="item-icon">🦐</div>
-        <div class="item-rate">5x</div>
+        <div class="item-rate">125x</div>
       </div>
-
-      <!-- 4. मच्छी -->
-      <div class="item-card" id="card-4" onclick="placeBet(4)">
+      <!-- 4. मच्छी (500x) - Bottom Right -->
+      <div class="item-card" id="card-4" style="top: 218px; left: 218px;" onclick="placeBet(4)">
         <span class="my-bet-badge" id="badge-4">0</span>
         <div class="item-icon">🐟</div>
-        <div class="item-rate">5x</div>
+        <div class="item-rate">500x</div>
       </div>
-
-      <!-- 5. टमाटर -->
-      <div class="item-card" id="card-5" onclick="placeBet(5)">
+      <!-- 5. टमाटर (2x) - Bottom -->
+      <div class="item-card" id="card-5" style="top: 254px; left: 131px;" onclick="placeBet(5)">
         <span class="my-bet-badge" id="badge-5">0</span>
         <div class="item-icon">🍅</div>
-        <div class="item-rate">10x</div>
+        <div class="item-rate">2x</div>
       </div>
-
-      <!-- 6. भुट्टा / मकई -->
-      <div class="item-card" id="card-6" onclick="placeBet(6)">
+      <!-- 6. भुट्टा (2x) - Bottom Left -->
+      <div class="item-card" id="card-6" style="top: 218px; left: 44px;" onclick="placeBet(6)">
         <span class="my-bet-badge" id="badge-6">0</span>
         <div class="item-icon">🌽</div>
-        <div class="item-rate">15x</div>
+        <div class="item-rate">2x</div>
       </div>
-
-      <!-- 7. गाजर -->
-      <div class="item-card" id="card-7" onclick="placeBet(7)">
+      <!-- 7. गाजर (2x) - Left -->
+      <div class="item-card" id="card-7" style="top: 131px; left: 8px;" onclick="placeBet(7)">
         <span class="my-bet-badge" id="badge-7">0</span>
         <div class="item-icon">🥕</div>
-        <div class="item-rate">25x</div>
+        <div class="item-rate">2x</div>
       </div>
-
-      <!-- 8. शिमला मिर्च -->
-      <div class="item-card" id="card-8" onclick="placeBet(8)">
+      <!-- 8. शिमला (2x) - Top Left -->
+      <div class="item-card" id="card-8" style="top: 44px; left: 44px;" onclick="placeBet(8)">
         <span class="my-bet-badge" id="badge-8">0</span>
         <div class="item-icon">🫑</div>
-        <div class="item-rate">45x</div>
+        <div class="item-rate">2x</div>
       </div>
     </div>
 
@@ -202,35 +214,95 @@
     let selectedChip = 10;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
-    const multipliers = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 10, 6: 15, 7: 25, 8: 45 };
+
+    // Rate definition
+    const multipliers = {
+      1: 1000, // मुर्गा
+      2: 250,  // मेंढी
+      3: 125,  // झींगा
+      4: 500,  // मच्छी
+      5: 2,    // टमाटर
+      6: 2,    // भुट्टा
+      7: 2,    // गाजर
+      8: 2     // शिमला
+    };
+
+    // Web Audio Synthesizer (बिना बाहरी फाइल के 100% काम करने वाले साउंड)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playSound(type) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'chip') {
+        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+      } else if (type === 'tick') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(650, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.04);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.04);
+      } else if (type === 'win') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const winOsc = audioCtx.createOscillator();
+          const winGain = audioCtx.createGain();
+          winOsc.type = 'sine';
+          winOsc.frequency.value = freq;
+          winGain.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.12);
+          winGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i * 0.12 + 0.35);
+          winOsc.connect(winGain);
+          winGain.connect(audioCtx.destination);
+          winOsc.start(audioCtx.currentTime + i * 0.12);
+          winOsc.stop(audioCtx.currentTime + i * 0.12 + 0.35);
+        });
+      }
+    }
 
     function handleLogin() {
       const username = document.getElementById("usernameInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
-      if (!username) return alert("कृपया यूजरनेम डालें!");
+      if (!username) return alert("कृपया यूजरनेम दर्ज करें!");
       if (password.length < 3) return alert("पासवर्ड कम से कम 3 अंक का होना चाहिए!");
 
       localStorage.setItem("greedy_user", username);
       document.getElementById("playerNameDisplay").innerText = username;
       document.getElementById("authModal").style.display = "none";
       document.getElementById("gameArea").style.display = "flex";
+      if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
     function selectChip(amount, el) {
       selectedChip = amount;
       document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
       el.classList.add("selected");
+      playSound('chip');
     }
 
     function placeBet(boxId) {
       if (currentGameState !== "BETTING") {
-        alert("दांव का समय खत्म हो चुका है!");
+        alert("दांव लगाने का समय समाप्त हो गया है!");
         return;
       }
+
+      // Check maximum 6 bets restriction
+      const currentBetBoxes = Object.keys(bets).filter(id => bets[id] > 0);
+      if (bets[boxId] === 0 && currentBetBoxes.length >= 6) {
+        alert("⚠️ आप एक राउंड में केवल 6 विकल्पों पर ही बेट लगा सकते हैं!");
+        return;
+      }
+
       if (coins < selectedChip) {
         alert("आपके पास पर्याप्त सिक्के नहीं हैं!");
         return;
       }
+
       coins -= selectedChip;
       bets[boxId] += selectedChip;
       document.getElementById("coinsDisplay").innerText = coins;
@@ -238,6 +310,11 @@
       const badge = document.getElementById("badge-" + boxId);
       badge.style.display = "block";
       badge.innerText = bets[boxId];
+
+      const totalBetItems = Object.keys(bets).filter(id => bets[id] > 0).length;
+      document.getElementById("activeBetsCounter").innerText = `बेट्स: ${totalBetItems}/6`;
+
+      playSound('chip');
     }
 
     socket.on("timerUpdate", (data) => {
@@ -247,42 +324,60 @@
 
       if (data.gameState === "BETTING") {
         timerEl.innerText = `समय: ${data.timeLeft}s`;
-        timerEl.style.color = "#00ffcc";
-        statusEl.innerText = "दांव लगाएं! चिप्स चुनें और बॉक्स पर टैप करें";
+        timerEl.style.color = "#ffd700";
+        statusEl.innerText = "दांव लगाएं! (अधिकतम 6 बेट्स मान्य)";
       } else {
         timerEl.innerText = `रिजल्ट आ रहा है...`;
-        timerEl.style.color = "#ffd700";
-        statusEl.innerText = "लाइट घूम रही है!";
+        timerEl.style.color = "#00ffcc";
+        statusEl.innerText = "चक्का घूम रहा है!";
       }
     });
 
+    // Spin Roulette Animation with Speed Physics
     socket.on("gameResult", (data) => {
       let currentHighlight = 1;
-      let totalSteps = 24 + data.winner;
-      let speed = 75;
+      let totalSteps = 24 + data.winner; // 3 full turns + winner index
+      let delay = 40; // तेज गति से शुरू
 
-      function spinLight() {
+      function spinStep() {
         document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
         document.getElementById("card-" + currentHighlight).classList.add("highlight");
+        playSound('tick');
 
         totalSteps--;
         currentHighlight = (currentHighlight % 8) + 1;
 
         if (totalSteps > 0) {
-          setTimeout(spinLight, speed);
+          // अंत में धीमी गति (Realistic deceleration)
+          if (totalSteps < 10) delay += 35;
+          setTimeout(spinStep, delay);
         } else {
+          // Finished on Winner
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
           const winCard = document.getElementById("card-" + data.winner);
           winCard.classList.add("winner");
 
           const userBetOnWinner = bets[data.winner];
+
+          // Check Veg Combo Rule: अगर सिर्फ टमाटर(5), भुट्टा(6), गाजर(7), शिमला(8) लगे हैं
+          const activeItemIds = Object.keys(bets).filter(id => bets[id] > 0).map(Number);
+          const onlyVegSelected = activeItemIds.length === 4 && [5,6,7,8].every(id => bets[id] > 0);
+
           if (userBetOnWinner > 0) {
-            const winAmount = userBetOnWinner * multipliers[data.winner];
+            playSound('win');
+            let winAmount = userBetOnWinner * multipliers[data.winner];
+
+            // अगर सिर्फ 4 सब्जियों पर दांव था और इनमें से कोई जीता, तो 50 कॉइन मिले
+            if (onlyVegSelected && [5,6,7,8].includes(data.winner)) {
+              winAmount = 50;
+            }
+
             coins += winAmount;
             document.getElementById("coinsDisplay").innerText = coins;
-            setTimeout(() => alert(`🎉 शानदार जीत! आपको मिले: +${winAmount} सिक्के`), 300);
+            setTimeout(() => alert(`🎉 बधाई हो! आपको +${winAmount} सिक्के मिले!`), 400);
           }
 
+          // Reset Board
           setTimeout(() => {
             winCard.classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -290,10 +385,12 @@
               b.style.display = "none";
               b.innerText = "0";
             });
+            document.getElementById("activeBetsCounter").innerText = `बेट्स: 0/6`;
           }, 5000);
         }
       }
-      spinLight();
+
+      spinStep();
     });
 
     window.onload = () => {
