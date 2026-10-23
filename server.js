@@ -1,14 +1,18 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const cors = require('cors');
+const path = require('path');
 
 const app = express();
-app.use(cors());
-app.use(express.static(__dirname));
-
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server);
+
+// Render का डायनामिक पोर्ट इस्तेमाल करें
+const PORT = process.env.PORT || 10000;
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 let timeLeft = 15;
 let gameState = "BETTING";
@@ -19,18 +23,22 @@ setInterval(() => {
   } else {
     if (gameState === "BETTING") {
       gameState = "RESULT";
-      const winningSpot = Math.floor(Math.random() * 8) + 1;
-      io.emit('gameResult', { winner: winningSpot });
       timeLeft = 5;
+      const winner = Math.floor(Math.random() * 8) + 1;
+      io.emit("gameResult", { winner });
     } else {
       gameState = "BETTING";
       timeLeft = 15;
     }
   }
-  io.emit('timerUpdate', { timeLeft, gameState });
+  io.emit("timerUpdate", { timeLeft, gameState });
 }, 1000);
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
+io.on('connection', (socket) => {
+  socket.emit("timerUpdate", { timeLeft, gameState });
+});
+
+// 0.0.0.0 पर बाइंड करें ताकि Render तुरंत डिटेक्ट कर सके
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
