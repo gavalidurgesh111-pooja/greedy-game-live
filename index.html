@@ -71,6 +71,10 @@
     .coins-badge {
       background: linear-gradient(45deg, #ffd700, #ff9900); color: #4a2800; padding: 5px 12px;
       border-radius: 15px; font-weight: 900; font-size: 14px; box-shadow: 0 2px 6px rgba(255,165,0,0.4);
+      transition: transform 0.2s;
+    }
+    .coins-badge.gain {
+      transform: scale(1.15);
     }
     .settings-btn {
       width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 2px solid #d4af37;
@@ -95,10 +99,10 @@
       box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
     
-    /* Center Timer Style */
+    /* Center Timer Style (Reduced size & Red color) */
     #timerDisplay {
-      font-size: 38px; font-weight: 900; color: #004b91; 
-      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      font-size: 28px; font-weight: 900; color: #ff1a1a; 
+      text-shadow: 0 2px 4px rgba(255, 0, 0, 0.2);
     }
 
     .item-card {
@@ -185,7 +189,6 @@
     .settings-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
     .settings-label p { font-size: 11px; color: #d6bbfb; margin-top: 2px; }
 
-    /* Switch */
     .switch { position: relative; display: inline-block; width: 50px; height: 26px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
@@ -202,7 +205,7 @@
 </head>
 <body>
 
-  <!-- Login Modal with Language Selector -->
+  <!-- Login Modal -->
   <div id="authModal">
     <div class="auth-card">
       <div class="auth-lang-row">
@@ -230,14 +233,12 @@
 
     <div class="top-controls">
       <div class="user-badge">🆔 <span id="userIdDisplay">#000000</span></div>
-      <div class="coins-badge">🪙 <span id="coinsDisplay">10000</span></div>
+      <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
       <div class="settings-btn" onclick="openSettings()">⚙️</div>
     </div>
 
     <!-- Circular Roulette Wheel -->
     <div class="wheel-container">
-      
-      <!-- Timer inside center HUD -->
       <div class="wheel-center-hud">
         <div id="timerDisplay">30s</div>
       </div>
@@ -359,10 +360,16 @@
     let isSoundEnabled = true;
     let isHapticEnabled = true;
 
-    function updateCoinsUI(amount) {
+    function updateCoinsUI(amount, animate = false) {
       coins = amount;
       localStorage.setItem("greedy_coins", coins);
-      document.getElementById("coinsDisplay").innerText = coins;
+      const el = document.getElementById("coinsDisplay");
+      const container = document.getElementById("coinsContainer");
+      el.innerText = coins;
+      if (animate) {
+        container.classList.add("gain");
+        setTimeout(() => container.classList.remove("gain"), 300);
+      }
     }
 
     const itemData = {
@@ -374,31 +381,31 @@
 
     const translations = {
       hi: {
-        subtitle: "अपना नाम दर्ज करके ID बनाएं", playBtn: "प्ले करें", win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:",
+        subtitle: "अपना नाम दर्ज करके ID बनाएं", playBtn: "प्ले करें", history: "📜 पिछली बेट हिस्ट्री:",
         stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
       },
       mr: {
-        subtitle: "नाव प्रविष्ट करून ID तयार करा", playBtn: "सुरू करा", win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:",
+        subtitle: "नाव प्रविष्ट करून ID तयार करा", playBtn: "सुरू करा", history: "📜 मागील निकाल:",
         stgTitle: "Game Settings", sndTitle: "गेमचे ध्वनी प्रभाव", sndSub: "गेम ध्वनी", hapTitle: "हॅप्टिक फीडबॅक", hapSub: "दांव लावल्यावर कंपन", trdTitle: "विजयी ट्रेंड", trdSub: "निकाल पट्टी दाखवा"
       },
       gu: {
-        subtitle: "નામ દાખલ કરીને ID બનાવો", playBtn: "રમો", win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:",
+        subtitle: "નામ દાખલ કરીને ID બનાવો", playBtn: "રમો", history: "📜 અગાઉના પરિણામો:",
         stgTitle: "Game Settings", sndTitle: "ધ્વનિ અસરો", sndSub: "ગેમ સાઉન્ડ", hapTitle: "હેપ્ટિક ફીડબેક", hapSub: "શરત પર વાઇબ્રેશન", trdTitle: "વિજેતા ટ્રેન્ડ", trdSub: "પરિણામો બતાવો"
       },
       en: {
-        subtitle: "Enter name to create ID", playBtn: "Play", win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:",
+        subtitle: "Enter name to create ID", playBtn: "Play", history: "📜 Bet History:",
         stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
       },
       kn: {
-        subtitle: "ಹೆಸರು ನಮೂದಿಸಿ ID ಪಡೆಯಿರಿ", playBtn: "ಪ್ಲೇ ಮಾಡಿ", win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:",
+        subtitle: "ಹೆಸರು ನಮೂದಿಸಿ ID ಪಡೆಯಿರಿ", playBtn: "ಪ್ಲೇ ಮಾಡಿ", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:",
         stgTitle: "Game Settings", sndTitle: "ಗೇಮ್ ಸೌಂಡ್ಸ್", sndSub: "ಧ್ವನಿ ಪರಿಣಾಮಗಳು", hapTitle: "ಹ್ಯಾಪ್ಟಿಕ್ ಫೀಡ್‌ಬ್ಯಾಕ್", hapSub: "ಕಂಪನ", trdTitle: "ಗೆಲುವಿನ ಟ್ರೆಂಡ್", trdSub: "ಫಲಿತಾಂಶ ತೋರಿಸಿ"
       },
       te: {
-        subtitle: "పేరు నమోదు చేసి ID పొందండి", playBtn: "ఆడండి", win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:",
+        subtitle: "పేరు నమోదు చేసి ID పొందండి", playBtn: "ఆడండి", history: "📜 మునుపటి ఫలితాలు:",
         stgTitle: "Game Settings", sndTitle: "గేమ్ శబ్దాలు", sndSub: "సౌండ్ ఎఫెక్ట్స్", hapTitle: "హాప్టిక్ ఫీడ్‌బ్యాక్", hapSub: "వైబ్రేషన్", trdTitle: "విజయం ట్రెండ్", trdSub: "ఫలితాలు చూపించు"
       },
       ta: {
-        subtitle: "பெயரை உள்ளிட்டு ID உருவாக்கவும்", playBtn: "விளையாடு", win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:",
+        subtitle: "பெயரை உள்ளிட்டு ID உருவாக்கவும்", playBtn: "விளையாடு", history: "📜 முந்தைய முடிவுகள்:",
         stgTitle: "Game Settings", sndTitle: "ஒலி விளைவுகள்", sndSub: "கேம் சவுண்ட்", hapTitle: "தொடு உணர்வு (ஹேப்டிக்)", hapSub: "அதிர்வு", trdTitle: "வெற்றி ட்ரெண்ட்", trdSub: "முடிவுகளைக் காட்டு"
       }
     };
@@ -469,8 +476,7 @@
     function handleLogin() {
       const username = document.getElementById("usernameInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
-      if (!username) return alert("कृपया नाम दर्ज करें!");
-      if (password.length < 3) return alert("पासवर्ड कम से कम 3 अंक का होना चाहिए!");
+      if (!username || password.length < 3) return;
 
       let userId = localStorage.getItem("greedy_user_id");
       if (!userId) {
@@ -497,15 +503,8 @@
       if (currentGameState !== "BETTING") return;
 
       const currentBetBoxes = Object.keys(bets).filter(id => bets[id] > 0);
-      if (bets[boxId] === 0 && currentBetBoxes.length >= 6) {
-        alert(translations[currentLang].max6);
-        return;
-      }
-
-      if (coins < selectedChip) {
-        alert("अपर्याप्त सिक्के!");
-        return;
-      }
+      if (bets[boxId] === 0 && currentBetBoxes.length >= 6) return;
+      if (coins < selectedChip) return;
 
       updateCoinsUI(coins - selectedChip);
       bets[boxId] += selectedChip;
@@ -522,10 +521,10 @@
 
       if (data.gameState === "BETTING") {
         timerEl.innerText = `${data.timeLeft}s`;
-        timerEl.style.color = "#004b91";
+        timerEl.style.color = "#ff1a1a";
       } else {
         timerEl.innerText = `⏳`;
-        timerEl.style.color = "#d4af37";
+        timerEl.style.color = "#ff1a1a";
       }
     });
 
@@ -564,8 +563,7 @@
               window.navigator.vibrate([100, 50, 100]);
             }
             const totalReturn = userBetOnWinner * itemData[data.winner].rate;
-            updateCoinsUI(coins + totalReturn);
-            setTimeout(() => alert(`${translations[currentLang].win} +${totalReturn} सिक्के`), 300);
+            updateCoinsUI(coins + totalReturn, true);
           }
 
           setTimeout(() => {
@@ -575,7 +573,7 @@
               b.style.display = "none";
               b.innerText = "0";
             });
-          }, 4500);
+          }, 3500);
         }
       }
       spinStep();
