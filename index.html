@@ -8,7 +8,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-    /* Sky Blue Animated Background */
     body {
       background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%);
       color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -24,7 +23,7 @@
       pointer-events: none; z-index: 0;
     }
 
-    /* Auth Screen with Language Picker Inside */
+    /* Auth Screen */
     #authModal {
       position: fixed; inset: 0; background: rgba(0, 30, 60, 0.75); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 100;
@@ -58,11 +57,11 @@
       background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
-      margin-bottom: 4px; text-align: center;
+      margin-bottom: 12px; text-align: center;
     }
 
     .top-controls {
-      width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+      width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
     }
     .user-badge {
       background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px;
@@ -78,10 +77,6 @@
       display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
-
-    .status-panel { text-align: center; margin-bottom: 6px; }
-    .timer-badge { font-size: 20px; font-weight: 900; color: #004b91; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
-    .message-text { font-size: 12px; color: #0d3b66; font-weight: bold; }
 
     /* Circular Roulette Arena */
     .wheel-container {
@@ -99,7 +94,12 @@
       align-items: center; justify-content: center; text-align: center;
       box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
-    .bet-counter { font-size: 11px; color: #b8860b; font-weight: 900; }
+    
+    /* Center Timer Style */
+    #timerDisplay {
+      font-size: 38px; font-weight: 900; color: #004b91; 
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
 
     .item-card {
       position: absolute; width: 66px; height: 66px; border-radius: 50%;
@@ -127,8 +127,8 @@
       display: none; border: 1.5px solid #fff;
     }
 
-    /* Chips Bar: 100, 1000, 2000, 5000 */
-    .chips-bar { display: flex; gap: 8px; margin-bottom: 8px; }
+    /* Chips Bar */
+    .chips-bar { display: flex; gap: 8px; margin-top: 10px; margin-bottom: 12px; }
     .chip {
       width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;
@@ -156,7 +156,7 @@
       font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); flex-shrink: 0;
     }
 
-    /* Mika-Style Purple Game Settings Modal */
+    /* Settings Modal */
     #settingsModal {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px);
       display: none; align-items: center; justify-content: center; z-index: 120;
@@ -170,9 +170,7 @@
     .settings-header {
       display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 18px;
     }
-    .settings-title {
-      font-size: 22px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 4px rgba(0,0,0,0.4);
-    }
+    .settings-title { font-size: 22px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 4px rgba(0,0,0,0.4); }
     .settings-close {
       position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
       background: radial-gradient(circle, #ff3399, #cc0066); border: 2px solid #fff;
@@ -187,10 +185,8 @@
     .settings-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
     .settings-label p { font-size: 11px; color: #d6bbfb; margin-top: 2px; }
 
-    /* iOS Style Toggle Switch */
-    .switch {
-      position: relative; display: inline-block; width: 50px; height: 26px; flex-shrink: 0;
-    }
+    /* Switch */
+    .switch { position: relative; display: inline-block; width: 50px; height: 26px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute; cursor: pointer; inset: 0; background-color: #3f196a;
@@ -198,8 +194,7 @@
     }
     .slider:before {
       position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 2.5px;
-      background-color: white; transition: .3s; border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     input:checked + .slider { background-color: #00e676; border-color: #00e676; }
     input:checked + .slider:before { transform: translateX(24px); }
@@ -207,7 +202,7 @@
 </head>
 <body>
 
-  <!-- Login Modal with Language Selector inside -->
+  <!-- Login Modal with Language Selector -->
   <div id="authModal">
     <div class="auth-card">
       <div class="auth-lang-row">
@@ -217,7 +212,7 @@
           <option value="gu">ગુજરાતી</option>
           <option value="en">English</option>
           <option value="kn">ಕನ್ನಡ (ಕರ್ನಾಟಕ)</option>
-          <option value="te">తెలుగు (साउथ)</option>
+          <option value="te">తెలుగు (సాउथ)</option>
           <option value="ta">தமிழ் (साउथ)</option>
         </select>
       </div>
@@ -239,61 +234,57 @@
       <div class="settings-btn" onclick="openSettings()">⚙️</div>
     </div>
 
-    <div class="status-panel">
-      <div class="timer-badge" id="timerDisplay">समय: 30s</div>
-      <div class="message-text" id="statusMessage">दांव लगाएं (अधिकतम 6 बेट्स)</div>
-    </div>
-
     <!-- Circular Roulette Wheel -->
     <div class="wheel-container">
+      
+      <!-- Timer inside center HUD -->
       <div class="wheel-center-hud">
-        <div style="font-size: 20px;">👑</div>
-        <div class="bet-counter" id="activeBetsCounter">बेट्स: 0/6</div>
+        <div id="timerDisplay">30s</div>
       </div>
 
-      <!-- 1. मुर्गा (25x) - Top -->
+      <!-- 1. मुर्गा (25x) -->
       <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)">
         <span class="my-bet-badge" id="badge-1">0</span>
         <div class="item-icon">🐓</div>
         <div class="item-rate">25x</div>
       </div>
-      <!-- 2. टमाटर (4x) - Top Right -->
+      <!-- 2. टमाटर (4x) -->
       <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)">
         <span class="my-bet-badge" id="badge-2">0</span>
         <div class="item-icon">🍅</div>
         <div class="item-rate">4x</div>
       </div>
-      <!-- 3. मेंढी (14x) - Right -->
+      <!-- 3. मेंढी (14x) -->
       <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)">
         <span class="my-bet-badge" id="badge-3">0</span>
         <div class="item-icon">🐑</div>
         <div class="item-rate">14x</div>
       </div>
-      <!-- 4. शिमला (4x) - Bottom Right -->
+      <!-- 4. शिमला (4x) -->
       <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)">
         <span class="my-bet-badge" id="badge-4">0</span>
         <div class="item-icon">🫑</div>
         <div class="item-rate">4x</div>
       </div>
-      <!-- 5. मच्छी (19x) - Bottom -->
+      <!-- 5. मच्छी (19x) -->
       <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)">
         <span class="my-bet-badge" id="badge-5">0</span>
         <div class="item-icon">🐟</div>
         <div class="item-rate">19x</div>
       </div>
-      <!-- 6. गाजर (4x) - Bottom Left -->
+      <!-- 6. गाजर (4x) -->
       <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)">
         <span class="my-bet-badge" id="badge-6">0</span>
         <div class="item-icon">🥕</div>
         <div class="item-rate">4x</div>
       </div>
-      <!-- 7. झींगा (9x) - Left -->
+      <!-- 7. झींगा (9x) -->
       <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)">
         <span class="my-bet-badge" id="badge-7">0</span>
         <div class="item-icon">🦐</div>
         <div class="item-rate">9x</div>
       </div>
-      <!-- 8. भुट्टा (4x) - Top Left -->
+      <!-- 8. भुट्टा (4x) -->
       <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)">
         <span class="my-bet-badge" id="badge-8">0</span>
         <div class="item-icon">🌽</div>
@@ -301,7 +292,7 @@
       </div>
     </div>
 
-    <!-- Chips Select: 100, 1000, 2000, 5000 -->
+    <!-- Chips Select -->
     <div class="chips-bar">
       <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
       <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
@@ -309,22 +300,20 @@
       <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
     </div>
 
-    <!-- Bottom History Strip -->
+    <!-- History -->
     <div class="history-card" id="historyCard">
       <div class="history-label" id="historyLabel">📜 पिछली बेट हिस्ट्री:</div>
       <div class="history-items-row" id="historyRow"></div>
     </div>
   </div>
 
-  <!-- Mika-Style Game Settings Modal (as in User's Screenshot) -->
+  <!-- Settings Modal -->
   <div id="settingsModal">
     <div class="settings-card">
       <div class="settings-header">
         <div class="settings-title" id="stgTitle">Game Settings</div>
         <div class="settings-close" onclick="closeSettings()">✕</div>
       </div>
-
-      <!-- Setting 1: Sound -->
       <div class="settings-row">
         <div class="settings-label">
           <h4 id="stgSoundTitle">Game Sound Effects</h4>
@@ -335,8 +324,6 @@
           <span class="slider"></span>
         </label>
       </div>
-
-      <!-- Setting 2: Haptic Vibration -->
       <div class="settings-row">
         <div class="settings-label">
           <h4 id="stgHapticTitle">Haptic Feedback</h4>
@@ -347,8 +334,6 @@
           <span class="slider"></span>
         </label>
       </div>
-
-      <!-- Setting 3: Winning Trend History -->
       <div class="settings-row">
         <div class="settings-label">
           <h4 id="stgTrendTitle">Winning Trend</h4>
@@ -371,7 +356,6 @@
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
 
-    // Feature Toggles (Settings)
     let isSoundEnabled = true;
     let isHapticEnabled = true;
 
@@ -382,72 +366,40 @@
     }
 
     const itemData = {
-      1: { icon: "🐓", rate: 25 },
-      2: { icon: "🍅", rate: 4 },
-      3: { icon: "🐑", rate: 14 },
-      4: { icon: "🫑", rate: 4 },
-      5: { icon: "🐟", rate: 19 },
-      6: { icon: "🥕", rate: 4 },
-      7: { icon: "🦐", rate: 9 },
-      8: { icon: "🌽", rate: 4 }
+      1: { icon: "🐓", rate: 25 }, 2: { icon: "🍅", rate: 4 },
+      3: { icon: "🐑", rate: 14 }, 4: { icon: "🫑", rate: 4 },
+      5: { icon: "🐟", rate: 19 }, 6: { icon: "🥕", rate: 4 },
+      7: { icon: "🦐", rate: 9 }, 8: { icon: "🌽", rate: 4 }
     };
 
     const translations = {
       hi: {
-        subtitle: "अपना नाम दर्ज करके ID बनाएं", playBtn: "प्ले करें", time: "समय",
-        placeBet: "दांव लगाएं (अधिकतम 6 बेट्स)", rolling: "चक्का घूम रहा है...",
-        win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:",
-        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects",
-        hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet",
-        trdTitle: "Winning Trend", trdSub: "Show lottery results"
+        subtitle: "अपना नाम दर्ज करके ID बनाएं", playBtn: "प्ले करें", win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:",
+        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
       },
       mr: {
-        subtitle: "नाव प्रविष्ट करून ID तयार करा", playBtn: "सुरू करा", time: "वेळ",
-        placeBet: "पैज लावा (कमाल 6 पर्याय)", rolling: "चक्र फिरत आहे...",
-        win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:",
-        stgTitle: "Game Settings", sndTitle: "गेमचे ध्वनी प्रभाव", sndSub: "गेम ध्वनी",
-        hapTitle: "हॅप्टिक फीडबॅक", hapSub: "दांव लावल्यावर कंपन",
-        trdTitle: "विजयी ट्रेंड", trdSub: "निकाल पट्टी दाखवा"
+        subtitle: "नाव प्रविष्ट करून ID तयार करा", playBtn: "सुरू करा", win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:",
+        stgTitle: "Game Settings", sndTitle: "गेमचे ध्वनी प्रभाव", sndSub: "गेम ध्वनी", hapTitle: "हॅप्टिक फीडबॅक", hapSub: "दांव लावल्यावर कंपन", trdTitle: "विजयी ट्रेंड", trdSub: "निकाल पट्टी दाखवा"
       },
       gu: {
-        subtitle: "નામ દાખલ કરીને ID બનાવો", playBtn: "રમો", time: "સમય",
-        placeBet: "શરત લગાવો (મહત્તમ 6)", rolling: "ચક્ર ફરી રહ્યું છે...",
-        win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:",
-        stgTitle: "Game Settings", sndTitle: "ધ્વનિ અસરો", sndSub: "ગેમ સાઉન્ડ",
-        hapTitle: "હેપ્ટિક ફીડબેક", hapSub: "શરત પર વાઇબ્રેશન",
-        trdTitle: "વિજેતા ટ્રેન્ડ", trdSub: "પરિણામો બતાવો"
+        subtitle: "નામ દાખલ કરીને ID બનાવો", playBtn: "રમો", win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:",
+        stgTitle: "Game Settings", sndTitle: "ધ્વનિ અસરો", sndSub: "ગેમ સાઉન્ડ", hapTitle: "હેપ્ટિક ફીડબેક", hapSub: "શરત પર વાઇબ્રેશન", trdTitle: "વિજેતા ટ્રેન્ડ", trdSub: "પરિણામો બતાવો"
       },
       en: {
-        subtitle: "Enter name to create ID", playBtn: "Play", time: "Time",
-        placeBet: "Place Bets (Max 6)", rolling: "Wheel Spinning...",
-        win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:",
-        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects",
-        hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet",
-        trdTitle: "Winning Trend", trdSub: "Show lottery results"
+        subtitle: "Enter name to create ID", playBtn: "Play", win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:",
+        stgTitle: "Game Settings", sndTitle: "Game Sound Effects", sndSub: "Game sound effects", hapTitle: "Haptic Feedback", hapSub: "Vibration upon successful bet", trdTitle: "Winning Trend", trdSub: "Show lottery results"
       },
       kn: {
-        subtitle: "ಹೆಸರು ನಮೂದಿಸಿ ID ಪಡೆಯಿರಿ", playBtn: "ಪ್ಲೇ ಮಾಡಿ", time: "ಸಮಯ",
-        placeBet: "ಬೆಟ್ ಹಾಕಿ (ಗರಿಷ್ಠ 6)", rolling: "ಚಕ್ರ ತಿರುಗುತ್ತಿದೆ...",
-        win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:",
-        stgTitle: "Game Settings", sndTitle: "ಗೇಮ್ ಸೌಂಡ್ಸ್", sndSub: "ಧ್ವನಿ ಪರಿಣಾಮಗಳು",
-        hapTitle: "ಹ್ಯಾಪ್ಟಿಕ್ ಫೀಡ್‌ಬ್ಯಾಕ್", hapSub: "ಕಂಪನ",
-        trdTitle: "ಗೆಲುವಿನ ಟ್ರೆಂಡ್", trdSub: "ಫಲಿತಾಂಶ ತೋರಿಸಿ"
+        subtitle: "ಹೆಸರು ನಮೂದಿಸಿ ID ಪಡೆಯಿರಿ", playBtn: "ಪ್ಲೇ ಮಾಡಿ", win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:",
+        stgTitle: "Game Settings", sndTitle: "ಗೇಮ್ ಸೌಂಡ್ಸ್", sndSub: "ಧ್ವನಿ ಪರಿಣಾಮಗಳು", hapTitle: "ಹ್ಯಾಪ್ಟಿಕ್ ಫೀಡ್‌ಬ್ಯಾಕ್", hapSub: "ಕಂಪನ", trdTitle: "ಗೆಲುವಿನ ಟ್ರೆಂಡ್", trdSub: "ಫಲಿತಾಂಶ ತೋರಿಸಿ"
       },
       te: {
-        subtitle: "పేరు నమోదు చేసి ID పొందండి", playBtn: "ఆడండి", time: "సమయం",
-        placeBet: "బెట్ వేయండి (గరిష్టంగా 6)", rolling: "వీల్ తిరుగుతోంది...",
-        win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:",
-        stgTitle: "Game Settings", sndTitle: "గేమ్ శబ్దాలు", sndSub: "సౌండ్ ఎఫెక్ట్స్",
-        hapTitle: "హాప్టిక్ ఫీడ్‌బ్యాక్", hapSub: "వైబ్రేషన్",
-        trdTitle: "విజయం ట్రెండ్", trdSub: "ఫలితాలు చూపించు"
+        subtitle: "పేరు నమోదు చేసి ID పొందండి", playBtn: "ఆడండి", win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:",
+        stgTitle: "Game Settings", sndTitle: "గేమ్ శబ్దాలు", sndSub: "సౌండ్ ఎఫెక్ట్స్", hapTitle: "హాప్టిక్ ఫీడ్‌బ్యాక్", hapSub: "వైబ్రేషన్", trdTitle: "విజయం ట్రెండ్", trdSub: "ఫలితాలు చూపించు"
       },
       ta: {
-        subtitle: "பெயரை உள்ளிட்டு ID உருவாக்கவும்", playBtn: "விளையாடு", time: "நேரம்",
-        placeBet: "பந்தயம் வைக்கவும் (அதிகபட்சம் 6)", rolling: "சுழல்கிறது...",
-        win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:",
-        stgTitle: "Game Settings", sndTitle: "ஒலி விளைவுகள்", sndSub: "கேம் சவுண்ட்",
-        hapTitle: "தொடு உணர்வு (ஹேப்டிக்)", hapSub: "அதிர்வு",
-        trdTitle: "வெற்றி ட்ரெண்ட்", trdSub: "முடிவுகளைக் காட்டு"
+        subtitle: "பெயரை உள்ளிட்டு ID உருவாக்கவும்", playBtn: "விளையாடு", win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:",
+        stgTitle: "Game Settings", sndTitle: "ஒலி விளைவுகள்", sndSub: "கேம் சவுண்ட்", hapTitle: "தொடு உணர்வு (ஹேப்டிக்)", hapSub: "அதிர்வு", trdTitle: "வெற்றி ட்ரெண்ட்", trdSub: "முடிவுகளைக் காட்டு"
       }
     };
     let currentLang = "hi";
@@ -471,15 +423,13 @@
       document.getElementById("stgTrendSub").innerText = t.trdSub;
     }
 
-    // Audio Engine
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
       if (!isSoundEnabled) return;
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      osc.connect(gain); gain.connect(audioCtx.destination);
 
       if (type === 'chip') {
         osc.frequency.setValueAtTime(800, audioCtx.currentTime);
@@ -506,23 +456,14 @@
       }
     }
 
-    // Settings Modal Functions
-    function openSettings() {
-      document.getElementById("settingsModal").style.display = "flex";
-    }
-    function closeSettings() {
-      document.getElementById("settingsModal").style.display = "none";
-    }
+    function openSettings() { document.getElementById("settingsModal").style.display = "flex"; }
+    function closeSettings() { document.getElementById("settingsModal").style.display = "none"; }
     function toggleSoundSetting(val) { isSoundEnabled = val; }
     function toggleHapticSetting(val) { isHapticEnabled = val; }
-    function toggleTrendSetting(val) {
-      document.getElementById("historyCard").style.display = val ? "flex" : "none";
-    }
+    function toggleTrendSetting(val) { document.getElementById("historyCard").style.display = val ? "flex" : "none"; }
 
     function triggerHaptic() {
-      if (isHapticEnabled && window.navigator && window.navigator.vibrate) {
-        window.navigator.vibrate(40);
-      }
+      if (isHapticEnabled && window.navigator && window.navigator.vibrate) { window.navigator.vibrate(40); }
     }
 
     function handleLogin() {
@@ -568,13 +509,9 @@
 
       updateCoinsUI(coins - selectedChip);
       bets[boxId] += selectedChip;
+      document.getElementById("badge-" + boxId).style.display = "block";
+      document.getElementById("badge-" + boxId).innerText = bets[boxId];
 
-      const badge = document.getElementById("badge-" + boxId);
-      badge.style.display = "block";
-      badge.innerText = bets[boxId];
-
-      const totalBetItems = Object.keys(bets).filter(id => bets[id] > 0).length;
-      document.getElementById("activeBetsCounter").innerText = `बेट्स: ${totalBetItems}/6`;
       playSound('chip');
       triggerHaptic();
     }
@@ -582,16 +519,13 @@
     socket.on("timerUpdate", (data) => {
       currentGameState = data.gameState;
       const timerEl = document.getElementById("timerDisplay");
-      const statusEl = document.getElementById("statusMessage");
 
       if (data.gameState === "BETTING") {
-        timerEl.innerText = `${translations[currentLang].time}: ${data.timeLeft}s`;
+        timerEl.innerText = `${data.timeLeft}s`;
         timerEl.style.color = "#004b91";
-        statusEl.innerText = translations[currentLang].placeBet;
       } else {
-        timerEl.innerText = `${translations[currentLang].rolling}`;
+        timerEl.innerText = `⏳`;
         timerEl.style.color = "#d4af37";
-        statusEl.innerText = translations[currentLang].rolling;
       }
     });
 
@@ -641,7 +575,6 @@
               b.style.display = "none";
               b.innerText = "0";
             });
-            document.getElementById("activeBetsCounter").innerText = `बेट्स: 0/6`;
           }, 4500);
         }
       }
