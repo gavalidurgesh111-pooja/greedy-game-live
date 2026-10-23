@@ -12,14 +12,12 @@
       position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #000;
     }
 
-    /* Screen 1: Main Landing with Exactly Uploaded Image */
+    /* Screen 1: Main Landing with Direct Cloud Link */
     #screenMain {
       flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
       padding: 30px 20px 25px;
       background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.85)), 
-                  url('IMG-20261023-WA0014.jpg'),
-                  url('/IMG-20261023-WA0014.jpg'),
-                  url('bg.jpg') center top/cover no-repeat;
+                  url('https://images2.imgbox.com/66/ea/1Zg7dZ0f_o.jpg') center top/cover no-repeat;
       background-size: cover;
       background-position: center top;
       background-repeat: no-repeat;
@@ -173,7 +171,7 @@
     .modal-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; }
     .modal-title { font-size: 22px; font-weight: 900; color: #ffee55; }
     .modal-close {
-      position: absolute right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
+      position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
       background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff;
     }
     
@@ -228,7 +226,7 @@
       </div>
     </div>
 
-    <!-- Screen 2: Phone Number Input (With Complete World Country Codes) -->
+    <!-- Screen 2: Phone Number Input -->
     <div id="screenPhone">
       <div class="back-btn" onclick="showScreen('screenMain')">❮</div>
       <div class="step-title" id="txtRegisterTitle">Register / log in</div>
