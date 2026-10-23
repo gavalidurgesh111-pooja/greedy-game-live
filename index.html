@@ -192,6 +192,12 @@
     .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2.5px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     input:checked + .slider { background-color: #00e676; border-color: #00e676; }
     input:checked + .slider:before { transform: translateX(23px); }
+
+    /* Custom Card Game Modal for Rules */
+    .custom-card-game { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
+    .rules-body { max-height: 380px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: #f5e8ff; padding-right: 5px; }
+    .rule-item { margin-bottom: 12px; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 12px; border-left: 3px solid #ffee55; }
+    .rule-item b { color: #ffee55; }
   </style>
 </head>
 <body>
@@ -264,7 +270,7 @@
       <div class="next-btn-container"><button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button></div>
     </div>
 
-    <!-- Terms Page (Fully Filled & Locked) -->
+    <!-- Terms Page -->
     <div id="termsPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div>
@@ -294,7 +300,7 @@
       </div>
     </div>
 
-    <!-- Privacy Policy Page (Fully Filled & Locked) -->
+    <!-- Privacy Policy Page -->
     <div id="privacyPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div>
@@ -433,9 +439,9 @@
       <div class="modal-title-dark">Recharge Coins</div>
       <p style="font-size:13px; color:#666; margin-bottom:15px; text-align:center;">
         <b>Level Reward:</b><br>
-        1,00,000 Coins = <b>+20 Lv</b><br>
-        2,00,000 Coins = <b>+40 Lv</b><br>
-        3,00,000 Coins = <b>+60 Lv</b>
+        1,00,000 Coins = <b>+20 Level</b><br>
+        2,00,000 Coins = <b>+40 Level</b><br>
+        3,00,000 Coins = <b>+60 Level</b>
       </p>
       <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter Coins (e.g. 100000)">
       <button class="btn-save" onclick="processRecharge()">Recharge Now</button>
@@ -510,7 +516,7 @@
     </div>
   </div>
 
-  <!-- Rules Modal -->
+  <!-- Rules Modal (Properly Formatted) -->
   <div id="rulesModal" class="modal-overlay">
     <div class="custom-card-game">
       <div class="modal-header">
@@ -518,13 +524,19 @@
         <div class="modal-close" onclick="closeRules()">✕</div>
       </div>
       <div class="rules-body">
-        <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
-        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
-        <div class="rule-item"><b>3.</b> Press phone back button to return to profile and logout.</div>
-        <div class="rule-item"><b>4. Level Rewards:</b><br>
-          • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
-          • Win each round = <b>+1 Level</b><br>
-          • 1 Lakh Coins Lost in bets = <b>+40 Level</b> bonus!
+        <div class="rule-item"><b>1.</b> Choose chip amounts (100, 1000, 2000, or 5000) and place your bets on items before the timer ends.</div>
+        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> in each round. You can place bets on a maximum of <b>6 slots</b> per round.</div>
+        <div class="rule-item"><b>3. Multiplier Payouts:</b><br>
+          • 🐓 Rooster: <b>25x</b><br>
+          • 🐟 Fish: <b>19x</b><br>
+          • 🐑 Sheep: <b>14x</b><br>
+          • 🦐 Shrimp: <b>9x</b><br>
+          • 🍅 Tomato, 🫑 Pepper, 🥕 Carrot, 🌽 Corn: <b>4x each</b>
+        </div>
+        <div class="rule-item"><b>4. Level & Recharge Rewards:</b><br>
+          • Every 1 Lakh Coins Recharge = <b>+20 Level</b><br>
+          • Winning any round = <b>+1 Level</b><br>
+          • Every 1 Lakh Coins Lost in bets = <b>+40 Level</b> bonus!
         </div>
       </div>
     </div>
@@ -827,7 +839,9 @@
       const termsPage = document.getElementById("termsPage");
       const privacyPage = document.getElementById("privacyPage");
       const stgModal = document.getElementById("gameSettingsModal");
+      const rulesModal = document.getElementById("rulesModal");
 
+      if (rulesModal.style.display === "flex") { closeRules(); return; }
       if (stgModal.style.display === "flex") { closeGameSettings(); return; }
       if (termsPage.style.display === "flex") { closeDoc('termsPage'); return; }
       if (privacyPage.style.display === "flex") { closeDoc('privacyPage'); return; }
@@ -913,8 +927,13 @@
       alert(`Recharge Successful! Added ${val} coins. Level boosted by +${gainedLevels} Lv!`);
     }
 
-    function openRules() { document.getElementById("rulesModal").style.display = "flex"; }
-    function closeRules() { document.getElementById("rulesModal").style.display = "none"; }
+    function openRules() {
+      document.getElementById("rulesModal").style.display = "flex";
+      history.pushState({page: 'rules'}, "", "");
+    }
+    function closeRules() {
+      document.getElementById("rulesModal").style.display = "none";
+    }
 
     let selectedChip = 100;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
