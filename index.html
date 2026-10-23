@@ -8,20 +8,16 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-    /* Login Flow Container */
     #authFlowContainer {
       position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #111;
     }
 
-    /* Screen 1: Main Landing with New Uploaded Photo */
+    /* Screen 1: Main Landing with bg.jpg */
     #screenMain {
       flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
       padding: 30px 20px 25px;
       background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.85)), 
-                  url('bg.jpg'),
-                  url('https://i.ibb.co/6P6X9ZJ/desi-saree.jpg') center/cover no-repeat;
-      background-size: cover;
-      background-position: center top;
+                  url('bg.jpg') center top/cover no-repeat;
     }
     .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .lang-select-login {
@@ -394,7 +390,7 @@
           <option value="+44">🇬🇧 UK (+44)</option>
           <option value="+1">🇺🇸 USA (+1)</option>
           <option value="+598">🇺🇾 Uruguay (+598)</option>
-          <option value="+998">🇺🇿 Uzbekistan (+998)</option>
+          <option value="+998">UZ Uzbekistan (+998)</option>
           <option value="+58">🇻🇪 Venezuela (+58)</option>
           <option value="+84">🇻🇳 Vietnam (+84)</option>
           <option value="+967">🇾🇪 Yemen (+967)</option>
