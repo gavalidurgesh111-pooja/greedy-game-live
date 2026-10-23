@@ -3,67 +3,294 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Game</title>
+  <title>3D Greedy Game</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #121212; color: #fff; margin: 0; padding: 20px; }
-    #coins { font-size: 22px; color: #4caf50; font-weight: bold; margin-bottom: 10px; }
-    #timer { font-size: 24px; color: #ffeb3b; font-weight: bold; margin-bottom: 20px; }
-    .grid { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 420px; gap: 10px; margin: 0 auto; }
-    .box { background: #222; border: 2px solid #444; border-radius: 8px; padding: 15px 5px; cursor: pointer; }
-    .box:hover { border-color: #ff9800; background: #333; }
-    .box span { font-size: 26px; display: block; margin-bottom: 5px; }
-    #status { margin-top: 20px; font-size: 16px; color: #bbb; min-height: 24px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: radial-gradient(circle at center, #2e0854, #0f021e);
+      color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    /* Login Modal */
+    #authModal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 99;
+    }
+    .auth-card {
+      background: linear-gradient(145deg, #1b0730, #310d54); border: 2px solid #ffd700;
+      border-radius: 20px; padding: 25px; width: 90%; max-width: 340px; text-align: center;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+    }
+    .auth-card h2 { color: #ffd700; margin-bottom: 12px; }
+    .auth-card input {
+      width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #795290;
+      background: #120722; color: #fff; font-size: 16px; outline: none;
+    }
+    .auth-card button {
+      width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: none;
+      background: linear-gradient(45deg, #ff9900, #ff5500); color: #fff; font-size: 18px; font-weight: bold; cursor: pointer;
+    }
+
+    /* Game Area */
+    #gameArea { display: none; width: 100%; max-width: 420px; flex-direction: column; align-items: center; padding: 12px; }
+    
+    .header-bar {
+      width: 100%; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255, 255, 255, 0.08); padding: 10px 15px; border-radius: 14px; margin-bottom: 12px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    .user-info { font-size: 15px; color: #ffd700; font-weight: bold; }
+    .coins-badge { background: #ffaa00; color: #000; padding: 6px 14px; border-radius: 20px; font-weight: 900; font-size: 16px; }
+
+    .status-panel { text-align: center; margin-bottom: 15px; }
+    .timer-badge { font-size: 22px; font-weight: 900; color: #00ffcc; text-shadow: 0 0 12px #00ffcc; }
+    .message-text { font-size: 14px; color: #bbb; margin-top: 4px; }
+
+    /* 8 Grid Boxes */
+    .grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; margin-bottom: 20px;
+    }
+    .item-card {
+      background: linear-gradient(145deg, #381559, #1c0a2e);
+      border: 2px solid #5d2b8e; border-radius: 16px; padding: 10px 4px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; cursor: pointer; transition: transform 0.15s, border-color 0.15s;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+    .item-card.highlight {
+      border-color: #00ffcc; background: #58218a;
+      box-shadow: 0 0 20px #00ffcc, inset 0 0 10px #00ffcc; transform: scale(1.08);
+    }
+    .item-card.winner {
+      border-color: #ffd700; background: linear-gradient(45deg, #ff9900, #ff0055);
+      box-shadow: 0 0 30px #ffd700; transform: scale(1.12); animation: pulse 0.4s infinite alternate;
+    }
+    @keyframes pulse {
+      from { transform: scale(1.08); }
+      to { transform: scale(1.15); }
+    }
+
+    /* 3D Images */
+    .item-img {
+      width: 58px; height: 58px; object-fit: contain;
+      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.6));
+      pointer-events: none;
+    }
+    .item-rate {
+      font-size: 12px; color: #ffd700; font-weight: 800; margin-top: 4px;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.9);
+    }
+    .my-bet-badge {
+      position: absolute; top: -6px; right: -6px; background: #ff2255; color: white;
+      font-size: 11px; font-weight: bold; border-radius: 12px; padding: 2px 7px;
+      display: none; border: 1.5px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+
+    /* Chips */
+    .chips-bar { display: flex; gap: 10px; margin-bottom: 10px; }
+    .chip {
+      width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; color: #000; border: 3px dashed #fff; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+    .chip-10 { background: #00ffcc; }
+    .chip-50 { background: #ffcc00; }
+    .chip-100 { background: #ff3366; color: #fff; }
+    .chip-500 { background: #9933ff; color: #fff; }
+    .chip.selected { outline: 3px solid #fff; transform: translateY(-5px); box-shadow: 0 6px 15px rgba(255,255,255,0.6); }
   </style>
 </head>
 <body>
-  <h2>Greedy Game Live</h2>
-  <!-- यहाँ यूजर को 1000 कॉइन दिखेंगे -->
-  <div id="coins">सिक्के: <span id="coinCount">1000</span></div>
-  <div id="timer">लोड हो रहा है...</div>
 
-  <div class="grid">
-    <div class="box" onclick="placeBet(1)"><span>🍎</span>1. सेब</div>
-    <div class="box" onclick="placeBet(2)"><span>🍊</span>2. संतरा</div>
-    <div class="box" onclick="placeBet(3)"><span>🍌</span>3. केला</div>
-    <div class="box" onclick="placeBet(4)"><span>🍇</span>4. अंगूर</div>
-    <div class="box" onclick="placeBet(5)"><span>🍉</span>5. तरबूज</div>
-    <div class="box" onclick="placeBet(6)"><span>🚗</span>6. कार</div>
-    <div class="box" onclick="placeBet(7)"><span>⭐</span>7. स्टार</div>
-    <div class="box" onclick="placeBet(8)"><span>👑</span>8. क्राउन</div>
+  <!-- Login Modal -->
+  <div id="authModal">
+    <div class="auth-card">
+      <h2>🎰 GREEDY CASINO</h2>
+      <p style="font-size: 13px; color: #bbb; margin-bottom: 12px;">अपना नाम दर्ज करके गेम शुरू करें</p>
+      <input type="text" id="usernameInput" placeholder="यूजरनेम" maxlength="15">
+      <input type="password" id="passwordInput" placeholder="पासवर्ड">
+      <button onclick="handleLogin()">लॉगिन करें</button>
+    </div>
   </div>
 
-  <div id="status">दांव लगाने के लिए किसी भी बॉक्स पर क्लिक करें।</div>
+  <!-- Game Main Screen -->
+  <div id="gameArea">
+    <div class="header-bar">
+      <div class="user-info">👤 <span id="playerNameDisplay">User</span></div>
+      <div class="coins-badge">🪙 <span id="coinsDisplay">1000</span></div>
+    </div>
+
+    <div class="status-panel">
+      <div class="timer-badge" id="timerDisplay">समय: 30s</div>
+      <div class="message-text" id="statusMessage">दांव लगाएं (30 सेकंड)</div>
+    </div>
+
+    <!-- 8 Slots Grid (3D Assets without text names) -->
+    <div class="grid">
+      <!-- 1. मुर्गा -->
+      <div class="item-card" id="card-1" onclick="placeBet(1)">
+        <span class="my-bet-badge" id="badge-1">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f357.gif" alt="Chicken">
+        <div class="item-rate">5x</div>
+      </div>
+      <!-- 2. मेंढी -->
+      <div class="item-card" id="card-2" onclick="placeBet(2)">
+        <span class="my-bet-badge" id="badge-2">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f411.gif" alt="Sheep">
+        <div class="item-rate">5x</div>
+      </div>
+      <!-- 3. झींगा -->
+      <div class="item-card" id="card-3" onclick="placeBet(3)">
+        <span class="my-bet-badge" id="badge-3">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f990.gif" alt="Prawn">
+        <div class="item-rate">5x</div>
+      </div>
+      <!-- 4. मच्छी -->
+      <div class="item-card" id="card-4" onclick="placeBet(4)">
+        <span class="my-bet-badge" id="badge-4">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f41f.gif" alt="Fish">
+        <div class="item-rate">5x</div>
+      </div>
+      <!-- 5. टमाटर -->
+      <div class="item-card" id="card-5" onclick="placeBet(5)">
+        <span class="my-bet-badge" id="badge-5">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f345.gif" alt="Tomato">
+        <div class="item-rate">10x</div>
+      </div>
+      <!-- 6. भुट्टा -->
+      <div class="item-card" id="card-6" onclick="placeBet(6)">
+        <span class="my-bet-badge" id="badge-6">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f33d.gif" alt="Corn">
+        <div class="item-rate">15x</div>
+      </div>
+      <!-- 7. गाजर -->
+      <div class="item-card" id="card-7" onclick="placeBet(7)">
+        <span class="my-bet-badge" id="badge-7">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f955.gif" alt="Carrot">
+        <div class="item-rate">25x</div>
+      </div>
+      <!-- 8. शिमला मिर्च -->
+      <div class="item-card" id="card-8" onclick="placeBet(8)">
+        <span class="my-bet-badge" id="badge-8">0</span>
+        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1fad1.gif" alt="Bell Pepper">
+        <div class="item-rate">45x</div>
+      </div>
+    </div>
+
+    <!-- Chips Select -->
+    <div class="chips-bar">
+      <div class="chip chip-10 selected" onclick="selectChip(10, this)">10</div>
+      <div class="chip chip-50" onclick="selectChip(50, this)">50</div>
+      <div class="chip chip-100" onclick="selectChip(100, this)">100</div>
+      <div class="chip chip-500" onclick="selectChip(500, this)">500</div>
+    </div>
+  </div>
 
   <script>
     const socket = io();
-    // जावास्क्रिप्ट में भी 1000 कॉइन सेट कर दिए हैं
     let coins = 1000;
-    let currentState = "BETTING";
+    let selectedChip = 10;
+    let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+    let currentGameState = "BETTING";
+    const multipliers = { 1: 5, 2: 5, 3: 5, 4: 5, 5: 10, 6: 15, 7: 25, 8: 45 };
+
+    function handleLogin() {
+      const username = document.getElementById("usernameInput").value.trim();
+      const password = document.getElementById("passwordInput").value.trim();
+      if (!username) return alert("कृपया यूजरनेम डालें!");
+      if (password.length < 3) return alert("पासवर्ड कम से कम 3 अंक का होना चाहिए!");
+
+      localStorage.setItem("greedy_user", username);
+      document.getElementById("playerNameDisplay").innerText = username;
+      document.getElementById("authModal").style.display = "none";
+      document.getElementById("gameArea").style.display = "flex";
+    }
+
+    function selectChip(amount, el) {
+      selectedChip = amount;
+      document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+      el.classList.add("selected");
+    }
+
+    function placeBet(boxId) {
+      if (currentGameState !== "BETTING") {
+        alert("दांव का समय खत्म हो चुका है!");
+        return;
+      }
+      if (coins < selectedChip) {
+        alert("आपके पास पर्याप्त सिक्के नहीं हैं!");
+        return;
+      }
+      coins -= selectedChip;
+      bets[boxId] += selectedChip;
+      document.getElementById("coinsDisplay").innerText = coins;
+
+      const badge = document.getElementById("badge-" + boxId);
+      badge.style.display = "block";
+      badge.innerText = bets[boxId];
+    }
 
     socket.on("timerUpdate", (data) => {
-      currentState = data.gameState;
-      const stateLabel = data.gameState === "BETTING" ? "दांव लगाएं" : "रिजल्ट समय";
-      document.getElementById("timer").innerText = `समय: ${data.timeLeft}s (${stateLabel})`;
+      currentGameState = data.gameState;
+      const timerEl = document.getElementById("timerDisplay");
+      const statusEl = document.getElementById("statusMessage");
+
+      if (data.gameState === "BETTING") {
+        timerEl.innerText = `समय: ${data.timeLeft}s`;
+        timerEl.style.color = "#00ffcc";
+        statusEl.innerText = "दांव लगाएं! चिप्स चुनें और बॉक्स पर टैप करें";
+      } else {
+        timerEl.innerText = `रिजल्ट आ रहा है...`;
+        timerEl.style.color = "#ffd700";
+        statusEl.innerText = "लाइट घूम रही है!";
+      }
     });
 
     socket.on("gameResult", (data) => {
-      document.getElementById("status").innerText = `🎉 राउंड खत्म! विजेता नंबर: ${data.winner}`;
+      let currentHighlight = 1;
+      let totalSteps = 24 + data.winner;
+      let speed = 75;
+
+      function spinLight() {
+        document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
+        document.getElementById("card-" + currentHighlight).classList.add("highlight");
+
+        totalSteps--;
+        currentHighlight = (currentHighlight % 8) + 1;
+
+        if (totalSteps > 0) {
+          setTimeout(spinLight, speed);
+        } else {
+          document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
+          const winCard = document.getElementById("card-" + data.winner);
+          winCard.classList.add("winner");
+
+          const userBetOnWinner = bets[data.winner];
+          if (userBetOnWinner > 0) {
+            const winAmount = userBetOnWinner * multipliers[data.winner];
+            coins += winAmount;
+            document.getElementById("coinsDisplay").innerText = coins;
+            setTimeout(() => alert(`🎉 शानदार जीत! आपको मिले: +${winAmount} सिक्के`), 300);
+          }
+
+          setTimeout(() => {
+            winCard.classList.remove("winner");
+            bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
+            document.querySelectorAll(".my-bet-badge").forEach(b => {
+              b.style.display = "none";
+              b.innerText = "0";
+            });
+          }, 5000);
+        }
+      }
+      spinLight();
     });
 
-    function placeBet(spot) {
-      if (currentState !== "BETTING") {
-        alert("बेटिंग बंद है! अगले राउंड का इंतज़ार करें।");
-        return;
-      }
-      if (coins < 10) {
-        alert("सिक्के खत्म हो गए!");
-        return;
-      }
-      coins -= 10;
-      document.getElementById("coinCount").innerText = coins;
-      document.getElementById("status").innerText = `आपने नंबर ${spot} पर 10 सिक्के लगाए!`;
-    }
+    window.onload = () => {
+      const savedUser = localStorage.getItem("greedy_user");
+      if (savedUser) document.getElementById("usernameInput").value = savedUser;
+    };
   </script>
 </body>
 </html>
