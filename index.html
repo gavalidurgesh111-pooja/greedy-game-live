@@ -142,9 +142,9 @@
     .frame-opt { height: 95px; border-radius: 16px; background: #f9f9f9; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; gap: 6px; font-size: 13px; font-weight: bold; }
     .frame-preview { width: 44px; height: 44px; border-radius: 50%; }
 
-    /* Main Game UI */
-    body.game-active { background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%); }
-    body.game-active::before { content: ""; position: fixed; inset: 0; background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%), radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.65), transparent 70%), radial-gradient(ellipse 110px 55px at 30% 70%, rgba(255,255,255,0.55), transparent 70%), radial-gradient(ellipse 150px 75px at 85% 78%, rgba(255,255,255,0.6), transparent 70%); pointer-events: none; z-index: 0; }
+    /* Main Game UI (Screenshot Match: Orange Win Ranking Section below) */
+    body.game-active { background: linear-gradient(180deg, #ff8c42 0%, #ff5722 50%, #e64a19 100%); }
+    body.game-active::before { content: ""; position: fixed; inset: 0; background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.2), transparent 70%), radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.15), transparent 70%); pointer-events: none; z-index: 0; }
     
     #gameArea { display: none; width: 100%; max-width: 430px; margin: 0 auto; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
     .app-title { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
@@ -169,12 +169,28 @@
     .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
     .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
 
-    .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; }
+    .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; margin-bottom: 15px; }
     .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 6px; }
     .history-items-row { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none; }
     .history-pill { min-width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid #89cff0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
     .history-pill .pill-icon { font-size: 18px; line-height: 1; }
     .history-pill .pill-rate { font-size: 9px; font-weight: 900; color: #b8860b; margin-top: 1px; }
+
+    /* Win Ranking Section (Screenshot Match) */
+    .win-ranking-box { width: 100%; background: #d84315; border-radius: 18px; padding: 15px; box-shadow: 0 6px 20px rgba(0,0,0,0.25); border: 2px solid #ffccbc; margin-top: 10px; }
+    .ranking-header { text-align: center; font-size: 18px; font-weight: 900; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.4); margin-bottom: 10px; background: linear-gradient(90deg, #ffb300, #ff8f00); padding: 6px; border-radius: 12px; }
+    .ranking-sub-banner { display: flex; justify-content: space-between; align-items: center; background: #bf360c; padding: 8px 12px; border-radius: 10px; font-size: 12px; color: #ffe0b2; margin-bottom: 12px; font-weight: bold; }
+    .ranking-tabs { display: flex; background: #870000; border-radius: 20px; padding: 3px; margin-bottom: 15px; }
+    .rank-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; color: #ffccbc; cursor: pointer; border-radius: 18px; }
+    .rank-tab.active { background: linear-gradient(180deg, #ffa726, #fb8c00); color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    
+    .ranking-list { display: flex; flex-direction: column; gap: 10px; }
+    .rank-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.15); padding: 8px 12px; border-radius: 12px; color: #fff; }
+    .rank-user-info { display: flex; align-items: center; gap: 10px; }
+    .rank-badge { width: 24px; font-weight: 900; font-size: 14px; text-align: center; color: #ffeb3b; }
+    .rank-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ffccbc; }
+    .rank-name { font-size: 14px; font-weight: bold; }
+    .rank-score { font-size: 13px; font-weight: 900; color: #ffeb3b; display: flex; align-items: center; gap: 4px; }
 
     /* Game Settings Modal */
     .game-settings-card { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
@@ -192,12 +208,6 @@
     .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 2.5px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
     input:checked + .slider { background-color: #00e676; border-color: #00e676; }
     input:checked + .slider:before { transform: translateX(23px); }
-
-    /* Custom Card Game Modal for Rules */
-    .custom-card-game { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
-    .rules-body { max-height: 380px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: #f5e8ff; padding-right: 5px; }
-    .rule-item { margin-bottom: 12px; background: rgba(0,0,0,0.2); padding: 10px 14px; border-radius: 12px; border-left: 3px solid #ffee55; }
-    .rule-item b { color: #ffee55; }
   </style>
 </head>
 <body>
@@ -448,7 +458,7 @@
     </div>
   </div>
 
-  <!-- 4. Main Game Arena -->
+  <!-- 4. Main Game Arena with Win Ranking Section Below -->
   <div id="gameArea">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
@@ -483,6 +493,61 @@
       <div class="history-label">📜 Bet History (Previous Results):</div>
       <div class="history-items-row" id="historyRow"></div>
     </div>
+
+    <!-- Win Ranking Section (Added below game as requested) -->
+    <div class="win-ranking-box">
+      <div class="ranking-header">🏆 Win Ranking</div>
+      <div class="ranking-sub-banner">
+        <span>Today's Top 10 get rewards up to 🐱 126000</span>
+        <span style="cursor:pointer;" onclick="alert('More leaderboard details coming soon!')">More &gt;</span>
+      </div>
+      <div class="ranking-tabs">
+        <div class="rank-tab active" id="tabToday" onclick="switchRankTab('today')">Today</div>
+        <div class="rank-tab" id="tabYesterday" onclick="switchRankTab('yesterday')">Yesterday</div>
+      </div>
+      <div class="ranking-list" id="rankingListContainer">
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">1</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="rank-avatar">
+            <span class="rank-name">AJ cool</span>
+          </div>
+          <div class="rank-score">🐱 339947860</div>
+        </div>
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">2</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="rank-avatar">
+            <span class="rank-name">DARLING STRANGER</span>
+          </div>
+          <div class="rank-score">🐱 134454860</div>
+        </div>
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">3</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="rank-avatar">
+            <span class="rank-name">S Kumar</span>
+          </div>
+          <div class="rank-score">🐱 50165660</div>
+        </div>
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">4</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar">
+            <span class="rank-name">10:34PM</span>
+          </div>
+          <div class="rank-score">🐱 31350000</div>
+        </div>
+        <div class="rank-item">
+          <div class="rank-user-info">
+            <span class="rank-badge">5</span>
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7" class="rank-avatar">
+            <span class="rank-name">KK</span>
+          </div>
+          <div class="rank-score">🐱 28027800</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Game Settings Modal -->
@@ -516,7 +581,7 @@
     </div>
   </div>
 
-  <!-- Rules Modal (Properly Formatted) -->
+  <!-- Rules Modal -->
   <div id="rulesModal" class="modal-overlay">
     <div class="custom-card-game">
       <div class="modal-header">
@@ -767,6 +832,29 @@
     function toggleHapticSetting(val) {}
     function toggleTrendSetting(val) {
       document.getElementById("historyCard").style.display = val ? "flex" : "none";
+    }
+
+    // Win Ranking Tab Switcher
+    function switchRankTab(tab) {
+      document.getElementById("tabToday").className = "rank-tab" + (tab === 'today' ? " active" : "");
+      document.getElementById("tabYesterday").className = "rank-tab" + (tab === 'yesterday' ? " active" : "");
+      
+      const listContainer = document.getElementById("rankingListContainer");
+      if (tab === 'yesterday') {
+        listContainer.innerHTML = `
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">1</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Lion5" class="rank-avatar"><span class="rank-name">Rohan King</span></div><div class="rank-score">🐱 284910200</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">2</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Gold8" class="rank-avatar"><span class="rank-name">Pooja Sharma</span></div><div class="rank-score">🐱 112049300</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">3</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar"><span class="rank-name">Amit_99</span></div><div class="rank-score">🐱 49102900</div></div>
+        `;
+      } else {
+        listContainer.innerHTML = `
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">1</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="rank-avatar"><span class="rank-name">AJ cool</span></div><div class="rank-score">🐱 339947860</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">2</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Queen3" class="rank-avatar"><span class="rank-name">DARLING STRANGER</span></div><div class="rank-score">🐱 134454860</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">3</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4" class="rank-avatar"><span class="rank-name">S Kumar</span></div><div class="rank-score">🐱 50165660</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">4</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6" class="rank-avatar"><span class="rank-name">10:34PM</span></div><div class="rank-score">🐱 31350000</div></div>
+          <div class="rank-item"><div class="rank-user-info"><span class="rank-badge">5</span><img src="https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7" class="rank-avatar"><span class="rank-name">KK</span></div><div class="rank-score">🐱 28027800</div></div>
+        `;
+      }
     }
 
     function showScreen(screenId) {
