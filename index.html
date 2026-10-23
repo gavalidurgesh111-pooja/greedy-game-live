@@ -20,10 +20,13 @@
     .lang-select-login { background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.8); border-radius: 18px; padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none; cursor: pointer; }
     .brand-title { font-size: 46px; font-weight: 900; color: #ffd700; letter-spacing: 1px; text-shadow: 0 4px 20px rgba(0,0,0,0.95), 0 0 10px rgba(255,215,0,0.4); margin-top: 40px; text-align: center; }
     .auth-bottom-panel { width: 100%; max-width: 380px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    
     .btn-login { width: 100%; height: 50px; border-radius: 25px; border: none; font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.4); transition: transform 0.1s; }
     .btn-login:active { transform: scale(0.98); }
     .btn-facebook { background: #1877F2; color: #fff; }
     .btn-google { background: #ffffff; color: #222; }
+    .social-logo-svg { width: 22px; height: 22px; flex-shrink: 0; }
+
     .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
     .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; line-height: 1.4; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
@@ -55,7 +58,6 @@
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     .avatar-frame { position: absolute; inset: -6px; border-radius: 50%; pointer-events: none; border: 3.5px solid transparent; }
     
-    /* Frame Designs */
     .frame-gold { border-color: #ffd700; box-shadow: 0 0 15px #ffd700, inset 0 0 8px #ffd700; }
     .frame-neon { border-color: #00f3ff; box-shadow: 0 0 15px #00f3ff, inset 0 0 8px #00f3ff; }
     .frame-rainbow { border-color: #ff007f; box-shadow: 0 0 18px #ff007f, inset 0 0 8px #7928ca; }
@@ -71,15 +73,22 @@
     .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 2px 10px; border-radius: 12px; border: 1px solid #ff758c; }
     .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 12px; border: 1px solid #b2ebf2; }
 
+    /* Follow and Stats Area */
+    .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 14px; padding: 0 20px; }
+    .follow-counts { display: flex; gap: 20px; }
+    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; }
+    .f-num { font-size: 17px; font-weight: 900; color: #111; }
+    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
+    .profile-action-btns { display: flex; gap: 8px; }
+    .btn-follow { background: linear-gradient(45deg, #8a2be2, #4a00e0); color: #fff; border: none; padding: 7px 18px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; box-shadow: 0 2px 8px rgba(138,43,226,0.3); }
+    .btn-text-msg { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 7px 16px; border-radius: 20px; font-weight: bold; font-size: 13px; cursor: pointer; }
+
     .stats-container { display: flex; justify-content: space-around; margin: 18px 20px; padding: 16px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
     .stat-item { text-align: center; }
     .stat-val { font-size: 20px; font-weight: 900; color: #222; display: flex; align-items: center; justify-content: center; gap: 4px; }
     .stat-label { font-size: 12px; color: #718096; margin-top: 4px; font-weight: bold; }
 
-    .profile-tabs { display: flex; border-bottom: 2px solid #edf2f7; margin: 0 20px; padding-bottom: 6px; }
-    .tab-active { font-size: 18px; font-weight: 900; color: #111; border-bottom: 3px solid #8a2be2; padding: 4px 10px; }
-
-    .cards-wrapper { padding: 15px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .cards-wrapper { padding: 5px 20px; display: flex; flex-direction: column; gap: 14px; }
     .action-card { width: 100%; border-radius: 18px; padding: 20px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,0.1); color: #fff; transition: transform 0.15s; }
     .action-card:active { transform: scale(0.97); }
     .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border: 1.5px solid #89cff0; }
@@ -87,6 +96,16 @@
     .card-text h3 { font-size: 20px; font-weight: 900; margin-bottom: 4px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
     .card-text p { font-size: 12px; font-weight: 600; opacity: 0.95; }
     .card-icon { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+
+    /* Logout Screen Page */
+    #screenLogout { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background: #ffffff; padding: 30px 20px; text-align: center; }
+    .logout-box { width: 100%; max-width: 360px; background: #fafafa; border-radius: 24px; padding: 30px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.08); border: 1.5px solid #eaeaea; }
+    .logout-icon { font-size: 54px; margin-bottom: 15px; }
+    .logout-title { font-size: 22px; font-weight: 900; color: #111; margin-bottom: 8px; }
+    .logout-sub { font-size: 14px; color: #666; margin-bottom: 25px; line-height: 1.4; }
+    .logout-btn-group { display: flex; flex-direction: column; gap: 12px; }
+    .btn-exit { width: 100%; padding: 14px; background: #ff3366; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(255,51,102,0.35); }
+    .btn-stay { width: 100%; padding: 14px; background: #e0e0e0; color: #333; font-size: 16px; font-weight: bold; border: none; border-radius: 14px; cursor: pointer; }
 
     /* Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 150; }
@@ -97,10 +116,8 @@
     .edit-input { width: 100%; padding: 12px; border: 1.5px solid #ccc; border-radius: 12px; font-size: 16px; margin-bottom: 15px; outline: none; }
     .btn-save { width: 100%; padding: 12px; background: #8a2be2; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; }
     
-    /* Avatar Selection Grid */
     .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
-    .avatar-opt { width: 60px; height: 60px; border-radius: 50%; border: 2.5px solid #eee; overflow: hidden; cursor: pointer; transition: transform 0.1s; }
-    .avatar-opt:active { transform: scale(0.9); }
+    .avatar-opt { width: 60px; height: 60px; border-radius: 50%; border: 2.5px solid #eee; overflow: hidden; cursor: pointer; }
     .avatar-opt.selected { border-color: #8a2be2; transform: scale(1.08); box-shadow: 0 0 10px rgba(138,43,226,0.5); }
     .avatar-opt img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -115,7 +132,6 @@
     #gameArea { display: none; width: 100%; max-width: 430px; margin: 0 auto; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
     .app-title { font-size: 26px; font-weight: 900; letter-spacing: 0.5px; background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 12px; }
     .top-controls { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .top-right-btns { display: flex; gap: 8px; align-items: center; }
     .user-badge { background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px; font-size: 13px; font-weight: bold; border: 1px solid #89cff0; cursor: pointer; }
     .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); padding: 5px 12px; border-radius: 15px; font-weight: 900; font-size: 14px; transition: transform 0.2s; }
     .coins-badge.gain { transform: scale(1.15); }
@@ -135,7 +151,6 @@
     .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
     .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
 
-    /* Bet History Bar (Fully Fixed with icon & label) */
     .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; }
     .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 6px; }
     .history-items-row { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none; }
@@ -165,12 +180,31 @@
       </div>
       <div class="brand-title">Greedy Coin</div>
       <div class="auth-bottom-panel">
-        <button class="btn-login btn-facebook" onclick="quickLogin()">Sign in with Facebook</button>
-        <button class="btn-login btn-google" onclick="quickLogin()">Sign in with Google</button>
+        
+        <!-- Facebook Button with Real SVG Logo -->
+        <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+          Sign in with Facebook
+        </button>
+
+        <!-- Google Button with Real Colored SVG Logo -->
+        <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/>
+            <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+          </svg>
+          Sign in with Google
+        </button>
+
         <button class="more-options-btn" onclick="showScreen('screenPhone')">More Options <span class="last-login-tag">Last login</span></button>
         <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
       </div>
     </div>
+
     <div id="screenPhone">
       <div class="back-btn" onclick="showScreen('screenMain')">❮</div>
       <div class="step-title">Register / log in</div>
@@ -180,6 +214,7 @@
       </div>
       <div class="next-btn-container"><button class="btn-round-next" onclick="goToPassword()">➔</button></div>
     </div>
+
     <div id="screenPass">
       <div id="loadingOverlay"><div class="spinner"></div></div>
       <div class="back-btn" onclick="showScreen('screenPhone')">❮</div>
@@ -192,7 +227,7 @@
   <!-- 2. Profile Screen (Full Colorful Dashboard) -->
   <div id="screenProfile">
     <div class="profile-cover">
-      <div class="profile-back-btn" onclick="logoutBackToAuth()" title="Back to Login">❮</div>
+      <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
         <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Avatar">⚙️</div>
@@ -216,6 +251,24 @@
 
     <div class="accompany-badge">Active: <span id="profDays">1</span> Days ✨</div>
 
+    <!-- Follow & Text Feature Bar -->
+    <div class="follow-stats-row">
+      <div class="follow-counts">
+        <div class="f-count-item">
+          <span class="f-num" id="followersCount">142</span>
+          <span class="f-lbl">Followers</span>
+        </div>
+        <div class="f-count-item">
+          <span class="f-num" id="followingCount">35</span>
+          <span class="f-lbl">Following</span>
+        </div>
+      </div>
+      <div class="profile-action-btns">
+        <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
+        <button class="btn-text-msg" onclick="openTextChat()">💬 Text</button>
+      </div>
+    </div>
+
     <div class="stats-container">
       <div class="stat-item">
         <div class="stat-val">🪙 <span id="profBalance">10000</span></div>
@@ -226,8 +279,6 @@
         <div class="stat-label">Total Won Coins</div>
       </div>
     </div>
-
-    <div class="profile-tabs"><div class="tab-active">Profile Overview</div></div>
 
     <div class="cards-wrapper">
       <div class="action-card card-play" onclick="enterGameFromProfile()">
@@ -241,7 +292,20 @@
     </div>
   </div>
 
-  <!-- Safe Avatar Selection & Name Modal -->
+  <!-- 3. Dedicated Log Out Screen -->
+  <div id="screenLogout">
+    <div class="logout-box">
+      <div class="logout-icon">🚪</div>
+      <div class="logout-title">Log Out / Exit</div>
+      <div class="logout-sub">क्या आप वाकई अपनी प्रोफाइल से लॉग आउट करके बाहर जाना चाहते हैं?</div>
+      <div class="logout-btn-group">
+        <button class="btn-exit" onclick="confirmLogout()">हाँ, लॉग आउट करें</button>
+        <button class="btn-stay" onclick="stayInProfile()">वापस प्रोफाइल पर रहें</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
   <div id="modalEditProfile" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeEditProfile()">✕</div>
@@ -256,7 +320,6 @@
     </div>
   </div>
 
-  <!-- Frame Modal -->
   <div id="modalFrames" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeFrames()">✕</div>
@@ -270,7 +333,6 @@
     </div>
   </div>
 
-  <!-- Recharge Modal (With Exact Level Rules) -->
   <div id="modalRecharge" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeRecharge()">✕</div>
@@ -286,7 +348,7 @@
     </div>
   </div>
 
-  <!-- 3. Main Game Arena -->
+  <!-- 4. Main Game Arena -->
   <div id="gameArea">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
@@ -332,12 +394,12 @@
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
         <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
-        <div class="rule-item"><b>3. Level Rewards:</b><br>
+        <div class="rule-item"><b>3. Automatic Return:</b> Result आने के 3 सेकंड बाद आप अपने-आप प्रोफाइल पेज पर वापस आ जाएंगे।</div>
+        <div class="rule-item"><b>4. Level Rewards:</b><br>
           • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
           • Win each round = <b>+1 Level</b><br>
           • 1 Lakh Coins Lost in bets = <b>+40 Level</b> bonus!
         </div>
-        <div class="rule-item"><b>4. Multiplier Payouts:</b><br>• 🐓 Rooster: <b>25x</b><br>• 🐟 Fish: <b>19x</b><br>• 🐑 Sheep: <b>14x</b><br>• 🦐 Shrimp: <b>9x</b><br>• 🍅, 🫑, 🥕, 🌽: <b>4x each</b></div>
       </div>
     </div>
   </div>
@@ -346,7 +408,7 @@
     const socket = io();
     let isGameStarted = false;
 
-    // Pre-made 12 Safe Official Avatars
+    // Safe Characters List
     const safeAvatars = [
       "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1",
       "https://api.dicebear.com/7.x/bottts/svg?seed=King2",
@@ -362,7 +424,7 @@
       "https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1"
     ];
 
-    // Load Local Persistent Data
+    // Local Data Store
     let userId = localStorage.getItem("greedy_user_id") || ("#" + Math.floor(100000 + Math.random() * 900000));
     let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 1;
@@ -372,6 +434,9 @@
     let userAvatar = localStorage.getItem("greedy_avatar") || safeAvatars[11];
     let activeDays = parseInt(localStorage.getItem("greedy_days")) || 1;
     let totalLossAccumulator = parseInt(localStorage.getItem("greedy_loss_acc")) || 0;
+    let followersCount = parseInt(localStorage.getItem("greedy_followers")) || 142;
+    let followingCount = parseInt(localStorage.getItem("greedy_following")) || 35;
+    let isFollowed = localStorage.getItem("greedy_is_followed") === "true";
     let lastLogin = localStorage.getItem("greedy_last_login");
 
     function checkDailyLogin() {
@@ -391,17 +456,49 @@
       document.getElementById("profBalance").innerText = coins;
       document.getElementById("profDays").innerText = activeDays;
       document.getElementById("profAvatarImg").src = userAvatar;
+      document.getElementById("followersCount").innerText = followersCount;
+      document.getElementById("followingCount").innerText = followingCount;
+      
+      const fBtn = document.getElementById("followBtn");
+      fBtn.innerText = isFollowed ? "Following" : "+ Follow";
+      fBtn.style.background = isFollowed ? "#555" : "linear-gradient(45deg, #8a2be2, #4a00e0)";
+      
       applyFrameUI(userFrame);
     }
 
-    // Step-by-Step Back Navigation
+    // Block social login until set
+    function socialLoginNotice(provider) {
+      alert(`${provider} login will be connected soon! Please tap 'More Options' below to sign in with your phone number.`);
+    }
+
+    // Follow and Text Feature
+    function toggleFollow() {
+      if (!isFollowed) {
+        followersCount++;
+        isFollowed = true;
+      } else {
+        followersCount--;
+        isFollowed = false;
+      }
+      localStorage.setItem("greedy_followers", followersCount);
+      localStorage.setItem("greedy_is_followed", isFollowed);
+      initProfileUI();
+    }
+
+    function openTextChat() {
+      let msg = prompt("Enter your message to send / चैट संदेश दर्ज करें:");
+      if(msg && msg.trim() !== "") {
+        alert("Message Sent! / आपका संदेश भेज दिया गया है!");
+      }
+    }
+
+    // Navigation Flow
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
       document.getElementById('screenPass').style.display = 'none';
       document.getElementById(screenId).style.display = 'flex';
     }
-    function quickLogin() { finishAuth(); }
     function goToPassword() { showScreen('screenPass'); }
     function doFinalLogin() {
       document.getElementById("loadingOverlay").style.display = "flex";
@@ -413,11 +510,21 @@
       initProfileUI();
       document.getElementById("authFlowContainer").style.display = "none";
       document.getElementById("gameArea").style.display = "none";
+      document.getElementById("screenLogout").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
+      
+      // Setup browser back trap for logout
+      history.pushState(null, null, location.href);
+      window.onpopstate = function () {
+        if (document.getElementById("screenProfile").style.display === "flex") {
+          openLogoutScreen();
+        } else if (document.getElementById("gameArea").style.display === "flex") {
+          goBackToProfile();
+        }
+      };
     }
 
-    // Enter Game from Profile
     function enterGameFromProfile() {
       isGameStarted = true;
       document.getElementById("screenProfile").style.display = "none";
@@ -426,7 +533,6 @@
       updateCoinsUI(coins);
     }
 
-    // Step Back: From Game -> Profile
     function goBackToProfile() {
       document.body.classList.remove("game-active");
       document.getElementById("gameArea").style.display = "none";
@@ -434,14 +540,24 @@
       initProfileUI();
     }
 
-    // Step Back: From Profile -> Login Screen
-    function logoutBackToAuth() {
+    // Logout Page Logic
+    function openLogoutScreen() {
       document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenLogout").style.display = "flex";
+    }
+
+    function stayInProfile() {
+      document.getElementById("screenLogout").style.display = "none";
+      document.getElementById("screenProfile").style.display = "flex";
+    }
+
+    function confirmLogout() {
+      document.getElementById("screenLogout").style.display = "none";
       document.getElementById("authFlowContainer").style.display = "flex";
       showScreen('screenMain');
     }
 
-    // Safe Avatar Picker
+    // Profile Settings
     function openEditProfile() {
       document.getElementById("nameInputEdit").value = userName;
       const grid = document.getElementById("avatarPickerGrid");
@@ -469,7 +585,6 @@
       closeEditProfile();
     }
 
-    // Frames
     function openFrames() { document.getElementById("modalFrames").style.display = "flex"; }
     function closeFrames() { document.getElementById("modalFrames").style.display = "none"; }
     function selectFrame(type) {
@@ -484,7 +599,6 @@
       if(type !== 'none') fr.classList.add("frame-" + type);
     }
 
-    // Recharge Rules: Every 1 Lakh = +20 Level
     function openRecharge() { document.getElementById("modalRecharge").style.display = "flex"; }
     function closeRecharge() { document.getElementById("modalRecharge").style.display = "none"; }
     function processRecharge() {
@@ -492,10 +606,9 @@
       if(!val || val <= 0) return;
       coins += val;
       
-      // Calculate levels: 100,000 = 20 Lv (Ratio: 1 Lv per 5,000 coins)
       let gainedLevels = Math.floor(val / 100000) * 20;
       if (gainedLevels === 0 && val >= 5000) {
-        gainedLevels = Math.floor(val / 5000); // Proportional level for smaller recharge
+        gainedLevels = Math.floor(val / 5000);
       }
       userLevel += gainedLevels;
       
@@ -571,7 +684,7 @@
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
           document.getElementById("card-" + data.winner).classList.add("winner");
           
-          // ADD TO HISTORY (Clean Icon + Multiplier Pill)
+          // Add Result to Bet History
           const row = document.getElementById("historyRow");
           const pill = document.createElement("div");
           pill.className = "history-pill";
@@ -581,7 +694,7 @@
           `;
           row.insertBefore(pill, row.firstChild);
 
-          // Payout & Level Rules
+          // Payout Calculation
           let totalBetThisRound = Object.values(bets).reduce((a, b) => a + b, 0);
           let wonBet = bets[data.winner];
 
@@ -590,28 +703,28 @@
             updateCoinsUI(coins + wonAmount, true);
             totalWon += wonAmount;
             localStorage.setItem("greedy_won", totalWon);
-            
-            // Win rule: +1 Level per win
-            userLevel += 1;
+            userLevel += 1; // +1 Level per win
             localStorage.setItem("greedy_level", userLevel);
           } else if (totalBetThisRound > 0) {
-            // Loss rule: Accumulate loss, 100000 loss = +40 Level
             totalLossAccumulator += totalBetThisRound;
             if (totalLossAccumulator >= 100000) {
               let bonusLevels = Math.floor(totalLossAccumulator / 100000) * 40;
               userLevel += bonusLevels;
               totalLossAccumulator = totalLossAccumulator % 100000;
               localStorage.setItem("greedy_level", userLevel);
-              alert(`Reward: You reached 1 Lakh loss milestone! Bonus +${bonusLevels} Level awarded!`);
             }
             localStorage.setItem("greedy_loss_acc", totalLossAccumulator);
           }
 
+          // AUTOMATIC RETURN TO PROFILE: परिणाम आने के 3 सेकंड बाद अपने-आप प्रोफाइल पर वापसी
           setTimeout(() => {
             document.getElementById("card-" + data.winner).classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
             document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
-          }, 3500);
+            
+            // Auto back to profile screen
+            goBackToProfile();
+          }, 3000);
         }
       }
       if(isGameStarted) spinStep();
