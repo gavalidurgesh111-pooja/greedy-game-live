@@ -47,7 +47,8 @@
     #screenProfile { display: none; width: 100%; max-width: 480px; margin: 0 auto; flex-direction: column; background: #fff; min-height: 100vh; position: relative; padding-bottom: 25px; }
     .profile-cover { width: 100%; height: 230px; background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 12px; }
-    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
+    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
+    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; border: 1.5px solid rgba(255,255,255,0.8); cursor: pointer; }
     
     .profile-header-area { display: flex; flex-direction: column; align-items: flex-start; padding: 0 20px; margin-top: -50px; position: relative; z-index: 2; }
     .avatar-wrapper { position: relative; width: 96px; height: 96px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
@@ -87,19 +88,24 @@
     .card-text p { font-size: 12px; font-weight: 600; opacity: 0.95; }
     .card-icon { font-size: 40px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
 
-    /* Modals for Profile Management */
+    /* Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 150; }
-    .custom-modal { background: #fff; border-radius: 24px; width: 90%; max-width: 350px; padding: 24px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    .custom-modal { background: #fff; border-radius: 24px; width: 90%; max-width: 350px; padding: 24px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 85vh; overflow-y: auto; }
     .close-modal { position: absolute; right: 15px; top: 15px; width: 30px; height: 30px; border-radius: 50%; background: #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: bold; color: #555; }
     .modal-title-dark { font-size: 20px; font-weight: 900; color: #111; margin-bottom: 15px; text-align: center; }
     
     .edit-input { width: 100%; padding: 12px; border: 1.5px solid #ccc; border-radius: 12px; font-size: 16px; margin-bottom: 15px; outline: none; }
-    .edit-input:focus { border-color: #8a2be2; }
-    .btn-save { width: 100%; padding: 12px; background: #8a2be2; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(138,43,226,0.4); }
+    .btn-save { width: 100%; padding: 12px; background: #8a2be2; color: #fff; font-size: 16px; font-weight: bold; border: none; border-radius: 12px; cursor: pointer; }
     
+    /* Avatar Selection Grid */
+    .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+    .avatar-opt { width: 60px; height: 60px; border-radius: 50%; border: 2.5px solid #eee; overflow: hidden; cursor: pointer; transition: transform 0.1s; }
+    .avatar-opt:active { transform: scale(0.9); }
+    .avatar-opt.selected { border-color: #8a2be2; transform: scale(1.08); box-shadow: 0 0 10px rgba(138,43,226,0.5); }
+    .avatar-opt img { width: 100%; height: 100%; object-fit: cover; }
+
     .frame-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
     .frame-opt { height: 95px; border-radius: 16px; background: #f9f9f9; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; gap: 6px; font-size: 13px; font-weight: bold; }
-    .frame-opt:active { border-color: #8a2be2; }
     .frame-preview { width: 44px; height: 44px; border-radius: 50%; }
 
     /* Main Game UI */
@@ -128,12 +134,15 @@
     .chip { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;}
     .chip-100 { background: #00bcd4; } .chip-1000 { background: #ff9800; } .chip-2000 { background: #e91e63; } .chip-5000 { background: #9c27b0; }
     .chip.selected { outline: 3.5px solid #ffd700; transform: translateY(-4px); }
-    .history-card { width: 100%; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #ffd700; border-radius: 14px; padding: 6px 10px; display: flex; flex-direction: column; }
-    .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 4px; }
-    .history-items-row { display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; }
-    .history-pill { min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff; border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 
-    /* Modals for Rules & Settings */
+    /* Bet History Bar (Fully Fixed with icon & label) */
+    .history-card { width: 100%; background: rgba(255, 255, 255, 0.9); border: 1.5px solid #ffd700; border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; }
+    .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 6px; }
+    .history-items-row { display: flex; gap: 8px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none; }
+    .history-pill { min-width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 2px solid #89cff0; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+    .history-pill .pill-icon { font-size: 18px; line-height: 1; }
+    .history-pill .pill-rate { font-size: 9px; font-weight: 900; color: #b8860b; margin-top: 1px; }
+
     .custom-card-game { background: linear-gradient(180deg, #9b51e0 0%, #6b26b9 40%, #521896 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 18px 20px; color: #fff; box-shadow: 0 0 30px rgba(180, 70, 255, 0.6); position: relative; }
     .modal-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; }
     .modal-title { font-size: 22px; font-weight: 900; color: #ffee55; }
@@ -183,15 +192,16 @@
   <!-- 2. Profile Screen (Full Colorful Dashboard) -->
   <div id="screenProfile">
     <div class="profile-cover">
+      <div class="profile-back-btn" onclick="logoutBackToAuth()" title="Back to Login">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Photo">⚙️</div>
+        <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Avatar">⚙️</div>
       </div>
     </div>
     
     <div class="profile-header-area">
       <div class="avatar-wrapper" onclick="openFrames()" title="Tap to change frame">
-        <img src="https://ui-avatars.com/api/?name=Player&background=random" class="avatar-img" id="profAvatarImg">
+        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
         <div class="avatar-frame" id="profAvatarFrame"></div>
       </div>
       <div class="user-name-box">
@@ -225,25 +235,28 @@
         <div class="card-icon">🎰</div>
       </div>
       <div class="action-card card-recharge" onclick="openRecharge()">
-        <div class="card-text"><h3>💎 Recharge Coins</h3><p>Top up wallet & boost your level</p></div>
+        <div class="card-text"><h3>💎 Recharge Coins</h3><p>1 Lakh = +20 Lv | 2 Lakh = +40 Lv</p></div>
         <div class="card-icon">💰</div>
       </div>
     </div>
   </div>
 
-  <!-- Profile Modals -->
+  <!-- Safe Avatar Selection & Name Modal -->
   <div id="modalEditProfile" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeEditProfile()">✕</div>
-      <div class="modal-title-dark">Edit Profile</div>
-      <label style="font-size:12px; color:#555; font-weight:bold; margin-bottom:5px; display:block;">Change Profile Picture</label>
-      <input type="file" id="picUpload" accept="image/*" class="edit-input" onchange="uploadPic(event)">
+      <div class="modal-title-dark">Choose Safe Avatar</div>
+      <p style="font-size:12px; color:#666; margin-bottom:12px; text-align:center;">Pick an official character avatar:</p>
+      
+      <div class="avatar-grid" id="avatarPickerGrid"></div>
+      
       <label style="font-size:12px; color:#555; font-weight:bold; margin-bottom:5px; display:block;">Enter Name (any language / emoji)</label>
       <input type="text" id="nameInputEdit" class="edit-input" placeholder="e.g. 🦋DURGESH🦋">
-      <button class="btn-save" onclick="saveProfile()">Save Profile</button>
+      <button class="btn-save" onclick="saveProfile()">Save Changes</button>
     </div>
   </div>
 
+  <!-- Frame Modal -->
   <div id="modalFrames" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeFrames()">✕</div>
@@ -257,13 +270,19 @@
     </div>
   </div>
 
+  <!-- Recharge Modal (With Exact Level Rules) -->
   <div id="modalRecharge" class="modal-overlay">
     <div class="custom-modal">
       <div class="close-modal" onclick="closeRecharge()">✕</div>
       <div class="modal-title-dark">Recharge Coins</div>
-      <p style="font-size:13px; color:#666; margin-bottom:15px; text-align:center;">Recharge adds coins to your balance and boosts your account Level (Lv)!</p>
-      <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter Amount (e.g. 5000)">
-      <button class="btn-save" onclick="processRecharge()">Add Coins & Level Up</button>
+      <p style="font-size:13px; color:#666; margin-bottom:15px; text-align:center;">
+        <b>Level Reward:</b><br>
+        1,00,000 Coins = <b>+20 Lv</b><br>
+        2,00,000 Coins = <b>+40 Lv</b><br>
+        3,00,000 Coins = <b>+60 Lv</b>
+      </p>
+      <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter Coins (e.g. 100000)">
+      <button class="btn-save" onclick="processRecharge()">Recharge Now</button>
     </div>
   </div>
 
@@ -271,7 +290,7 @@
   <div id="gameArea">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
-      <div class="user-badge" onclick="goBackToProfile()">👤 Profile</div>
+      <div class="user-badge" onclick="goBackToProfile()">❮ 👤 Profile</div>
       <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
       <div class="top-right-btns">
         <div class="icon-btn" onclick="openRules()">📜</div>
@@ -298,7 +317,7 @@
     </div>
 
     <div class="history-card" id="historyCard">
-      <div class="history-label">📜 Bet History:</div>
+      <div class="history-label">📜 Bet History (Previous Results):</div>
       <div class="history-items-row" id="historyRow"></div>
     </div>
   </div>
@@ -312,10 +331,13 @@
       </div>
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
-        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets.</div>
-        <div class="rule-item"><b>3.</b> Bet on a maximum of <b>6 slots</b> per round.</div>
+        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
+        <div class="rule-item"><b>3. Level Rewards:</b><br>
+          • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
+          • Win each round = <b>+1 Level</b><br>
+          • 1 Lakh Coins Lost in bets = <b>+40 Level</b> bonus!
+        </div>
         <div class="rule-item"><b>4. Multiplier Payouts:</b><br>• 🐓 Rooster: <b>25x</b><br>• 🐟 Fish: <b>19x</b><br>• 🐑 Sheep: <b>14x</b><br>• 🦐 Shrimp: <b>9x</b><br>• 🍅, 🫑, 🥕, 🌽: <b>4x each</b></div>
-        <div class="rule-item"><b>5.</b> Winning payout equals original bet plus net earnings added instantly to your balance.</div>
       </div>
     </div>
   </div>
@@ -324,6 +346,22 @@
     const socket = io();
     let isGameStarted = false;
 
+    // Pre-made 12 Safe Official Avatars
+    const safeAvatars = [
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=King2",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Queen3",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Lion5",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Eagle6",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Phoenix7",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Gold8",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Silver9",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Hero10",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Star11",
+      "https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1"
+    ];
+
     // Load Local Persistent Data
     let userId = localStorage.getItem("greedy_user_id") || ("#" + Math.floor(100000 + Math.random() * 900000));
     let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
@@ -331,8 +369,9 @@
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 10000;
     let userFrame = localStorage.getItem("greedy_frame") || "none";
-    let userAvatar = localStorage.getItem("greedy_avatar") || `https://ui-avatars.com/api/?name=${userName}&background=random`;
+    let userAvatar = localStorage.getItem("greedy_avatar") || safeAvatars[11];
     let activeDays = parseInt(localStorage.getItem("greedy_days")) || 1;
+    let totalLossAccumulator = parseInt(localStorage.getItem("greedy_loss_acc")) || 0;
     let lastLogin = localStorage.getItem("greedy_last_login");
 
     function checkDailyLogin() {
@@ -355,7 +394,7 @@
       applyFrameUI(userFrame);
     }
 
-    // Navigation
+    // Step-by-Step Back Navigation
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
@@ -366,7 +405,7 @@
     function goToPassword() { showScreen('screenPass'); }
     function doFinalLogin() {
       document.getElementById("loadingOverlay").style.display = "flex";
-      setTimeout(() => { document.getElementById("loadingOverlay").style.display = "none"; finishAuth(); }, 1500);
+      setTimeout(() => { document.getElementById("loadingOverlay").style.display = "none"; finishAuth(); }, 1200);
     }
 
     function finishAuth() {
@@ -378,6 +417,7 @@
       document.body.style.background = "#f4f6f9";
     }
 
+    // Enter Game from Profile
     function enterGameFromProfile() {
       isGameStarted = true;
       document.getElementById("screenProfile").style.display = "none";
@@ -385,6 +425,8 @@
       document.body.classList.add("game-active");
       updateCoinsUI(coins);
     }
+
+    // Step Back: From Game -> Profile
     function goBackToProfile() {
       document.body.classList.remove("game-active");
       document.getElementById("gameArea").style.display = "none";
@@ -392,30 +434,42 @@
       initProfileUI();
     }
 
-    // Profile Management Logic
-    function openEditProfile() { document.getElementById("nameInputEdit").value = userName; document.getElementById("modalEditProfile").style.display = "flex"; }
+    // Step Back: From Profile -> Login Screen
+    function logoutBackToAuth() {
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("authFlowContainer").style.display = "flex";
+      showScreen('screenMain');
+    }
+
+    // Safe Avatar Picker
+    function openEditProfile() {
+      document.getElementById("nameInputEdit").value = userName;
+      const grid = document.getElementById("avatarPickerGrid");
+      grid.innerHTML = "";
+      safeAvatars.forEach(url => {
+        const d = document.createElement("div");
+        d.className = "avatar-opt" + (userAvatar === url ? " selected" : "");
+        d.innerHTML = `<img src="${url}">`;
+        d.onclick = () => {
+          document.querySelectorAll(".avatar-opt").forEach(x => x.classList.remove("selected"));
+          d.classList.add("selected");
+          userAvatar = url;
+        };
+        grid.appendChild(d);
+      });
+      document.getElementById("modalEditProfile").style.display = "flex";
+    }
     function closeEditProfile() { document.getElementById("modalEditProfile").style.display = "none"; }
     
-    function uploadPic(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          userAvatar = e.target.result;
-          document.getElementById("profAvatarImg").src = userAvatar;
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-    
     function saveProfile() {
-      userName = document.getElementById("nameInputEdit").value || "🦋DURGESH🦋";
+      userName = document.getElementById("nameInputEdit").value.trim() || "🦋DURGESH🦋";
       localStorage.setItem("greedy_name", userName);
       localStorage.setItem("greedy_avatar", userAvatar);
       initProfileUI();
       closeEditProfile();
     }
 
+    // Frames
     function openFrames() { document.getElementById("modalFrames").style.display = "flex"; }
     function closeFrames() { document.getElementById("modalFrames").style.display = "none"; }
     function selectFrame(type) {
@@ -430,21 +484,27 @@
       if(type !== 'none') fr.classList.add("frame-" + type);
     }
 
+    // Recharge Rules: Every 1 Lakh = +20 Level
     function openRecharge() { document.getElementById("modalRecharge").style.display = "flex"; }
     function closeRecharge() { document.getElementById("modalRecharge").style.display = "none"; }
     function processRecharge() {
       const val = parseInt(document.getElementById("rechargeInput").value);
       if(!val || val <= 0) return;
       coins += val;
-      let levelUp = Math.floor(val / 1000) || 1; 
-      userLevel += levelUp;
+      
+      // Calculate levels: 100,000 = 20 Lv (Ratio: 1 Lv per 5,000 coins)
+      let gainedLevels = Math.floor(val / 100000) * 20;
+      if (gainedLevels === 0 && val >= 5000) {
+        gainedLevels = Math.floor(val / 5000); // Proportional level for smaller recharge
+      }
+      userLevel += gainedLevels;
       
       localStorage.setItem("greedy_coins", coins);
       localStorage.setItem("greedy_level", userLevel);
       
       initProfileUI();
       closeRecharge();
-      alert(`Recharge Successful! Added ${val} coins. Level boosted by +${levelUp}!`);
+      alert(`Recharge Successful! Added ${val} coins. Level boosted by +${gainedLevels} Lv!`);
     }
 
     function openRules() { document.getElementById("rulesModal").style.display = "flex"; }
@@ -467,7 +527,12 @@
       }
     }
 
-    const itemData = { 1: { icon: "🐓", rate: 25 }, 2: { icon: "🍅", rate: 4 }, 3: { icon: "🐑", rate: 14 }, 4: { icon: "🫑", rate: 4 }, 5: { icon: "🐟", rate: 19 }, 6: { icon: "🥕", rate: 4 }, 7: { icon: "🦐", rate: 9 }, 8: { icon: "🌽", rate: 4 }};
+    const itemData = {
+      1: { icon: "🐓", rate: 25 }, 2: { icon: "🍅", rate: 4 },
+      3: { icon: "🐑", rate: 14 }, 4: { icon: "🫑", rate: 4 },
+      5: { icon: "🐟", rate: 19 }, 6: { icon: "🥕", rate: 4 },
+      7: { icon: "🦐", rate: 9 }, 8: { icon: "🌽", rate: 4 }
+    };
 
     function selectChip(amount, el) {
       selectedChip = amount;
@@ -506,12 +571,42 @@
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
           document.getElementById("card-" + data.winner).classList.add("winner");
           
-          if (bets[data.winner] > 0) {
-            let wonAmount = bets[data.winner] * itemData[data.winner].rate;
+          // ADD TO HISTORY (Clean Icon + Multiplier Pill)
+          const row = document.getElementById("historyRow");
+          const pill = document.createElement("div");
+          pill.className = "history-pill";
+          pill.innerHTML = `
+            <span class="pill-icon">${itemData[data.winner].icon}</span>
+            <span class="pill-rate">${itemData[data.winner].rate}x</span>
+          `;
+          row.insertBefore(pill, row.firstChild);
+
+          // Payout & Level Rules
+          let totalBetThisRound = Object.values(bets).reduce((a, b) => a + b, 0);
+          let wonBet = bets[data.winner];
+
+          if (wonBet > 0) {
+            let wonAmount = wonBet * itemData[data.winner].rate;
             updateCoinsUI(coins + wonAmount, true);
             totalWon += wonAmount;
             localStorage.setItem("greedy_won", totalWon);
+            
+            // Win rule: +1 Level per win
+            userLevel += 1;
+            localStorage.setItem("greedy_level", userLevel);
+          } else if (totalBetThisRound > 0) {
+            // Loss rule: Accumulate loss, 100000 loss = +40 Level
+            totalLossAccumulator += totalBetThisRound;
+            if (totalLossAccumulator >= 100000) {
+              let bonusLevels = Math.floor(totalLossAccumulator / 100000) * 40;
+              userLevel += bonusLevels;
+              totalLossAccumulator = totalLossAccumulator % 100000;
+              localStorage.setItem("greedy_level", userLevel);
+              alert(`Reward: You reached 1 Lakh loss milestone! Bonus +${bonusLevels} Level awarded!`);
+            }
+            localStorage.setItem("greedy_loss_acc", totalLossAccumulator);
           }
+
           setTimeout(() => {
             document.getElementById("card-" + data.winner).classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
