@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,7 @@
     .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .lang-select-login {
       background: rgba(0,0,0,0.5); border: 1.5px solid rgba(255,255,255,0.7); border-radius: 18px;
-      padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none;
+      padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none; cursor: pointer;
     }
     .help-icon {
       width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.45);
@@ -50,10 +50,12 @@
       cursor: pointer; display: flex; align-items: center; gap: 6px; margin-top: 4px; padding: 10px;
     }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
+    
     .terms-text {
       font-size: 11px; color: rgba(255, 255, 255, 0.85); text-align: center; line-height: 1.4;
       display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px;
     }
+    .terms-link { color: #fff; text-decoration: underline; cursor: pointer; font-weight: 600; }
 
     /* Screen 2: Phone Input */
     #screenPhone { display: none; flex: 1; flex-direction: column; background: #fafafa; padding: 20px; position: relative; }
@@ -61,10 +63,10 @@
     .step-title { font-size: 22px; font-weight: 800; color: #000; margin-bottom: 5px; }
     .step-subtitle { font-size: 14px; color: #666; margin-bottom: 30px; }
     
-    .input-box { display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 12px 16px; }
+    .input-box { display: flex; align-items: center; background: #f0f0f0; border-radius: 16px; padding: 10px 14px; gap: 8px; }
     .country-code-select {
-      font-size: 16px; font-weight: bold; color: #000; border: none; background: transparent; 
-      outline: none; margin-right: 8px; cursor: pointer; width: 105px;
+      font-size: 15px; font-weight: bold; color: #000; border: none; background: transparent; 
+      outline: none; cursor: pointer; max-width: 130px; text-overflow: ellipsis;
     }
     .phone-input { border: none; background: transparent; font-size: 16px; outline: none; width: 100%; color: #333; }
     
@@ -88,6 +90,17 @@
       border-top-color: #8a2be2; animation: spin 1s linear infinite;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Policy & Terms Fullscreen Pages */
+    .policy-page {
+      display: none; position: fixed; inset: 0; z-index: 200; background: #ffffff;
+      flex-direction: column; padding: 20px; color: #222; overflow-y: auto;
+    }
+    .policy-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+    .policy-header h2 { font-size: 20px; font-weight: 900; color: #1e3c72; }
+    .policy-content { font-size: 14px; line-height: 1.6; color: #444; }
+    .policy-section { margin-bottom: 16px; }
+    .policy-section h3 { font-size: 15px; font-weight: bold; color: #000; margin-bottom: 4px; }
 
     /* Main Game UI */
     body.game-active { background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%); }
@@ -144,7 +157,7 @@
     .history-items-row { display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; }
     .history-pill { min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff; border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 
-    /* Modals (Settings & Rules) */
+    /* Modals */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 120; }
     .custom-card {
       background: linear-gradient(180deg, #9b51e0 0%, #6b26b9 40%, #521896 100%);
@@ -158,7 +171,6 @@
       background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff;
     }
     
-    /* Settings row styles */
     .settings-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.15); }
     .settings-row:last-child { border-bottom: none; }
     .settings-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
@@ -170,7 +182,6 @@
     input:checked + .slider { background-color: #00e676; border-color: #00e676; }
     input:checked + .slider:before { transform: translateX(24px); }
 
-    /* Rules text list styling */
     .rules-body { max-height: 380px; overflow-y: auto; font-size: 13px; line-height: 1.6; color: #f5e8ff; padding-right: 5px; scrollbar-width: thin; }
     .rule-item { margin-bottom: 12px; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 12px; border-left: 3px solid #ffee55; }
     .rule-item b { color: #ffee55; }
@@ -184,10 +195,10 @@
     <div id="screenMain">
       <div class="auth-top-bar">
         <select class="lang-select-login" id="loginLangSelector" onchange="changeLanguage(this.value)">
+          <option value="en" selected>English</option>
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
           <option value="gu">ગુજરાતી</option>
-          <option value="en">English</option>
         </select>
         <div class="help-icon">💬</div>
       </div>
@@ -206,29 +217,57 @@
         </button>
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
-          <span>By continuing, you agree to the <u>Terms and Conditions</u> & <u>Privacy Policy</u></span>
+          <span>By continuing, you agree to the <span class="terms-link" onclick="openDoc('terms')">Terms and Conditions</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span>
         </div>
       </div>
     </div>
 
-    <!-- Screen 2: Phone Number Input -->
+    <!-- Screen 2: Phone Number Input (With World Country Codes) -->
     <div id="screenPhone">
       <div class="back-btn" onclick="showScreen('screenMain')">❮</div>
-      <div class="step-title">Register / log in</div>
-      <div class="step-subtitle">Enter your phone number</div>
+      <div class="step-title" id="txtRegisterTitle">Register / log in</div>
+      <div class="step-subtitle" id="txtEnterPhone">Enter your phone number</div>
       
       <div class="input-box">
         <select class="country-code-select" id="countryCode">
-          <option value="+91">🇮🇳 +91</option>
-          <option value="+1">🇺🇸 +1</option>
-          <option value="+44">🇬🇧 +44</option>
-          <option value="+971">🇦🇪 +971</option>
-          <option value="+61">🇦🇺 +61</option>
-          <option value="+92">🇵🇰 +92</option>
-          <option value="+880">🇧🇩 +880</option>
-          <option value="+977">🇳🇵 +977</option>
-          <option value="+94">🇱🇰 +94</option>
-          <option value="+65">🇸🇬 +65</option>
+          <option value="+91" selected>🇮🇳 India (+91)</option>
+          <option value="+1">🇺🇸 USA (+1)</option>
+          <option value="+1">🇨🇦 Canada (+1)</option>
+          <option value="+44">🇬🇧 UK (+44)</option>
+          <option value="+971">🇦🇪 UAE (+971)</option>
+          <option value="+966">🇸🇦 Saudi (+966)</option>
+          <option value="+61">🇦🇺 Australia (+61)</option>
+          <option value="+92">🇵🇰 Pakistan (+92)</option>
+          <option value="+880">🇧🇩 Bangladesh (+880)</option>
+          <option value="+977">🇳🇵 Nepal (+977)</option>
+          <option value="+94">🇱🇰 Sri Lanka (+94)</option>
+          <option value="+65">🇸🇬 Singapore (+65)</option>
+          <option value="+60">🇲🇾 Malaysia (+60)</option>
+          <option value="+62">🇮🇩 Indonesia (+62)</option>
+          <option value="+66">🇹🇭 Thailand (+66)</option>
+          <option value="+63">🇵🇭 Philippines (+63)</option>
+          <option value="+84">🇻🇳 Vietnam (+84)</option>
+          <option value="+81">🇯🇵 Japan (+81)</option>
+          <option value="+82">🇰🇷 South Korea (+82)</option>
+          <option value="+86">🇨🇳 China (+86)</option>
+          <option value="+49">🇩🇪 Germany (+49)</option>
+          <option value="+33">🇫🇷 France (+33)</option>
+          <option value="+39">🇮🇹 Italy (+39)</option>
+          <option value="+34">🇪🇸 Spain (+34)</option>
+          <option value="+7">🇷🇺 Russia (+7)</option>
+          <option value="+90">🇹🇷 Turkey (+90)</option>
+          <option value="+974">🇶🇦 Qatar (+974)</option>
+          <option value="+968">🇴🇲 Oman (+968)</option>
+          <option value="+965">🇰🇼 Kuwait (+965)</option>
+          <option value="+973">🇧🇭 Bahrain (+973)</option>
+          <option value="+20">🇪🇬 Egypt (+20)</option>
+          <option value="+27">🇿🇦 South Africa (+27)</option>
+          <option value="+234">🇳🇬 Nigeria (+234)</option>
+          <option value="+254">🇰🇪 Kenya (+254)</option>
+          <option value="+55">🇧🇷 Brazil (+55)</option>
+          <option value="+52">🇲🇽 Mexico (+52)</option>
+          <option value="+54">🇦🇷 Argentina (+54)</option>
+          <option value="+64">🇳🇿 New Zealand (+64)</option>
         </select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number" maxlength="15">
       </div>
@@ -242,16 +281,69 @@
     <div id="screenPass">
       <div id="loadingOverlay"><div class="spinner"></div></div>
       <div class="back-btn" onclick="showScreen('screenPhone')">❮</div>
-      <div class="step-title">Log in</div>
-      <div class="step-subtitle">Enter Password</div>
+      <div class="step-title" id="txtLoginTitle">Log in</div>
+      <div class="step-subtitle" id="txtEnterPass">Enter Password</div>
       <div class="input-box">
         <input type="password" class="pass-input" id="passInput" placeholder="Password">
       </div>
-      <div class="forgot-pass">Forgot password</div>
+      <div class="forgot-pass" id="txtForgotPass">Forgot password</div>
       <div class="next-btn-container">
         <button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button>
       </div>
     </div>
+
+    <!-- Terms and Conditions Page -->
+    <div id="termsPage" class="policy-page">
+      <div class="policy-header">
+        <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div>
+        <h2>Terms & Conditions</h2>
+      </div>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h3>1. Virtual Game Currency</h3>
+          <p>All coins available in Greedy Coin game are purely virtual points. They carry no real-money cash value and cannot be converted or redeemed into legal currency.</p>
+        </div>
+        <div class="policy-section">
+          <h3>2. Fair Play & Outcome</h3>
+          <p>Every round outcome is decided by random server logic. The use of automated scripts, bots, or unauthorized exploits is strictly prohibited.</p>
+        </div>
+        <div class="policy-section">
+          <h3>3. Betting Limits</h3>
+          <p>To ensure game integrity and balance, players can place bets on a maximum of 6 slots per round.</p>
+        </div>
+        <div class="policy-section">
+          <h3>4. Age Restriction</h3>
+          <p>This application is intended strictly for entertainment purposes for users aged 18 and above.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Privacy Policy Page -->
+    <div id="privacyPage" class="policy-page">
+      <div class="policy-header">
+        <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div>
+        <h2>Privacy Policy</h2>
+      </div>
+      <div class="policy-content">
+        <div class="policy-section">
+          <h3>1. Information Collection</h3>
+          <p>We only collect basic identification markers such as your unique User ID, contact details, and game progress to maintain continuous game sessions.</p>
+        </div>
+        <div class="policy-section">
+          <h3>2. Data Security</h3>
+          <p>Your user details are stored securely and are never sold, rented, or distributed to any third party entities.</p>
+        </div>
+        <div class="policy-section">
+          <h3>3. Local Device Storage</h3>
+          <p>Your preferences such as sound toggles, chosen language, and wallet balance are kept safely on your local device storage.</p>
+        </div>
+        <div class="policy-section">
+          <h3>4. Support Contact</h3>
+          <p>If you have any questions regarding data handling or app usage, reach out directly through the support icon on the homepage.</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Main Game Screen -->
@@ -286,7 +378,7 @@
     </div>
 
     <div class="history-card" id="historyCard">
-      <div class="history-label" id="historyLabel">📜 पिछली बेट हिस्ट्री:</div>
+      <div class="history-label" id="historyLabel">📜 Bet History:</div>
       <div class="history-items-row" id="historyRow"></div>
     </div>
   </div>
@@ -322,39 +414,201 @@
     </div>
   </div>
 
-  <!-- Rules Modal (Screen Match) -->
+  <!-- Rules Modal -->
   <div id="rulesModal" class="modal-overlay">
     <div class="custom-card">
       <div class="modal-header">
-        <div class="modal-title">Rules:</div>
+        <div class="modal-title" id="rulesTitle">Rules:</div>
         <div class="modal-close" onclick="closeRules()">✕</div>
       </div>
-      <div class="rules-body">
-        <div class="rule-item"><b>1.</b> चिप्स चुनें (100, 1000, 2000 या 5000) और उस आइटम पर टैप करके दांव लगाएं।</div>
-        <div class="rule-item"><b>2.</b> प्रत्येक राउंड में दांव लगाने के लिए आपके पास <b>30 सेकंड</b> का समय होता है।</div>
-        <div class="rule-item"><b>3.</b> आप एक राउंड में अधिकतम <b>6 आइटम्स</b> पर ही दांव लगा सकते हैं।</div>
-        <div class="rule-item"><b>4. मल्टीप्लायर दरें:</b><br>
-          • 🐓 मुर्गा: <b>25x</b><br>
-          • 🐟 मच्छी: <b>19x</b><br>
-          • 🐑 मेंढी: <b>14x</b><br>
-          • 🦐 झींगा: <b>9x</b><br>
-          • 🍅 टमाटर, 🫑 शिमला, 🥕 गाजर, 🌽 भुट्टा: प्रत्येक <b>4x</b>
+      <div class="rules-body" id="rulesBodyContainer">
+        <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets by tapping on the icons.</div>
+        <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> in each round to place your bets.</div>
+        <div class="rule-item"><b>3.</b> You can bet on a maximum of <b>6 slots</b> in a single round.</div>
+        <div class="rule-item"><b>4. Multiplier Payouts:</b><br>
+          • 🐓 Rooster: <b>25x</b><br>
+          • 🐟 Fish: <b>19x</b><br>
+          • 🐑 Sheep: <b>14x</b><br>
+          • 🦐 Shrimp: <b>9x</b><br>
+          • 🍅 Tomato, 🫑 Pepper, 🥕 Carrot, 🌽 Corn: <b>4x each</b>
         </div>
-        <div class="rule-item"><b>5.</b> जीतने पर आपको आपका मूल दांव + मुनाफा (दांव × मल्टीप्लायर) तुरंत आपके वॉलेट में जोड़ दिया जाता है।</div>
-        <div class="rule-item"><b>6.</b> परिणाम आते ही जीतने वाले आइटम पर ग्रीन लाइट चमकेगी और वह हिस्ट्री लाइन में जुड़ जाएगा।</div>
+        <div class="rule-item"><b>5.</b> Winning payout equals original bet plus net earnings deposited directly into your balance.</div>
+        <div class="rule-item"><b>6.</b> When the result lands, the winning slot highlights green and adds to the history feed.</div>
       </div>
     </div>
   </div>
 
   <script>
     const socket = io();
-    let isGameStarted = false; // ऑडियो केवल लॉगिन के बाद बजेगा
+    let isGameStarted = false;
+
+    const translations = {
+      en: {
+        history: "📜 Bet History:",
+        stgTitle: "Game Settings",
+        sndTitle: "Game Sound Effects",
+        sndSub: "Game sound effects",
+        hapTitle: "Haptic Feedback",
+        hapSub: "Vibration upon successful bet",
+        trdTitle: "Winning Trend",
+        trdSub: "Show lottery results",
+        rulesTitle: "Rules:",
+        regTitle: "Register / log in",
+        regPhone: "Enter your phone number",
+        logTitle: "Log in",
+        logPass: "Enter Password",
+        forgotPass: "Forgot password",
+        rulesContent: `
+          <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets by tapping on the icons.</div>
+          <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> in each round to place your bets.</div>
+          <div class="rule-item"><b>3.</b> You can bet on a maximum of <b>6 slots</b> in a single round.</div>
+          <div class="rule-item"><b>4. Multiplier Payouts:</b><br>
+            • 🐓 Rooster: <b>25x</b><br>
+            • 🐟 Fish: <b>19x</b><br>
+            • 🐑 Sheep: <b>14x</b><br>
+            • 🦐 Shrimp: <b>9x</b><br>
+            • 🍅 Tomato, 🫑 Pepper, 🥕 Carrot, 🌽 Corn: <b>4x each</b>
+          </div>
+          <div class="rule-item"><b>5.</b> Winning payout equals original bet plus net earnings deposited directly into your balance.</div>
+          <div class="rule-item"><b>6.</b> When the result lands, the winning slot highlights green and adds to the history feed.</div>
+        `
+      },
+      hi: {
+        history: "📜 पिछली बेट हिस्ट्री:",
+        stgTitle: "Game Settings",
+        sndTitle: "गेम साउंड इफेक्ट्स",
+        sndSub: "ध्वनि चालू / बंद",
+        hapTitle: "हैप्टिक फीडबैक",
+        hapSub: "दांव लगाने पर कंपन",
+        trdTitle: "विनिंग ट्रेंड",
+        trdSub: "रिजल्ट हिस्ट्री पट्टी",
+        rulesTitle: "नियम (Rules):",
+        regTitle: "रजिस्टर / लॉगिन",
+        regPhone: "अपना फोन नंबर दर्ज करें",
+        logTitle: "लॉगिन करें",
+        logPass: "पासवर्ड दर्ज करें",
+        forgotPass: "पासवर्ड भूल गए?",
+        rulesContent: `
+          <div class="rule-item"><b>1.</b> चिप्स चुनें (100, 1000, 2000 या 5000) और उस आइटम पर टैप करके दांव लगाएं।</div>
+          <div class="rule-item"><b>2.</b> प्रत्येक राउंड में दांव लगाने के लिए आपके पास <b>30 सेकंड</b> का समय होता है।</div>
+          <div class="rule-item"><b>3.</b> आप एक राउंड में अधिकतम <b>6 आइटम्स</b> पर ही दांव लगा सकते हैं।</div>
+          <div class="rule-item"><b>4. मल्टीप्लायर दरें:</b><br>
+            • 🐓 मुर्गा: <b>25x</b><br>
+            • 🐟 मच्छी: <b>19x</b><br>
+            • 🐑 मेंढी: <b>14x</b><br>
+            • 🦐 झींगा: <b>9x</b><br>
+            • 🍅 टमाटर, 🫑 शिमला, 🥕 गाजर, 🌽 भुट्टा: प्रत्येक <b>4x</b>
+          </div>
+          <div class="rule-item"><b>5.</b> जीतने पर आपको आपका मूल दांव + मुनाफा तुरंत आपके वॉलेट में जोड़ दिया जाता है।</div>
+          <div class="rule-item"><b>6.</b> परिणाम आते ही जीतने वाले आइटम पर ग्रीन लाइट चमकेगी और वह हिस्ट्री लाइन में जुड़ जाएगा।</div>
+        `
+      },
+      mr: {
+        history: "📜 मागील निकाल:",
+        stgTitle: "Game Settings",
+        sndTitle: "गेम ध्वनी",
+        sndSub: "ध्वनी चालू / बंद",
+        hapTitle: "हॅप्टिक फीडबॅक",
+        hapSub: "पैज लावल्यावर कंपन",
+        trdTitle: "विजयी ट्रेंड",
+        trdSub: "निकाल पट्टी दाखवा",
+        rulesTitle: "नियम (Rules):",
+        regTitle: "नोंदणी / लॉगिन",
+        regPhone: "तुमचा फोन नंबर टाका",
+        logTitle: "लॉगिन",
+        logPass: "पासवर्ड टाका",
+        forgotPass: "पासवर्ड विसरलात?",
+        rulesContent: `
+          <div class="rule-item"><b>1.</b> चिप्स निवडा (100, 1000, 2000 किंवा 5000) आणि चिन्हावर टॅप करून पैज लावा.</div>
+          <div class="rule-item"><b>2.</b> प्रत्येक फेरीत पैज लावण्यासाठी <b>30 सेकंद</b> वेळ मिळतो.</div>
+          <div class="rule-item"><b>3.</b> एका फेरीत जास्तीत जास्त <b>6 पर्यायांवर</b> पैज लावता येते.</div>
+          <div class="rule-item"><b>4. मल्टिप्लायर दर:</b><br>
+            • 🐓 कोंबडा: <b>25x</b><br>
+            • 🐟 मासा: <b>19x</b><br>
+            • 🐑 मेंढी: <b>14x</b><br>
+            • 🦐 कोळंबी: <b>9x</b><br>
+            • 🍅 टोमॅटो, 🫑 शिमला, 🥕 गाजर, 🌽 मका: प्रत्येकी <b>4x</b>
+          </div>
+          <div class="rule-item"><b>5.</b> जिंकलेली रक्कम थेट तुमच्या खात्यात जोडली जाईल.</div>
+          <div class="rule-item"><b>6.</b> निकाल आल्यानंतर विजेता स्लॉट हिरवा चमकेल.</div>
+        `
+      },
+      gu: {
+        history: "📜 અગાઉના પરિણામો:",
+        stgTitle: "Game Settings",
+        sndTitle: "ગેમ સાઉન્ડ",
+        sndSub: "અવાજ ચાલુ / બંધ",
+        hapTitle: "હેપ્ટિક ફીડબેક",
+        hapSub: "શરત પર વાઇબ્રેશન",
+        trdTitle: "વિજેતા ટ્રેન્ડ",
+        trdSub: "પરિણામો બતાવો",
+        rulesTitle: "નિયમો (Rules):",
+        regTitle: "રજીસ્ટર / લોગિન",
+        regPhone: "તમારો ફોન નંબર દાખલ કરો",
+        logTitle: "લોગિન",
+        logPass: "પાસવર્ડ દાખલ કરો",
+        forgotPass: "પાસવર્ડ ભૂલી ગયા?",
+        rulesContent: `
+          <div class="rule-item"><b>1.</b> ચિપ્સ પસંદ કરો (100, 1000, 2000 અથવા 5000) અને શરત લગાવો.</div>
+          <div class="rule-item"><b>2.</b> દરેક રાઉન્ડમાં શરત લગાવવા માટે <b>30 સેકન્ડ</b> નો સમય છે.</div>
+          <div class="rule-item"><b>3.</b> એક રાઉન્ડમાં મહત્તમ <b>6 સ્લોટ</b> પર શરત લગાવી શકાય છે.</div>
+          <div class="rule-item"><b>4. ગુણાકાર દરો:</b><br>
+            • 🐓 કૂકડો: <b>25x</b><br>
+            • 🐟 માછલી: <b>19x</b><br>
+            • 🐑 ઘેટું: <b>14x</b><br>
+            • 🦐 ઝીંગા: <b>9x</b><br>
+            • 🍅 ટામેટા, 🫑 કેપ્સિકમ, 🥕 ગાજર, 🌽 મકાઈ: પ્રત્યેક <b>4x</b>
+          </div>
+          <div class="rule-item"><b>5.</b> જીતેલી રકમ સીધી તમારા બેલેન્સમાં જમા થશે.</div>
+          <div class="rule-item"><b>6.</b> પરિણામ આવતા વિજેતા આઇટમ લીલા રંગથી હાઇલાઇટ થશે.</div>
+        `
+      }
+    };
+
+    let currentLang = "en";
+
+    function changeLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("greedy_lang", lang);
+      document.getElementById("loginLangSelector").value = lang;
+      
+      const t = translations[lang] || translations.en;
+      document.getElementById("historyLabel").innerText = t.history;
+      document.getElementById("stgTitle").innerText = t.stgTitle;
+      document.getElementById("stgSoundTitle").innerText = t.sndTitle;
+      document.getElementById("stgSoundSub").innerText = t.sndSub;
+      document.getElementById("stgHapticTitle").innerText = t.hapTitle;
+      document.getElementById("stgHapticSub").innerText = t.hapSub;
+      document.getElementById("stgTrendTitle").innerText = t.trdTitle;
+      document.getElementById("stgTrendSub").innerText = t.trdSub;
+      
+      document.getElementById("rulesTitle").innerText = t.rulesTitle;
+      document.getElementById("rulesBodyContainer").innerHTML = t.rulesContent;
+
+      document.getElementById("txtRegisterTitle").innerText = t.regTitle;
+      document.getElementById("txtEnterPhone").innerText = t.regPhone;
+      document.getElementById("txtLoginTitle").innerText = t.logTitle;
+      document.getElementById("txtEnterPass").innerText = t.logPass;
+      document.getElementById("txtForgotPass").innerText = t.forgotPass;
+    }
 
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
       document.getElementById('screenPass').style.display = 'none';
       document.getElementById(screenId).style.display = 'flex';
+    }
+
+    function openDoc(type) {
+      if(type === 'terms') {
+        document.getElementById('termsPage').style.display = 'flex';
+      } else if(type === 'privacy') {
+        document.getElementById('privacyPage').style.display = 'flex';
+      }
+    }
+
+    function closeDoc(id) {
+      document.getElementById(id).style.display = 'none';
     }
 
     function quickLogin() {
@@ -379,7 +633,7 @@
     }
 
     function finishAuth() {
-      isGameStarted = true; // अब गेम चालू हुआ, साउंड अलाउड है
+      isGameStarted = true;
       document.body.classList.add("game-active");
       document.getElementById("authFlowContainer").style.display = "none";
       document.getElementById("gameArea").style.display = "flex";
@@ -419,7 +673,7 @@
     let isSoundEnabled = true;
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
-      if (!isSoundEnabled || !isGameStarted) return; // गेम शुरू होने से पहले कोई आवाज़ नहीं
+      if (!isSoundEnabled || !isGameStarted) return;
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -432,7 +686,6 @@
       }
     }
 
-    // Modal controls
     function openSettings() { document.getElementById("settingsModal").style.display = "flex"; }
     function closeSettings() { document.getElementById("settingsModal").style.display = "none"; }
     function openRules() { document.getElementById("rulesModal").style.display = "flex"; }
@@ -483,7 +736,8 @@
           setTimeout(spinStep, delay);
         } else {
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-          document.getElementById("card-" + data.winner).classList.add("winner");
+          const winCard = document.getElementById("card-" + data.winner);
+          winCard.classList.add("winner");
 
           const pill = document.createElement("div");
           pill.className = "history-pill";
@@ -504,7 +758,11 @@
       spinStep();
     });
 
-    window.onload = () => { updateCoinsUI(coins); };
+    window.onload = () => {
+      const savedLang = localStorage.getItem("greedy_lang") || "en";
+      changeLanguage(savedLang);
+      updateCoinsUI(coins);
+    };
   </script>
 </body>
 </html>
