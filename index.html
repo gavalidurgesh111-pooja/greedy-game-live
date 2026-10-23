@@ -6,7 +6,7 @@
   <title>3D Greedy Game</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
     body {
       background: radial-gradient(circle at center, #2e0854, #0f021e);
       color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -53,10 +53,11 @@
     }
     .item-card {
       background: linear-gradient(145deg, #381559, #1c0a2e);
-      border: 2px solid #5d2b8e; border-radius: 16px; padding: 10px 4px;
+      border: 2px solid #5d2b8e; border-radius: 16px; padding: 12px 4px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       position: relative; cursor: pointer; transition: transform 0.15s, border-color 0.15s;
       box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+      min-height: 95px;
     }
     .item-card.highlight {
       border-color: #00ffcc; background: #58218a;
@@ -71,14 +72,15 @@
       to { transform: scale(1.15); }
     }
 
-    /* 3D Images */
-    .item-img {
-      width: 58px; height: 58px; object-fit: contain;
+    /* 3D Asset Icons */
+    .item-icon {
+      font-size: 42px; line-height: 1.1;
       filter: drop-shadow(0 6px 8px rgba(0,0,0,0.6));
       pointer-events: none;
+      user-select: none;
     }
     .item-rate {
-      font-size: 12px; color: #ffd700; font-weight: 800; margin-top: 4px;
+      font-size: 13px; color: #ffd700; font-weight: 800; margin-top: 6px;
       text-shadow: 0 1px 3px rgba(0,0,0,0.9);
     }
     .my-bet-badge {
@@ -107,10 +109,10 @@
   <div id="authModal">
     <div class="auth-card">
       <h2>🎰 GREEDY CASINO</h2>
-      <p style="font-size: 13px; color: #bbb; margin-bottom: 12px;">अपना नाम दर्ज करके गेम शुरू करें</p>
+      <p style="font-size: 13px; color: #bbb; margin-bottom: 12px;">अपना नाम दर्ज करके गेम में प्रवेश करें</p>
       <input type="text" id="usernameInput" placeholder="यूजरनेम" maxlength="15">
       <input type="password" id="passwordInput" placeholder="पासवर्ड">
-      <button onclick="handleLogin()">लॉगिन करें</button>
+      <button onclick="handleLogin()">लॉगिन / खेलें</button>
     </div>
   </div>
 
@@ -126,54 +128,61 @@
       <div class="message-text" id="statusMessage">दांव लगाएं (30 सेकंड)</div>
     </div>
 
-    <!-- 8 Slots Grid (3D Assets without text names) -->
+    <!-- 8 Slots Grid (No text labels) -->
     <div class="grid">
-      <!-- 1. मुर्गा -->
+      <!-- 1. सफेद मुर्गा लाल कलगी व चोंच -->
       <div class="item-card" id="card-1" onclick="placeBet(1)">
         <span class="my-bet-badge" id="badge-1">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f357.gif" alt="Chicken">
+        <div class="item-icon">🐓</div>
         <div class="item-rate">5x</div>
       </div>
-      <!-- 2. मेंढी -->
+
+      <!-- 2. मेंढी / भेड़ -->
       <div class="item-card" id="card-2" onclick="placeBet(2)">
         <span class="my-bet-badge" id="badge-2">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f411.gif" alt="Sheep">
+        <div class="item-icon">🐑</div>
         <div class="item-rate">5x</div>
       </div>
+
       <!-- 3. झींगा -->
       <div class="item-card" id="card-3" onclick="placeBet(3)">
         <span class="my-bet-badge" id="badge-3">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f990.gif" alt="Prawn">
+        <div class="item-icon">🦐</div>
         <div class="item-rate">5x</div>
       </div>
+
       <!-- 4. मच्छी -->
       <div class="item-card" id="card-4" onclick="placeBet(4)">
         <span class="my-bet-badge" id="badge-4">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f41f.gif" alt="Fish">
+        <div class="item-icon">🐟</div>
         <div class="item-rate">5x</div>
       </div>
+
       <!-- 5. टमाटर -->
       <div class="item-card" id="card-5" onclick="placeBet(5)">
         <span class="my-bet-badge" id="badge-5">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f345.gif" alt="Tomato">
+        <div class="item-icon">🍅</div>
         <div class="item-rate">10x</div>
       </div>
-      <!-- 6. भुट्टा -->
+
+      <!-- 6. भुट्टा / मकई -->
       <div class="item-card" id="card-6" onclick="placeBet(6)">
         <span class="my-bet-badge" id="badge-6">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f33d.gif" alt="Corn">
+        <div class="item-icon">🌽</div>
         <div class="item-rate">15x</div>
       </div>
+
       <!-- 7. गाजर -->
       <div class="item-card" id="card-7" onclick="placeBet(7)">
         <span class="my-bet-badge" id="badge-7">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1f955.gif" alt="Carrot">
+        <div class="item-icon">🥕</div>
         <div class="item-rate">25x</div>
       </div>
+
       <!-- 8. शिमला मिर्च -->
       <div class="item-card" id="card-8" onclick="placeBet(8)">
         <span class="my-bet-badge" id="badge-8">0</span>
-        <img class="item-img" src="https://images.emojiterra.com/google/noto-emoji/unicode-15/animated/1fad1.gif" alt="Bell Pepper">
+        <div class="item-icon">🫑</div>
         <div class="item-rate">45x</div>
       </div>
     </div>
