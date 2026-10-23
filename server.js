@@ -7,14 +7,14 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// Render का डायनामिक पोर्ट इस्तेमाल करें
 const PORT = process.env.PORT || 10000;
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-let timeLeft = 15;
+// 30 सेकंड का बेटिंग टाइमर
+let timeLeft = 30;
 let gameState = "BETTING";
 
 setInterval(() => {
@@ -23,12 +23,12 @@ setInterval(() => {
   } else {
     if (gameState === "BETTING") {
       gameState = "RESULT";
-      timeLeft = 5;
+      timeLeft = 8; // रिजल्ट और लाइट घूमने के लिए समय
       const winner = Math.floor(Math.random() * 8) + 1;
       io.emit("gameResult", { winner });
     } else {
       gameState = "BETTING";
-      timeLeft = 15;
+      timeLeft = 30; // अगला राउंड फिर 30 सेकंड
     }
   }
   io.emit("timerUpdate", { timeLeft, gameState });
@@ -38,7 +38,6 @@ io.on('connection', (socket) => {
   socket.emit("timerUpdate", { timeLeft, gameState });
 });
 
-// 0.0.0.0 पर बाइंड करें ताकि Render तुरंत डिटेक्ट कर सके
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
