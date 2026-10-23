@@ -142,7 +142,7 @@
     .frame-opt { height: 95px; border-radius: 16px; background: #f9f9f9; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer; gap: 6px; font-size: 13px; font-weight: bold; }
     .frame-preview { width: 44px; height: 44px; border-radius: 50%; }
 
-    /* Main Game UI (Screenshot Match: Purple Game Settings Modal Card) */
+    /* Main Game UI */
     body.game-active { background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%); }
     body.game-active::before { content: ""; position: fixed; inset: 0; background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%), radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.65), transparent 70%), radial-gradient(ellipse 110px 55px at 30% 70%, rgba(255,255,255,0.55), transparent 70%), radial-gradient(ellipse 150px 75px at 85% 78%, rgba(255,255,255,0.6), transparent 70%); pointer-events: none; z-index: 0; }
     
@@ -176,19 +176,16 @@
     .history-pill .pill-icon { font-size: 18px; line-height: 1; }
     .history-pill .pill-rate { font-size: 9px; font-weight: 900; color: #b8860b; margin-top: 1px; }
 
-    /* Screenshot Match: Purple Settings Card Modal */
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; z-index: 150; }
+    /* Game Settings Modal */
     .game-settings-card { background: linear-gradient(180deg, #d883ff 0%, #a835f5 50%, #8318db 100%); border: 3px solid #ff7ee3; border-radius: 28px; width: 92%; max-width: 360px; padding: 22px 20px; color: #fff; box-shadow: 0 0 35px rgba(180, 70, 255, 0.7); position: relative; }
     .stg-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 22px; }
     .stg-title { font-size: 24px; font-weight: 900; color: #ffee55; text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
     .stg-close { position: absolute; right: -2px; top: -2px; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff; font-weight: bold; }
-    
     .stg-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.2); }
     .stg-row:last-child { border-bottom: none; }
     .stg-label h4 { font-size: 15px; font-weight: bold; color: #fff; }
     .stg-label p { font-size: 11px; color: #f0d8ff; margin-top: 2px; }
 
-    /* iOS Style Toggle Switch */
     .switch { position: relative; display: inline-block; width: 52px; height: 28px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; inset: 0; background-color: #5c1c9e; transition: .3s; border-radius: 34px; border: 1.5px solid rgba(255,255,255,0.4); }
@@ -199,23 +196,25 @@
 </head>
 <body>
 
-  <!-- 1. Authentication Screens -->
+  <!-- 1. Authentication Screens (Default: English) -->
   <div id="authFlowContainer">
     <div id="screenMain">
       <div class="auth-top-bar">
         <select class="lang-select-login" id="loginLangSelector" onchange="changeLanguage(this.value)">
-          <option value="en">English</option><option value="hi" selected>हिंदी</option>
-          <option value="mr">मराठी</option><option value="gu">ગુજરાતી</option>
+          <option value="en" selected>English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+          <option value="gu">ગુજરાતી</option>
         </select>
       </div>
-      <div class="brand-title">Greedy Coin</div>
+      <div class="brand-title" id="txtBrandTitle">Greedy Coin</div>
       <div class="auth-bottom-panel">
         
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
           <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
           </svg>
-          Sign in with Facebook
+          <span id="txtBtnFb">Sign in with Facebook</span>
         </button>
 
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
@@ -225,11 +224,11 @@
             <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/>
             <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
           </svg>
-          Sign in with Google
+          <span id="txtBtnGoogle">Sign in with Google</span>
         </button>
 
-        <button class="more-options-btn" onclick="openMoreOptionsSheet()">More Options <span class="last-login-tag">Last login</span></button>
-        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span id="txtMoreOpts">More Options</span> <span class="last-login-tag" id="txtLastLogin">Last login</span></button>
+        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span id="txtAgreeTerms">Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
       </div>
     </div>
 
@@ -237,19 +236,19 @@
     <div id="moreOptionsModal">
       <div class="options-sheet">
         <button class="btn-sheet-phone" onclick="selectPhoneOption()">
-          📞 Sign in with Phone
-          <span class="sheet-last-login">Last login</span>
+          📞 <span id="txtSheetPhone">Sign in with Phone</span>
+          <span class="sheet-last-login" id="txtSheetLastLogin">Last login</span>
         </button>
         <button class="btn-sheet-email" onclick="selectEmailOption()">
-          ✉️ Sign in with Email
+          ✉️ <span id="txtSheetEmail">Sign in with Email</span>
         </button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()">Cancel</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" id="txtSheetCancel">Cancel</button>
       </div>
     </div>
 
     <div id="screenPhone">
       <div class="back-btn" onclick="showScreenMainWithHistory()">❮</div>
-      <div class="step-title">Register / log in</div>
+      <div class="step-title" id="txtRegTitle">Register / log in</div>
       <div class="input-box">
         <select class="country-code-select"><option value="+91">🇮🇳 India (+91)</option></select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number">
@@ -260,7 +259,7 @@
     <div id="screenPass">
       <div id="loadingOverlay"><div class="spinner"></div></div>
       <div class="back-btn" onclick="showScreenPhoneWithHistory()">❮</div>
-      <div class="step-title">Log in</div>
+      <div class="step-title" id="txtLogTitle">Log in</div>
       <div class="input-box"><input type="password" class="pass-input" id="passInput" placeholder="Password"></div>
       <div class="next-btn-container"><button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button></div>
     </div>
@@ -269,38 +268,26 @@
     <div id="termsPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div>
-        <h2>Terms & Conditions</h2>
+        <h2 id="txtTermsHead">Terms & Conditions</h2>
       </div>
-      <div class="policy-content">
+      <div class="policy-content" id="txtTermsBody">
         <div class="policy-section">
           <h3>1. Virtual Game Currency</h3>
-          <p>Greedy Coin गेम में उपलब्ध सभी सिक्के केवल वर्चुअल पॉइंट्स हैं। इनका कोई वास्तविक मौद्रिक मूल्य नहीं है और इन्हें असली पैसों में नहीं बदला जा सकता।</p>
-        </div>
-        <div class="policy-section">
-          <h3>2. Fair Play & Outcome</h3>
-          <p>प्रत्येक राउंड का परिणाम सर्वर रैंडम तकनीक पर आधारित होता है। किसी भी प्रकार के बॉट्स या अवैध तरीकों का उपयोग करना प्रतिबंधित है।</p>
-        </div>
-        <div class="policy-section">
-          <h3>3. Age Restriction</h3>
-          <p>यह गेम केवल मनोरंजन के उद्देश्य से है और 18 वर्ष या उससे अधिक आयु के उपयोगकर्ताओं के लिए है।</p>
+          <p>All coins available in Greedy Coin are purely virtual points with no real cash value.</p>
         </div>
       </div>
     </div>
 
-    <!-- Privacy Policy Page -->
+    <!-- Privacy Page -->
     <div id="privacyPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div>
-        <h2>Privacy Policy</h2>
+        <h2 id="txtPrivacyHead">Privacy Policy</h2>
       </div>
-      <div class="policy-content">
+      <div class="policy-content" id="txtPrivacyBody">
         <div class="policy-section">
           <h3>1. Information Collection</h3>
-          <p>हम केवल बुनियादी जानकारी जैसे आपका यूजर आईडी, संपर्क नंबर और गेम में आपका कॉइन बैलेंस सुरक्षित रखते हैं ताकि आपकी गेम प्रोग्रेस बनी रहे।</p>
-        </div>
-        <div class="policy-section">
-          <h3>2. Data Security</h3>
-          <p>आपकी व्यक्तिगत जानकारी पूरी तरह से सुरक्षित है और इसे किसी भी तीसरे पक्ष के साथ साझा या बेचा नहीं जाता है।</p>
+          <p>We only collect basic identification markers such as your User ID and game progress.</p>
         </div>
       </div>
     </div>
@@ -378,11 +365,11 @@
   <div id="screenLogout">
     <div class="logout-box">
       <div class="logout-icon">🚪</div>
-      <div class="logout-title">Log Out / Exit</div>
-      <div class="logout-sub">क्या आप वाकई अपनी प्रोफाइल से लॉग आउट करके बाहर जाना चाहते हैं?</div>
+      <div class="logout-title" id="txtLogoutTitle">Log Out / Exit</div>
+      <div class="logout-sub" id="txtLogoutSub">Are you sure you want to log out of your profile?</div>
       <div class="logout-btn-group">
-        <button class="btn-exit" onclick="confirmLogout()">हाँ, लॉग आउट करें</button>
-        <button class="btn-stay" onclick="stayInProfile()">वापस प्रोफाइल पर रहें</button>
+        <button class="btn-exit" onclick="confirmLogout()" id="txtBtnYesLogout">Yes, Log Out</button>
+        <button class="btn-stay" onclick="stayInProfile()" id="txtBtnStay">Stay on Profile</button>
       </div>
     </div>
   </div>
@@ -427,7 +414,7 @@
     </div>
   </div>
 
-  <!-- 4. Main Game Arena (Screenshot Match: Top Settings, Rules & History Buttons) -->
+  <!-- 4. Main Game Arena -->
   <div id="gameArea">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
@@ -464,7 +451,7 @@
     </div>
   </div>
 
-  <!-- Screenshot Match: Game Settings Modal (Purple Card with Active Toggle Switches) -->
+  <!-- Game Settings Modal -->
   <div id="gameSettingsModal" class="modal-overlay">
     <div class="game-settings-card">
       <div class="stg-header">
@@ -505,7 +492,7 @@
       <div class="rules-body">
         <div class="rule-item"><b>1.</b> Choose chips (100, 1000, 2000, or 5000) and place bets on items.</div>
         <div class="rule-item"><b>2.</b> You have <b>30 seconds</b> each round to place bets. Max 6 slots allowed.</div>
-        <div class="rule-item"><b>3.</b> खेल से बाहर आने के लिए फोन का बैक बटन दबाएं, जिससे आप प्रोफाइल पर आएंगे और फिर लॉग-आउट कर सकेंगे।</div>
+        <div class="rule-item"><b>3.</b> Press phone back button to return to profile and logout.</div>
         <div class="rule-item"><b>4. Level Rewards:</b><br>
           • 1 Lakh Coins Recharge = <b>+20 Level</b><br>
           • Win each round = <b>+1 Level</b><br>
@@ -519,6 +506,118 @@
     const socket = io();
     let isGameStarted = false;
     let isSoundEnabled = true;
+
+    // Multi-language dictionary (Default: English)
+    const translations = {
+      en: {
+        brand: "Greedy Coin",
+        btnFb: "Sign in with Facebook",
+        btnGoogle: "Sign in with Google",
+        moreOpts: "More Options",
+        lastLogin: "Last login",
+        agree: "Agree to",
+        terms: "Terms",
+        privacy: "Privacy Policy",
+        sheetPhone: "Sign in with Phone",
+        sheetEmail: "Sign in with Email",
+        cancel: "Cancel",
+        regTitle: "Register / log in",
+        logTitle: "Log in",
+        logoutTitle: "Log Out / Exit",
+        logoutSub: "Are you sure you want to log out of your profile?",
+        btnYesLogout: "Yes, Log Out",
+        btnStay: "Stay on Profile",
+        termsHead: "Terms & Conditions",
+        privacyHead: "Privacy Policy"
+      },
+      hi: {
+        brand: "Greedy Coin",
+        btnFb: "फेसबुक से लॉगिन करें",
+        btnGoogle: "गूगल से लॉगिन करें",
+        moreOpts: "अन्य विकल्प",
+        lastLogin: "अ अंतिम लॉगिन",
+        agree: "हम सहमत हैं",
+        terms: "नियम और शर्तें",
+        privacy: "गोपनीयता नीति",
+        sheetPhone: "फोन से लॉगिन करें",
+        sheetEmail: "ईमेल से लॉगिन करें",
+        cancel: "रद्द करें",
+        regTitle: "रजिस्टर / लॉगिन",
+        logTitle: "लॉगिन",
+        logoutTitle: "लॉग आउट / बाहर जाएं",
+        logoutSub: "क्या आप वाकई अपनी प्रोफाइल से लॉग आउट करना चाहते हैं?",
+        btnYesLogout: "हाँ, लॉग आउट करें",
+        btnStay: "प्रोफाइल पर रहें",
+        termsHead: "नियम और शर्तें",
+        privacyHead: "गोपनीयता नीति"
+      },
+      mr: {
+        brand: "Greedy Coin",
+        btnFb: "Facebook सह साइन इन करा",
+        btnGoogle: "Google सह साइन इन करा",
+        moreOpts: "इतर पर्याय",
+        lastLogin: "शेवटचे लॉगिन",
+        agree: "मी सहमत आहे",
+        terms: "अटी व शर्ती",
+        privacy: "गोपनीयता धोरण",
+        sheetPhone: "फोन सह साइन इन करा",
+        sheetEmail: "ईमेल सह साइन इन करा",
+        cancel: "रद्द करा",
+        regTitle: "नोंदणी / लॉगिन",
+        logTitle: "लॉगिन",
+        logoutTitle: "लॉग आउट / बाहेर पडा",
+        logoutSub: "तुम्हाला खरोखर लॉग आउट करायचे आहे का?",
+        btnYesLogout: "होय, लॉग आउट करा",
+        btnStay: "प्रोफाइलवर राहा",
+        termsHead: "अटी व शर्ती",
+        privacyHead: "गोपनीयता धोरण"
+      },
+      gu: {
+        brand: "Greedy Coin",
+        btnFb: "Facebook સાથે સાઇન ઇન કરો",
+        btnGoogle: "Google સાથે સાઇન ઇન કરો",
+        moreOpts: "વધુ વિકલ્પો",
+        lastLogin: "છેલ્લું લોગિન",
+        agree: "હું સંમત છું",
+        terms: "નિયમો અને શરતો",
+        privacy: "પ્રાઇવસી પોલિસી",
+        sheetPhone: "ફોન સાથે સાઇન ઇન કરો",
+        sheetEmail: "ઇમેઇલ સાથે સાઇન ઇન કરો",
+        cancel: "રદ કરો",
+        regTitle: "રજીસ્ટર / લોગિન",
+        logTitle: "લોગિન",
+        logoutTitle: "લોગ આઉટ / બહાર નીકળો",
+        logoutSub: "શું તમે ખરેખર લોગ આઉટ કરવા માંગો છો?",
+        btnYesLogout: "હા, લોગ આઉટ કરો",
+        btnStay: "પ્રોફાઇલ પર રહો",
+        termsHead: "નિયમો અને શરતો",
+        privacyHead: "પ્રાઇવસી પોલિસી"
+      }
+    };
+
+    function changeLanguage(lang) {
+      localStorage.setItem("greedy_lang", lang);
+      document.getElementById("loginLangSelector").value = lang;
+      const t = translations[lang] || translations.en;
+      
+      document.getElementById("txtBrandTitle").innerText = t.brand;
+      document.getElementById("txtBtnFb").innerText = t.btnFb;
+      document.getElementById("txtBtnGoogle").innerText = t.btnGoogle;
+      document.getElementById("txtMoreOpts").innerText = t.moreOpts;
+      document.getElementById("txtLastLogin").innerText = t.lastLogin;
+      document.getElementById("txtSheetPhone").innerText = t.sheetPhone;
+      document.getElementById("txtSheetLastLogin").innerText = t.lastLogin;
+      document.getElementById("txtSheetEmail").innerText = t.sheetEmail;
+      document.getElementById("txtSheetCancel").innerText = t.cancel;
+      document.getElementById("txtRegTitle").innerText = t.regTitle;
+      document.getElementById("txtLogTitle").innerText = t.logTitle;
+      document.getElementById("txtLogoutTitle").innerText = t.logoutTitle;
+      document.getElementById("txtLogoutSub").innerText = t.logoutSub;
+      document.getElementById("txtBtnYesLogout").innerText = t.btnYesLogout;
+      document.getElementById("txtBtnStay").innerText = t.btnStay;
+      document.getElementById("txtTermsHead").innerText = t.termsHead;
+      document.getElementById("txtPrivacyHead").innerText = t.privacyHead;
+    }
 
     const safeAvatars = [
       "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1",
@@ -576,7 +675,6 @@
       applyFrameUI(userFrame);
     }
 
-    // Document / Policy View Support
     function openDoc(type) {
       if(type === 'terms') {
         document.getElementById('termsPage').style.display = 'flex';
@@ -590,7 +688,6 @@
       document.getElementById(id).style.display = 'none';
     }
 
-    // More Options Modal Sheet Management
     function openMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "flex";
       history.pushState({page: 'sheet'}, "", "");
@@ -627,24 +724,22 @@
     function openTextChat() {
       let msg = prompt("Enter your message / चैट संदेश दर्ज करें:");
       if(msg && msg.trim() !== "") {
-        alert("Message sent successfully! / संदेश सफलतापूर्वक भेज दिया गया!");
+        alert("Message sent successfully!");
       }
     }
 
-    // Game Settings Modal (Screenshot Match)
     function openGameSettings() {
       document.getElementById("gameSettingsModal").style.display = "flex";
     }
     function closeGameSettings() {
       document.getElementById("gameSettingsModal").style.display = "none";
     }
-    function toggleSoundSetting(val) { isSoundEnabled = val; }
+    function toggleSoundSetting(val) {}
     function toggleHapticSetting(val) {}
     function toggleTrendSetting(val) {
       document.getElementById("historyCard").style.display = val ? "flex" : "none";
     }
 
-    // Smooth Step-by-Step Navigation & Back Handling
     function showScreen(screenId) {
       document.getElementById('screenMain').style.display = 'none';
       document.getElementById('screenPhone').style.display = 'none';
@@ -684,7 +779,6 @@
       document.getElementById("screenLogout").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
-      
       history.pushState({page: 'profile'}, "", "");
     }
 
@@ -705,7 +799,6 @@
       history.pushState({page: 'profile'}, "", "");
     }
 
-    // Phone Hardware Back Button Handler for Step-by-Step Navigation & Logout Flow
     window.onpopstate = function (event) {
       const profileScreen = document.getElementById("screenProfile");
       const gameScreen = document.getElementById("gameArea");
@@ -717,50 +810,15 @@
       const privacyPage = document.getElementById("privacyPage");
       const stgModal = document.getElementById("gameSettingsModal");
 
-      if (stgModal.style.display === "flex") {
-        closeGameSettings();
-        return;
-      }
-      if (termsPage.style.display === "flex") {
-        closeDoc('termsPage');
-        return;
-      }
-      if (privacyPage.style.display === "flex") {
-        closeDoc('privacyPage');
-        return;
-      }
-
-      if (modalSheet.style.display === "flex") {
-        closeMoreOptionsSheet();
-        return;
-      }
-
-      if (logoutScreen.style.display === "flex") {
-        stayInProfile();
-        history.pushState({page: 'profile'}, "", "");
-        return;
-      }
-
-      if (gameScreen.style.display === "flex") {
-        goBackToProfile();
-        return;
-      }
-
-      if (profileScreen.style.display === "flex") {
-        openLogoutScreen();
-        history.pushState({page: 'logout'}, "", "");
-        return;
-      }
-
-      if (passScreen.style.display === "flex") {
-        showScreen('screenPhone');
-        return;
-      }
-
-      if (phoneScreen.style.display === "flex") {
-        showScreen('screenMain');
-        return;
-      }
+      if (stgModal.style.display === "flex") { closeGameSettings(); return; }
+      if (termsPage.style.display === "flex") { closeDoc('termsPage'); return; }
+      if (privacyPage.style.display === "flex") { closeDoc('privacyPage'); return; }
+      if (modalSheet.style.display === "flex") { closeMoreOptionsSheet(); return; }
+      if (logoutScreen.style.display === "flex") { stayInProfile(); history.pushState({page: 'profile'}, "", ""); return; }
+      if (gameScreen.style.display === "flex") { goBackToProfile(); return; }
+      if (profileScreen.style.display === "flex") { openLogoutScreen(); history.pushState({page: 'logout'}, "", ""); return; }
+      if (passScreen.style.display === "flex") { showScreen('screenPhone'); return; }
+      if (phoneScreen.style.display === "flex") { showScreen('screenMain'); return; }
     };
 
     function openLogoutScreen() {
@@ -780,7 +838,6 @@
       history.pushState({page: 'main'}, "", "");
     }
 
-    // Profile Settings Modals
     function openEditProfile() {
       document.getElementById("nameInputEdit").value = userName;
       const grid = document.getElementById("avatarPickerGrid");
@@ -828,16 +885,11 @@
       const val = parseInt(document.getElementById("rechargeInput").value);
       if(!val || val <= 0) return;
       coins += val;
-      
       let gainedLevels = Math.floor(val / 100000) * 20;
-      if (gainedLevels === 0 && val >= 5000) {
-        gainedLevels = Math.floor(val / 5000);
-      }
+      if (gainedLevels === 0 && val >= 5000) { gainedLevels = Math.floor(val / 5000); }
       userLevel += gainedLevels;
-      
       localStorage.setItem("greedy_coins", coins);
       localStorage.setItem("greedy_level", userLevel);
-      
       initProfileUI();
       closeRecharge();
       alert(`Recharge Successful! Added ${val} coins. Level boosted by +${gainedLevels} Lv!`);
@@ -846,7 +898,6 @@
     function openRules() { document.getElementById("rulesModal").style.display = "flex"; }
     function closeRules() { document.getElementById("rulesModal").style.display = "none"; }
 
-    // Game Logic
     let selectedChip = 100;
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
@@ -944,12 +995,14 @@
           }, 3500);
         }
       }
-      if(isGameStarted) spinTest();
+      if(isGameStarted) spinStep();
     });
 
     window.onload = () => { 
       localStorage.setItem("greedy_user_id", userId);
       history.pushState({page: 'main'}, "", "");
+      // Set initial default language to English
+      changeLanguage('en');
     };
   </script>
 </body>
