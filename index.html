@@ -9,15 +9,20 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
 
     #authFlowContainer {
-      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #111;
+      position: fixed; inset: 0; z-index: 100; display: flex; flex-direction: column; background: #000;
     }
 
-    /* Screen 1: Main Landing with bg.jpg */
+    /* Screen 1: Main Landing with Exactly Uploaded Image */
     #screenMain {
       flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
       padding: 30px 20px 25px;
       background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.85)), 
-                  url('IMG-20261023-WA0014.jpg') center top/cover no-repeat;
+                  url('IMG-20261023-WA0014.jpg'),
+                  url('/IMG-20261023-WA0014.jpg'),
+                  url('bg.jpg') center top/cover no-repeat;
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
     }
     .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
     .lang-select-login {
@@ -168,7 +173,7 @@
     .modal-header { display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 16px; }
     .modal-title { font-size: 22px; font-weight: 900; color: #ffee55; }
     .modal-close {
-      position: absolute; right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
+      position: absolute right: -5px; top: -5px; width: 32px; height: 32px; border-radius: 50%;
       background: radial-gradient(circle, #ff3399, #cc0066); display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #fff;
     }
     
@@ -390,7 +395,7 @@
           <option value="+44">🇬🇧 UK (+44)</option>
           <option value="+1">🇺🇸 USA (+1)</option>
           <option value="+598">🇺🇾 Uruguay (+598)</option>
-          <option value="+998">UZ Uzbekistan (+998)</option>
+          <option value="+998">🇺🇿 Uzbekistan (+998)</option>
           <option value="+58">🇻🇪 Venezuela (+58)</option>
           <option value="+84">🇻🇳 Vietnam (+84)</option>
           <option value="+967">🇾🇪 Yemen (+967)</option>
