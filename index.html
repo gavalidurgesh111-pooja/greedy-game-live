@@ -36,9 +36,9 @@
     .policy-page { display: none; position: fixed; inset: 0; z-index: 200; background: #ffffff; flex-direction: column; padding: 20px; color: #222; overflow-y: auto; }
     .policy-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
     .policy-header h2 { font-size: 20px; font-weight: 900; color: #1e3c72; }
-    .policy-content { font-size: 14px; line-height: 1.6; color: #444; }
-    .policy-section { margin-bottom: 16px; }
-    .policy-section h3 { font-size: 15px; font-weight: bold; color: #000; margin-bottom: 4px; }
+    .policy-content { font-size: 14px; line-height: 1.6; color: #444; padding-bottom: 30px; }
+    .policy-section { margin-bottom: 18px; }
+    .policy-section h3 { font-size: 15px; font-weight: bold; color: #000; margin-bottom: 6px; }
 
     /* More Options Bottom Sheet Modal */
     #moreOptionsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 120; align-items: flex-end; justify-content: center; }
@@ -264,30 +264,58 @@
       <div class="next-btn-container"><button class="btn-round-next" style="background:#5e229e;" onclick="doFinalLogin()">➔</button></div>
     </div>
 
-    <!-- Terms Page -->
+    <!-- Terms Page (Fully Filled & Locked) -->
     <div id="termsPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div>
-        <h2 id="txtTermsHead">Terms & Conditions</h2>
+        <h2>Terms & Conditions</h2>
       </div>
-      <div class="policy-content" id="txtTermsBody">
+      <div class="policy-content">
         <div class="policy-section">
-          <h3>1. Virtual Game Currency</h3>
-          <p>All coins available in Greedy Coin are purely virtual points with no real cash value.</p>
+          <h3>1. Acceptance of Terms</h3>
+          <p>By accessing and playing Greedy Coin, you agree to comply with and be bound by these Terms and Conditions. If you disagree with any part of these terms, please do not use our application.</p>
+        </div>
+        <div class="policy-section">
+          <h3>2. Virtual Currency & Items</h3>
+          <p>All coins, credits, and virtual items within Greedy Coin are purely fictional game points. They carry no real-world monetary value, cannot be cashed out, and are non-transferable.</p>
+        </div>
+        <div class="policy-section">
+          <h3>3. User Conduct & Fair Play</h3>
+          <p>Players must maintain fair play. The use of automated bots, scripts, hacking tools, or exploiting software bugs is strictly prohibited and will lead to an immediate ban.</p>
+        </div>
+        <div class="policy-section">
+          <h3>4. Account Security</h3>
+          <p>You are responsible for maintaining the confidentiality of your login credentials, user ID, and password. We are not liable for any unauthorized account access.</p>
+        </div>
+        <div class="policy-section">
+          <h3>5. Age Requirements</h3>
+          <p>This game is intended strictly for entertainment purposes for users who are 18 years of age or older.</p>
         </div>
       </div>
     </div>
 
-    <!-- Privacy Page -->
+    <!-- Privacy Policy Page (Fully Filled & Locked) -->
     <div id="privacyPage" class="policy-page">
       <div class="policy-header">
         <div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div>
-        <h2 id="txtPrivacyHead">Privacy Policy</h2>
+        <h2>Privacy Policy</h2>
       </div>
-      <div class="policy-content" id="txtPrivacyBody">
+      <div class="policy-content">
         <div class="policy-section">
-          <h3>1. Information Collection</h3>
-          <p>We only collect basic identification markers such as your User ID and game progress.</p>
+          <h3>1. Information We Collect</h3>
+          <p>We collect basic identifiers such as your generated User ID, chosen display name, avatar selections, and game progression statistics to ensure smooth gameplay sessions.</p>
+        </div>
+        <div class="policy-section">
+          <h3>2. Use of Local Storage</h3>
+          <p>Your preferences, wallet balance, and custom settings are stored locally on your device via browser storage for continuous access.</p>
+        </div>
+        <div class="policy-section">
+          <h3>3. Data Protection & Security</h3>
+          <p>We implement robust security measures to protect your account data. We never sell, trade, or transfer your personal profile data to outside commercial entities.</p>
+        </div>
+        <div class="policy-section">
+          <h3>4. Contact & Support</h3>
+          <p>If you have any questions or concerns regarding our privacy practices or data policies, you can reach out through our official support channels.</p>
         </div>
       </div>
     </div>
@@ -507,7 +535,6 @@
     let isGameStarted = false;
     let isSoundEnabled = true;
 
-    // Multi-language dictionary (Default: English)
     const translations = {
       en: {
         brand: "Greedy Coin",
@@ -526,16 +553,14 @@
         logoutTitle: "Log Out / Exit",
         logoutSub: "Are you sure you want to log out of your profile?",
         btnYesLogout: "Yes, Log Out",
-        btnStay: "Stay on Profile",
-        termsHead: "Terms & Conditions",
-        privacyHead: "Privacy Policy"
+        btnStay: "Stay on Profile"
       },
       hi: {
         brand: "Greedy Coin",
         btnFb: "फेसबुक से लॉगिन करें",
         btnGoogle: "गूगल से लॉगिन करें",
         moreOpts: "अन्य विकल्प",
-        lastLogin: "अ अंतिम लॉगिन",
+        lastLogin: "अंतिम लॉगिन",
         agree: "हम सहमत हैं",
         terms: "नियम और शर्तें",
         privacy: "गोपनीयता नीति",
@@ -547,9 +572,7 @@
         logoutTitle: "लॉग आउट / बाहर जाएं",
         logoutSub: "क्या आप वाकई अपनी प्रोफाइल से लॉग आउट करना चाहते हैं?",
         btnYesLogout: "हाँ, लॉग आउट करें",
-        btnStay: "प्रोफाइल पर रहें",
-        termsHead: "नियम और शर्तें",
-        privacyHead: "गोपनीयता नीति"
+        btnStay: "प्रोफाइल पर रहें"
       },
       mr: {
         brand: "Greedy Coin",
@@ -568,9 +591,7 @@
         logoutTitle: "लॉग आउट / बाहेर पडा",
         logoutSub: "तुम्हाला खरोखर लॉग आउट करायचे आहे का?",
         btnYesLogout: "होय, लॉग आउट करा",
-        btnStay: "प्रोफाइलवर राहा",
-        termsHead: "अटी व शर्ती",
-        privacyHead: "गोपनीयता धोरण"
+        btnStay: "प्रोफाइलवर राहा"
       },
       gu: {
         brand: "Greedy Coin",
@@ -589,9 +610,7 @@
         logoutTitle: "લોગ આઉટ / બહાર નીકળો",
         logoutSub: "શું તમે ખરેખર લોગ આઉટ કરવા માંગો છો?",
         btnYesLogout: "હા, લોગ આઉટ કરો",
-        btnStay: "પ્રોફાઇલ પર રહો",
-        termsHead: "નિયમો અને શરતો",
-        privacyHead: "પ્રાઇવસી પોલિસી"
+        btnStay: "પ્રોફાઇલ પર રહો"
       }
     };
 
@@ -615,8 +634,6 @@
       document.getElementById("txtLogoutSub").innerText = t.logoutSub;
       document.getElementById("txtBtnYesLogout").innerText = t.btnYesLogout;
       document.getElementById("txtBtnStay").innerText = t.btnStay;
-      document.getElementById("txtTermsHead").innerText = t.termsHead;
-      document.getElementById("txtPrivacyHead").innerText = t.privacyHead;
     }
 
     const safeAvatars = [
@@ -779,6 +796,7 @@
       document.getElementById("screenLogout").style.display = "none";
       document.getElementById("screenProfile").style.display = "flex";
       document.body.style.background = "#f4f6f9";
+      
       history.pushState({page: 'profile'}, "", "");
     }
 
@@ -1001,7 +1019,6 @@
     window.onload = () => { 
       localStorage.setItem("greedy_user_id", userId);
       history.pushState({page: 'main'}, "", "");
-      // Set initial default language to English
       changeLanguage('en');
     };
   </script>
