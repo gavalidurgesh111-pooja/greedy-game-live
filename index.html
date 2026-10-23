@@ -3,99 +3,123 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Golden Circle Greedy Game</title>
+  <title>Greedy Coin game</title>
   <script src="/socket.io/socket.io.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
-    
-    /* Luxury Gold Sparkling Background */
+
+    /* Sky Blue Background with Soft Cloud Layers */
     body {
-      background: radial-gradient(circle at 50% 30%, #5a4210, #201502 60%, #0c0801 100%),
-                  radial-gradient(1px 1px at 20px 30px, #ffd700, rgba(0,0,0,0)),
-                  radial-gradient(2px 2px at 90px 80px, #ffffff, rgba(0,0,0,0)),
-                  radial-gradient(1.5px 1.5px at 150px 140px, #ffe066, rgba(0,0,0,0)),
-                  radial-gradient(2px 2px at 250px 60px, #ffd700, rgba(0,0,0,0)),
-                  radial-gradient(1.5px 1.5px at 320px 180px, #ffffff, rgba(0,0,0,0));
-      background-repeat: repeat;
-      background-size: cover, 180px 180px, 220px 220px, 160px 160px, 200px 200px, 240px 240px;
-      color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      overflow-x: hidden;
+      background: linear-gradient(180deg, #60b6f0 0%, #a0d8ef 50%, #d4effa 100%);
+      color: #333; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; overflow-x: hidden;
+    }
+
+    /* Soft Animated Clouds */
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background: radial-gradient(ellipse 90px 45px at 15% 18%, rgba(255,255,255,0.7), transparent 70%),
+                  radial-gradient(ellipse 130px 65px at 75% 25%, rgba(255,255,255,0.65), transparent 70%),
+                  radial-gradient(ellipse 110px 55px at 30% 70%, rgba(255,255,255,0.55), transparent 70%),
+                  radial-gradient(ellipse 150px 75px at 85% 78%, rgba(255,255,255,0.6), transparent 70%);
+      pointer-events: none; z-index: 0;
     }
 
     /* Auth Screen */
     #authModal {
-      position: fixed; inset: 0; background: rgba(15, 10, 2, 0.9); backdrop-filter: blur(8px);
+      position: fixed; inset: 0; background: rgba(0, 30, 60, 0.75); backdrop-filter: blur(8px);
       display: flex; align-items: center; justify-content: center; z-index: 100;
     }
     .auth-card {
-      background: linear-gradient(145deg, #2b1d07, #4a3410); border: 2px solid #ffd700;
-      border-radius: 20px; padding: 25px; width: 90%; max-width: 340px; text-align: center;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+      background: linear-gradient(145deg, #ffffff, #eaf6fc); border: 3px solid #ffd700;
+      border-radius: 24px; padding: 25px; width: 90%; max-width: 340px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 100, 200, 0.3); z-index: 101;
     }
-    .auth-card h2 { color: #ffd700; margin-bottom: 12px; }
+    .auth-title { font-size: 24px; font-weight: 900; color: #d4af37; text-shadow: 0 1px 2px #fff, 0 2px 4px rgba(0,0,0,0.2); margin-bottom: 8px; }
     .auth-card input {
-      width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #c89d3f;
-      background: #140d02; color: #fff; font-size: 16px; outline: none;
+      width: 100%; padding: 12px; margin: 8px 0; border-radius: 12px; border: 1.5px solid #89cff0;
+      background: #f7fcff; color: #222; font-size: 16px; outline: none;
     }
     .auth-card button {
-      width: 100%; padding: 12px; margin-top: 10px; border-radius: 10px; border: none;
-      background: linear-gradient(45deg, #ffae00, #d47b00); color: #000; font-size: 18px; font-weight: 900; cursor: pointer;
+      width: 100%; padding: 12px; margin-top: 10px; border-radius: 12px; border: none;
+      background: linear-gradient(45deg, #ffd700, #ff9900); color: #4a2800; font-size: 18px; font-weight: 900; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255,165,0,0.4);
     }
 
-    /* Game Container */
-    #gameArea { display: none; width: 100%; max-width: 440px; flex-direction: column; align-items: center; padding: 10px; }
+    /* Game Main Wrapper */
+    #gameArea { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; padding: 8px 12px; z-index: 1; }
 
-    .header-bar {
-      width: 100%; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(40, 28, 5, 0.85); padding: 8px 15px; border-radius: 25px; margin-bottom: 8px;
-      border: 1.5px solid #d4af37; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+    /* Top Branding */
+    .app-title {
+      font-size: 26px; font-weight: 900; letter-spacing: 0.5px;
+      background: linear-gradient(45deg, #b8860b, #ffd700, #ffae00, #b8860b);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+      margin-bottom: 4px; text-align: center;
     }
-    .user-info { font-size: 14px; color: #ffd700; font-weight: bold; }
-    .coins-badge { background: linear-gradient(45deg, #ffd700, #ff9900); color: #000; padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 15px; }
 
-    .status-panel { text-align: center; margin-bottom: 5px; }
-    .timer-badge { font-size: 20px; font-weight: 900; color: #ffd700; text-shadow: 0 0 10px #ffbb00; }
-    .message-text { font-size: 12px; color: #eedd82; }
+    /* Top Bar */
+    .top-controls {
+      width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+    }
+    .lang-select {
+      background: #fff; border: 1.5px solid #d4af37; border-radius: 15px; padding: 4px 8px;
+      font-size: 12px; font-weight: bold; color: #333; outline: none; cursor: pointer;
+    }
+    .user-badge {
+      background: rgba(255, 255, 255, 0.9); padding: 5px 12px; border-radius: 15px;
+      font-size: 13px; font-weight: bold; color: #1e3c72; border: 1px solid #89cff0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .coins-badge {
+      background: linear-gradient(45deg, #ffd700, #ff9900); color: #4a2800; padding: 5px 12px;
+      border-radius: 15px; font-weight: 900; font-size: 14px; box-shadow: 0 2px 6px rgba(255,165,0,0.4);
+    }
+
+    /* Status HUD */
+    .status-panel { text-align: center; margin-bottom: 6px; }
+    .timer-badge { font-size: 20px; font-weight: 900; color: #004b91; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+    .message-text { font-size: 12px; color: #0d3b66; font-weight: bold; }
 
     /* Circular Roulette Arena */
     .wheel-container {
-      position: relative; width: 330px; height: 330px; margin: 10px auto 15px;
+      position: relative; width: 320px; height: 320px; margin: 4px auto 10px;
       border-radius: 50%;
-      background: radial-gradient(circle, #2b1d06 45%, #160e02 70%);
-      border: 4px solid #ffd700;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.4), inset 0 0 20px rgba(0,0,0,0.8);
+      background: radial-gradient(circle, #ffffff 40%, #d8f0fa 75%, #a8dcf0 100%);
+      border: 5px solid #ffd700;
+      box-shadow: 0 10px 25px rgba(0, 80, 150, 0.25), inset 0 0 15px rgba(255, 215, 0, 0.3);
       display: flex; align-items: center; justify-content: center;
     }
     .wheel-center-hud {
-      width: 120px; height: 120px; border-radius: 50%;
-      background: radial-gradient(circle, #4a3410, #1b1204);
-      border: 2px dashed #ffd700; display: flex; flex-direction: column;
+      width: 110px; height: 110px; border-radius: 50%;
+      background: radial-gradient(circle, #fff, #e8f4fa);
+      border: 3px dashed #ffd700; display: flex; flex-direction: column;
       align-items: center; justify-content: center; text-align: center;
-      box-shadow: inset 0 0 15px #000;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
-    .wheel-center-hud .bet-counter { font-size: 11px; color: #ffd700; font-weight: bold; }
+    .bet-counter { font-size: 11px; color: #b8860b; font-weight: 900; }
 
-    /* Circular Cards */
+    /* Circular Slots */
     .item-card {
-      position: absolute; width: 68px; height: 68px; border-radius: 50%;
-      background: radial-gradient(circle, #422a07, #1e1302);
-      border: 2px solid #b8860b; display: flex; flex-direction: column;
+      position: absolute; width: 66px; height: 66px; border-radius: 50%;
+      background: radial-gradient(circle, #ffffff, #eaf5fc);
+      border: 2.5px solid #d4af37; display: flex; flex-direction: column;
       align-items: center; justify-content: center; cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.6);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
       transition: transform 0.15s, border-color 0.15s;
     }
     .item-card.highlight {
-      border-color: #ffffff; background: radial-gradient(circle, #ffea80, #ff9900);
-      box-shadow: 0 0 22px #ffd700, 0 0 35px #ffffff; transform: scale(1.18);
+      border-color: #ff9900; background: radial-gradient(circle, #fff3c4, #ffd700);
+      box-shadow: 0 0 25px #ffaa00; transform: scale(1.18);
     }
     .item-card.winner {
-      border-color: #00ffcc; background: radial-gradient(circle, #00ffcc, #ff0055);
-      box-shadow: 0 0 30px #00ffcc; transform: scale(1.25); animation: pulse 0.4s infinite alternate;
+      border-color: #00c853; background: radial-gradient(circle, #b9f6ca, #00e676);
+      box-shadow: 0 0 30px #00c853; transform: scale(1.25); animation: pulse 0.4s infinite alternate;
     }
     @keyframes pulse { from { transform: scale(1.15); } to { transform: scale(1.28); } }
 
     .item-icon { font-size: 26px; line-height: 1; pointer-events: none; }
-    .item-rate { font-size: 10px; color: #ffd700; font-weight: 900; margin-top: 2px; }
+    .item-rate { font-size: 10px; color: #b8860b; font-weight: 900; margin-top: 1px; }
     .my-bet-badge {
       position: absolute; top: -4px; right: -4px; background: #ff2255; color: white;
       font-size: 10px; font-weight: bold; border-radius: 10px; padding: 1px 5px;
@@ -103,17 +127,33 @@
     }
 
     /* Chips */
-    .chips-bar { display: flex; gap: 8px; margin-top: 5px; }
+    .chips-bar { display: flex; gap: 8px; margin-bottom: 8px; }
     .chip {
-      width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-weight: 900; font-size: 13px; color: #000; border: 3px dashed #fff; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+      width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 13px; color: #fff; border: 2.5px dashed #fff; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-    .chip-10 { background: #00ffcc; }
-    .chip-50 { background: #ffcc00; }
-    .chip-100 { background: #ff3366; color: #fff; }
-    .chip-500 { background: #9933ff; color: #fff; }
-    .chip.selected { outline: 3px solid #ffd700; transform: translateY(-4px); box-shadow: 0 0 15px #ffd700; }
+    .chip-10 { background: #00bcd4; }
+    .chip-50 { background: #ff9800; }
+    .chip-100 { background: #e91e63; }
+    .chip-500 { background: #9c27b0; }
+    .chip.selected { outline: 3px solid #ffd700; transform: translateY(-4px); box-shadow: 0 6px 15px rgba(255, 170, 0, 0.6); }
+
+    /* Bottom History Strip */
+    .history-card {
+      width: 100%; background: rgba(255, 255, 255, 0.85); border: 1.5px solid #ffd700;
+      border-radius: 14px; padding: 6px 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .history-label { font-size: 11px; font-weight: 900; color: #b8860b; margin-bottom: 4px; }
+    .history-items-row {
+      display: flex; gap: 6px; overflow-x: auto; width: 100%; padding: 2px 0; scrollbar-width: none;
+    }
+    .history-pill {
+      min-width: 34px; height: 34px; border-radius: 50%; background: #f0f8ff;
+      border: 1.5px solid #89cff0; display: flex; align-items: center; justify-content: center;
+      font-size: 18px; box-shadow: 0 2px 5px rgba(0,0,0,0.08); flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -121,81 +161,93 @@
   <!-- Login Modal -->
   <div id="authModal">
     <div class="auth-card">
-      <h2>✨ GOLD GREEDY</h2>
-      <p style="font-size: 13px; color: #eedd82; margin-bottom: 12px;">गोल्ड कसीनो में प्रवेश करें</p>
-      <input type="text" id="usernameInput" placeholder="यूजरनेम" maxlength="15">
+      <div class="auth-title">Greedy Coin game</div>
+      <p id="authSubtitle" style="font-size: 13px; color: #555; margin-bottom: 12px;">अपना नाम दर्ज करके ID बनाएं</p>
+      <input type="text" id="usernameInput" placeholder="नाम / Name" maxlength="15">
       <input type="password" id="passwordInput" placeholder="पासवर्ड">
-      <button onclick="handleLogin()">प्ले करें</button>
+      <button onclick="handleLogin()" id="authBtn">प्ले करें</button>
     </div>
   </div>
 
   <!-- Game Main Screen -->
   <div id="gameArea">
-    <div class="header-bar">
-      <div class="user-info">👤 <span id="playerNameDisplay">User</span></div>
+    <!-- Top Gold App Title -->
+    <div class="app-title">Greedy Coin game</div>
+
+    <!-- Header bar with ID, coins, language -->
+    <div class="top-controls">
+      <div class="user-badge">🆔 <span id="userIdDisplay">#000000</span></div>
       <div class="coins-badge">🪙 <span id="coinsDisplay">1000</span></div>
+      <select class="lang-select" id="langSelector" onchange="changeLanguage(this.value)">
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="en">English</option>
+        <option value="kn">ಕನ್ನಡ (कर्नाटक)</option>
+        <option value="te">తెలుగు (साउथ)</option>
+        <option value="ta">தமிழ் (साउथ)</option>
+      </select>
     </div>
 
     <div class="status-panel">
       <div class="timer-badge" id="timerDisplay">समय: 30s</div>
-      <div class="message-text" id="statusMessage">अधिकतम 6 दांव लगा सकते हैं</div>
+      <div class="message-text" id="statusMessage">दांव लगाएं (अधिकतम 6 बेट्स)</div>
     </div>
 
-    <!-- Circular Arena (Roulette Mode) -->
+    <!-- Circular Roulette Wheel (Sequence: मुर्गी -> टमाटर -> मेंढी -> शिमला -> मच्छी -> गाजर -> झींगा -> भुट्टा) -->
     <div class="wheel-container">
       <div class="wheel-center-hud">
         <div style="font-size: 20px;">👑</div>
         <div class="bet-counter" id="activeBetsCounter">बेट्स: 0/6</div>
       </div>
 
-      <!-- 8 Circular Slots in Circle Layout -->
-      <!-- 1. मुर्गा (1000x) - Top -->
-      <div class="item-card" id="card-1" style="top: 8px; left: 131px;" onclick="placeBet(1)">
+      <!-- 1. मुर्गी (10x) - Top -->
+      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)">
         <span class="my-bet-badge" id="badge-1">0</span>
         <div class="item-icon">🐓</div>
-        <div class="item-rate">1000x</div>
+        <div class="item-rate">10x</div>
       </div>
-      <!-- 2. मेंढी (250x) - Top Right -->
-      <div class="item-card" id="card-2" style="top: 44px; left: 218px;" onclick="placeBet(2)">
+      <!-- 2. टमाटर (1x) - Top Right -->
+      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)">
         <span class="my-bet-badge" id="badge-2">0</span>
-        <div class="item-icon">🐑</div>
-        <div class="item-rate">250x</div>
-      </div>
-      <!-- 3. झींगा (125x) - Right -->
-      <div class="item-card" id="card-3" style="top: 131px; left: 254px;" onclick="placeBet(3)">
-        <span class="my-bet-badge" id="badge-3">0</span>
-        <div class="item-icon">🦐</div>
-        <div class="item-rate">125x</div>
-      </div>
-      <!-- 4. मच्छी (500x) - Bottom Right -->
-      <div class="item-card" id="card-4" style="top: 218px; left: 218px;" onclick="placeBet(4)">
-        <span class="my-bet-badge" id="badge-4">0</span>
-        <div class="item-icon">🐟</div>
-        <div class="item-rate">500x</div>
-      </div>
-      <!-- 5. टमाटर (2x) - Bottom -->
-      <div class="item-card" id="card-5" style="top: 254px; left: 131px;" onclick="placeBet(5)">
-        <span class="my-bet-badge" id="badge-5">0</span>
         <div class="item-icon">🍅</div>
-        <div class="item-rate">2x</div>
+        <div class="item-rate">1x</div>
       </div>
-      <!-- 6. भुट्टा (2x) - Bottom Left -->
-      <div class="item-card" id="card-6" style="top: 218px; left: 44px;" onclick="placeBet(6)">
-        <span class="my-bet-badge" id="badge-6">0</span>
-        <div class="item-icon">🌽</div>
-        <div class="item-rate">2x</div>
+      <!-- 3. मेंढी (5x) - Right -->
+      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)">
+        <span class="my-bet-badge" id="badge-3">0</span>
+        <div class="item-icon">🐑</div>
+        <div class="item-rate">5x</div>
       </div>
-      <!-- 7. गाजर (2x) - Left -->
-      <div class="item-card" id="card-7" style="top: 131px; left: 8px;" onclick="placeBet(7)">
-        <span class="my-bet-badge" id="badge-7">0</span>
-        <div class="item-icon">🥕</div>
-        <div class="item-rate">2x</div>
-      </div>
-      <!-- 8. शिमला (2x) - Top Left -->
-      <div class="item-card" id="card-8" style="top: 44px; left: 44px;" onclick="placeBet(8)">
-        <span class="my-bet-badge" id="badge-8">0</span>
+      <!-- 4. शिमला (1x) - Bottom Right -->
+      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)">
+        <span class="my-bet-badge" id="badge-4">0</span>
         <div class="item-icon">🫑</div>
+        <div class="item-rate">1x</div>
+      </div>
+      <!-- 5. मच्छी (3x) - Bottom -->
+      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)">
+        <span class="my-bet-badge" id="badge-5">0</span>
+        <div class="item-icon">🐟</div>
+        <div class="item-rate">3x</div>
+      </div>
+      <!-- 6. गाजर (1x) - Bottom Left -->
+      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)">
+        <span class="my-bet-badge" id="badge-6">0</span>
+        <div class="item-icon">🥕</div>
+        <div class="item-rate">1x</div>
+      </div>
+      <!-- 7. झींगा (2x) - Left -->
+      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)">
+        <span class="my-bet-badge" id="badge-7">0</span>
+        <div class="item-icon">🦐</div>
         <div class="item-rate">2x</div>
+      </div>
+      <!-- 8. भुट्टा (1x) - Top Left -->
+      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)">
+        <span class="my-bet-badge" id="badge-8">0</span>
+        <div class="item-icon">🌽</div>
+        <div class="item-rate">1x</div>
       </div>
     </div>
 
@@ -206,6 +258,14 @@
       <div class="chip chip-100" onclick="selectChip(100, this)">100</div>
       <div class="chip chip-500" onclick="selectChip(500, this)">500</div>
     </div>
+
+    <!-- Bottom Bet Result History -->
+    <div class="history-card">
+      <div class="history-label" id="historyLabel">📜 पिछली बेट हिस्ट्री:</div>
+      <div class="history-items-row" id="historyRow">
+        <!-- New results will appear here from left to right -->
+      </div>
+    </div>
   </div>
 
   <script>
@@ -215,21 +275,37 @@
     let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
     let currentGameState = "BETTING";
 
-    // Rate definition
-    const multipliers = {
-      1: 1000, // मुर्गा
-      2: 250,  // मेंढी
-      3: 125,  // झींगा
-      4: 500,  // मच्छी
-      5: 2,    // टमाटर
-      6: 2,    // भुट्टा
-      7: 2,    // गाजर
-      8: 2     // शिमला
+    // 8 Items Map
+    const itemData = {
+      1: { icon: "🐓", rate: 10 },
+      2: { icon: "🍅", rate: 1 },
+      3: { icon: "🐑", rate: 5 },
+      4: { icon: "🫑", rate: 1 },
+      5: { icon: "🐟", rate: 3 },
+      6: { icon: "🥕", rate: 1 },
+      7: { icon: "🦐", rate: 2 },
+      8: { icon: "🌽", rate: 1 }
     };
 
-    // Web Audio Synthesizer (बिना बाहरी फाइल के 100% काम करने वाले साउंड)
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    // Multi-Language Strings
+    const translations = {
+      hi: { time: "समय", placeBet: "दांव लगाएं (अधिकतम 6 बेट्स)", rolling: "चक्का घूम रहा है...", win: "🎉 जीत! मिले:", max6: "⚠️ अधिकतम 6 बेट्स ही लगा सकते हैं!", history: "📜 पिछली बेट हिस्ट्री:", play: "प्ले करें" },
+      mr: { time: "वेळ", placeBet: "पैज लावा (कमाल 6 पर्याय)", rolling: "चक्र फिरत आहे...", win: "🎉 अभिनंदन! मिळाले:", max6: "⚠️ फक्त 6 पर्याय निवडू शकता!", history: "📜 मागील निकाल:", play: "सुरू करा" },
+      gu: { time: "સમય", placeBet: "શરત લગાવો (મહત્તમ 6)", rolling: "ચક્ર ફરી રહ્યું છે...", win: "🎉 જીત! મળ્યા:", max6: "⚠️ મહત્તમ 6 શરત જ લગાવી શકો છો!", history: "📜 અગાઉના પરિણામો:", play: "રમો" },
+      en: { time: "Time", placeBet: "Place Bets (Max 6)", rolling: "Wheel Spinning...", win: "🎉 Won! Got:", max6: "⚠️ Max 6 bets allowed!", history: "📜 Bet History:", play: "Play" },
+      kn: { time: "ಸಮಯ", placeBet: "ಬೆಟ್ ಹಾಕಿ (ಗರಿಷ್ಠ 6)", rolling: "ಚಕ್ರ ತಿರುಗುತ್ತಿದೆ...", win: "🎉 ಗೆಲುವು! ಸಿಕ್ಕಿದ್ದು:", max6: "⚠️ ಕೇವಲ 6 ಬೆಟ್‌ಗೆ ಅವಕಾಶ!", history: "📜 ಹಿಂದಿನ ಫಲಿತಾಂಶಗಳು:", play: "ಪ್ಲೇ ಮಾಡಿ" },
+      te: { time: "సమయం", placeBet: "బెట్ వేయండి (గరిష్టంగా 6)", rolling: "వీల్ తిరుగుతోంది...", win: "🎉 గెలుపు! లభించినవి:", max6: "⚠️ గరిష్టంగా 6 పందాలు మాత్రమే!", history: "📜 మునుపటి ఫలితాలు:", play: "ఆడండి" },
+      ta: { time: "நேரம்", placeBet: "பந்தயம் வைக்கவும் (அதிகபட்சம் 6)", rolling: "சுழல்கிறது...", win: "🎉 வெற்றி! கிடைத்தது:", max6: "⚠️ அதிகபட்சம் 6 பந்தயங்கள் மட்டுமே!", history: "📜 முந்தைய முடிவுகள்:", play: "விளையாடு" }
+    };
+    let currentLang = "hi";
 
+    function changeLanguage(lang) {
+      currentLang = lang;
+      document.getElementById("historyLabel").innerText = translations[lang].history;
+    }
+
+    // Audio
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playSound(type) {
       if (audioCtx.state === 'suspended') audioCtx.resume();
       const osc = audioCtx.createOscillator();
@@ -238,41 +314,44 @@
       gain.connect(audioCtx.destination);
 
       if (type === 'chip') {
-        osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(800, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.08);
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.08);
         osc.start(); osc.stop(audioCtx.currentTime + 0.08);
       } else if (type === 'tick') {
         osc.type = 'triangle';
-        osc.frequency.setValueAtTime(650, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.04);
-        osc.start(); osc.stop(audioCtx.currentTime + 0.04);
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.035);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.035);
       } else if (type === 'win') {
         [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
           const winOsc = audioCtx.createOscillator();
           const winGain = audioCtx.createGain();
-          winOsc.type = 'sine';
-          winOsc.frequency.value = freq;
-          winGain.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.12);
-          winGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i * 0.12 + 0.35);
-          winOsc.connect(winGain);
-          winGain.connect(audioCtx.destination);
-          winOsc.start(audioCtx.currentTime + i * 0.12);
-          winOsc.stop(audioCtx.currentTime + i * 0.12 + 0.35);
+          winOsc.type = 'sine'; winOsc.frequency.value = freq;
+          winGain.gain.setValueAtTime(0.3, audioCtx.currentTime + i * 0.1);
+          winGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + i * 0.1 + 0.3);
+          winOsc.connect(winGain); winGain.connect(audioCtx.destination);
+          winOsc.start(audioCtx.currentTime + i * 0.1); winOsc.stop(audioCtx.currentTime + i * 0.1 + 0.3);
         });
       }
     }
 
+    // User ID generator
     function handleLogin() {
       const username = document.getElementById("usernameInput").value.trim();
       const password = document.getElementById("passwordInput").value.trim();
-      if (!username) return alert("कृपया यूजरनेम दर्ज करें!");
+      if (!username) return alert("कृपया नाम दर्ज करें!");
       if (password.length < 3) return alert("पासवर्ड कम से कम 3 अंक का होना चाहिए!");
 
-      localStorage.setItem("greedy_user", username);
-      document.getElementById("playerNameDisplay").innerText = username;
+      let userId = localStorage.getItem("greedy_user_id");
+      if (!userId) {
+        userId = "#" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("greedy_user_id", userId);
+      }
+
+      document.getElementById("userIdDisplay").innerText = userId;
       document.getElementById("authModal").style.display = "none";
       document.getElementById("gameArea").style.display = "flex";
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -286,20 +365,16 @@
     }
 
     function placeBet(boxId) {
-      if (currentGameState !== "BETTING") {
-        alert("दांव लगाने का समय समाप्त हो गया है!");
-        return;
-      }
+      if (currentGameState !== "BETTING") return;
 
-      // Check maximum 6 bets restriction
       const currentBetBoxes = Object.keys(bets).filter(id => bets[id] > 0);
       if (bets[boxId] === 0 && currentBetBoxes.length >= 6) {
-        alert("⚠️ आप एक राउंड में केवल 6 विकल्पों पर ही बेट लगा सकते हैं!");
+        alert(translations[currentLang].max6);
         return;
       }
 
       if (coins < selectedChip) {
-        alert("आपके पास पर्याप्त सिक्के नहीं हैं!");
+        alert("अपर्याप्त सिक्के!");
         return;
       }
 
@@ -313,7 +388,6 @@
 
       const totalBetItems = Object.keys(bets).filter(id => bets[id] > 0).length;
       document.getElementById("activeBetsCounter").innerText = `बेट्स: ${totalBetItems}/6`;
-
       playSound('chip');
     }
 
@@ -323,21 +397,21 @@
       const statusEl = document.getElementById("statusMessage");
 
       if (data.gameState === "BETTING") {
-        timerEl.innerText = `समय: ${data.timeLeft}s`;
-        timerEl.style.color = "#ffd700";
-        statusEl.innerText = "दांव लगाएं! (अधिकतम 6 बेट्स मान्य)";
+        timerEl.innerText = `${translations[currentLang].time}: ${data.timeLeft}s`;
+        timerEl.style.color = "#004b91";
+        statusEl.innerText = translations[currentLang].placeBet;
       } else {
-        timerEl.innerText = `रिजल्ट आ रहा है...`;
-        timerEl.style.color = "#00ffcc";
-        statusEl.innerText = "चक्का घूम रहा है!";
+        timerEl.innerText = `${translations[currentLang].rolling}`;
+        timerEl.style.color = "#d4af37";
+        statusEl.innerText = translations[currentLang].rolling;
       }
     });
 
-    // Spin Roulette Animation with Speed Physics
+    // Spin animation & history append
     socket.on("gameResult", (data) => {
       let currentHighlight = 1;
-      let totalSteps = 24 + data.winner; // 3 full turns + winner index
-      let delay = 40; // तेज गति से शुरू
+      let totalSteps = 24 + data.winner;
+      let delay = 40;
 
       function spinStep() {
         document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
@@ -348,36 +422,30 @@
         currentHighlight = (currentHighlight % 8) + 1;
 
         if (totalSteps > 0) {
-          // अंत में धीमी गति (Realistic deceleration)
           if (totalSteps < 10) delay += 35;
           setTimeout(spinStep, delay);
         } else {
-          // Finished on Winner
           document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
           const winCard = document.getElementById("card-" + data.winner);
           winCard.classList.add("winner");
 
+          // Add to History line (Newest to left)
+          const historyRow = document.getElementById("historyRow");
+          const pill = document.createElement("div");
+          pill.className = "history-pill";
+          pill.innerText = itemData[data.winner].icon;
+          historyRow.insertBefore(pill, historyRow.firstChild);
+
           const userBetOnWinner = bets[data.winner];
-
-          // Check Veg Combo Rule: अगर सिर्फ टमाटर(5), भुट्टा(6), गाजर(7), शिमला(8) लगे हैं
-          const activeItemIds = Object.keys(bets).filter(id => bets[id] > 0).map(Number);
-          const onlyVegSelected = activeItemIds.length === 4 && [5,6,7,8].every(id => bets[id] > 0);
-
           if (userBetOnWinner > 0) {
             playSound('win');
-            let winAmount = userBetOnWinner * multipliers[data.winner];
-
-            // अगर सिर्फ 4 सब्जियों पर दांव था और इनमें से कोई जीता, तो 50 कॉइन मिले
-            if (onlyVegSelected && [5,6,7,8].includes(data.winner)) {
-              winAmount = 50;
-            }
-
+            const winAmount = userBetOnWinner * itemData[data.winner].rate;
             coins += winAmount;
             document.getElementById("coinsDisplay").innerText = coins;
-            setTimeout(() => alert(`🎉 बधाई हो! आपको +${winAmount} सिक्के मिले!`), 400);
+            setTimeout(() => alert(`${translations[currentLang].win} +${winAmount} सिक्के`), 300);
           }
 
-          // Reset Board
+          // Reset round
           setTimeout(() => {
             winCard.classList.remove("winner");
             bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
@@ -386,16 +454,17 @@
               b.innerText = "0";
             });
             document.getElementById("activeBetsCounter").innerText = `बेट्स: 0/6`;
-          }, 5000);
+          }, 4500);
         }
       }
-
       spinStep();
     });
 
     window.onload = () => {
-      const savedUser = localStorage.getItem("greedy_user");
-      if (savedUser) document.getElementById("usernameInput").value = savedUser;
+      const savedId = localStorage.getItem("greedy_user_id");
+      if (savedId) {
+        document.getElementById("userIdDisplay").innerText = savedId;
+      }
     };
   </script>
 </body>
