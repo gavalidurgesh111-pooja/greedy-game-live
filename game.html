@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Profile & Inbox</title>
+  <title>Greedy Coin - Profile & Arena</title>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <!-- Profile Dashboard Screen -->
-  <div id="screenProfile" style="display:flex;">
+  <div id="screenProfile" style="display:flex; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#fff; min-height:100vh; position:relative; padding-bottom:30px;">
     <div class="profile-cover">
       <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Avatar">⚙️</div>
+        <div class="icon-circle" onclick="openEditProfile()" title="Edit Profile">⚙️</div>
       </div>
     </div>
     
@@ -26,7 +26,7 @@
       </div>
       <div class="user-name-box">
         <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-        <div class="edit-name-icon" onclick="openEditProfile()">✏️</div>
+        <div class="edit-name-icon" onclick="openEditProfile()" title="Edit Name">✏️</div>
       </div>
       <div class="tags-row">
         <div class="tag-lv">👑 Lv.<span id="profLevel">100</span></div>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;">
+    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;" title="Click to recharge">
       <div class="stat-item">
         <div class="stat-val">🪙 <span id="profBalance">10050014452100</span></div>
         <div class="stat-label">Wallet Balance</div>
@@ -70,59 +70,52 @@
     </div>
   </div>
 
-  <!-- Inbox Message Page (जो 💬 Text दबाने पर खुलेगा) -->
+  <!-- Inbox Message Page -->
   <div id="screenInboxMessage" style="display:none; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#f8f9fa; min-height:100vh; position:relative;">
     <div class="inbox-msg-header">
       <div class="inbox-back-btn" onclick="closeInboxMessagePage()">❮</div>
       <h2>Inbox message</h2>
       <div style="width:24px;"></div>
     </div>
-
-    <div class="inbox-body-content">
-      <!-- Recent Searches Section -->
-      <div class="section-box">
-        <div class="section-title-row">
+    <div class="inbox-body-content" style="padding:15px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:15px;">
+      <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
+        <div class="section-title-row" style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:10px;">
           <span>Recent searches</span>
-          <span class="clear-icon-btn" onclick="clearRecentSearches()">🗑</span>
+          <span style="cursor:pointer; color:#e91e63;" onclick="clearRecentSearches()">🗑</span>
         </div>
-        <div class="horizontal-chips-row" id="recentSearchesList">
-          <!-- динамик रूप से भरेगा -->
-          <div class="search-chip" onclick="visitUserProfile('Blacku', '#889921', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1')">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="chip-avatar">
-            <span>Blacku (#889921)</span>
+        <div id="recentSearchesList" style="display:flex; gap:12px; overflow-x:auto;">
+          <div class="search-chip" style="display:flex; align-items:center; gap:8px; background:#f0f2f5; padding:6px 12px; border-radius:20px; cursor:pointer;">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" style="width:28px; height:28px; border-radius:50%;">
+            <span style="font-size:13px; font-weight:bold;">Blacku (#889921)</span>
           </div>
         </div>
       </div>
 
-      <!-- Recent Views Section -->
-      <div class="section-box" style="margin-top:15px;">
-        <div class="section-title-row">
+      <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
+        <div class="section-title-row" style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:10px;">
           <span>Recent Views</span>
-          <span class="clear-icon-btn" onclick="clearRecentViews()">🗑</span>
+          <span style="cursor:pointer; color:#e91e63;" onclick="clearRecentViews()">🗑</span>
         </div>
-        <div class="horizontal-views-row" id="recentViewsList">
-          <div class="view-profile-card" onclick="visitUserProfile('Rahul', '#445511', 'https://api.dicebear.com/7.x/bottts/svg?seed=King2')">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="view-logo-img">
-            <span class="view-name">Rahul</span>
+        <div id="recentViewsList" style="display:flex; gap:12px; overflow-x:auto;">
+          <div class="view-profile-card" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" style="width:50px; height:50px; border-radius:50%; border:2px solid #8a2be2;">
+            <span style="font-size:12px; font-weight:bold;">Rahul</span>
           </div>
         </div>
       </div>
 
-      <!-- All Game Players List Section -->
-      <div class="section-box" style="margin-top:20px;">
-        <div class="section-title-row" style="margin-bottom:10px;">
+      <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
+        <div class="section-title-row" style="font-weight:800; margin-bottom:10px;">
           <span>🎮 All Game Players Today</span>
         </div>
-        <div class="players-vertical-list" id="allPlayersListContainer">
-          <!-- सूची जावास्क्रिप्ट से आएगी -->
-        </div>
+        <div id="allPlayersListContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
       </div>
     </div>
   </div>
 
   <!-- Modals -->
-  <div id="modalEditProfile" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
-    <div class="custom-modal" style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
+  <div id="modalEditProfile" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
       <h3>Edit Profile Name</h3>
       <input type="text" id="nameInputEdit" style="width:100%; padding:10px; margin:15px 0;" value="🦋DURGESH🦋">
       <button onclick="saveProfile()" style="width:100%; padding:10px; background:#8a2be2; color:#fff; border:none; border-radius:10px; font-weight:bold;">Save Changes</button>
@@ -130,8 +123,8 @@
     </div>
   </div>
 
-  <div id="modalRecharge" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
-    <div class="custom-modal" style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
+  <div id="modalRecharge" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
       <h3>Recharge Coins</h3>
       <input type="number" id="rechargeInput" placeholder="Enter coins amount" style="width:100%; padding:10px; margin:15px 0;">
       <button onclick="processRecharge()" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:10px; font-weight:bold;">Recharge Now</button>
@@ -139,8 +132,8 @@
     </div>
   </div>
 
-  <div id="modalFrames" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
-    <div class="custom-modal" style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px; text-align:center;">
+  <div id="modalFrames" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px; text-align:center;">
       <h3>Select Frame Style</h3>
       <div style="display:flex; gap:10px; justify-content:center; margin:20px 0;">
         <button onclick="selectFrame('gold')" style="padding:10px; background:gold; border:none; border-radius:10px; font-weight:bold;">Gold</button>
@@ -157,9 +150,6 @@
     <div class="top-controls" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
       <div class="user-badge" onclick="goBackToProfile()" style="cursor:pointer; background:#fff; padding:5px 12px; border-radius:15px; font-weight:bold;">❮ 👤 Profile</div>
       <div class="coins-badge">🪙 <span id="coinsDisplay">10050014452100</span></div>
-    </div>
-    <div class="wheel-container" style="position:relative; width:320px; height:320px; margin:20px auto; border-radius:50%; background:#eaf5fc; border:5px solid #ffd700; display:flex; align-items:center; justify-content:center;">
-      <div class="wheel-center-hud"><div id="timerDisplay" style="font-size:28px; font-weight:900; color:#ff1a1a;">30s</div></div>
     </div>
   </div>
 
