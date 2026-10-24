@@ -26,11 +26,13 @@
       transition: 0.3s;
       cursor: pointer;
     }
-    /* नंबर डालते ही बटन पूरी तरह चालू हो जाएगा */
-    #submitBtn.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    /* नंबर डालते ही बटन पूरी तरह चालू और चमकीला हो जाएगा */
+#submitBtn.active {
+  opacity: 1;
+  pointer-events: auto;
+  background: #00cd00 !important; /* बटन का हरा रंग */
+  box-shadow: 0 0 15px #00cd00;  /* चमकने का इफ़ेक्ट (Glow) */
+}
   </style>
 </head>
 <body>
@@ -330,7 +332,7 @@
           <option value="+260">🇿🇲 (+260) Zambia</option>
           <option value="+263">🇿🇼 (+263) Zimbabwe</option>
         </select>
-        <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
+        <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number"> style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
       </div>
       <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;">
         <button class="btn-round-next" id="submitBtn" onclick="goToProfile()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button>
