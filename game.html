@@ -3,37 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Profile & Arena</title>
+  <title>Greedy Coin - Arena</title>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="game-body-bg">
+<body>
 
   <!-- Profile Dashboard Screen -->
   <div id="screenProfile" style="display:flex; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#fff; min-height:100vh; position:relative; padding-bottom:30px;">
     <div class="profile-cover">
-      <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
+      <div class="profile-back-btn" onclick="openLogoutScreen()">❮</div>
       <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()" title="Edit Profile">⚙️</div>
+        <div class="icon-circle" onclick="openRecharge()">💳</div>
+        <div class="icon-circle" onclick="openEditProfile()">⚙️</div>
       </div>
     </div>
     
     <div class="profile-header-area">
-      <div class="avatar-wrapper" onclick="openFrames()" title="Tap to change frame">
+      <div class="avatar-wrapper" onclick="openFrames()">
         <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
         <div class="avatar-frame" id="profAvatarFrame"></div>
       </div>
-      
-      <!-- नाम और उसके ठीक सामने कोने में Active 2 Days ऑप्शन -->
       <div class="user-name-row" style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:12px;">
         <div style="display:flex; align-items:center; gap:8px;">
           <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-          <div class="edit-name-icon" onclick="openEditProfile()" title="Edit Name">✏️</div>
+          <div class="edit-name-icon" onclick="openEditProfile()">✏️</div>
         </div>
         <div class="accompany-badge" style="background:linear-gradient(90deg, #ff416c, #ff4b2b); color:#fff; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:bold; white-space:nowrap;">Active: 2 Days ✨</div>
       </div>
-
       <div class="tags-row" style="margin-top:6px;">
         <div class="tag-lv">👑 Lv.<span id="profLevel">100</span></div>
         <div class="tag-id">🆔 <span id="profId">#677510</span></div>
@@ -47,19 +44,13 @@
       </div>
       <div class="profile-action-btns">
         <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
-        <button class="btn-text-msg" onclick="openInboxMessagePage()">💬 Text</button>
+        <button class="btn-text-msg" onclick="openMessagesScreen()">💬 Text</button>
       </div>
     </div>
 
-    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;" title="Click to recharge">
-      <div class="stat-item">
-        <div class="stat-val">🪙 <span id="profBalance">10050014452100</span></div>
-        <div class="stat-label">Wallet Balance</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">🏆 <span id="profWon">13937600</span></div>
-        <div class="stat-label">Total Won Coins</div>
-      </div>
+    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;">
+      <div class="stat-item"><div class="stat-val">🪙 <span id="profBalance">10050014452100</span></div><div class="stat-label">Wallet Balance</div></div>
+      <div class="stat-item"><div class="stat-val">🏆 <span id="profWon">13937600</span></div><div class="stat-label">Total Won Coins</div></div>
     </div>
 
     <div class="cards-wrapper">
@@ -74,46 +65,60 @@
     </div>
   </div>
 
-  <!-- Inbox Message Page -->
-  <div id="screenInboxMessage" style="display:none; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#f8f9fa; min-height:100vh; position:relative;">
-    <div class="inbox-msg-header">
-      <div class="inbox-back-btn" onclick="closeInboxMessagePage()">❮</div>
-      <h2>Inbox message</h2>
-      <div style="width:24px;"></div>
+  <!-- Messages / Inbox Screen -->
+  <div id="screenMessages" style="display:none; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#f8f9fa; min-height:100vh; position:relative;">
+    <div class="msg-top-bar" style="display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:linear-gradient(90deg, #1e3c72, #2a5298); color:#fff;">
+      <div class="back-btn" style="cursor:pointer; font-size:20px;" onclick="goBackToProfile()">❮</div>
+      <div class="msg-top-title" style="font-size:20px; font-weight:900;">Inbox message</div>
+      <div style="width:20px;"></div>
     </div>
-    <div class="inbox-body-content" style="padding:15px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:15px;">
+    <div class="inbox-body-content" style="padding:15px; display:flex; flex-direction:column; gap:15px;">
       <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
         <div class="section-title-row" style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:10px;">
           <span>Recent searches</span>
           <span style="cursor:pointer; color:#e91e63;" onclick="clearRecentSearches()">🗑</span>
         </div>
-        <div id="recentSearchesList" style="display:flex; gap:12px; overflow-x:auto;">
-          <div class="search-chip" style="display:flex; align-items:center; gap:8px; background:#f0f2f5; padding:6px 12px; border-radius:20px; cursor:pointer;">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" style="width:28px; height:28px; border-radius:50%;">
-            <span style="font-size:13px; font-weight:bold;">Blacku (#889921)</span>
-          </div>
-        </div>
+        <div id="recentSearchesList" style="font-size:13px; color:#666;">No recent searches</div>
       </div>
-
       <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
         <div class="section-title-row" style="display:flex; justify-content:space-between; font-weight:800; margin-bottom:10px;">
           <span>Recent Views</span>
           <span style="cursor:pointer; color:#e91e63;" onclick="clearRecentViews()">🗑</span>
         </div>
-        <div id="recentViewsList" style="display:flex; gap:12px; overflow-x:auto;">
-          <div class="view-profile-card" style="display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer;">
-            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" style="width:50px; height:50px; border-radius:50%; border:2px solid #8a2be2;">
-            <span style="font-size:12px; font-weight:bold;">Rahul</span>
-          </div>
-        </div>
+        <div id="recentViewsList" style="font-size:13px; color:#666;">No recent views</div>
       </div>
+    </div>
+  </div>
 
-      <div class="section-box" style="background:#fff; border-radius:14px; padding:14px;">
-        <div class="section-title-row" style="font-weight:800; margin-bottom:10px;">
-          <span>🎮 All Game Players Today</span>
-        </div>
-        <div id="allPlayersListContainer" style="display:flex; flex-direction:column; gap:10px;"></div>
+  <!-- Main Game Arena -->
+  <div id="gameArea" style="display:none; width:100%; max-width:430px; margin:0 auto; flex-direction:column; align-items:center; padding:8px 12px;">
+    <div class="app-title" style="font-size:26px; font-weight:900; color:#ffd700; margin-bottom:12px;">Greedy Coin game</div>
+    
+    <div class="top-controls" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+      <div class="user-badge" onclick="goBackToProfile()" style="cursor:pointer; background:#fff; padding:5px 12px; border-radius:15px; font-weight:bold;">❮ 👤 Profile</div>
+      <div class="coins-badge" style="background:linear-gradient(45deg, #ffd700, #ff9900); padding:5px 12px; border-radius:15px; font-weight:900;">🪙 <span id="coinsDisplay">10050014452100</span></div>
+    </div>
+
+    <!-- Wheel Arena -->
+    <div class="wheel-container" style="position:relative; width:320px; height:320px; margin:20px auto; border-radius:50%; background:#eaf5fc; border:5px solid #ffd700; display:flex; align-items:center; justify-content:center;">
+      <div class="wheel-center-hud" style="width:110px; height:110px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;">
+        <div id="timerDisplay" style="font-size:28px; font-weight:900; color:#ff1a1a;">30s</div>
       </div>
+      <!-- Items -->
+      <div class="item-card" id="card-1" style="position:absolute; top:8px; left:127px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🐓<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">25x</div></div>
+      <div class="item-card" id="card-2" style="position:absolute; top:42px; left:211px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🍅<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">4x</div></div>
+      <div class="item-card" id="card-3" style="position:absolute; top:127px; left:246px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🐑<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">14x</div></div>
+      <div class="item-card" id="card-4" style="position:absolute; top:211px; left:211px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🫑<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">4x</div></div>
+      <div class="item-card" id="card-5" style="position:absolute; top:246px; left:127px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🐟<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">19x</div></div>
+      <div class="item-card" id="card-6" style="position:absolute; top:211px; left:42px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🥕<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">4x</div></div>
+      <div class="item-card" id="card-7" style="position:absolute; top:127px; left:8px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🦐<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">9x</div></div>
+      <div class="item-card" id="card-8" style="position:absolute; top:42px; left:42px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8" style="display:none; position:absolute; top:-4px; right:-4px; background:#ff2255; color:white; font-size:10px; font-weight:bold; border-radius:10px; padding:1px 5px;">0</span>🌽<div class="item-rate" style="font-size:9px; color:#b8860b; font-weight:900;">4x</div></div>
+    </div>
+
+    <!-- Chips Bar -->
+    <div class="chips-bar" style="display:flex; gap:10px; margin-top:15px;">
+      <div class="chip" onclick="selectChip(100)" style="padding:10px 15px; background:#00bcd4; color:#fff; border-radius:50%; cursor:pointer; font-weight:bold;">100</div>
+      <div class="chip" onclick="selectChip(1000)" style="padding:10px 15px; background:#ff9800; color:#fff; border-radius:50%; cursor:pointer; font-weight:bold;">1000</div>
     </div>
   </div>
 
@@ -145,37 +150,6 @@
         <button onclick="selectFrame('none')" style="padding:10px; background:#ddd; border:none; border-radius:10px;">Remove</button>
       </div>
       <button onclick="closeFrames()" style="padding:10px 20px; background:#333; color:#fff; border:none; border-radius:10px;">Close</button>
-    </div>
-  </div>
-
-  <!-- Main Game Arena (पूर्ण गेम बोर्ड और पहिया) -->
-  <div id="gameArea" style="display:none; width:100%; max-width:430px; margin:0 auto; flex-direction:column; align-items:center; padding:8px 12px;">
-    <div class="app-title">Greedy Coin game</div>
-    
-    <div class="top-controls" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-      <div class="user-badge" onclick="goBackToProfile()" style="cursor:pointer; background:#fff; padding:5px 12px; border-radius:15px; font-weight:bold;">❮ 👤 Profile</div>
-      <div class="coins-badge">🪙 <span id="coinsDisplay">10050014452100</span></div>
-    </div>
-
-    <!-- Wheel Arena -->
-    <div class="wheel-container">
-      <div class="wheel-center-hud"><div id="timerDisplay">30s</div></div>
-      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1">0</span><div class="item-icon">🐓</div><div class="item-rate">25x</div></div>
-      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2">0</span><div class="item-icon">🍅</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3">0</span><div class="item-icon">🐑</div><div class="item-rate">14x</div></div>
-      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4">0</span><div class="item-icon">🫑</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5">0</span><div class="item-icon">🐟</div><div class="item-rate">19x</div></div>
-      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6">0</span><div class="item-icon">🥕</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7">0</span><div class="item-icon">🦐</div><div class="item-rate">9x</div></div>
-      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8">0</span><div class="item-icon">🌽</div><div class="item-rate">4x</div></div>
-    </div>
-
-    <!-- Chips Bar -->
-    <div class="chips-bar">
-      <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
-      <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
-      <div class="chip chip-2000" onclick="selectChip(2000, this)">2000</div>
-      <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
     </div>
   </div>
 
