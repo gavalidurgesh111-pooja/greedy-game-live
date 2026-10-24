@@ -3,34 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Arena</title>
+  <title>Greedy Coin - Profile & Arena</title>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="game-body-bg">
 
   <!-- Profile Dashboard Screen -->
   <div id="screenProfile" style="display:flex; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#fff; min-height:100vh; position:relative; padding-bottom:30px;">
     <div class="profile-cover">
-      <div class="profile-back-btn" onclick="openLogoutScreen()">❮</div>
+      <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
       <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openRecharge()">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()">⚙️</div>
+        <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
+        <div class="icon-circle" onclick="openEditProfile()" title="Edit Profile">⚙️</div>
       </div>
     </div>
     
     <div class="profile-header-area">
-      <div class="avatar-wrapper" onclick="openFrames()">
+      <div class="avatar-wrapper" onclick="openFrames()" title="Tap to change frame">
         <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
         <div class="avatar-frame" id="profAvatarFrame"></div>
       </div>
+      
+      <!-- नाम और उसके ठीक सामने कोने में Active 2 Days ऑप्शन -->
       <div class="user-name-row" style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:12px;">
         <div style="display:flex; align-items:center; gap:8px;">
           <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-          <div class="edit-name-icon" onclick="openEditProfile()">✏️</div>
+          <div class="edit-name-icon" onclick="openEditProfile()" title="Edit Name">✏️</div>
         </div>
         <div class="accompany-badge" style="background:linear-gradient(90deg, #ff416c, #ff4b2b); color:#fff; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:bold; white-space:nowrap;">Active: 2 Days ✨</div>
       </div>
+
       <div class="tags-row" style="margin-top:6px;">
         <div class="tag-lv">👑 Lv.<span id="profLevel">100</span></div>
         <div class="tag-id">🆔 <span id="profId">#677510</span></div>
@@ -48,9 +51,15 @@
       </div>
     </div>
 
-    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;">
-      <div class="stat-item"><div class="stat-val">🪙 <span id="profBalance">10050014452100</span></div><div class="stat-label">Wallet Balance</div></div>
-      <div class="stat-item"><div class="stat-val">🏆 <span id="profWon">13937600</span></div><div class="stat-label">Total Won Coins</div></div>
+    <div class="stats-container" onclick="openRecharge()" style="cursor:pointer;" title="Click to recharge">
+      <div class="stat-item">
+        <div class="stat-val">🪙 <span id="profBalance">10050014452100</span></div>
+        <div class="stat-label">Wallet Balance</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-val">🏆 <span id="profWon">13937600</span></div>
+        <div class="stat-label">Total Won Coins</div>
+      </div>
     </div>
 
     <div class="cards-wrapper">
