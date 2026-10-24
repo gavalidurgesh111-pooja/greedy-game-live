@@ -1,14 +1,16 @@
-const socket = io();
-let isGameStarted = false;
-
 let coins = parseInt(localStorage.getItem("greedy_coins")) || 10050014452100;
 let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
 let userLevel = parseInt(localStorage.getItem("greedy_level")) || 100;
-let totalWon = parseInt(localStorage.getItem("greedy_won")) || 13937600;
 let userFrame = localStorage.getItem("greedy_frame") || "none";
 let followersCount = parseInt(localStorage.getItem("greedy_followers")) || 143;
-let followingCount = parseInt(localStorage.getItem("greedy_following")) || 35;
 let isFollowed = localStorage.getItem("greedy_is_followed") === "true";
+
+let allGamePlayers = [
+  { name: "👑 KingRahul", id: "#102938", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=King2", won: 450000 },
+  { name: "🔥 TigerBoss", id: "#554433", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4", won: 280000 },
+  { name: "⚡ QueenRuby", id: "#998877", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Queen3", won: 195000 },
+  { name: "🌟 WarriorX", id: "#112233", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1", won: 92000 }
+];
 
 function initProfileUI() {
   if(document.getElementById("profNameDisplay")) {
@@ -16,9 +18,7 @@ function initProfileUI() {
     document.getElementById("profBalance").innerText = coins;
     document.getElementById("coinsDisplay").innerText = coins;
     document.getElementById("profLevel").innerText = userLevel;
-    document.getElementById("profWon").innerText = totalWon;
     document.getElementById("followersCount").innerText = followersCount;
-    document.getElementById("followingCount").innerText = followingCount;
     
     const fBtn = document.getElementById("followBtn");
     if(fBtn) {
@@ -29,102 +29,50 @@ function initProfileUI() {
   }
 }
 
-function updateCoinsUI(amount) {
-  coins = amount;
-  localStorage.setItem("greedy_coins", coins);
-  if(document.getElementById("coinsDisplay")) document.getElementById("coinsDisplay").innerText = coins;
-  if(document.getElementById("profBalance")) document.getElementById("profBalance").innerText = coins;
-}
-
-function enterGameFromProfile() {
-  isGameStarted = true;
+function openInboxMessagePage() {
   document.getElementById("screenProfile").style.display = "none";
-  document.getElementById("gameArea").style.display = "flex";
-  document.body.classList.add("game-active");
-  updateCoinsUI(coins);
+  document.getElementById("screenInboxMessage").style.display = "flex";
+  renderAllPlayersList();
 }
 
-function goBackToProfile() {
-  isGameStarted = false;
-  document.body.classList.remove("game-active");
-  if(document.getElementById("gameArea")) document.getElementById("gameArea").style.display = "none";
-  if(document.getElementById("screenMessages")) document.getElementById("screenMessages").style.display = "none";
-  if(document.getElementById("screenProfile")) document.getElementById("screenProfile").style.display = "flex";
-  initProfileUI();
-}
-
-function openMessagesScreen() {
-  document.getElementById("screenProfile").style.display = "none";
-  document.getElementById("screenMessages").style.display = "flex";
+function closeInboxMessagePage() {
+  document.getElementById("screenInboxMessage").style.display = "none";
+  document.getElementById("screenProfile").style.display = "flex";
 }
 
 function clearRecentSearches() {
-  document.getElementById("recentSearchesList").innerHTML = "<p style='font-size:12px; color:#888;'>No recent searches</p>";
+  document.getElementById("recentSearchesList").innerHTML = "<p style='font-size:12px; color:#888; padding:5px;'>No recent searches</p>";
 }
 
 function clearRecentViews() {
-  document.getElementById("recentViewsList").innerHTML = "<p style='font-size:12px; color:#888;'>No recent views</p>";
+  document.getElementById("recentViewsList").innerHTML = "<p style='font-size:12px; color:#888; padding:5px;'>No recent views</p>";
 }
 
-let selectedChip = 100;
-let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-let currentGameState = "BETTING";
-
-function selectChip(amount) {
-  selectedChip = amount;
-  alert("Selected chip: " + amount);
+function visitUserProfile(name, id, avatar) {
+  alert(`Visiting profile: ${name} (${id})`);
 }
 
-function placeBet(boxId) {
-  if (currentGameState !== "BETTING") return;
-  if (coins < selectedChip) { alert("Not enough coins!"); return; }
-  updateCoinsUI(coins - selectedChip);
-  bets[boxId] += selectedChip;
-  let badge = document.getElementById("badge-" + boxId);
-  if(badge) {
-    badge.style.display = "block";
-    badge.innerText = bets[boxId];
-  }
+function renderAllPlayersList() {
+  const container = document.getElementById("allPlayersListContainer");
+  if(!container) return;
+  container.innerHTML = "";
+  allGamePlayers.forEach(player => {
+    let item = document.createElement("div");
+    item.style.cssText = "display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:#fafafa; border-radius:12px; cursor:pointer; border:1px solid #eee;";
+    item.onclick = () => visitUserProfile(player.name, player.id, player.avatar);
+    item.innerHTML = `
+      <div style="display:flex; align-items:center; gap:12px;">
+        <img src="${player.avatar}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:1.5px solid #ffd700;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <span style="font-size:14px; font-weight:900; color:#111;">${player.name}</span>
+          <span style="font-size:11px; color:#666; font-weight:bold;">ID: ${player.id}</span>
+        </div>
+      </div>
+      <div style="font-size:13px; font-weight:900; color:#e65100; background:#fff3e0; padding:4px 10px; border-radius:12px;">🪙 ${player.won.toLocaleString()}</div>
+    `;
+    container.appendChild(item);
+  });
 }
-
-socket.on("timerUpdate", (data) => {
-  currentGameState = data.gameState;
-  const tDisp = document.getElementById("timerDisplay");
-  if(tDisp) tDisp.innerText = data.gameState === "BETTING" ? `${data.timeLeft}s` : `⏳`;
-});
-
-socket.on("gameResult", (data) => {
-  let currentHighlight = 1;
-  let totalSteps = 24 + data.winner;
-  function spinStep() {
-    document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-    let card = document.getElementById("card-" + currentHighlight);
-    if(card) card.classList.add("highlight");
-    totalSteps--;
-    currentHighlight = (currentHighlight % 8) + 1;
-    if (totalSteps > 0) { 
-      setTimeout(spinStep, totalSteps < 10 ? 75 : 40); 
-    } else {
-      document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-      let winCard = document.getElementById("card-" + data.winner);
-      if(winCard) winCard.classList.add("winner");
-      
-      let wonBet = bets[data.winner];
-      if (wonBet > 0) {
-        let wonAmount = wonBet * 4;
-        updateCoinsUI(coins + wonAmount);
-        totalWon += wonAmount;
-        localStorage.setItem("greedy_won", totalWon);
-      }
-      setTimeout(() => {
-        if(winCard) winCard.classList.remove("winner");
-        bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-        document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
-      }, 3500);
-    }
-  }
-  if(isGameStarted) spinStep();
-});
 
 function toggleFollow() {
   if (!isFollowed) { followersCount++; isFollowed = true; } else { followersCount--; isFollowed = false; }
@@ -177,10 +125,25 @@ function applyFrameUI(type) {
   }
 }
 
+function enterGameFromProfile() {
+  document.getElementById("screenProfile").style.display = "none";
+  document.getElementById("gameArea").style.display = "flex";
+  document.body.classList.add("game-active");
+}
+
+function goBackToProfile() {
+  document.body.classList.remove("game-active");
+  document.getElementById("gameArea").style.display = "none";
+  document.getElementById("screenProfile").style.display = "flex";
+  initProfileUI();
+}
+
 function openLogoutScreen() {
   if(confirm("Are you sure you want to log out?")) {
     window.location.href = "index.html";
   }
 }
 
-window.onload = () => { initProfileUI(); };
+window.onload = () => {
+  initProfileUI();
+};
