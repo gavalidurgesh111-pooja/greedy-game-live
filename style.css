@@ -150,3 +150,12 @@ body.game-active { background: linear-gradient(180deg, #ff8c42 0%, #ff5722 50%, 
 .player-name-txt { font-size: 14px; font-weight: 900; color: #111; }
 .player-id-txt { font-size: 11px; color: #666; font-weight: bold; }
 .player-won-coins { font-size: 13px; font-weight: 900; color: #e65100; background: #fff3e0; padding: 4px 10px; border-radius: 12px; }
+.avatar-frame {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%; /* फ्रेम को गोल करने के लिए */
+  pointer-events: none;
+  background-size: cover;
+  background-position: center;
+  /* जरूरत पड़ने पर यहाँ बॉर्डर या इमेज सेट होगी */
+}
