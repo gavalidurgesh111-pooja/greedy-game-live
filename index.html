@@ -18,7 +18,19 @@
     .policy-section { margin-bottom: 20px; }
     .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
     .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; background: none; border: none; font-weight: bold; }
-  </style>
+   /* शुरू में बटन धुंधला और बंद रहेगा */
+  #submitBtn {
+    opacity: 0.4;
+    pointer-events: none;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+  /* नंबर डालते ही बटन पूरी तरह चालू हो जाएगा */
+  #submitBtn.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+ </style>
 </head>
 <body>
 
@@ -319,7 +331,7 @@
         </select>
         <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
       </div>
-      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" onclick="goToPassword()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button></div>
+      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" id="submitBtn"onclick="goToPassword()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button></div>
     </div>
 
     <!-- Password Screen -->
@@ -422,6 +434,22 @@
     function closeDoc(id) {
       document.getElementById(id).style.display = "none";
     }
-  </script>
+ 
+    <script>
+      function checkNumber() {
+        let phone = document.getElementById("phoneInput").value.trim();
+        let btn = document.getElementById("submitBtn");
+        
+        if (phone.length > 0) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      }
+
+      function goToProfile() {
+        window.location.href = "profile.html";
+      }
+    </script>
 </body>
 </html>
