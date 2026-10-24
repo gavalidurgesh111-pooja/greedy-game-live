@@ -5,6 +5,7 @@ let userFrame = localStorage.getItem("greedy_frame") || "none";
 let followersCount = parseInt(localStorage.getItem("greedy_followers")) || 143;
 let isFollowed = localStorage.getItem("greedy_is_followed") === "true";
 
+// डमी गेम प्लेयर्स लिस्ट (जो आज तक गेम खेले हैं)
 let allGamePlayers = [
   { name: "👑 KingRahul", id: "#102938", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=King2", won: 450000 },
   { name: "🔥 TigerBoss", id: "#554433", avatar: "https://api.dicebear.com/7.x/bottts/svg?seed=Tiger4", won: 280000 },
@@ -41,6 +42,7 @@ function closeInboxMessagePage() {
 }
 
 function clearRecentSearches() {
+  document.getElementById("recentSearchesListinnerHTML") = "";
   document.getElementById("recentSearchesList").innerHTML = "<p style='font-size:12px; color:#888; padding:5px;'>No recent searches</p>";
 }
 
@@ -58,17 +60,17 @@ function renderAllPlayersList() {
   container.innerHTML = "";
   allGamePlayers.forEach(player => {
     let item = document.createElement("div");
-    item.style.cssText = "display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:#fafafa; border-radius:12px; cursor:pointer; border:1px solid #eee;";
+    item.className = "player-list-item";
     item.onclick = () => visitUserProfile(player.name, player.id, player.avatar);
     item.innerHTML = `
-      <div style="display:flex; align-items:center; gap:12px;">
-        <img src="${player.avatar}" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:1.5px solid #ffd700;">
-        <div style="display:flex; flex-direction:column; gap:2px;">
-          <span style="font-size:14px; font-weight:900; color:#111;">${player.name}</span>
-          <span style="font-size:11px; color:#666; font-weight:bold;">ID: ${player.id}</span>
+      <div class="player-left-info">
+        <img src="${player.avatar}" class="player-avatar-img">
+        <div class="player-details">
+          <span class="player-name-txt">${player.name}</span>
+          <span class="player-id-txt">ID: ${player.id}</span>
         </div>
       </div>
-      <div style="font-size:13px; font-weight:900; color:#e65100; background:#fff3e0; padding:4px 10px; border-radius:12px;">🪙 ${player.won.toLocaleString()}</div>
+      <div class="player-won-coins">🪙 ${player.won.toLocaleString()}</div>
     `;
     container.appendChild(item);
   });
