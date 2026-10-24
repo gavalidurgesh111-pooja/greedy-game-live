@@ -317,12 +317,26 @@
     function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     
-    function setFrame(frameType) {
-      currentFrame = frameType;
-      localStorage.setItem("greedy_frame", frameType);
-      applyFrameClass(frameType);
-      closeFrameModal();
-    }
+        document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll('.frame-option').forEach(function(item) {
+        item.addEventListener('click', function() {
+          let frameUrl = this.getAttribute('data-frame');
+          let targetFrame = document.getElementById("profAvatarFrame");
+          
+          if (targetFrame) {
+            targetFrame.className = "avatar-frame";
+            targetFrame.style.backgroundImage = frameUrl;
+            targetFrame.style.backgroundSize = "cover";
+            targetFrame.style.backgroundPosition = "center";
+            targetFrame.style.border = "none";
+            targetFrame.style.borderRadius = "50%";
+          }
+          
+          closeFrameModal();
+        });
+      });
+    });
+
 
     function updateAvatarPhoto() {
       let url = document.getElementById("customAvatarInput").value.trim();
