@@ -4,8 +4,10 @@ body { background: #f4f6f9; color: #333; overflow-x: hidden; }
 #screenMain {
   flex: 1; display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   padding: 30px 20px 25px;
-  background: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.85)), url('https://images2.imgbox.com/66/ea/1Zg7dZ0f_o.jpg') center top/cover no-repeat;
-}
+  body {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed !important;
+  background-size: cover !important;
+  }
 .auth-top-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; }
 .lang-select-login { background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.8); border-radius: 18px; padding: 5px 12px; font-size: 13px; font-weight: bold; color: #fff; outline: none; cursor: pointer; }
 .brand-title { font-size: 46px; font-weight: 900; color: #ffd700; letter-spacing: 1px; text-shadow: 0 4px 20px rgba(0,0,0,0.95); margin-top: 40px; text-align: center; }
