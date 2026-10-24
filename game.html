@@ -7,7 +7,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="game-body-bg">
 
   <!-- Profile Dashboard Screen -->
   <div id="screenProfile" style="display:flex; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#fff; min-height:100vh; position:relative; padding-bottom:30px;">
@@ -24,17 +24,21 @@
         <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
         <div class="avatar-frame" id="profAvatarFrame"></div>
       </div>
-      <div class="user-name-box">
-        <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-        <div class="edit-name-icon" onclick="openEditProfile()" title="Edit Name">✏️</div>
+      
+      <!-- नाम और उसके ठीक सामने कोने में Active 2 Days ऑप्शन -->
+      <div class="user-name-row" style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-top:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
+          <div class="edit-name-icon" onclick="openEditProfile()" title="Edit Name">✏️</div>
+        </div>
+        <div class="accompany-badge" style="background:linear-gradient(90deg, #ff416c, #ff4b2b); color:#fff; padding:5px 12px; border-radius:20px; font-size:11px; font-weight:bold; white-space:nowrap;">Active: 2 Days ✨</div>
       </div>
-      <div class="tags-row">
+
+      <div class="tags-row" style="margin-top:6px;">
         <div class="tag-lv">👑 Lv.<span id="profLevel">100</span></div>
         <div class="tag-id">🆔 <span id="profId">#677510</span></div>
       </div>
     </div>
-
-    <div class="accompany-badge">Active: <span id="profDays">2</span> Days ✨</div>
 
     <div class="follow-stats-row">
       <div class="follow-counts">
@@ -144,12 +148,35 @@
     </div>
   </div>
 
-  <!-- Main Game Arena -->
+  <!-- Main Game Arena (यहाँ गेम का पहिया और कार्ड्स जोड़ दिए गए हैं) -->
   <div id="gameArea" style="display:none; width:100%; max-width:430px; margin:0 auto; flex-direction:column; align-items:center; padding:8px 12px;">
-    <div class="app-title">Greedy Coin game</div>
+    <div class="app-title" style="font-size:26px; font-weight:900; color:#ffd700; margin-bottom:12px;">Greedy Coin game</div>
+    
     <div class="top-controls" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
       <div class="user-badge" onclick="goBackToProfile()" style="cursor:pointer; background:#fff; padding:5px 12px; border-radius:15px; font-weight:bold;">❮ 👤 Profile</div>
-      <div class="coins-badge">🪙 <span id="coinsDisplay">10050014452100</span></div>
+      <div class="coins-badge" style="background:linear-gradient(45deg, #ffd700, #ff9900); padding:5px 12px; border-radius:15px; font-weight:900;">🪙 <span id="coinsDisplay">10050014452100</span></div>
+    </div>
+
+    <!-- Wheel Arena -->
+    <div class="wheel-container" style="position:relative; width:320px; height:320px; margin:20px auto; border-radius:50%; background:#eaf5fc; border:5px solid #ffd700; display:flex; align-items:center; justify-content:center;">
+      <div class="wheel-center-hud" style="width:110px; height:110px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;">
+        <div id="timerDisplay" style="font-size:28px; font-weight:900; color:#ff1a1a;">30s</div>
+      </div>
+      <!-- Items -->
+      <div class="item-card" id="card-1" style="position:absolute; top:8px; left:127px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(1)">🐓</div>
+      <div class="item-card" id="card-2" style="position:absolute; top:42px; left:211px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(2)">🍅</div>
+      <div class="item-card" id="card-3" style="position:absolute; top:127px; left:246px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(3)">🐑</div>
+      <div class="item-card" id="card-4" style="position:absolute; top:211px; left:211px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(4)">🫑</div>
+      <div class="item-card" id="card-5" style="position:absolute; top:246px; left:127px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(5)">🐟</div>
+      <div class="item-card" id="card-6" style="position:absolute; top:211px; left:42px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(6)">🥕</div>
+      <div class="item-card" id="card-7" style="position:absolute; top:127px; left:8px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(7)">🦐</div>
+      <div class="item-card" id="card-8" style="position:absolute; top:42px; left:42px; width:50px; height:50px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center;" onclick="placeBet(8)">🌽</div>
+    </div>
+
+    <!-- Chips Bar -->
+    <div class="chips-bar" style="display:flex; gap:10px; margin-top:15px;">
+      <div class="chip" onclick="selectChip(100)" style="padding:10px 15px; background:#00bcd4; color:#fff; border-radius:50%; cursor:pointer; font-weight:bold;">100</div>
+      <div class="chip" onclick="selectChip(1000)" style="padding:10px 15px; background:#ff9800; color:#fff; border-radius:50%; cursor:pointer; font-weight:bold;">1000</div>
     </div>
   </div>
 
