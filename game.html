@@ -1,1 +1,348 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile - Greedy Coin</title>
+  <script src="/socket.io/socket.io.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background: #000; display: flex; justify-content: center; color: #333; }
+    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
+    
+    /* Cover & Top Bar */
+    .profile-cover { width: 100%; height: 210px; background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
+    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
+    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
+    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
+
+    /* Header & Avatar */
+    .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
+    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    
+    /* नक्शीदार रंगीन फ्रेम (10 नंबर स्टाइल) */
+    .avatar-frame { 
+      position: absolute; inset: -7px; border-radius: 50%; pointer-events: none; 
+      border: 4px dashed #ff007f; 
+      box-shadow: 0 0 12px #00f0ff, inset 0 0 12px #ff007f;
+      animation: neonPulse 3s infinite alternate;
+    }
+    @keyframes neonPulse {
+      0% { border-color: #ff007f; box-shadow: 0 0 8px #ff007f; }
+      50% { border-color: #00f0ff; box-shadow: 0 0 12px #00f0ff; }
+      100% { border-color: #ffd700; box-shadow: 0 0 10px #ffd700; }
+    }
+
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; }
+    .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+
+    .tags-row { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
+    .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 2px 10px; border-radius: 12px; }
+    .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 2px 10px; border-radius: 12px; cursor: pointer; }
+
+    /* Stats & Actions */
+    .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 14px; padding: 0 20px; }
+    .follow-counts { display: flex; gap: 20px; }
+    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
+    .f-num { font-size: 16px; font-weight: 900; color: #111; }
+    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
+    .profile-action-btns { display: flex; gap: 8px; }
+    .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+    .stats-container { display: flex; justify-content: space-around; margin: 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; cursor: pointer; }
+    .stat-item { text-align: center; }
+    .stat-val { font-size: 16px; font-weight: 900; color: #222; }
+    .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
+
+    /* Cards */
+    .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+    .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
+    .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+    .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
+    .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+
+    /* Hidden Screens / Modals */
+    .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: linear-gradient(90deg, #1e3c72, #2a5298); color: #fff; }
+    .sub-header h2 { font-size: 18px; font-weight: 900; }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <!-- MAIN PROFILE DASHBOARD -->
+    <div id="screenProfile">
+      <div class="profile-cover">
+        <!-- ऊपर बैक बटन: क्लिक करने पर सीधे Inbox message खुलेगा -->
+        <div class="profile-back-btn" onclick="openInboxMessage()" title="Go to Inbox">❮</div>
+        <div class="profile-top-icons">
+          <div class="icon-circle" onclick="openCoinSendModal()" title="Send Coins">💸</div>
+          <div class="icon-circle" onclick="openSettingsModal()" title="Settings">⚙️</div>
+        </div>
+      </div>
+      
+      <div class="profile-header-area">
+        <div class="avatar-wrapper" onclick="openFrames()" title="Frame style 10">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=NewUser1" class="avatar-img" id="profAvatarImg">
+          <div class="avatar-frame" id="profAvatarFrame"></div>
+        </div>
+        
+        <div class="user-name-row">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="user-name" id="profNameDisplay">User_677510</div>
+            <div style="font-size:14px; cursor:pointer;" onclick="openEditProfile()">✏️</div>
+          </div>
+          <div class="accompany-badge">Active: 1 Days ✨</div>
+        </div>
+
+        <div class="tags-row">
+          <div class="tag-lv">👑 Lv.<span id="profLevel">0</span></div>
+          <div class="tag-id" onclick="copyMyId()" title="Click to copy ID">🆔 <span id="profId">#677510</span> 📋</div>
+        </div>
+      </div>
+
+      <div class="follow-stats-row">
+        <div class="follow-counts">
+          <div class="f-count-item" onclick="alert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
+          <div class="f-count-item" onclick="alert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
+        </div>
+        <div class="profile-action-btns">
+          <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
+          <button class="btn-action" onclick="openInboxMessage()">Inbox message</button>
+        </div>
+      </div>
+
+      <div class="stats-container" onclick="openRechargeModal()">
+        <div class="stat-item">
+          <div class="stat-val">🪙 <span id="profBalance">0</span></div>
+          <div class="stat-label">Wallet Balance</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-val">🏆 <span id="profWon">0</span></div>
+          <div class="stat-label">Total Won Coins</div>
+        </div>
+      </div>
+
+      <div class="cards-wrapper">
+        <div class="action-card card-play" onclick="alert('Game arena will open in next step!')">
+          <div class="card-text"><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
+          <div style="font-size:32px;">🎰</div>
+        </div>
+        <div class="action-card card-about" onclick="openAboutMeScreen()">
+          <div class="card-text"><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
+          <div style="font-size:32px;">👤</div>
+        </div>
+        <div class="action-card card-group" onclick="openGroupsScreen()">
+          <div class="card-text"><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
+          <div style="font-size:32px;">🌐</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INBOX MESSAGE SUB-SCREEN (पेज खुलते ही डिफ़ॉल्ट या बैक दबाने पर) -->
+    <div id="screenInboxMessage" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeInboxMessage()">❮</div>
+        <h2>Inbox message</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:15px; display:flex; flex-direction:column; gap:15px; overflow-y:auto; flex:1;">
+        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; margin-bottom:8px;">
+            <span>Recent searches</span>
+            <span style="color:#e91e63; cursor:pointer;" onclick="clearSearches()">🗑</span>
+          </div>
+          <div id="recentSearchesList" style="font-size:12px; color:#666;">No recent searches</div>
+        </div>
+
+        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; margin-bottom:8px;">
+            <span>Recent Views</span>
+            <span style="color:#e91e63; cursor:pointer;" onclick="clearViews()">🗑</span>
+          </div>
+          <div id="recentViewsList" style="font-size:12px; color:#666;">No recent views</div>
+        </div>
+
+        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="font-weight:800; font-size:13px; margin-bottom:10px;">🎮 All Game Players Today</div>
+          <div id="topPlayersContainer" style="display:flex; flex-direction:column; gap:8px;">
+            <!-- टॉप प्लेयर्स की लिस्ट -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT ME SCREEN -->
+    <div id="screenAboutMe" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeAboutMeScreen()">❮</div>
+        <h2>About Me</h2>
+        <div id="privacyHeart" style="cursor:pointer; font-size:22px;" onclick="togglePrivacy()" title="Toggle Privacy">🤍</div>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
+        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <h4 style="margin-bottom:8px;">My Unique ID</h4>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
+            <span id="aboutUserId" style="font-weight:bold;">#677510</span>
+            <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
+          </div>
+        </div>
+        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <h4 style="margin-bottom:8px;">Bio & Details</h4>
+          <p style="font-size:13px; color:#555;">This is your personal profile bio. Tap the heart icon (🤍/❤️) at the top right to set privacy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUPS SCREEN -->
+    <div id="screenGroups" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeGroupsScreen()">❮</div>
+        <h2>Groups</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:20px; text-align:center;">
+        <h3 style="margin-bottom:10px;">Community Groups</h3>
+        <p style="font-size:13px; color:#666;">Group creation and management tools will be configured here soon.</p>
+      </div>
+    </div>
+
+    <!-- MODALS (Coin Send, Settings, Recharge, Edit Name) -->
+    <div id="modalCoinSend" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center;">
+      <div style="background:#fff; padding:20px; border-radius:16px; width:90%; max-width:330px;">
+        <h3>Send Coins to User</h3>
+        <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
+        <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
+        <button onclick="processCoinSend()" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
+        <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <div id="modalSettings" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:100; align-items:center; justify-content:center;">
+      <div style="background:#fff; padding:20px; border-radius:16px; width:90%; max-width:330px; text-align:center;">
+        <h3>Website Settings</h3>
+        <p style="font-size:13px; color:#666; margin:15px 0;">All global settings and configurations will be placed here.</p>
+        <button onclick="closeSettingsModal()" style="padding:8px 20px; background:#333; color:#fff; border:none; border-radius:8px; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // LocalStorage Initial Setup for New User
+    if (!localStorage.getItem("greedy_initialized")) {
+      localStorage.setItem("greedy_initialized", "true");
+      localStorage.setItem("greedy_coins", "0");
+      localStorage.setItem("greedy_won", "0");
+      localStorage.setItem("greedy_level", "0");
+      localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+      localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
+      localStorage.setItem("greedy_privacy", "false");
+    }
+
+    let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
+    let userName = localStorage.getItem("greedy_name") || "User_677510";
+    let userId = localStorage.getItem("greedy_unique_id"] || "#677510";
+    let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
+    let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
+    let isPrivate = localStorage.getItem("greedy_privacy") === "true";
+
+    function initProfile() {
+      document.getElementById("profNameDisplay").innerText = userName;
+      document.getElementById("profBalance").innerText = coins;
+      document.getElementById("profWon").innerText = totalWon;
+      document.getElementById("profLevel").innerText = userLevel;
+      document.getElementById("profId").innerText = userId;
+      document.getElementById("aboutUserId").innerText = userId;
+      updatePrivacyHeart();
+    }
+
+    function copyMyId() {
+      navigator.clipboard.writeText(userId);
+      alert("ID Copied: " + userId);
+    }
+
+    // Inbox Message Navigation
+    function openInboxMessage() {
+      document.getElementById("screenInboxMessage").style.display = "flex";
+      renderTopPlayers();
+    }
+    function closeInboxMessage() {
+      document.getElementById("screenInboxMessage").style.display = "none";
+    }
+
+    // About Me Navigation & Privacy
+    function openAboutMeScreen() {
+      document.getElementById("screenAboutMe").style.display = "flex";
+    }
+    function closeAboutMeScreen() {
+      document.getElementById("screenAboutMe").style.display = "none";
+    }
+    function togglePrivacy() {
+      isPrivate = !isPrivate;
+      localStorage.setItem("greedy_privacy", isPrivate);
+      updatePrivacyHeart();
+    }
+    function updatePrivacyHeart() {
+      const heart = document.getElementById("privacyHeart");
+      const bioBox = document.getElementById("aboutMeContentBox");
+      if(isPrivate) {
+        heart.innerText = "❤️";
+        bioBox.style.background = "#ffe6e6";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active: This profile info is hidden from other users.</p>";
+      } else {
+        heart.innerText = "🤍";
+        bioBox.style.background = "#fff";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon (🤍/❤️) at the top right to set privacy.</p>";
+      }
+    }
+
+    // Groups Navigation
+    function openGroupsScreen() { document.getElementById("screenGroups").style.display = "flex"; }
+    function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
+
+    // Coin Send Feature
+    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
+    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
+    function processCoinSend() {
+      let targetId = document.getElementById("targetUserId").value.trim();
+      let amt = parseInt(document.getElementById("sendCoinAmount").value);
+      if(!targetId) { alert("Please enter receiver ID"); return; }
+      if(!amt || amt <= 0 || amt > coins) { alert("Invalid coin amount or insufficient balance!"); return; }
+      coins -= amt;
+      localStorage.setItem("greedy_coins", coins);
+      initProfile();
+      closeCoinSendModal();
+      alert(`Successfully sent ${amt} coins to ${targetId}!`);
+    }
+
+    // Settings Modal
+    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
+
+    function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
+    function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
+
+    function renderTopPlayers() {
+      const container = document.getElementById("topPlayersContainer");
+      container.innerHTML = `
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#f9f9f9; border-radius:8px;">
+          <span style="font-weight:bold; font-size:13px;">👑 KingRahul (#102938)</span>
+          <span style="color:#e65100; font-weight:bold; font-size:12px;">🪙 450,000</span>
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#f9f9f9; border-radius:8px;">
+          <span style="font-weight:bold; font-size:13px;">🔥 TigerBoss (#554433)</span>
+          <span style="color:#e65100; font-weight:bold; font-size:12px;">🪙 280,000</span>
+        </div>
+      `;
+    }
+
+    window.onload = () => { initProfile(); };
+  </script>
+</body>
+</html>
