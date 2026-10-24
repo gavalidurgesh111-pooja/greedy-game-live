@@ -9,18 +9,18 @@
 </head>
 <body>
 
-  <!-- 2. Profile Screen -->
-  <div id="screenProfile" style="display:flex;">
+  <!-- Profile Screen -->
+  <div id="screenProfile">
     <div class="profile-cover">
-      <div class="profile-back-btn" onclick="openLogoutScreen()" title="Log out">❮</div>
+      <div class="profile-back-btn" onclick="openLogoutScreen()">❮</div>
       <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openRecharge()" title="Recharge Coins">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()" title="Edit Name & Avatar">⚙️</div>
+        <div class="icon-circle" onclick="openRecharge()">💳</div>
+        <div class="icon-circle" onclick="openEditProfile()">⚙️</div>
       </div>
     </div>
     
     <div class="profile-header-area">
-      <div class="avatar-wrapper" onclick="openFrames()" title="Tap to change frame">
+      <div class="avatar-wrapper" onclick="openFrames()">
         <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
         <div class="avatar-frame" id="profAvatarFrame"></div>
       </div>
@@ -48,14 +48,8 @@
     </div>
 
     <div class="stats-container">
-      <div class="stat-item">
-        <div class="stat-val">🪙 <span id="profBalance">10000</span></div>
-        <div class="stat-label">Wallet Balance</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-val">🏆 <span id="profWon">0</span></div>
-        <div class="stat-label">Total Won Coins</div>
-      </div>
+      <div class="stat-item"><div class="stat-val">🪙 <span id="profBalance">10000</span></div><div class="stat-label">Wallet Balance</div></div>
+      <div class="stat-item"><div class="stat-val">🏆 <span id="profWon">0</span></div><div class="stat-label">Total Won Coins</div></div>
     </div>
 
     <div class="cards-wrapper">
@@ -70,20 +64,20 @@
     </div>
   </div>
 
-  <!-- 3. Messages / Chat History Screen -->
-  <div id="screenMessages">
+  <!-- Messages Screen -->
+  <div id="screenMessages" style="display:none;">
     <div class="msg-top-bar">
       <div class="back-btn" style="margin-bottom:0; color:#fff;" onclick="goBackToProfile()">❮</div>
       <div class="msg-top-title">Messages</div>
       <div style="width:24px;"></div>
     </div>
     <div class="msg-list" id="chatListContainer">
-      <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1', 'Family')">
+      <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1')">
         <div class="msg-left">
           <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="msg-avatar">
           <div class="msg-info">
             <div class="msg-name-row"><span class="msg-name">Blacku</span><span class="msg-tag">Family</span></div>
-            <div class="msg-snippet">🔱Shree🔱: 🔱Shree🔱 is broadcasting</div>
+            <div class="msg-snippet">Broadcasting</div>
           </div>
         </div>
         <div class="msg-time">21:07</div>
@@ -92,35 +86,32 @@
   </div>
 
   <!-- Inbox Chat Window -->
-  <div id="screenInbox">
+  <div id="screenInbox" style="display:none; position:fixed; inset:0; z-index:180; background:#f9f9f9; flex-direction:column; max-width:480px; margin:0 auto;">
     <div class="inbox-header">
-      <div class="inbox-user-info" onclick="openFriendProfile()">
+      <div class="inbox-user-info">
         <div class="back-btn" style="margin-bottom:0; font-size:20px;" onclick="closeChat()">❮</div>
         <img src="" id="inboxUserAvatar" class="inbox-avatar">
         <span id="inboxUserName" class="inbox-name">User</span>
       </div>
-      <div style="font-size:12px; color:#8a2be2; font-weight:bold; cursor:pointer;" onclick="openFriendProfile()">View Profile ➔</div>
     </div>
     <div class="inbox-messages-area" id="inboxMessagesList">
       <div class="chat-bubble chat-incoming">Hello! Welcome to Greedy Coin chat.</div>
     </div>
     <div class="inbox-input-bar">
-      <button class="inbox-action-btn" onclick="sendPhotoInChat()" title="Send Photo">📷</button>
-      <button class="inbox-action-btn" onclick="sendVoiceInChat()" title="Send Voice Note">🎙️</button>
       <input type="text" id="chatInputBox" placeholder="Type a message...">
       <button class="inbox-action-btn" onclick="sendTextMessage()" style="color:#8a2be2; font-weight:bold;">➤</button>
     </div>
   </div>
 
-  <!-- 4. Main Game Arena -->
-  <div id="gameArea">
+  <!-- Main Game Arena -->
+  <div id="gameArea" style="display:none;">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls">
       <div class="user-badge" onclick="goBackToProfile()">❮ 👤 Profile</div>
       <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
       <div class="top-right-btns">
-        <div class="icon-btn" onclick="openRules()" title="Rules">📜</div>
-        <div class="icon-btn" onclick="openGameSettings()" title="Settings">⚙️</div>
+        <div class="icon-btn">📜</div>
+        <div class="icon-btn">⚙️</div>
       </div>
     </div>
 
@@ -144,20 +135,8 @@
     </div>
 
     <div class="history-card" id="historyCard">
-      <div class="history-label">📜 Bet History (Previous Results):</div>
+      <div class="history-label">📜 Bet History:</div>
       <div class="history-items-row" id="historyRow"></div>
-    </div>
-  </div>
-
-  <!-- Modals -->
-  <div id="modalEditProfile" class="modal-overlay">
-    <div class="custom-modal">
-      <div class="close-modal" onclick="closeEditProfile()">✕</div>
-      <div class="modal-title-dark">Choose Safe Avatar</div>
-      <div class="avatar-grid" id="avatarPickerGrid"></div>
-      <label style="font-size:12px; color:#555; font-weight:bold; margin-bottom:5px; display:block;">Enter Name</label>
-      <input type="text" id="nameInputEdit" class="edit-input" placeholder="e.g. 🦋DURGESH🦋">
-      <button class="btn-save" onclick="saveProfile()">Save Changes</button>
     </div>
   </div>
 
