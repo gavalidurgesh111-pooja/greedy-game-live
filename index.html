@@ -3,140 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin game - Arena</title>
-  <script src="/socket.io/socket.io.js"></script>
+  <title>Greedy Coin game</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Profile Screen -->
-  <div id="screenProfile">
-    <div class="profile-cover">
-      <div class="profile-back-btn" onclick="openLogoutScreen()">❮</div>
-      <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openRecharge()">💳</div>
-        <div class="icon-circle" onclick="openEditProfile()">⚙️</div>
+  <div id="authFlowContainer">
+    <div id="screenMain">
+      <div class="auth-top-bar">
+        <select class="lang-select-login" id="loginLangSelector" onchange="changeLanguage(this.value)">
+          <option value="en" selected>English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+          <option value="gu">ગુજરાતી</option>
+        </select>
       </div>
-    </div>
-    
-    <div class="profile-header-area">
-      <div class="avatar-wrapper" onclick="openFrames()">
-        <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Durgesh1" class="avatar-img" id="profAvatarImg">
-        <div class="avatar-frame" id="profAvatarFrame"></div>
-      </div>
-      <div class="user-name-box">
-        <div class="user-name" id="profNameDisplay">🦋DURGESH🦋</div>
-        <div class="edit-name-icon" onclick="openEditProfile()">✏️</div>
-      </div>
-      <div class="tags-row">
-        <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
-        <div class="tag-id">🆔 <span id="profId">#000000</span></div>
-      </div>
-    </div>
-
-    <div class="accompany-badge">Active: <span id="profDays">1</span> Days ✨</div>
-
-    <div class="follow-stats-row">
-      <div class="follow-counts">
-        <div class="f-count-item"><span class="f-num" id="followersCount">142</span><span class="f-lbl">Followers</span></div>
-        <div class="f-count-item"><span class="f-num" id="followingCount">35</span><span class="f-lbl">Following</span></div>
-      </div>
-      <div class="profile-action-btns">
-        <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
-        <button class="btn-text-msg" onclick="openMessagesScreen()">💬 Text</button>
+      <div class="brand-title" id="txtBrandTitle">Greedy Coin</div>
+      <div class="auth-bottom-panel">
+        <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span id="txtBtnFb">Sign in with Facebook</span>
+        </button>
+        <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
+          <span id="txtBtnGoogle">Sign in with Google</span>
+        </button>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span id="txtMoreOpts">More Options</span> <span class="last-login-tag" id="txtLastLogin">Last login</span></button>
+        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span id="txtAgreeTerms">Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
       </div>
     </div>
 
-    <div class="stats-container">
-      <div class="stat-item"><div class="stat-val">🪙 <span id="profBalance">10000</span></div><div class="stat-label">Wallet Balance</div></div>
-      <div class="stat-item"><div class="stat-val">🏆 <span id="profWon">0</span></div><div class="stat-label">Total Won Coins</div></div>
-    </div>
-
-    <div class="cards-wrapper">
-      <div class="action-card card-play" onclick="enterGameFromProfile()">
-        <div class="card-text"><h3>🎮 Play Greedy Coin</h3><p>Enter wheel arena to place bets</p></div>
-        <div class="card-icon">🎰</div>
-      </div>
-      <div class="action-card card-recharge" onclick="openRecharge()">
-        <div class="card-text"><h3>💎 Recharge Coins</h3><p>1 Lakh = +20 Lv | 2 Lakh = +40 Lv</p></div>
-        <div class="card-icon">💰</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Messages Screen -->
-  <div id="screenMessages" style="display:none;">
-    <div class="msg-top-bar">
-      <div class="back-btn" style="margin-bottom:0; color:#fff;" onclick="goBackToProfile()">❮</div>
-      <div class="msg-top-title">Messages</div>
-      <div style="width:24px;"></div>
-    </div>
-    <div class="msg-list" id="chatListContainer">
-      <div class="msg-item" onclick="openChat('Blacku', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1')">
-        <div class="msg-left">
-          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="msg-avatar">
-          <div class="msg-info">
-            <div class="msg-name-row"><span class="msg-name">Blacku</span><span class="msg-tag">Family</span></div>
-            <div class="msg-snippet">Broadcasting</div>
-          </div>
-        </div>
-        <div class="msg-time">21:07</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Inbox Chat Window -->
-  <div id="screenInbox" style="display:none; position:fixed; inset:0; z-index:180; background:#f9f9f9; flex-direction:column; max-width:480px; margin:0 auto;">
-    <div class="inbox-header">
-      <div class="inbox-user-info">
-        <div class="back-btn" style="margin-bottom:0; font-size:20px;" onclick="closeChat()">❮</div>
-        <img src="" id="inboxUserAvatar" class="inbox-avatar">
-        <span id="inboxUserName" class="inbox-name">User</span>
-      </div>
-    </div>
-    <div class="inbox-messages-area" id="inboxMessagesList">
-      <div class="chat-bubble chat-incoming">Hello! Welcome to Greedy Coin chat.</div>
-    </div>
-    <div class="inbox-input-bar">
-      <input type="text" id="chatInputBox" placeholder="Type a message...">
-      <button class="inbox-action-btn" onclick="sendTextMessage()" style="color:#8a2be2; font-weight:bold;">➤</button>
-    </div>
-  </div>
-
-  <!-- Main Game Arena -->
-  <div id="gameArea" style="display:none;">
-    <div class="app-title">Greedy Coin game</div>
-    <div class="top-controls">
-      <div class="user-badge" onclick="goBackToProfile()">❮ 👤 Profile</div>
-      <div class="coins-badge" id="coinsContainer">🪙 <span id="coinsDisplay">10000</span></div>
-      <div class="top-right-btns">
-        <div class="icon-btn">📜</div>
-        <div class="icon-btn">⚙️</div>
+    <!-- More Options Modal -->
+    <div id="moreOptionsModal">
+      <div class="options-sheet">
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()">📞 <span id="txtSheetPhone">Sign in with Phone</span> <span class="sheet-last-login">Last login</span></button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()">✉️ <span id="txtSheetEmail">Sign in with Email</span></button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" id="txtSheetCancel">Cancel</button>
       </div>
     </div>
 
-    <div class="wheel-container">
-      <div class="wheel-center-hud"><div id="timerDisplay">30s</div></div>
-      <div class="item-card" id="card-1" style="top: 8px; left: 127px;" onclick="placeBet(1)"><span class="my-bet-badge" id="badge-1">0</span><div class="item-icon">🐓</div><div class="item-rate">25x</div></div>
-      <div class="item-card" id="card-2" style="top: 42px; left: 211px;" onclick="placeBet(2)"><span class="my-bet-badge" id="badge-2">0</span><div class="item-icon">🍅</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-3" style="top: 127px; left: 246px;" onclick="placeBet(3)"><span class="my-bet-badge" id="badge-3">0</span><div class="item-icon">🐑</div><div class="item-rate">14x</div></div>
-      <div class="item-card" id="card-4" style="top: 211px; left: 211px;" onclick="placeBet(4)"><span class="my-bet-badge" id="badge-4">0</span><div class="item-icon">🫑</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-5" style="top: 246px; left: 127px;" onclick="placeBet(5)"><span class="my-bet-badge" id="badge-5">0</span><div class="item-icon">🐟</div><div class="item-rate">19x</div></div>
-      <div class="item-card" id="card-6" style="top: 211px; left: 42px;" onclick="placeBet(6)"><span class="my-bet-badge" id="badge-6">0</span><div class="item-icon">🥕</div><div class="item-rate">4x</div></div>
-      <div class="item-card" id="card-7" style="top: 127px; left: 8px;" onclick="placeBet(7)"><span class="my-bet-badge" id="badge-7">0</span><div class="item-icon">🦐</div><div class="item-rate">9x</div></div>
-      <div class="item-card" id="card-8" style="top: 42px; left: 42px;" onclick="placeBet(8)"><span class="my-bet-badge" id="badge-8">0</span><div class="item-icon">🌽</div><div class="item-rate">4x</div></div>
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative;">
+      <div class="back-btn" onclick="showScreenMain()">❮</div>
+      <div class="step-title" id="txtRegTitle">Register / log in</div>
+      <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:10px 14px;">
+        <select class="country-code-select" style="border:none; background:transparent; font-weight:bold;"><option value="+91">🇮🇳 (+91)</option></select>
+        <input type="tel" class="phone-input" id="phoneInput" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
+      </div>
+      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" onclick="goToPassword()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button></div>
     </div>
 
-    <div class="chips-bar">
-      <div class="chip chip-100 selected" onclick="selectChip(100, this)">100</div>
-      <div class="chip chip-1000" onclick="selectChip(1000, this)">1000</div>
-      <div class="chip chip-2000" onclick="selectChip(2000, this)">2000</div>
-      <div class="chip chip-5000" onclick="selectChip(5000, this)">5000</div>
+    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative;">
+      <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner"></div></div>
+      <div class="back-btn" onclick="showScreenPhone()">❮</div>
+      <div class="step-title" id="txtLogTitle">Log in</div>
+      <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:10px 14px;"><input type="password" class="pass-input" id="passInput" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;"></div>
+      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" style="width:60px; height:60px; border-radius:50%; background:#5e229e; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button></div>
     </div>
 
-    <div class="history-card" id="historyCard">
-      <div class="history-label">📜 Bet History:</div>
-      <div class="history-items-row" id="historyRow"></div>
+    <!-- Terms Page -->
+    <div id="termsPage" class="policy-page">
+      <div class="policy-header"><div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('termsPage')">❮</div><h2>Terms & Conditions</h2></div>
+      <div class="policy-content"><p>By accessing Greedy Coin, you agree to comply with our terms.</p></div>
+    </div>
+
+    <!-- Privacy Policy Page -->
+    <div id="privacyPage" class="policy-page">
+      <div class="policy-header"><div class="back-btn" style="margin-bottom:0;" onclick="closeDoc('privacyPage')">❮</div><h2>Privacy Policy</h2></div>
+      <div class="policy-content"><p>We collect basic identifiers to ensure smooth gameplay.</p></div>
     </div>
   </div>
 
