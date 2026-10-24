@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Profile & Arena</title>
+  <title>Greedy Coin - Profile & Inbox</title>
   <script src="/socket.io/socket.io.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -43,7 +43,7 @@
       </div>
       <div class="profile-action-btns">
         <button class="btn-follow" id="followBtn" onclick="toggleFollow()">+ Follow</button>
-        <button class="btn-text-msg" onclick="alert('Chat messages feature')">💬 Text</button>
+        <button class="btn-text-msg" onclick="openInboxMessagePage()">💬 Text</button>
       </div>
     </div>
 
@@ -70,11 +70,61 @@
     </div>
   </div>
 
-  <!-- Modals for Profile Actions -->
+  <!-- Inbox Message Page (जो 💬 Text दबाने पर खुलेगा) -->
+  <div id="screenInboxMessage" style="display:none; width:100%; max-width:480px; margin:0 auto; flex-direction:column; background:#f8f9fa; min-height:100vh; position:relative;">
+    <div class="inbox-msg-header">
+      <div class="inbox-back-btn" onclick="closeInboxMessagePage()">❮</div>
+      <h2>Inbox message</h2>
+      <div style="width:24px;"></div>
+    </div>
+
+    <div class="inbox-body-content">
+      <!-- Recent Searches Section -->
+      <div class="section-box">
+        <div class="section-title-row">
+          <span>Recent searches</span>
+          <span class="clear-icon-btn" onclick="clearRecentSearches()">🗑</span>
+        </div>
+        <div class="horizontal-chips-row" id="recentSearchesList">
+          <!-- динамик रूप से भरेगा -->
+          <div class="search-chip" onclick="visitUserProfile('Blacku', '#889921', 'https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1')">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=Warrior1" class="chip-avatar">
+            <span>Blacku (#889921)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Views Section -->
+      <div class="section-box" style="margin-top:15px;">
+        <div class="section-title-row">
+          <span>Recent Views</span>
+          <span class="clear-icon-btn" onclick="clearRecentViews()">🗑</span>
+        </div>
+        <div class="horizontal-views-row" id="recentViewsList">
+          <div class="view-profile-card" onclick="visitUserProfile('Rahul', '#445511', 'https://api.dicebear.com/7.x/bottts/svg?seed=King2')">
+            <img src="https://api.dicebear.com/7.x/bottts/svg?seed=King2" class="view-logo-img">
+            <span class="view-name">Rahul</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Game Players List Section -->
+      <div class="section-box" style="margin-top:20px;">
+        <div class="section-title-row" style="margin-bottom:10px;">
+          <span>🎮 All Game Players Today</span>
+        </div>
+        <div class="players-vertical-list" id="allPlayersListContainer">
+          <!-- सूची जावास्क्रिप्ट से आएगी -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals -->
   <div id="modalEditProfile" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
     <div class="custom-modal" style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
       <h3>Edit Profile Name</h3>
-      <input type="text" id="nameInputEdit" class="edit-input" style="width:100%; padding:10px; margin:15px 0;" value="🦋DURGESH🦋">
+      <input type="text" id="nameInputEdit" style="width:100%; padding:10px; margin:15px 0;" value="🦋DURGESH🦋">
       <button onclick="saveProfile()" style="width:100%; padding:10px; background:#8a2be2; color:#fff; border:none; border-radius:10px; font-weight:bold;">Save Changes</button>
       <button onclick="closeEditProfile()" style="width:100%; padding:10px; background:#ccc; margin-top:10px; border:none; border-radius:10px;">Cancel</button>
     </div>
@@ -83,7 +133,7 @@
   <div id="modalRecharge" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:200; align-items:center; justify-content:center;">
     <div class="custom-modal" style="background:#fff; padding:20px; border-radius:20px; width:90%; max-width:350px;">
       <h3>Recharge Coins</h3>
-      <input type="number" id="rechargeInput" class="edit-input" placeholder="Enter coins amount" style="width:100%; padding:10px; margin:15px 0;">
+      <input type="number" id="rechargeInput" placeholder="Enter coins amount" style="width:100%; padding:10px; margin:15px 0;">
       <button onclick="processRecharge()" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:10px; font-weight:bold;">Recharge Now</button>
       <button onclick="closeRecharge()" style="width:100%; padding:10px; background:#ccc; margin-top:10px; border:none; border-radius:10px;">Cancel</button>
     </div>
@@ -101,7 +151,7 @@
     </div>
   </div>
 
-  <!-- Main Game Arena (Hidden initially) -->
+  <!-- Main Game Arena -->
   <div id="gameArea" style="display:none; width:100%; max-width:430px; margin:0 auto; flex-direction:column; align-items:center; padding:8px 12px;">
     <div class="app-title">Greedy Coin game</div>
     <div class="top-controls" style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
