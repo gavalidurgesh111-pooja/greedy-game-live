@@ -1,5 +1,3 @@
-बिल्कुल! आपके रजिस्ट्रेशन पेज पर दुनिया भर की सभी प्रमुख देशों और भाषाओं के विकल्पों को जोड़ दिया गया है।
-अब इस पूर्ण और अपडेटेड कोड को अपनी GitHub की index.html फाइल में पूरा पेस्ट (डाल) कर दीजिए:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,12 +6,14 @@
   <title>Greedy Coin - Registration & Login</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .policy-page { display: none; position: fixed; inset: 0; z-index: 200; background: #ffffff; flex-direction: column; padding: 20px; color: #222; overflow-y: auto; text-align: left; }
+    /* ग्लिच पूरी तरह हटाने के लिए फिक्सड स्टाइल */
+    .policy-page { display: none; position: fixed; inset: 0; z-index: 999; background: #ffffff; flex-direction: column; padding: 20px; color: #222; overflow-y: auto; text-align: left; }
     .policy-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     .policy-header h2 { font-size: 22px; font-weight: 900; color: #1e3c72; }
     .policy-content { font-size: 14px; line-height: 1.8; color: #444; padding-bottom: 40px; }
     .policy-section { margin-bottom: 20px; }
     .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
+    .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; }
   </style>
 </head>
 <body>
@@ -23,9 +23,9 @@
     <div id="screenMain">
       <div class="auth-top-bar">
         <select class="lang-select-login" id="loginLangSelector" onchange="changeLanguage(this.value)">
-          <!-- एशिया (Asia) -->
+          <!-- एशिया और भारत -->
           <option value="hi" selected>🇮🇳 हिंदी (Hindi - India)</option>
-          <option value="en">🌐 English (Global)</option>
+          <option value="en">🌐 English (Global/UK/US)</option>
           <option value="mr">🇮🇳 मराठी (Marathi)</option>
           <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
           <option value="bn">🇧🇩 বাংলা (Bengali)</option>
@@ -43,42 +43,68 @@
           <option value="th">🇹🇭 ไทย (Thai)</option>
           <option value="id">🇮🇩 Bahasa Indonesia (Indonesian)</option>
           <option value="ms">🇲🇾 Bahasa Melayu (Malay)</option>
-          <option value="fil">🇵🇭 Filipino (Tagalog)</option>
-          <option value="my">🇲🇲 ဗမာစာ (Burmese)</option>
-          <option value="km">🇰🇭 ភាសាខ្មែរ (Khmer)</option>
-          <option value="ne">🇳🇵 नेपाली (Nepali)</option>
-          <option value="si">🇱🇰 සිංහල (Sinhala)</option>
-          
-          <!-- मध्य पूर्व और अफ्रीका (Middle East & Africa) -->
-          <option value="ar">🇸🇦 العربية (Arabic)</option>
-          <option value="fa">🇮🇷 فارسی (Persian)</option>
-          <option value="tr">🇹🇷 Türkçe (Turkish)</option>
-          <option value="he">🇮🇱 עברית (Hebrew)</option>
-          <option value="sw">🇰🇪 Kiswahili (Swahili)</option>
-          <option value="am">🇪🇹 አማርኛ (Amharic)</option>
-          <option value="ha">🇳🇬 Hausa (Hausa)</option>
-          <option value="yo">🇳🇬 Yorùbá (Yoruba)</option>
+          <option value="fil">🇵🇭 Filipino (Tagalog - Philippines)</option>
+          <option value="my">🇲🇲 ဗမာစာ (Burmese - Myanmar)</option>
+          <option value="km">🇰🇭 ភាសាខ្មែរ (Khmer - Cambodia)</option>
+          <option value="lo">🇱🇦 ລາວ (Lao - Laos)</option>
+          <option value="ne">🇳🇵 नेपाली (Nepali - Nepal)</option>
+          <option value="si">🇱🇰 සිංහල (Sinhala - Sri Lanka)</option>
+          <option value="mn">🇲🇳 Монгол (Mongolian)</option>
+          <option value="kk">🇰🇿 Қазақ тілі (Kazakh)</option>
+          <option value="uz">🇺🇿 O'zbekcha (Uzbek)</option>
+
+          <!-- मध्य पूर्व और खाड़ी देश (Middle East) -->
+          <option value="ar">🇸🇦 العربية (Arabic - Saudi/UAE)</option>
+          <option value="fa">🇮🇷 فارسی (Persian - Iran)</option>
+          <option value="tr">🇹🇷 Türkçe (Turkish - Turkey)</option>
+          <option value="he">🇮🇱 עברית (Hebrew - Israel)</option>
+          <option value="ku">🏴󐁧󐁢󐁥󐁮󐁧󐁿 Kurdî (Kurdish)</option>
 
           <!-- यूरोप (Europe) -->
-          <option value="es">🇪🇸 Español (Spanish)</option>
-          <option value="fr">🇫🇷 Français (French)</option>
-          <option value="de">🇩🇪 Deutsch (German)</option>
-          <option value="it">🇮🇹 Italiano (Italian)</option>
-          <option value="pt">🇧🇷 Português (Portuguese)</option>
-          <option value="ru">🇷🇺 Русский (Russian)</option>
-          <option value="uk">🇺🇦 Українська (Ukrainian)</option>
-          <option value="pl">🇵🇱 Polski (Polish)</option>
-          <option value="nl">🇳🇱 Nederlands (Dutch)</option>
-          <option value="el">🇬🇷 Ελληνικά (Greek)</option>
-          <option value="hu">🇭🇺 Magyar (Hungarian)</option>
-          <option value="cs">🇨🇿 Čeština (Czech)</option>
-          <option value="sv">🇸🇪 Svenska (Swedish)</option>
-          <option value="ro">🇷🇴 Română (Romanian)</option>
-          <option value="da">🇩🇰 Dansk (Danish)</option>
-          <option value="fi">🇫🇮 Suomi (Finnish)</option>
-          <option value="no">🇳🇴 Norsk (Norwegian)</option>
+          <option value="es">🇪🇸 Español (Spanish - Spain/LatAm)</option>
+          <option value="fr">🇫🇷 Français (French - France)</option>
+          <option value="de">🇩🇪 Deutsch (German - Germany)</option>
+          <option value="it">🇮🇹 Italiano (Italian - Italy)</option>
+          <option value="pt">🇧🇷 Português (Portuguese - Brazil/Portugal)</option>
+          <option value="ru">🇷🇺 Русский (Russian - Russia)</option>
+          <option value="uk">🇺🇦 Українська (Ukrainian - Ukraine)</option>
+          <option value="pl">🇵🇱 Polski (Polish - Poland)</option>
+          <option value="nl">🇳🇱 Nederlands (Dutch - Netherlands)</option>
+          <option value="el">🇬🇷 Ελληνικά (Greek - Greece)</option>
+          <option value="hu">🇭🇺 Magyar (Hungarian - Hungary)</option>
+          <option value="cs">🇨🇿 Čeština (Czech - Czech Republic)</option>
+          <option value="sv">🇸🇪 Svenska (Swedish - Sweden)</option>
+          <option value="ro">🇷🇴 Română (Romanian - Romania)</option>
+          <option value="da">🇩🇰 Dansk (Danish - Denmark)</option>
+          <option value="fi">🇫🇮 Suomi (Finnish - Finland)</option>
+          <option value="no">🇳🇴 Norsk (Norwegian - Norway)</option>
+          <option value="bg">🇧🇬 Български (Bulgarian - Bulgaria)</option>
+          <option value="hr">🇭🇷 Hrvatski (Croatian - Croatia)</option>
+          <option value="sr">🇷🇸 Српски (Serbian - Serbia)</option>
+          <option value="sk">🇸🇰 Slovenčina (Slovak - Slovakia)</option>
+          <option value="sl">🇸🇮 Slovenščina (Slovenian - Slovenia)</option>
+          <option value="et">🇪🇪 Eesti (Estonian - Estonia)</option>
+          <option value="lv">🇱🇻 Latviešu (Latvian - Latvia)</option>
+          <option value="lt">🇱🇹 Lietuvių (Lithuanian - Lithuania)</option>
+          <option value="is">🇮🇸 Íslenska (Icelandic - Iceland)</option>
+          <option value="sq">🇦🇱 Shqip (Albanian - Albania)</option>
+          <option value="mt">🇲🇹 Malti (Maltese - Malta)</option>
 
-          <!-- लैटिन अमेरिका और अन्य (Latin America & Others) -->
+          <!-- अफ्रीका (Africa) -->
+          <option value="sw">🇰🇪 Kiswahili (Swahili - East Africa)</option>
+          <option value="am">🇪🇹 አማርኛ (Amharic - Ethiopia)</option>
+          <option value="ha">🇳🇬 Hausa (Hausa - Nigeria)</option>
+          <option value="yo">🇳🇬 Yorùbá (Yoruba - Nigeria)</option>
+          <option value="zu">🇿🇦 IsiZulu (Zulu - South Africa)</option>
+          <option value="xh">🇿🇦 IsiXhosa (Xhosa - South Africa)</option>
+          <option value="af">🇿🇦 Afrikaans (South Africa)</option>
+          <option value="mg">🇲🇬 Malagasy (Madagascar)</option>
+          <option value="so">🇸🇴 Soomaaliga (Somali)</option>
+
+          <!-- प्रशांत महासागर और अन्य (Oceania & Others) -->
+          <option value="mi">🇳🇿 Te Reo Māori (New Zealand)</option>
+          <option value="sm">🇼🇸 Gagana Samoa (Samoa)</option>
+          <option value="ha">🇹🇴 Lea Fakatonga (Tonga)</option>
           <option value="la">🇻🇦 Latina (Latin)</option>
         </select>
       </div>
@@ -87,13 +113,13 @@
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
           <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span id="txtBtnFb">Sign in with Facebook</span>
+          <span>Sign in with Facebook</span>
         </button>
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
           <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
-          <span id="txtBtnGoogle">Sign in with Google</span>
+          <span>Sign in with Google</span>
         </button>
-        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span id="txtMoreOpts">More Options</span> <span class="last-login-tag">Last login</span></button>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
         <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to <span class="terms-link" onclick="openDoc('terms')">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')">Privacy Policy</span></span></div>
       </div>
     </div>
@@ -130,25 +156,21 @@
     <!-- Terms & Conditions Page -->
     <div id="termsPage" class="policy-page">
       <div class="policy-header">
-        <div class="back-btn" onclick="closeDoc('termsPage')">❮</div>
+        <div class="policy-back-btn" onclick="closeDoc('termsPage')">❮</div>
         <h2>Terms & Conditions</h2>
       </div>
       <div class="policy-content">
         <div class="policy-section">
           <h3>1. Introduction</h3>
-          <p>Welcome to Greedy Coin. By accessing or playing our game, you agree to be bound by these Terms and Conditions. Please read them carefully before proceeding.</p>
+          <p>Welcome to Greedy Coin. By accessing or playing our game, you agree to be bound by these Terms and Conditions.</p>
         </div>
         <div class="policy-section">
           <h3>2. User Accounts & Security</h3>
-          <p>You are responsible for maintaining the confidentiality of your account credentials, phone number, and password. Any activity under your account is your sole responsibility.</p>
+          <p>You are responsible for maintaining the confidentiality of your account credentials, phone number, and password.</p>
         </div>
         <div class="policy-section">
           <h3>3. Virtual Coins & Gameplay Rules</h3>
-          <p>All coins, rewards, and levels within Greedy Coin are virtual digital items with no real-world cash value. Exploiting bugs, hacks, or automated scripts will lead to immediate permanent ban.</p>
-        </div>
-        <div class="policy-section">
-          <h3>4. Modifications</h3>
-          <p>We reserve the right to modify, suspend, or terminate the game or these terms at any time without prior notice.</p>
+          <p>All coins, rewards, and levels within Greedy Coin are virtual digital items with no real-world cash value.</p>
         </div>
       </div>
     </div>
@@ -156,25 +178,17 @@
     <!-- Privacy Policy Page -->
     <div id="privacyPage" class="policy-page">
       <div class="policy-header">
-        <div class="back-btn" onclick="closeDoc('privacyPage')">❮</div>
+        <div class="policy-back-btn" onclick="closeDoc('privacyPage')">❮</div>
         <h2>Privacy Policy</h2>
       </div>
       <div class="policy-content">
         <div class="policy-section">
           <h3>1. Information We Collect</h3>
-          <p>We collect basic identifiers such as your generated User ID, chosen display name, avatar selections, active gameplay progression, and device information to ensure smooth sessions.</p>
+          <p>We collect basic identifiers such as your generated User ID, chosen display name, avatar selections, and game statistics.</p>
         </div>
         <div class="policy-section">
           <h3>2. Use of Data</h3>
-          <p>Your data is used strictly to maintain your wallet balance, sync game rankings, facilitate friend chats, and improve your overall gaming experience. We never sell your personal data.</p>
-        </div>
-        <div class="policy-section">
-          <h3>3. Security Measures</h3>
-          <p>We implement robust security protocols to protect your profile data and transaction history against unauthorized access or disclosure.</p>
-        </div>
-        <div class="policy-section">
-          <h3>4. Contact Us</h3>
-          <p>If you have any questions regarding our privacy practices, you can reach out via our support channel inside the game.</p>
+          <p>Your data is used strictly to maintain your wallet balance, sync game rankings, and improve your overall gaming experience.</p>
         </div>
       </div>
     </div>
@@ -182,7 +196,7 @@
 
   <script>
     function changeLanguage(lang) {
-      alert("Language selected: " + lang);
+      // भाषा चयन क्रिया
     }
     function openMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "flex";
