@@ -1,186 +1,170 @@
-const socket = io();
-let isGameStarted = false;
+// LocalStorage Initial Setup for New User & Registration Defaults
+if (!localStorage.getItem("greedy_initialized")) {
+  localStorage.setItem("greedy_initialized", "true");
+  localStorage.setItem("greedy_coins", "0");
+  localStorage.setItem("greedy_won", "0");
+  localStorage.setItem("greedy_level", "0");
+  localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+  localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
+  localStorage.setItem("greedy_privacy", "false");
+  localStorage.setItem("greedy_frame", "neon-10");
+}
 
-let coins = parseInt(localStorage.getItem("greedy_coins")) || 10050014452100;
-let userName = localStorage.getItem("greedy_name") || "🦋DURGESH🦋";
-let userLevel = parseInt(localStorage.getItem("greedy_level")) || 100;
-let totalWon = parseInt(localStorage.getItem("greedy_won")) || 13937600;
-let userFrame = localStorage.getItem("greedy_frame") || "none";
-let followersCount = parseInt(localStorage.getItem("greedy_followers")) || 143;
-let followingCount = parseInt(localStorage.getItem("greedy_following")) || 35;
-let isFollowed = localStorage.getItem("greedy_is_followed") === "true";
+let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
+let userName = localStorage.getItem("greedy_name") || "User_677510";
+let userId = localStorage.getItem("greedy_unique_id") || "#677510";
+let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
+let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
+let isPrivate = localStorage.getItem("greedy_privacy") === "true";
 
-function initProfileUI() {
-  if(document.getElementById("profNameDisplay")) {
-    document.getElementById("profNameDisplay").innerText = userName;
-    document.getElementById("profBalance").innerText = coins;
-    document.getElementById("coinsDisplay").innerText = coins;
-    document.getElementById("profLevel").innerText = userLevel;
-    document.getElementById("profWon").innerText = totalWon;
-    document.getElementById("followersCount").innerText = followersCount;
-    document.getElementById("followingCount").innerText = followingCount;
-    
-    const fBtn = document.getElementById("followBtn");
-    if(fBtn) {
-      fBtn.innerText = isFollowed ? "Following" : "+ Follow";
-      fBtn.style.background = isFollowed ? "#555" : "linear-gradient(45deg, #8a2be2, #4a00e0)";
-    }
-    applyFrameUI(userFrame);
+function initProfile() {
+  const nameDisplay = document.getElementById("profNameDisplay");
+  if(nameDisplay) nameDisplay.innerText = userName;
+  
+  const balanceDisplay = document.getElementById("profBalance");
+  if(balanceDisplay) balanceDisplay.innerText = coins;
+  
+  const wonDisplay = document.getElementById("profWon");
+  if(wonDisplay) wonDisplay.innerText = totalWon;
+  
+  const levelDisplay = document.getElementById("profLevel");
+  if(levelDisplay) levelDisplay.innerText = userLevel;
+  
+  const idDisplay = document.getElementById("profId");
+  if(idDisplay) idDisplay.innerText = userId;
+  
+  const aboutIdDisplay = document.getElementById("aboutUserId");
+  if(aboutIdDisplay) aboutIdDisplay.innerText = userId;
+  
+  updatePrivacyHeart();
+}
+
+function copyMyId() {
+  navigator.clipboard.writeText(userId);
+  alert("ID Copied: " + userId);
+}
+
+// Inbox Message Navigation
+function openInboxMessage() {
+  const inboxScreen = document.getElementById("screenInboxMessage");
+  if(inboxScreen) inboxScreen.style.display = "flex";
+  renderTopPlayers();
+}
+function closeInboxMessage() {
+  const inboxScreen = document.getElementById("screenInboxMessage");
+  if(inboxScreen) inboxScreen.style.display = "none";
+}
+
+// About Me Navigation & Privacy Toggle (Heart Button)
+function openAboutMeScreen() {
+  const aboutScreen = document.getElementById("screenAboutMe");
+  if(aboutScreen) aboutScreen.style.display = "flex";
+}
+function closeAboutMeScreen() {
+  const aboutScreen = document.getElementById("screenAboutMe");
+  if(aboutScreen) aboutScreen.style.display = "none";
+}
+function togglePrivacy() {
+  isPrivate = !isPrivate;
+  localStorage.setItem("greedy_privacy", isPrivate);
+  updatePrivacyHeart();
+}
+function updatePrivacyHeart() {
+  const heart = document.getElementById("privacyHeart");
+  const bioBox = document.getElementById("aboutMeContentBox");
+  if(!heart || !bioBox) return;
+  
+  if(isPrivate) {
+    heart.innerText = "❤️";
+    bioBox.style.background = "#ffe6e6";
+    bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active: This profile info is hidden from other users.</p>";
+  } else {
+    heart.innerText = "🤍";
+    bioBox.style.background = "#fff";
+    bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon (🤍/❤️) at the top right to set privacy.</p>";
   }
 }
 
-function updateCoinsUI(amount) {
-  coins = amount;
+// Groups Navigation
+function openGroupsScreen() { 
+  const groupScreen = document.getElementById("screenGroups");
+  if(groupScreen) groupScreen.style.display = "flex"; 
+}
+function closeGroupsScreen() { 
+  const groupScreen = document.getElementById("screenGroups");
+  if(groupScreen) groupScreen.style.display = "none"; 
+}
+
+// Coin Send Feature
+function openCoinSendModal() { 
+  const modal = document.getElementById("modalCoinSend");
+  if(modal) modal.style.display = "flex"; 
+}
+function closeCoinSendModal() { 
+  const modal = document.getElementById("modalCoinSend");
+  if(modal) modal.style.display = "none"; 
+}
+function processCoinSend() {
+  let targetIdInput = document.getElementById("targetUserId");
+  let amtInput = document.getElementById("sendCoinAmount");
+  if(!targetIdInput || !amtInput) return;
+
+  let targetId = targetIdInput.value.trim();
+  let amt = parseInt(amtInput.value);
+  if(!targetId) { alert("Please enter receiver ID"); return; }
+  if(!amt || amt <= 0 || amt > coins) { alert("Invalid coin amount or insufficient balance!"); return; }
+  
+  coins -= amt;
   localStorage.setItem("greedy_coins", coins);
-  if(document.getElementById("coinsDisplay")) document.getElementById("coinsDisplay").innerText = coins;
-  if(document.getElementById("profBalance")) document.getElementById("profBalance").innerText = coins;
+  initProfile();
+  closeCoinSendModal();
+  alert(`Successfully sent ${amt} coins to ${targetId}!`);
 }
 
-function enterGameFromProfile() {
-  isGameStarted = true;
-  document.getElementById("screenProfile").style.display = "none";
-  document.getElementById("gameArea").style.display = "flex";
-  document.body.classList.add("game-active");
-  updateCoinsUI(coins);
+// Settings Modal
+function openSettingsModal() { 
+  const modal = document.getElementById("modalSettings");
+  if(modal) modal.style.display = "flex"; 
+}
+function closeSettingsModal() { 
+  const modal = document.getElementById("modalSettings");
+  if(modal) modal.style.display = "none"; 
 }
 
-function goBackToProfile() {
-  isGameStarted = false;
-  document.body.classList.remove("game-active");
-  if(document.getElementById("gameArea")) document.getElementById("gameArea").style.display = "none";
-  if(document.getElementById("screenMessages")) document.getElementById("screenMessages").style.display = "none";
-  if(document.getElementById("screenProfile")) document.getElementById("screenProfile").style.display = "flex";
-  initProfileUI();
+function clearSearches() { 
+  const list = document.getElementById("recentSearchesList");
+  if(list) list.innerText = "No recent searches"; 
+}
+function clearViews() { 
+  const list = document.getElementById("recentViewsList");
+  if(list) list.innerText = "No recent views"; 
 }
 
-function openMessagesScreen() {
-  document.getElementById("screenProfile").style.display = "none";
-  document.getElementById("screenMessages").style.display = "flex";
+function renderTopPlayers() {
+  const container = document.getElementById("topPlayersContainer");
+  if(!container) return;
+  container.innerHTML = `
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#f9f9f9; border-radius:8px;">
+      <span style="font-weight:bold; font-size:13px;">👑 KingRahul (#102938)</span>
+      <span style="color:#e65100; font-weight:bold; font-size:12px;">🪙 450,000</span>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#f9f9f9; border-radius:8px;">
+      <span style="font-weight:bold; font-size:13px;">🔥 TigerBoss (#554433)</span>
+      <span style="color:#e65100; font-weight:bold; font-size:12px;">🪙 280,000</span>
+    </div>
+  `;
 }
 
-function clearRecentSearches() {
-  document.getElementById("recentSearchesList").innerHTML = "<p style='font-size:12px; color:#888;'>No recent searches</p>";
-}
-
-function clearRecentViews() {
-  document.getElementById("recentViewsList").innerHTML = "<p style='font-size:12px; color:#888;'>No recent views</p>";
-}
-
-let selectedChip = 100;
-let bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-let currentGameState = "BETTING";
-
-function selectChip(amount) {
-  selectedChip = amount;
-  alert("Selected chip: " + amount);
-}
-
-function placeBet(boxId) {
-  if (currentGameState !== "BETTING") return;
-  if (coins < selectedChip) { alert("Not enough coins!"); return; }
-  updateCoinsUI(coins - selectedChip);
-  bets[boxId] += selectedChip;
-  let badge = document.getElementById("badge-" + boxId);
-  if(badge) {
-    badge.style.display = "block";
-    badge.innerText = bets[boxId];
-  }
-}
-
-socket.on("timerUpdate", (data) => {
-  currentGameState = data.gameState;
-  const tDisp = document.getElementById("timerDisplay");
-  if(tDisp) tDisp.innerText = data.gameState === "BETTING" ? `${data.timeLeft}s` : `⏳`;
-});
-
-socket.on("gameResult", (data) => {
-  let currentHighlight = 1;
-  let totalSteps = 24 + data.winner;
-  function spinStep() {
-    document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-    let card = document.getElementById("card-" + currentHighlight);
-    if(card) card.classList.add("highlight");
-    totalSteps--;
-    currentHighlight = (currentHighlight % 8) + 1;
-    if (totalSteps > 0) { 
-      setTimeout(spinStep, totalSteps < 10 ? 75 : 40); 
-    } else {
-      document.querySelectorAll(".item-card").forEach(c => c.classList.remove("highlight"));
-      let winCard = document.getElementById("card-" + data.winner);
-      if(winCard) winCard.classList.add("winner");
-      
-      let wonBet = bets[data.winner];
-      if (wonBet > 0) {
-        let wonAmount = wonBet * 4;
-        updateCoinsUI(coins + wonAmount);
-        totalWon += wonAmount;
-        localStorage.setItem("greedy_won", totalWon);
-      }
-      setTimeout(() => {
-        if(winCard) winCard.classList.remove("winner");
-        bets = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0 };
-        document.querySelectorAll(".my-bet-badge").forEach(b => { b.style.display = "none"; b.innerText = "0"; });
-      }, 3500);
-    }
-  }
-  if(isGameStarted) spinStep();
-});
-
-function toggleFollow() {
-  if (!isFollowed) { followersCount++; isFollowed = true; } else { followersCount--; isFollowed = false; }
-  localStorage.setItem("greedy_followers", followersCount);
-  localStorage.setItem("greedy_is_followed", isFollowed);
-  initProfileUI();
-}
-
+// Edit Profile Name Feature
 function openEditProfile() {
-  document.getElementById("nameInputEdit").value = userName;
-  document.getElementById("modalEditProfile").style.display = "flex";
-}
-function closeEditProfile() { document.getElementById("modalEditProfile").style.display = "none"; }
-function saveProfile() {
-  userName = document.getElementById("nameInputEdit").value.trim() || "🦋DURGESH🦋";
-  localStorage.setItem("greedy_name", userName);
-  initProfileUI();
-  closeEditProfile();
-}
-
-function openRecharge() { document.getElementById("modalRecharge").style.display = "flex"; }
-function closeRecharge() { document.getElementById("modalRecharge").style.display = "none"; }
-function processRecharge() {
-  const val = parseInt(document.getElementById("rechargeInput").value);
-  if(!val || val <= 0) { alert("Please enter valid coins"); return; }
-  coins += val;
-  userLevel += Math.floor(val / 100000) * 20;
-  localStorage.setItem("greedy_coins", coins);
-  localStorage.setItem("greedy_level", userLevel);
-  initProfileUI();
-  closeRecharge();
-  alert(`Recharge Successful! Added ${val} coins.`);
-}
-
-function openFrames() { document.getElementById("modalFrames").style.display = "flex"; }
-function closeFrames() { document.getElementById("modalFrames").style.display = "none"; }
-function selectFrame(type) {
-  userFrame = type;
-  localStorage.setItem("greedy_frame", type);
-  applyFrameUI(type);
-  closeFrames();
-}
-function applyFrameUI(type) {
-  const fr = document.getElementById("profAvatarFrame");
-  if(fr) {
-    fr.className = "avatar-frame";
-    if(type === 'gold') fr.style.border = "3.5px solid #ffd700";
-    else if(type === 'neon') fr.style.border = "3.5px solid #00f3ff";
-    else fr.style.border = "3.5px solid transparent";
+  let newName = prompt("Enter new profile name:", userName);
+  if(newName && newName.trim() !== "") {
+    userName = newName.trim();
+    localStorage.setItem("greedy_name", userName);
+    initProfile();
   }
 }
 
-function openLogoutScreen() {
-  if(confirm("Are you sure you want to log out?")) {
-    window.location.href = "index.html";
-  }
-}
-
-window.onload = () => { initProfileUI(); };
+window.onload = () => { 
+  initProfile(); 
+};
