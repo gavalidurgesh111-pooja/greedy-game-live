@@ -16,37 +16,34 @@
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
     .cover-edit-badge { position: absolute; bottom: 10px; right: 15px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; }
 
-    /* Header & Avatar - सही ओवरले लेआउट */
+    /* Header & Avatar - बिल्कुल सही सेंटर एलाइनमेंट */
     .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
     
     .avatar-wrapper { 
-      position: relative; 
-      width: 90px; 
-      height: 90px; 
-      cursor: pointer; 
+      position: relative !important; 
+      width: 90px !important; 
+      height: 90px !important; 
+      margin: 0 !important; 
+      cursor: pointer !important; 
     }
     
-    /* असली प्रोफाइल फोटो को बिल्कुल गोल और बीच में सेट किया है */
     .avatar-img { 
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 70px; 
-      height: 70px; 
-      border-radius: 50%; 
-      object-fit: cover; 
-      z-index: 1;
+      position: absolute !important;
+      top: 10px !important;
+      left: 10px !important;
+      width: 70px !important; 
+      height: 70px !important; 
+      border-radius: 50% !important; 
+      object-fit: cover !important; 
+      z-index: 1 !important;
     }
     
-    /* फ्रेम अब फोटो के ऊपर ओवरले होकर चारों तरफ बॉर्डर पर फिट बैठेगा */
     .avatar-frame {
       position: absolute !important;
-      top: -10px !important;
-      left: -10px !important;
-      right: -10px !important;
-      bottom: -10px !important;
-      width: 110px !important;
-      height: 110px !important;
+      top: -12px !important;
+      left: -12px !important;
+      width: 114px !important;
+      height: 114px !important;
       pointer-events: none !important;
       box-sizing: border-box !important;
       background-size: 100% 100% !important;
