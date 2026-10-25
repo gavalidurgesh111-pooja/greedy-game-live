@@ -19,9 +19,10 @@
     /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
-    .avatar-img { width: 100.card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }%; height: 100%; border-radius: 50%; object-fit: cover; }
-        /* अवतार फ्रेम को एकदम सही बॉर्डर पर फिट करने के लिए स्टाइल */
-        .avatar-frame {
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    
+    /* अवतार फ्रेम को एकदम सही बॉर्डर पर फिट करने के लिए स्टाइल */
+    .avatar-frame {
       position: absolute !important;
       top: -5px !important;
       left: -5px !important;
@@ -38,9 +39,9 @@
       z-index: 10 !important;
     }
 
-    /* 4 खास फ्रेम स्टाइल्स */.card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
-    ..sub-header h2 { font-size: 18px; font-weight: 900; }frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
-    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }.frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
+    /* 4 खास फ्रेम स्टाइल्स */
+    .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
+    .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
 
@@ -232,12 +233,12 @@
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
          
         <div class="grid-options">
-          <div class="frame-option" data-frame="url('https://img.magnific.com/free-psd/golden-glitter-circle-frame-elegant-design-element_632498-25631.jpg?semt=ais_hybrid&w=740&q=80')">
+          <div class="frame-option" data-frame="https://img.magnific.com/free-psd/golden-glitter-circle-frame-elegant-design-element_632498-25631.jpg?semt=ais_hybrid&w=740&q=80">
             <img src="https://img.magnific.com/free-psd/golden-glitter-circle-frame-elegant-design-element_632498-25631.jpg?semt=ais_hybrid&w=740&q=80" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
             <span style="font-size:11px; font-weight:bold;">गोल्डन फ्रेम</span>
           </div>
 
-          <div class="frame-option" data-frame="url('https://freepngimg.com/thumb/decorative_border/34342-2-floral-round-frame-photo.png')">
+          <div class="frame-option" data-frame="https://freepngimg.com/thumb/decorative_border/34342-2-floral-round-frame-photo.png">
             <img src="https://freepngimg.com/thumb/decorative_border/34342-2-floral-round-frame-photo.png" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover;">
             <span style="font-size:11px; font-weight:bold;">फ्लावर फ्रेम</span>
           </div>
@@ -341,12 +342,10 @@
     }
 
     function applyCustomFrame(frameUrl) {
-    const targetFrame = document.getElementById("profAvatarFrame");
-    if (targetFrame) {
+      const targetFrame = document.getElementById("profAvatarFrame");
+      if (targetFrame) {
         targetFrame.className = "avatar-frame";
-        // अगर frameUrl में पहले से url() लगा है तो ठीक, नहीं तो लगा दें
-        let finalUrl = frameUrl.startsWith('url') ? frameUrl : `url('${frameUrl}')`;
-        targetFrame.style.backgroundImage = finalUrl;
+        targetFrame.style.backgroundImage = `url('${frameUrl}')`;
         targetFrame.style.backgroundSize = "100% 100%";
         targetFrame.style.backgroundPosition = "center";
         targetFrame.style.backgroundRepeat = "no-repeat";
