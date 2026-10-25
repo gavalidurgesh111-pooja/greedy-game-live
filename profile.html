@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* पहली फोटो जैसा क्रॉप / एडिटर स्क्रीन (बॉक्स फिक्स और फोटो बाहर जा सकेगी) */
+    /* 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -198,19 +198,19 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* फिक्सड क्रॉप बॉक्स (पहली फोटो की तरह) */
+    /* 1080x1080 अनुपात वाला चौकोर फिक्सड क्रॉप बॉक्स */
     .crop-frame-box {
-      width: 100%;
-      height: 210px;
-      border: 1.5px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82);
+      width: 340px;
+      height: 340px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
       position: absolute;
       top: 50%;
-      transform: translateY(-50%);
+      left: 50%;
+      transform: translate(-50%, -50%);
       pointer-events: none;
       z-index: 10;
     }
-    /* फोटो जो बॉक्स के बाहर भी जा सकेगी और ड्रैग होगी */
     #editorImagePreview {
       position: absolute;
       cursor: grab;
@@ -279,9 +279,7 @@
         </div>
       </div>
       
-      <!-- गैलरी इनपुट -->
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
-      <!-- 'Edit Photo' इनपुट -->
       <input type="file" id="hiddenEditPhotoInput" accept="image/*" style="display:none;" onchange="handleEditPhotoFileSelect(event)">
 
       <div class="profile-header-area">
@@ -364,11 +362,9 @@
       </div>
     </div>
 
-    <!-- क्रॉप / एडिटर स्क्रीन (पहली फोटो जैसा फ्री ड्रैग इंटरफेस) -->
+    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन ('Edit Photo' नाम हटाया गया) -->
     <div id="screenPhotoEditor">
-      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff; z-index:25;">
-        <span style="font-weight:bold;">Edit Photo</span>
-      </div>
+      <div style="width:100%; height:40px;"></div>
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
         <div class="crop-frame-box" id="cropFrameBox"></div>
@@ -516,7 +512,7 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
@@ -706,8 +702,8 @@
             let preview = document.getElementById("editorImagePreview");
             preview.src = rawImageObj.src;
             
-            // फोटो अपनी फुल साइज में स्क्रीन पर खुलेगी (पहली फोटो की तरह)
-            imgScale = Math.max(480 / rawImageObj.width, 210 / rawImageObj.height);
+            // 1080x1080 स्क्वायर बॉक्स के अनुपात में फोटो सेट करना
+            imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
             preview.style.width = (rawImageObj.width * imgScale) + "px";
             preview.style.height = (rawImageObj.height * imgScale) + "px";
             
@@ -724,7 +720,6 @@
       }
     }
 
-    // फोटो को उंगली से ऊपर-नीचे और दाएं-बाएं ड्रैग करने का लॉजिक (बॉक्स फिक्स रहेगा)
     const editorArea = document.getElementById("editorCanvasArea");
     if(editorArea) {
       editorArea.addEventListener('mousedown', startImgDrag);
@@ -765,19 +760,17 @@
       isDraggingImg = false;
     }
 
-    // ✖️ बटन: फोटो हटाकर दोबारा गैलरी खोल देगा
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन: फिक्सड बॉक्स के अंदर की फोटो को क्रॉप करके सेव करेगा और सीधे 9-ग्रिड पेज पर लाएगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
-        canvas.width = 480;
-        canvas.height = 210;
+        canvas.width = 1080;
+        canvas.height = 1080;
         let ctx = canvas.getContext("2d");
 
         let preview = document.getElementById("editorImagePreview");
@@ -792,7 +785,7 @@
         let sW = (box.width / renderedWidth) * rawImageObj.width;
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 480, 210);
+        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
         localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
@@ -800,7 +793,7 @@
         rawImageObj = null;
 
         initProfile();
-        openPhotoGridScreen(); // सेव होते ही प्रोफाइल फोटो (9-ग्रिड) पेज पर आ जाएगा
+        openPhotoGridScreen();
       }
     }
 
