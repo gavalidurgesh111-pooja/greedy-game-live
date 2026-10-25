@@ -10,7 +10,7 @@
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
     
     /* Cover Slider Area (6 Pages) */
-    .cover-slider-container { width: 100%; height: 210px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; }
+    .cover-slider-container { width: 100%; height: 210px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
@@ -24,12 +24,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: grab;
-      touch-action: none;
     }
-    .cover-page:active { cursor: grabbing; }
 
-    /* हर पेज के बीच में '+' आइकॉन */
     .cover-center-plus {
       width: 50px;
       height: 50px;
@@ -41,30 +37,9 @@
       justify-content: center;
       font-size: 28px;
       font-weight: bold;
-      cursor: pointer;
       border: 2px solid #fff;
       z-index: 5;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    }
-
-    /* कवर डिलीट करने का छोटा बटन (फोटो होने पर दिखेगा) */
-    .cover-delete-btn {
-      position: absolute;
-      top: 15px;
-      right: 60px;
-      background: rgba(217, 83, 79, 0.9);
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      font-size: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
@@ -76,7 +51,6 @@
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
     
-    /* अवतार फ्रेम स्टाइल */
     .avatar-frame {
       position: absolute !important;
       top: -5px !important;
@@ -137,6 +111,120 @@
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
+
+    /* 9 फोटो ग्रिड गैلरी स्क्रीन (Profile Photo 9-grid view) */
+    #screenPhotoGrid {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: #f0f2f5;
+      z-index: 60;
+      flex-direction: column;
+    }
+    .grid-9-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 15px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .grid-cell {
+      aspect-ratio: 1;
+      background: #e4e6eb;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid #ccd0d5;
+    }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .grid-cell .badge-num {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    .grid-cell .plus-sign { font-size: 24px; color: #65676b; font-weight: bold; }
+
+    /* टिप्स (Tips) पॉपअप मेनू */
+    #tipsModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 120;
+      align-items: center;
+      justify-content: center;
+    }
+    .tips-box {
+      background: #fff;
+      width: 82%;
+      max-width: 300px;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
+    .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
+    .tips-item:last-child { border-bottom: none; color: #d9534f; }
+
+    /* तीसरा फोटो जैसा क्रॉप / एडिटर स्क्रीन */
+    #screenPhotoEditor {
+      display: none;
+      position: absolute;
+      inset: 0;
+      background: #000;
+      z-index: 150;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+    }
+    .editor-canvas-area {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .editor-canvas-area img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .editor-bottom-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 15px 30px;
+      background: rgba(20,20,20,0.9);
+    }
+    /* ✖️ और ✔️ बटन छोटे आकार में */
+    .editor-btn-small {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn-cancel-edit { background: #333; color: #fff; }
+    .btn-confirm-edit { background: #00c853; color: #fff; }
   </style>
 </head>
 <body>
@@ -146,40 +234,34 @@
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
-      <!-- 6 स्क्रॉल करने योग्य कवर पेज -->
+      <!-- कवर फोटो क्षेत्र (इस पर टैप करने पर 9-फोटो ग्रिड खुलेगी) -->
       <div class="profile-back-btn" onclick="openInboxMessage()">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <div class="cover-slider-container" id="coverSlider">
-        <div class="cover-page" id="coverPage1" onmousedown="startDrag(event, 1)" ontouchstart="startDrag(event, 1)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="triggerCoverUpload(1)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover1" onclick="deleteCover(1, event)" style="display:none;" title="Delete Cover">🗑️</button>
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
+        <div class="cover-page" id="coverPage1">
+          <div class="cover-center-plus owner-only-elem" id="plusCover1">+</div>
         </div>
-        <div class="cover-page" id="coverPage2" onmousedown="startDrag(event, 2)" ontouchstart="startDrag(event, 2)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="triggerCoverUpload(2)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover2" onclick="deleteCover(2, event)" style="display:none;" title="Delete Cover">🗑️</button>
+        <div class="cover-page" id="coverPage2">
+          <div class="cover-center-plus owner-only-elem" id="plusCover2">+</div>
         </div>
-        <div class="cover-page" id="coverPage3" onmousedown="startDrag(event, 3)" ontouchstart="startDrag(event, 3)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="triggerCoverUpload(3)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover3" onclick="deleteCover(3, event)" style="display:none;" title="Delete Cover">🗑️</button>
+        <div class="cover-page" id="coverPage3">
+          <div class="cover-center-plus owner-only-elem" id="plusCover3">+</div>
         </div>
-        <div class="cover-page" id="coverPage4" onmousedown="startDrag(event, 4)" ontouchstart="startDrag(event, 4)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="triggerCoverUpload(4)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover4" onclick="deleteCover(4, event)" style="display:none;" title="Delete Cover">🗑️</button>
+        <div class="cover-page" id="coverPage4">
+          <div class="cover-center-plus owner-only-elem" id="plusCover4">+</div>
         </div>
-        <div class="cover-page" id="coverPage5" onmousedown="startDrag(event, 5)" ontouchstart="startDrag(event, 5)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="triggerCoverUpload(5)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover5" onclick="deleteCover(5, event)" style="display:none;" title="Delete Cover">🗑️</button>
+        <div class="cover-page" id="coverPage5">
+          <div class="cover-center-plus owner-only-elem" id="plusCover5">+</div>
         </div>
-        <div class="cover-page" id="coverPage6" onmousedown="startDrag(event, 6)" ontouchstart="startDrag(event, 6)">
-          <div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="triggerCoverUpload(6)">+</div>
-          <button class="cover-delete-btn owner-only-elem" id="delCover6" onclick="deleteCover(6, event)" style="display:none;" title="Delete Cover">🗑️</button>
+        <div class="cover-page" id="coverPage6">
+          <div class="cover-center-plus owner-only-elem" id="plusCover6">+</div>
         </div>
       </div>
-      <input type="file" id="hiddenCoverInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
+      <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
@@ -237,6 +319,43 @@
           <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
           <div style="font-size:32px;">🌐</div>
         </div>
+      </div>
+    </div>
+
+    <!-- 9 फोटो ग्रिड स्क्रीन (Profile photo 1 to 9 selection view) -->
+    <div id="screenPhotoGrid">
+      <div class="sub-header" style="background:#fff; color:#111; border-bottom:1px solid #ddd;">
+        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridScreen()">❮</div>
+        <h2>Profile photo</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div class="grid-9-container" id="grid9Container">
+        <!-- 1 से 9 तक के ग्रिड सेल्स जावास्क्रिप्ट से बनेंगे -->
+      </div>
+    </div>
+
+    <!-- टिप्स (Tips) पॉपअप मेनू -->
+    <div id="tipsModal">
+      <div class="tips-box">
+        <h3>Tips</h3>
+        <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
+        <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
+        <div class="tips-item" onclick="tipsDeletePicture()">Delete</div>
+        <div style="margin-top:15px; text-align:right;"><button onclick="closeTipsModal()" style="padding:6px 14px; background:#ddd; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cancel</button></div>
+      </div>
+    </div>
+
+    <!-- तीसरा फोटो जैसा क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ छोटे बटन के साथ) -->
+    <div id="screenPhotoEditor">
+      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
+        <span style="font-weight:bold;">Edit Photo</span>
+      </div>
+      <div class="editor-canvas-area">
+        <img id="editorImagePreview" src="" alt="Preview">
+      </div>
+      <div class="editor-bottom-bar">
+        <button class="editor-btn-small btn-cancel-edit" onclick="cancelEditor()">✖️</button>
+        <button class="editor-btn-small btn-confirm-edit" onclick="confirmEditor()">✔️</button>
       </div>
     </div>
 
@@ -361,9 +480,8 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=6; i++) {
-        localStorage.setItem("greedy_cover_" + i, "");
-        localStorage.setItem("greedy_cover_pos_" + i, "50%");
+      for(let i=1; i<=9; i++) {
+        localStorage.setItem("greedy_slot_" + i, "");
       }
     }
 
@@ -376,7 +494,9 @@
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
-    let activeCoverIndex = 1;
+    
+    let activeSlotIndex = 1;
+    let pendingImageObj = null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const viewedId = urlParams.get("id");
@@ -402,24 +522,21 @@
         if(plusIcon) plusIcon.style.display = isMyProfile ? "block" : "none";
       }
 
+      // कवर पेजों और 9-स्लॉट डेटा को सिंक करना (स्लॉट 1 से 6 कवर पर दिखेंगे)
       for(let i=1; i<=6; i++) {
-        let coverVal = localStorage.getItem("greedy_cover_" + i) || "";
-        let coverPos = localStorage.getItem("greedy_cover_pos_" + i) || "50%";
+        let slotVal = localStorage.getItem("greedy_slot_" + i) || "";
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
-        let delEl = document.getElementById("delCover" + i);
-
-        if(coverVal && coverVal.trim() !== "") {
-          pageEl.style.backgroundImage = `url('${coverVal}')`;
-          pageEl.style.backgroundPosition = `center ${coverPos}`;
+        if(slotVal && slotVal.trim() !== "") {
+          pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
-          if(delEl) delEl.style.display = isMyProfile ? "flex" : "none"; 
         } else {
           pageEl.style.backgroundImage = "none";
           if(plusEl) plusEl.style.display = isMyProfile ? "flex" : "none"; 
-          if(delEl) delEl.style.display = "none";
         }
       }
+
+      render9Grid();
 
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none" && !customFrameUrl) {
@@ -435,92 +552,131 @@
       updatePrivacyHeart();
     }
 
-    function triggerCoverUpload(index) {
-      if (!isMyProfile) return;
-      activeCoverIndex = index;
-      document.getElementById("hiddenCoverInput").click();
+    // 9 फोटो ग्रिड रेंडर करना
+    function render9Grid() {
+      let container = document.getElementById("grid9Container");
+      container.innerHTML = "";
+      for(let i=1; i<=9; i++) {
+        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        let cell = document.createElement("div");
+        cell.className = "grid-cell";
+        cell.onclick = () => handleGridCellClick(i);
+
+        if(val && val.trim() !== "") {
+          cell.innerHTML = `<img src="${val}"><div class="badge-num">${i}</div>`;
+        } else {
+          cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+        }
+        container.appendChild(cell);
+      }
     }
 
-    function handleCoverFileSelect(event) {
+    function openPhotoGridScreen() {
+      render9Grid();
+      document.getElementById("screenPhotoGrid").style.display = "flex";
+    }
+    function closePhotoGridScreen() {
+      document.getElementById("screenPhotoGrid").style.display = "none";
+    }
+
+    let selectedSlotForTips = 1;
+    function handleGridCellClick(index) {
+      if (!isMyProfile) return;
+      selectedSlotForTips = index;
+      let val = localStorage.getItem("greedy_slot_" + index) || "";
+      if (val && val.trim() !== "") {
+        // यदि फोटो लगी है, तो टिप्स मेनू खोलें
+        document.getElementById("tipsModal").style.display = "flex";
+      } else {
+        // यदि खाली है, तो गैलरी खोलें
+        activeSlotIndex = index;
+        document.getElementById("hiddenGalleryInput").click();
+      }
+    }
+
+    function closeTipsModal() {
+      document.getElementById("tipsModal").style.display = "none";
+    }
+
+    // टिप्स ऑप्शन 1: Use it as profile picture
+    function tipsUseAsProfile() {
+      closeTipsModal();
+      let val = localStorage.getItem("greedy_slot_" + selectedSlotForTips);
+      if(val) {
+        currentAvatar = val;
+        localStorage.setItem("greedy_avatar", val);
+        initProfile();
+        alert("Updated as profile picture!");
+      }
+    }
+
+    // टिप्स ऑप्शन 2: Change picture
+    function tipsChangePicture() {
+      closeTipsModal();
+      activeSlotIndex = selectedSlotForTips;
+      document.getElementById("hiddenGalleryInput").click();
+    }
+
+    // टिप्स ऑप्शन 3: Delete
+    function tipsDeletePicture() {
+      closeTipsModal();
+      if(confirm("Delete this picture?")) {
+        localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
+        initProfile();
+      }
+    }
+
+    // गैलरी से फाइल चुनने पर एडिटर स्क्रीन (तीसरी फोटो जैसी) खोलना
+    function handleGalleryFileSelect(event) {
       let file = event.target.files[0];
       if (file) {
         let reader = new FileReader();
         reader.onload = function(e) {
-          let imageUrl = e.target.result;
-          localStorage.setItem("greedy_cover_" + activeCoverIndex, imageUrl);
-          localStorage.setItem("greedy_cover_pos_" + activeCoverIndex, "50%");
-          let pageEl = document.getElementById("coverPage" + activeCoverIndex);
-          let plusEl = document.getElementById("plusCover" + activeCoverIndex);
-          let delEl = document.getElementById("delCover" + activeCoverIndex);
-          pageEl.style.backgroundImage = `url('${imageUrl}')`;
-          pageEl.style.backgroundPosition = "center 50%";
-          if(plusEl) plusEl.style.display = "none";
-          if(delEl) delEl.style.display = "flex";
+          pendingImageObj = e.target.result;
+          document.getElementById("editorImagePreview").src = pendingImageObj;
+          document.getElementById("screenPhotoEditor").style.display = "flex";
         }
         reader.readAsDataURL(file);
       }
     }
 
-    function deleteCover(index, event) {
-      event.stopPropagation();
-      if (!isMyProfile) return;
-      if (confirm("Are you sure you want to delete this cover photo?")) {
-        localStorage.setItem("greedy_cover_" + index, "");
-        localStorage.setItem("greedy_cover_pos_" + index, "50%");
-        let pageEl = document.getElementById("coverPage" + index);
-        let plusEl = document.getElementById("plusCover" + index);
-        let delEl = document.getElementById("delCover" + index);
-        pageEl.style.backgroundImage = "none";
-        if(plusEl) plusEl.style.display = "flex";
-        if(delEl) delEl.style.display = "none";
+    function cancelEditor() {
+      document.getElementById("screenPhotoEditor").style.display = "none";
+      pendingImageObj = null;
+    }
+
+    function confirmEditor() {
+      if(pendingImageObj) {
+        localStorage.setItem("greedy_slot_" + activeSlotIndex, pendingImageObj);
+        document.getElementById("screenPhotoEditor").style.display = "none";
+        pendingImageObj = null;
+        initProfile();
       }
     }
 
-    // कवर फोटो को उंगली से ऊपर-नीचे (Drag / Pan) करने का लॉजिक
+    // कवर स्वाइप / ड्रैग करने पर नंबर जैसे फोटो बदलते रहना
     let isDragging = false;
-    let startY = 0;
-    let dragIndex = 1;
+    let startX = 0;
 
-    function startDrag(e, index) {
-      let coverVal = localStorage.getItem("greedy_cover_" + index) || "";
-      if (!coverVal) return; // अगर फोटो नहीं है तो ड्रैग काम नहीं करेगा
-      isDragging = true;
-      startY = e.touches ? e.touches[0].clientY : e.clientY;
-      dragIndex = index;
-
-      document.addEventListener('mousemove', onDrag);
-      document.addEventListener('mouseup', endDrag);
-      document.addEventListener('touchmove', onDrag);
-      document.addEventListener('touchend', endDrag);
-    }
-
-    function onDrag(e) {
-      if (!isDragging) return;
-      let currentY = e.touches ? e.touches[0].clientY : e.clientY;
-      let diff = currentY - startY;
-      
-      let pageEl = document.getElementById("coverPage" + dragIndex);
-      let currentPos = parseInt(pageEl.style.backgroundPosition.split(" ")[1]) || 50;
-      let newPos = currentPos + (diff * 0.2); // स्पीड एडजस्ट करने के लिए
-      
-      if (newPos < 0) newPos = 0;
-      if (newPos > 100) newPos = 100;
-
-      pageEl.style.backgroundPosition = `center ${newPos}%`;
-      startY = currentY;
-    }
-
-    function endDrag() {
-      if (!isDragging) return;
-      isDragging = false;
-      let pageEl = document.getElementById("coverPage" + dragIndex);
-      let pos = pageEl.style.backgroundPosition.split(" ")[1] || "50%";
-      localStorage.setItem("greedy_cover_pos_ " + dragIndex, pos);
-
-      document.removeEventListener('mousemove', onDrag);
-      document.removeEventListener('mouseup', endDrag);
-      document.removeEventListener('touchmove', onDrag);
-      document.removeEventListener('touchend', endDrag);
+    const coverContainer = document.getElementById("coverSlider");
+    if(coverContainer) {
+      coverContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.clientX;
+      });
+      coverContainer.addEventListener('mousemove', (e) => {
+        if(!isDragging) return;
+        let diff = e.clientX - startX;
+        if(Math.abs(diff) > 50) {
+          if(diff > 0) {
+            coverContainer.scrollBy({ left: -300, behavior: 'smooth' });
+          } else {
+            coverContainer.scrollBy({ left: 300, behavior: 'smooth' });
+          }
+          isDragging = false;
+        }
+      });
+      coverContainer.addEventListener('mouseup', () => { isDragging = false; });
     }
 
     function applyFrameClass(frameName) {
@@ -625,7 +781,7 @@
       } else {
         heart.innerText = "🤍";
         bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
       }
     }
 
