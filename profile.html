@@ -75,37 +75,54 @@
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
     .frame-custom1 {
       background-image: url('frame1.png') !important;
-      background-size: 100% 100% !important;
+      background-size: 135% 135% !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
       border: none !important;
       box-shadow: none !important;
+      position: absolute !important;
+      top: -15px !important;
+      left: -15px !important;
+      right: -15px !important;
+      bottom: -15px !important;
+      width: calc(100% + 30px) !important;
+      height: calc(100% + 30px) !important;
+      z-index: 20 !important;
+      pointer-events: none !important;
     }
     .frame-custom2 {
       background-image: url('frame2.png') !important;
-      background-size: 100% 100% !important;
+      background-size: 135% 135% !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
       border: none !important;
       box-shadow: none !important;
+      position: absolute !important;
+      top: -15px !important;
+      left: -15px !important;
+      right: -15px !important;
+      bottom: -15px !important;
+      width: calc(100% + 30px) !important;
+      height: calc(100% + 30px) !important;
+      z-index: 20 !important;
+      pointer-events: none !important;
     }
-
-    /* नई कस्टम फ्रेम्स स्टाइल्स */
-    .frame-custom1 {
-      background-image: url('frame1.png') !important;
-      background-size: 100% 100% !important;
+    .frame-custom3 {
+      background-image: url('frame3.png') !important;
+      background-size: 135% 135% !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
       border: none !important;
       box-shadow: none !important;
-    }
-    .frame-custom2 {
-      background-image: url('frame2.png') !important;
-      background-size: 100% 100% !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      border: none !important;
-      box-shadow: none !important;
+      position: absolute !important;
+      top: -15px !important;
+      left: -15px !important;
+      right: -15px !important;
+      bottom: -15px !important;
+      width: calc(100% + 30px) !important;
+      height: calc(100% + 30px) !important;
+      z-index: 20 !important;
+      pointer-events: none !important;
     }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
@@ -496,7 +513,8 @@
           <!-- नई कस्टम फ्रेम्स यहाँ जोड़ दी गई हैं -->
           <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
           <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
-        </div>
+          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
+       </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
 
