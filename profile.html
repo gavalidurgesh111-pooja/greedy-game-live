@@ -26,7 +26,7 @@
       justify-content: center;
     }
 
-    /* कवर फोटो पर '+' आइकॉन (सिर्फ मालिक को दिखेगा) */
+    /* हर पेज के बीच में '+' आइकॉन */
     .cover-center-plus {
       width: 50px;
       height: 50px;
@@ -161,8 +161,7 @@
       <input type="file" id="hiddenCoverInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
 
       <div class="profile-header-area">
-        <!-- अगर कोई दूसरा यूज़र देखेगा तो अवतार पर क्लिक करने पर फ्रेम या अपलोड नहीं खुलेगा -->
-        <div class="avatar-wrapper" id="avatarWrapperBox" onclick="openFrameModal()" title="Change Frame & Avatar">
+        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
           <div id="avatarPlusIcon" class="owner-only-elem" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
@@ -171,7 +170,7 @@
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="user-name" id="profNameDisplay">User_368282</div>
-            <div style="font-size:14px; cursor:pointer;" onclick="alert('Edit Profile')">✏️</div>
+            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="alert('Edit Profile')">✏️</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
@@ -349,11 +348,12 @@
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
+    let customFrameUrl = localStorage.getItem("greedy_custom_frame"] || "";
     let activeCoverIndex = 1;
 
-    // मान लेते हैं कि यह खुद की आईडी है (मालिक)। अगर कोई दूसरा यूज़र देखेगा तो इसे false कर सकते हैं।
-    let isMyProfile = true; 
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewedId = urlParams.get("id");
+    let isMyProfile = !viewedId || viewedId === userId;
 
     function initProfile() {
       document.getElementById("profNameDisplay").innerText = userName;
@@ -372,30 +372,25 @@
         if(plusIcon) plusIcon.style.display = "none";
       } else {
         avatarImg.style.display = "none";
-        if(plusIcon && isMyProfile) plusIcon.style.display = "block";
+        if(plusIcon) plusIcon.style.display = isMyProfile ? "block" : "none";
       }
 
-      // 6 कवर पेजों को लोड करना
       for(let i=1; i<=6; i++) {
         let coverVal = localStorage.getItem("greedy_cover_" + i) || "";
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
-        
         if(coverVal && coverVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${coverVal}')`;
-          if(plusEl) plusEl.style.display = "none"; // फोटो होने पर '+' छिप जाएगा
+          if(plusEl) plusEl.style.display = "none"; 
         } else {
           pageEl.style.backgroundImage = "none";
-          // अगर यह खुद की आईडी है तभी '+' दिखेगा, दूसरे यूज़र को नहीं दिखेगा
-          if(plusEl) {
-            plusEl.style.display = isMyProfile ? "flex" : "none";
-          }
+          if(plusEl) plusEl.style.display = isMyProfile ? "flex" : "none"; 
         }
       }
 
-      // अगर दूसरा यूज़र है तो अवतार क्लिक करने पर फ्रेम/अपलोड का modal न खुले
+      // अगर दूसरा यूज़र है, तो सिर्फ '+' आइकॉन छिपेंगे, बाकी सारे बटन चालू रहेंगे
       if (!isMyProfile) {
-        document.getElementById("avatarWrapperBox").removeAttribute("onclick");
+        document.querySelectorAll('.owner-only-elem').forEach(el => el.style.display = 'none');
       }
       
       const frameEl = document.getElementById("profAvatarFrame");
@@ -476,20 +471,16 @@
       currentAvatar = "";
       localStorage.setItem("greedy_avatar", "");
       document.getElementById("profAvatarImg").style.display = "none";
-      let plusIcon = document.getElementById("avatarPlusIcon");
-      if(plusIcon && isMyProfile) plusIcon.style.display = "block";
+      document.getElementById("avatarPlusIcon").style.display = "block";
       closeFrameModal();
     }
 
     function openFrameModal() { 
-      if (!isMyProfile) return;
-      document.getElementById("modalFrame").style.display = "flex"; 
+      if (isMyProfile) document.getElementById("modalFrame").style.display = "flex"; 
     }
-    
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     
     function selectCustomFrame(frameUrl) {
-      if (!isMyProfile) return;
       customFrameUrl = frameUrl;
       localStorage.setItem("greedy_custom_frame", frameUrl);
       localStorage.removeItem("greedy_frame");
@@ -498,7 +489,6 @@
     }
 
     function previewAvatar(event) {
-      if (!isMyProfile) return;
       let file = event.target.files[0];
       if (file) {
         let reader = new FileReader();
