@@ -362,7 +362,7 @@
       </div>
     </div>
 
-    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन ('Edit Photo' नाम हटाया गया) -->
+    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div style="width:100%; height:40px;"></div>
       <div class="editor-canvas-area" id="editorCanvasArea">
@@ -512,7 +512,7 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
@@ -702,12 +702,11 @@
             let preview = document.getElementById("editorImagePreview");
             preview.src = rawImageObj.src;
             
-            // 1080x1080 स्क्वायर बॉक्स के अनुपात में फोटो सेट करना
             imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
             preview.style.width = (rawImageObj.width * imgScale) + "px";
             preview.style.height = (rawImageObj.height * imgScale) + "px";
             
-            imgX = (480 - (rawImageObj.width * imgScale)) / 2;
+            imgX = (window.innerWidth - (rawImageObj.width * imgScale)) / 2;
             imgY = (window.innerHeight - (rawImageObj.height * imgScale)) / 2;
             preview.style.left = imgX + "px";
             preview.style.top = imgY + "px";
