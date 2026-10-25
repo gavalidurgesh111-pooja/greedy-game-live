@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* 1080x1080 क्रॉप / एडिटर स्क्रीन */
+    /* क्रॉप / एडिटर स्क्रीन (जैसे तस्वीर में दिखाया गया है) */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -196,13 +196,26 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      touch-action: none;
     }
-    .editor-canvas-area img {
-      width: 320px;
-      height: 320px;
-      object-fit: cover;
-      border: 2px dashed rgba(255,255,255,0.6);
+    /* क्रॉप फ्रेम बॉक्स */
+    .crop-frame-box {
+      width: 340px;
+      height: 340px;
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+      position: relative;
+      overflow: hidden;
+      cursor: grab;
     }
+    .crop-frame-box:active { cursor: grabbing; }
+    .crop-frame-box img {
+      position: absolute;
+      transform-origin: center;
+      user-select: none;
+      pointer-events: none;
+    }
+
     .editor-bottom-bar {
       width: 100%;
       display: flex;
@@ -212,8 +225,8 @@
       background: rgba(20,20,20,0.9);
     }
     .editor-btn-small {
-      width: 38px;
-      height: 38px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
       display: flex;
@@ -222,6 +235,7 @@
       font-size: 16px;
       cursor: pointer;
       font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .btn-cancel-edit { background: #333; color: #fff; }
     .btn-confirm-edit { background: #00c853; color: #fff; }
@@ -260,6 +274,7 @@
           <div class="cover-center-plus owner-only-elem" id="plusCover6">+</div>
         </div>
       </div>
+      
       <!-- गैलरी इनपुट -->
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
       <!-- 'Edit Photo' इनपुट -->
@@ -345,13 +360,15 @@
       </div>
     </div>
 
-    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन -->
+    <!-- क्रॉप / एडिटर स्क्रीन (उंगली से ड्रैग करके सेट करने वाला इंटरफेस) -->
     <div id="screenPhotoEditor">
       <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
-        <span style="font-weight:bold;">Edit Photo (1080×1080)</span>
+        <span style="font-weight:bold;">Edit Photo</span>
       </div>
-      <div class="editor-canvas-area">
-        <img id="editorImagePreview" src="" alt="Preview">
+      <div class="editor-canvas-area" id="editorCanvasArea">
+        <div class="crop-frame-box" id="cropFrameBox">
+          <img id="editorImagePreview" src="" alt="Preview">
+        </div>
       </div>
       <div class="editor-bottom-bar">
         <button class="editor-btn-small btn-cancel-edit" onclick="cancelEditor()">✖️</button>
@@ -505,7 +522,11 @@
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
     
     let activeSlotIndex = 1;
-    let pendingImageObj = null;
+    let rawImageObj = null;
+
+    // एडिटर के लिए ड्रैग/मूव वेरिएबल्स
+    let imgX = 0, imgY = 0, imgScale = 1;
+    let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
     const urlParams = new URLSearchParams(window.location.search);
     const viewedId = urlParams.get("id");
@@ -611,7 +632,6 @@
       document.getElementById("screenPhotoGrid").style.display = "none";
     }
 
-    // 'Edit Photo' बटन का फंक्शन (1080x1080 मैचिंग के लिए पहला खाली स्लॉट चुनेगा)
     function triggerEditPhoto() {
       let targetSlot = 1;
       for(let i=1; i<=9; i++) {
@@ -625,7 +645,7 @@
     }
 
     function handleEditPhotoFileSelect(event) {
-      processImageFile(event.target.files[0]);
+      loadEditorImage(event.target.files[0]);
     }
 
     let selectedSlotForTips = 1;
@@ -671,50 +691,107 @@
     }
 
     function handleGalleryFileSelect(event) {
-      processImageFile(event.target.files[0]);
+      loadEditorImage(event.target.files[0]);
     }
 
-    // 1080x1080 स्क्वायर फॉर्मेट में फोटो को प्रोसेस करने का फंक्शन
-    function processImageFile(file) {
+    function loadEditorImage(file) {
       if (file) {
         let reader = new FileReader();
         reader.onload = function(e) {
-          let img = new Image();
-          img.onload = function() {
-            let canvas = document.createElement("canvas");
-            canvas.width = 1080;
-            canvas.height = 1080;
-            let ctx = canvas.getContext("2d");
+          rawImageObj = new Image();
+          rawImageObj.onload = function() {
+            let preview = document.getElementById("editorImagePreview");
+            preview.src = rawImageObj.src;
+            
+            // इनिशियलाइज़ पोजीशन और स्केल ताकि बॉक्स में फिट हो
+            imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
+            preview.style.width = (rawImageObj.width * imgScale) + "px";
+            preview.style.height = (rawImageObj.height * imgScale) + "px";
+            
+            imgX = (340 - (rawImageObj.width * imgScale)) / 2;
+            imgY = (340 - (rawImageObj.height * imgScale)) / 2;
+            preview.style.left = imgX + "px";
+            preview.style.top = imgY + "px";
 
-            let size = Math.min(img.width, img.height);
-            let startX = (img.width - size) / 2;
-            let startY = (img.height - size) / 2;
-
-            ctx.drawImage(img, startX, startY, size, size, 0, 0, 1080, 1080);
-            pendingImageObj = canvas.toDataURL("image/jpeg", 0.9);
-
-            document.getElementById("editorImagePreview").src = pendingImageObj;
             document.getElementById("screenPhotoEditor").style.display = "flex";
           }
-          img.src = e.target.result;
+          rawImageObj.src = e.target.result;
         }
         reader.readAsDataURL(file);
       }
     }
 
+    // उंगली या माउस से फोटो को बॉक्स के अंदर ड्रैग करके सेट करने का लॉजिक
+    const cropBox = document.getElementById("cropFrameBox");
+    if(cropBox) {
+      cropBox.addEventListener('mousedown', startImgDrag);
+      cropBox.addEventListener('touchstart', startImgDrag);
+      window.addEventListener('mousemove', onImgDrag);
+      window.addEventListener('touchmove', onImgDrag);
+      window.addEventListener('mouseup', endImgDrag);
+      window.addEventListener('touchend', endImgDrag);
+    }
+
+    function startImgDrag(e) {
+      isDraggingImg = true;
+      startMouseX = e.touches ? e.touches[0].clientX : e.clientX;
+      startMouseY = e.touches ? e.touches[0].clientY : e.clientY;
+      e.preventDefault();
+    }
+
+    function onImgDrag(e) {
+      if (!isDraggingImg) return;
+      let clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      let clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      
+      let dx = clientX - startMouseX;
+      let dy = clientY - startMouseY;
+
+      imgX += dx;
+      imgY += dy;
+
+      let preview = document.getElementById("editorImagePreview");
+      preview.style.left = imgX + "px";
+      preview.style.top = imgY + "px";
+
+      startMouseX = clientX;
+      startMouseY = clientY;
+    }
+
+    function endImgDrag() {
+      isDraggingImg = false;
+    }
+
     // ✖️ बटन: फोटो हटाकर दोबारा गैलरी खोल देगा
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
-      pendingImageObj = null;
+      rawImageObj = null;
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन: 1080x1080 फोटो सेव कर देगा
+    // ✔️ बटन: क्रॉप बॉक्स के हिसाब से परफेक्ट कट करके सेव कर देगा
     function confirmEditor() {
-      if(pendingImageObj) {
-        localStorage.setItem("greedy_slot_" + activeSlotIndex, pendingImageObj);
+      if(rawImageObj) {
+        let canvas = document.createElement("canvas");
+        canvas.width = 1080;
+        canvas.height = 1080;
+        let ctx = canvas.getContext("2d");
+
+        let preview = document.getElementById("editorImagePreview");
+        let renderedWidth = parseFloat(preview.style.width);
+        let renderedHeight = parseFloat(preview.style.height);
+
+        let sX = (-imgX / renderedWidth) * rawImageObj.width;
+        let sY = (-imgY / renderedHeight) * rawImageObj.height;
+        let sW = (340 / renderedWidth) * rawImageObj.width;
+        let sH = (340 / renderedHeight) * rawImageObj.height;
+
+        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
+        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
+
+        localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
         document.getElementById("screenPhotoEditor").style.display = "none";
-        pendingImageObj = null;
+        rawImageObj = null;
         initProfile();
       }
     }
