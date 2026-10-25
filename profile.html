@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* क्रॉप / एडिटर स्क्रीन (जैसे तस्वीर में दिखाया गया है) */
+    /* फुल स्क्रीन फोटो एडिटर और एडजस्टमेंट बॉक्स */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -198,20 +198,20 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* क्रॉप फ्रेम बॉक्स */
+    /* बीच का फिक्सड क्रॉप/एडजस्टमेंट बॉक्स (तस्वीर जैसा) */
     .crop-frame-box {
       width: 340px;
-      height: 340px;
+      height: 420px;
       border: 1.5px solid rgba(255, 255, 255, 0.7);
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
       position: relative;
       overflow: hidden;
       cursor: grab;
+      z-index: 5;
     }
     .crop-frame-box:active { cursor: grabbing; }
     .crop-frame-box img {
       position: absolute;
-      transform-origin: center;
       user-select: none;
       pointer-events: none;
     }
@@ -223,6 +223,7 @@
       align-items: center;
       padding: 15px 30px;
       background: rgba(20,20,20,0.9);
+      z-index: 20;
     }
     .editor-btn-small {
       width: 42px;
@@ -360,9 +361,9 @@
       </div>
     </div>
 
-    <!-- क्रॉप / एडिटर स्क्रीन (उंगली से ड्रैग करके सेट करने वाला इंटरफेस) -->
+    <!-- क्रॉप / एडिटर स्क्रीन (फुल स्क्रीन फोटो और बीच का बॉक्स) -->
     <div id="screenPhotoEditor">
-      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
+      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff; z-index:20;">
         <span style="font-weight:bold;">Edit Photo</span>
       </div>
       <div class="editor-canvas-area" id="editorCanvasArea">
@@ -524,7 +525,6 @@
     let activeSlotIndex = 1;
     let rawImageObj = null;
 
-    // एडिटर के लिए ड्रैग/मूव वेरिएबल्स
     let imgX = 0, imgY = 0, imgScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
@@ -630,6 +630,7 @@
     }
     function closePhotoGridScreen() {
       document.getElementById("screenPhotoGrid").style.display = "none";
+      initProfile();
     }
 
     function triggerEditPhoto() {
@@ -703,13 +704,13 @@
             let preview = document.getElementById("editorImagePreview");
             preview.src = rawImageObj.src;
             
-            // इनिशियलाइज़ पोजीशन और स्केल ताकि बॉक्स में फिट हो
-            imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
+            // फोटो अपनी फुल साइज में खुलेगी, यूज़र बॉक्स के अंदर एडजस्ट कर सकेगा
+            imgScale = Math.max(340 / rawImageObj.width, 420 / rawImageObj.height);
             preview.style.width = (rawImageObj.width * imgScale) + "px";
             preview.style.height = (rawImageObj.height * imgScale) + "px";
             
             imgX = (340 - (rawImageObj.width * imgScale)) / 2;
-            imgY = (340 - (rawImageObj.height * imgScale)) / 2;
+            imgY = (420 - (rawImageObj.height * imgScale)) / 2;
             preview.style.left = imgX + "px";
             preview.style.top = imgY + "px";
 
@@ -721,7 +722,7 @@
       }
     }
 
-    // उंगली या माउस से फोटो को बॉक्स के अंदर ड्रैग करके सेट करने का लॉजिक
+    // उंगली से फोटो को ऊपर-नीचे और दाएं-बाएं ड्रैग करने का लॉजिक
     const cropBox = document.getElementById("cropFrameBox");
     if(cropBox) {
       cropBox.addEventListener('mousedown', startImgDrag);
@@ -769,12 +770,12 @@
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन: क्रॉप बॉक्स के हिसाब से परफेक्ट कट करके सेव कर देगा
+    // ✔️ बटन: सेव होते ही फोटो सेव होकर सीधे प्रोफाइल फोटो पेज (9-ग्रिड) पर आ जाएगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
-        canvas.width = 1080;
-        canvas.height = 1080;
+        canvas.width = 340;
+        canvas.height = 420;
         let ctx = canvas.getContext("2d");
 
         let preview = document.getElementById("editorImagePreview");
@@ -784,15 +785,17 @@
         let sX = (-imgX / renderedWidth) * rawImageObj.width;
         let sY = (-imgY / renderedHeight) * rawImageObj.height;
         let sW = (340 / renderedWidth) * rawImageObj.width;
-        let sH = (340 / renderedHeight) * rawImageObj.height;
+        let sH = (420 / renderedHeight) * rawImageObj.height;
 
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
+        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 340, 420);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
         localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
+
         initProfile();
+        openPhotoGridScreen(); // सेव होते ही प्रोफाइल फोटो (9-ग्रिड) पेज पर आ जाएगा
       }
     }
 
