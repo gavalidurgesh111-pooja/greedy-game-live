@@ -73,6 +73,24 @@
     .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
+    
+    /* नई कस्टम फ्रेम्स स्टाइल्स */
+    .frame-custom1 {
+      background-image: url('frame1.png') !important;
+      background-size: 100% 100% !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+    .frame-custom2 {
+      background-image: url('frame2.png') !important;
+      background-size: 100% 100% !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -459,7 +477,7 @@
           <div class="grid-item" onclick="applyFrameClass('lion')">Lion Frame</div>
           <div class="grid-item" onclick="applyFieldClass('star')">Star Frame</div>
           <div class="grid-item" onclick="applyFrameClass('sun')">Sun Frame</div>
-          <!-- नई फ्रेम्स यहाँ जोड़ें -->
+          <!-- नई कस्टम फ्रेम्स यहाँ जोड़ दी गई हैं -->
           <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
           <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
         </div>
