@@ -340,16 +340,20 @@
     }
 
     function applyCustomFrame(frameUrl) {
-      const targetFrame = document.getElementById("profAvatarFrame");
-      if (targetFrame) {
+    const targetFrame = document.getElementById("profAvatarFrame");
+    if (targetFrame) {
         targetFrame.className = "avatar-frame";
-        targetFrame.style.backgroundImage = frameUrl;
-        targetFrame.style.backgroundSize = "cover";
+        // अगर frameUrl में पहले से url() लगा है तो ठीक, नहीं तो लगा दें
+        let finalUrl = frameUrl.startsWith('url') ? frameUrl : `url('${frameUrl}')`;
+        targetFrame.style.backgroundImage = finalUrl;
+        targetFrame.style.backgroundSize = "100% 100%";
         targetFrame.style.backgroundPosition = "center";
+        targetFrame.style.backgroundRepeat = "no-repeat";
         targetFrame.style.border = "none";
         targetFrame.style.borderRadius = "50%";
-      }
     }
+}
+
 
     function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
