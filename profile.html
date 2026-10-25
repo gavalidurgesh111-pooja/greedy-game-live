@@ -9,17 +9,47 @@
     body { background: #000; display: flex; justify-content: center; color: #333; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
     
-    /* Cover & Top Bar */
-    .profile-cover { width: 100%; height: 210px; background: #111 center/cover; position: relative; display: flex; align-items: flex-end; justify-content: flex-end; padding: 15px; }
-    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
-    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
-    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
+    /* Cover Slider Area (6 Pages) */
+    .cover-slider-container { width: 100%; height: 210px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; }
+    .cover-slider-container::-webkit-scrollbar { display: none; }
     
-    /* कवर फोटो पर '+' आइकॉन */
-    .cover-plus-btn { background: rgba(0,0,0,0.6); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; cursor: pointer; border: 1.5px solid #fff; }
+    .cover-page {
+      min-width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-color: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* कवर फोटो पर '+' आइकॉन (सिर्फ मालिक को दिखेगा) */
+    .cover-center-plus {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      border: 2px solid #fff;
+      z-index: 5;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    }
+
+    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 10; }
+    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 10; }
+    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
 
     /* Header & Avatar */
-    .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
+    .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 12; }
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
     
@@ -38,7 +68,7 @@
       background-size: 100% 100% !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
-      z-index: 10 !important;
+      z-index: 15 !important;
       display: none;
     }
 
@@ -85,8 +115,6 @@
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
-    .frame-option { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #fafafa; width: 100%; }
-    .frame-option:hover { border-color: #1e3c72; background: #f0f4ff; }
   </style>
 </head>
 <body>
@@ -95,21 +123,48 @@
     
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
-      <div class="profile-cover" id="profCoverDiv">
-        <div class="profile-back-btn" onclick="openInboxMessage()">❮</div>
-        <div class="profile-top-icons">
-          <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
-          <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
-        </div>
-        <!-- कवर फोटो लगाने के लिए '+' बटन -->
-        <div class="cover-plus-btn" onclick="document.getElementById('customCoverInput').click()" title="Change Cover Photo">+</div>
-        <input type="file" id="customCoverInput" accept="image/*" onchange="previewCover(event)" style="display:none;">
-      </div>
       
+      <!-- 6 स्क्रॉल करने योग्य कवर पेज -->
+      <div class="profile-back-btn" onclick="openInboxMessage()">❮</div>
+      <div class="profile-top-icons">
+        <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
+        <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
+      </div>
+
+      <div class="cover-slider-container" id="coverSlider">
+        <!-- Page 1 -->
+        <div class="cover-page" id="coverPage1">
+          <div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="triggerCoverUpload(1)">+</div>
+        </div>
+        <!-- Page 2 -->
+        <div class="cover-page" id="coverPage2">
+          <div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="triggerCoverUpload(2)">+</div>
+        </div>
+        <!-- Page 3 -->
+        <div class="cover-page" id="coverPage3">
+          <div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="triggerCoverUpload(3)">+</div>
+        </div>
+        <!-- Page 4 -->
+        <div class="cover-page" id="coverPage4">
+          <div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="triggerCoverUpload(4)">+</div>
+        </div>
+        <!-- Page 5 -->
+        <div class="cover-page" id="coverPage5">
+          <div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="triggerCoverUpload(5)">+</div>
+        </div>
+        <!-- Page 6 -->
+        <div class="cover-page" id="coverPage6">
+          <div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="triggerCoverUpload(6)">+</div>
+        </div>
+      </div>
+      <!-- हिडन फाइल इनपुट कवर अपलोड के लिए -->
+      <input type="file" id="hiddenCoverInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
+
       <div class="profile-header-area">
-        <div class="avatar-wrapper" onclick="openFrameModal()" title="Change Frame & Avatar">
+        <!-- अगर कोई दूसरा यूज़र देखेगा तो अवतार पर क्लिक करने पर फ्रेम या अपलोड नहीं खुलेगा -->
+        <div class="avatar-wrapper" id="avatarWrapperBox" onclick="openFrameModal()" title="Change Frame & Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
-          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div id="avatarPlusIcon" class="owner-only-elem" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
@@ -237,14 +292,12 @@
          
         <div class="grid-options" id="frameOptionsGrid"></div>
 
-        <!-- फ्रेम हटाने का बटन -->
-        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame (फ्रेम हटाएं)</button>
+        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
 
         <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery):</p>
         <input type="file" id="customAvatarInput" accept="image/*" onchange="previewAvatar(event)" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:12px;">
         
-        <!-- प्रोफाइल फोटो हटाने का बटन -->
-        <button onclick="removeAvatarPhoto()" style="width:100%; margin-top:8px; padding:8px; background:#d9534f; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🗑️ Remove Profile Photo (प्रोफाइल फोटो हटाएं)</button>
+        <button onclick="removeAvatarPhoto()" style="width:100%; margin-top:8px; padding:8px; background:#d9534f; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🗑️ Remove Profile Photo</button>
 
         <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
       </div>
@@ -283,19 +336,24 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      localStorage.setItem("greedy_cover", ""); 
+      for(let i=1; i<=6; i++) {
+        localStorage.setItem("greedy_cover_" + i, "");
+      }
     }
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let currentCover = localStorage.getItem("greedy_cover") || "";
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
+    let activeCoverIndex = 1;
+
+    // मान लेते हैं कि यह खुद की आईडी है (मालिक)। अगर कोई दूसरा यूज़र देखेगा तो इसे false कर सकते हैं।
+    let isMyProfile = true; 
 
     function initProfile() {
       document.getElementById("profNameDisplay").innerText = userName;
@@ -314,17 +372,33 @@
         if(plusIcon) plusIcon.style.display = "none";
       } else {
         avatarImg.style.display = "none";
-        if(plusIcon) plusIcon.style.display = "block";
+        if(plusIcon && isMyProfile) plusIcon.style.display = "block";
       }
 
-      if (currentCover && currentCover.trim() !== "") {
-        document.getElementById("profCoverDiv").style.background = `url('${currentCover}') center/cover`;
-      } else {
-        document.getElementById("profCoverDiv").style.background = "#111";
+      // 6 कवर पेजों को लोड करना
+      for(let i=1; i<=6; i++) {
+        let coverVal = localStorage.getItem("greedy_cover_" + i) || "";
+        let pageEl = document.getElementById("coverPage" + i);
+        let plusEl = document.getElementById("plusCover" + i);
+        
+        if(coverVal && coverVal.trim() !== "") {
+          pageEl.style.backgroundImage = `url('${coverVal}')`;
+          if(plusEl) plusEl.style.display = "none"; // फोटो होने पर '+' छिप जाएगा
+        } else {
+          pageEl.style.backgroundImage = "none";
+          // अगर यह खुद की आईडी है तभी '+' दिखेगा, दूसरे यूज़र को नहीं दिखेगा
+          if(plusEl) {
+            plusEl.style.display = isMyProfile ? "flex" : "none";
+          }
+        }
+      }
+
+      // अगर दूसरा यूज़र है तो अवतार क्लिक करने पर फ्रेम/अपलोड का modal न खुले
+      if (!isMyProfile) {
+        document.getElementById("avatarWrapperBox").removeAttribute("onclick");
       }
       
       const frameEl = document.getElementById("profAvatarFrame");
-
       if (currentFrame === "none" && !customFrameUrl) {
         frameEl.style.display = "none";
       } else {
@@ -336,6 +410,28 @@
         }
       }
       updatePrivacyHeart();
+    }
+
+    function triggerCoverUpload(index) {
+      if (!isMyProfile) return;
+      activeCoverIndex = index;
+      document.getElementById("hiddenCoverInput").click();
+    }
+
+    function handleCoverFileSelect(event) {
+      let file = event.target.files[0];
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          let imageUrl = e.target.result;
+          localStorage.setItem("greedy_cover_" + activeCoverIndex, imageUrl);
+          let pageEl = document.getElementById("coverPage" + activeCoverIndex);
+          let plusEl = document.getElementById("plusCover" + activeCoverIndex);
+          pageEl.style.backgroundImage = `url('${imageUrl}')`;
+          if(plusEl) plusEl.style.display = "none";
+        }
+        reader.readAsDataURL(file);
+      }
     }
 
     function applyFrameClass(frameName) {
@@ -366,6 +462,7 @@
     }
 
     function removeFrame() {
+      if (!isMyProfile) return;
       currentFrame = "none";
       customFrameUrl = "";
       localStorage.setItem("greedy_frame", "none");
@@ -375,17 +472,24 @@
     }
 
     function removeAvatarPhoto() {
+      if (!isMyProfile) return;
       currentAvatar = "";
       localStorage.setItem("greedy_avatar", "");
       document.getElementById("profAvatarImg").style.display = "none";
-      document.getElementById("avatarPlusIcon").style.display = "block";
+      let plusIcon = document.getElementById("avatarPlusIcon");
+      if(plusIcon && isMyProfile) plusIcon.style.display = "block";
       closeFrameModal();
     }
 
-    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
+    function openFrameModal() { 
+      if (!isMyProfile) return;
+      document.getElementById("modalFrame").style.display = "flex"; 
+    }
+    
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     
     function selectCustomFrame(frameUrl) {
+      if (!isMyProfile) return;
       customFrameUrl = frameUrl;
       localStorage.setItem("greedy_custom_frame", frameUrl);
       localStorage.removeItem("greedy_frame");
@@ -394,6 +498,7 @@
     }
 
     function previewAvatar(event) {
+      if (!isMyProfile) return;
       let file = event.target.files[0];
       if (file) {
         let reader = new FileReader();
@@ -405,20 +510,6 @@
           document.getElementById("profAvatarImg").style.display = "block";
           document.getElementById("avatarPlusIcon").style.display = "none";
           closeFrameModal();
-        }
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function previewCover(event) {
-      let file = event.target.files[0];
-      if (file) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-          let imageUrl = e.target.result;
-          currentCover = imageUrl;
-          localStorage.setItem("greedy_cover", imageUrl);
-          document.getElementById("profCoverDiv").style.background = `url('${imageUrl}') center/cover`;
         }
         reader.readAsDataURL(file);
       }
@@ -436,6 +527,7 @@
     function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
     
     function togglePrivacy() {
+      if (!isMyProfile) return;
       isPrivate = !isPrivate;
       localStorage.setItem("greedy_privacy", isPrivate);
       updatePrivacyHeart();
