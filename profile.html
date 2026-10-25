@@ -75,7 +75,7 @@
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
-    .user-name { font-size: 22px; font-weight: 900; color: #111; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; }
 
     .tags-row { display: flex; gap: 8px; margin-top: 6px; align-items: center; }
@@ -112,7 +112,7 @@
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
 
-    /* 9 फोटो ग्रिड गैلरी स्क्रीन (Profile Photo 9-grid view) */
+    /* 9 फोटो ग्रिड गैलरी स्क्रीन */
     #screenPhotoGrid {
       display: none;
       position: absolute;
@@ -210,7 +210,6 @@
       padding: 15px 30px;
       background: rgba(20,20,20,0.9);
     }
-    /* ✖️ और ✔️ बटन छोटे आकार में */
     .editor-btn-small {
       width: 38px;
       height: 38px;
@@ -234,7 +233,6 @@
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
-      <!-- कवर फोटो क्षेत्र (इस पर टैप करने पर 9-फोटो ग्रिड खुलेगी) -->
       <div class="profile-back-btn" onclick="openInboxMessage()">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
@@ -272,8 +270,8 @@
         
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="user-name" id="profNameDisplay">User_368282</div>
-            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="alert('Edit Profile')">✏️</div>
+            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User_368282</div>
+            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
@@ -286,8 +284,8 @@
 
       <div class="follow-stats-row">
         <div class="follow-counts">
-          <div class="f-count-item" onclick="alert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
-          <div class="f-count-item" onclick="alert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
+          <div class="f-count-item" onclick="showCustomAlert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
+          <div class="f-count-item" onclick="showCustomAlert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
@@ -307,7 +305,7 @@
       </div>
 
       <div class="cards-wrapper">
-        <div class="action-card card-play" onclick="alert('Game arena will open in next step!')">
+        <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
           <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
           <div style="font-size:32px;">🎰</div>
         </div>
@@ -322,16 +320,14 @@
       </div>
     </div>
 
-    <!-- 9 फोटो ग्रिड स्क्रीन (Profile photo 1 to 9 selection view) -->
+    <!-- 9 फोटो ग्रिड स्क्रीन -->
     <div id="screenPhotoGrid">
       <div class="sub-header" style="background:#fff; color:#111; border-bottom:1px solid #ddd;">
         <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridScreen()">❮</div>
         <h2>Profile photo</h2>
         <div style="width:20px;"></div>
       </div>
-      <div class="grid-9-container" id="grid9Container">
-        <!-- 1 से 9 तक के ग्रिड सेल्स जावास्क्रिप्ट से बनेंगे -->
-      </div>
+      <div class="grid-9-container" id="grid9Container"></div>
     </div>
 
     <!-- टिप्स (Tips) पॉपअप मेनू -->
@@ -345,7 +341,7 @@
       </div>
     </div>
 
-    <!-- तीसरा फोटो जैसा क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ छोटे बटन के साथ) -->
+    <!-- क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ छोटे बटन के साथ) -->
     <div id="screenPhotoEditor">
       <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
         <span style="font-weight:bold;">Edit Photo</span>
@@ -356,6 +352,15 @@
       <div class="editor-bottom-bar">
         <button class="editor-btn-small btn-cancel-edit" onclick="cancelEditor()">✖️</button>
         <button class="editor-btn-small btn-confirm-edit" onclick="confirmEditor()">✔️</button>
+      </div>
+    </div>
+
+    <!-- CUSTOM ALERT MODAL (बिना ब्राउज़र नाम के) -->
+    <div id="customAlertModal" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
+        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
+        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
+        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
 
@@ -512,6 +517,7 @@
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
+      const editNameBtn = document.getElementById("editNameBtn");
 
       if (currentAvatar && currentAvatar.trim() !== "") {
         avatarImg.src = currentAvatar;
@@ -522,7 +528,13 @@
         if(plusIcon) plusIcon.style.display = isMyProfile ? "block" : "none";
       }
 
-      // कवर पेजों और 9-स्लॉट डेटा को सिंक करना (स्लॉट 1 से 6 कवर पर दिखेंगे)
+      // नाम सेव होने पर पेंसिल आइकॉन छिपाना
+      if(userName && !userName.startsWith("User_")) {
+        if(editNameBtn) editNameBtn.style.display = "none";
+      } else {
+        if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
+      }
+
       for(let i=1; i<=6; i++) {
         let slotVal = localStorage.getItem("greedy_slot_" + i) || "";
         let pageEl = document.getElementById("coverPage" + i);
@@ -550,6 +562,25 @@
         }
       }
       updatePrivacyHeart();
+    }
+
+    // नाम बदलने का प्रॉम्प्ट (Prompt) फंक्शन
+    function promptEditName() {
+      if(!isMyProfile) return;
+      let newName = prompt("Enter your name:", userName);
+      if(newName && newName.trim() !== "") {
+        userName = newName.trim();
+        localStorage.setItem("greedy_name", userName);
+        initProfile();
+      }
+    }
+
+    function showCustomAlert(text) {
+      document.getElementById("customAlertText").innerText = text;
+      document.getElementById("customAlertModal").style.display = "flex";
+    }
+    function closeCustomAlert() {
+      document.getElementById("customAlertModal").style.display = "none";
     }
 
     // 9 फोटो ग्रिड रेंडर करना
@@ -585,10 +616,8 @@
       selectedSlotForTips = index;
       let val = localStorage.getItem("greedy_slot_" + index) || "";
       if (val && val.trim() !== "") {
-        // यदि फोटो लगी है, तो टिप्स मेनू खोलें
         document.getElementById("tipsModal").style.display = "flex";
       } else {
-        // यदि खाली है, तो गैलरी खोलें
         activeSlotIndex = index;
         document.getElementById("hiddenGalleryInput").click();
       }
@@ -598,7 +627,7 @@
       document.getElementById("tipsModal").style.display = "none";
     }
 
-    // टिप्स ऑप्शन 1: Use it as profile picture
+    // Use it as profile picture
     function tipsUseAsProfile() {
       closeTipsModal();
       let val = localStorage.getItem("greedy_slot_" + selectedSlotForTips);
@@ -606,18 +635,18 @@
         currentAvatar = val;
         localStorage.setItem("greedy_avatar", val);
         initProfile();
-        alert("Updated as profile picture!");
+        showCustomAlert("Updated as profile picture!");
       }
     }
 
-    // टिप्स ऑप्शन 2: Change picture
+    // Change picture (गैलरी खोलकर एडिटर में ले जाएगा)
     function tipsChangePicture() {
       closeTipsModal();
       activeSlotIndex = selectedSlotForTips;
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // टिप्स ऑप्शन 3: Delete
+    // Delete
     function tipsDeletePicture() {
       closeTipsModal();
       if(confirm("Delete this picture?")) {
@@ -626,7 +655,7 @@
       }
     }
 
-    // गैलरी से फाइल चुनने पर एडिटर स्क्रीन (तीसरी फोटो जैसी) खोलना
+    // गैलरी से फाइल चुनने पर क्रॉप एडिटर स्क्रीन खोलना
     function handleGalleryFileSelect(event) {
       let file = event.target.files[0];
       if (file) {
@@ -640,11 +669,14 @@
       }
     }
 
+    // ✖️ बटन दबाने पर फोटो हट जाएगी और यूज़र दूसरी फोटो ले सकेगा
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       pendingImageObj = null;
+      document.getElementById("hiddenGalleryInput").click(); // तुरंत दूसरी फोटो चुनने का विकल्प
     }
 
+    // ✔️ बटन दबाने पर फोटो सेव हो जाएगी
     function confirmEditor() {
       if(pendingImageObj) {
         localStorage.setItem("greedy_slot_" + activeSlotIndex, pendingImageObj);
@@ -655,10 +687,9 @@
     }
 
     // कवर स्वाइप / ड्रैग करने पर नंबर जैसे फोटो बदलते रहना
+    const coverContainer = document.getElementById("coverSlider");
     let isDragging = false;
     let startX = 0;
-
-    const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('mousedown', (e) => {
         isDragging = true;
@@ -755,7 +786,7 @@
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
-      alert("ID Copied: " + userId);
+      showCustomAlert("ID Copied: " + userId);
     }
 
     function openInboxMessage() { document.getElementById("screenInboxMessage").style.display = "flex"; renderTopPlayers(); }
@@ -781,7 +812,7 @@
       } else {
         heart.innerText = "🤍";
         bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
       }
     }
 
@@ -794,13 +825,13 @@
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
       let amt = parseInt(document.getElementById("sendCoinAmount").value);
-      if(!targetId) { alert("Please enter receiver ID"); return; }
-      if(!amt || amt <= 0 || amt > coins) { alert("Invalid coin amount or insufficient balance!"); return; }
+      if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
+      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount or insufficient balance!"); return; }
       coins -= amt;
       localStorage.setItem("greedy_coins", coins);
       initProfile();
       closeCoinSendModal();
-      alert(`Successfully sent ${amt} coins to ${targetId}!`);
+      showCustomAlert(`Successfully sent ${amt} coins to ${targetId}!`);
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
