@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* तीसरा फोटो जैसा क्रॉप / एडिटर स्क्रीन */
+    /* 1080x1080 क्रॉप / एडिटर स्क्रीन */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -198,9 +198,10 @@
       overflow: hidden;
     }
     .editor-canvas-area img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
+      width: 320px;
+      height: 320px;
+      object-fit: cover;
+      border: 2px dashed rgba(255,255,255,0.6);
     }
     .editor-bottom-bar {
       width: 100%;
@@ -259,7 +260,10 @@
           <div class="cover-center-plus owner-only-elem" id="plusCover6">+</div>
         </div>
       </div>
+      <!-- गैलरी इनपुट -->
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
+      <!-- 'Edit Photo' इनपुट -->
+      <input type="file" id="hiddenEditPhotoInput" accept="image/*" style="display:none;" onchange="handleEditPhotoFileSelect(event)">
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
@@ -322,10 +326,10 @@
 
     <!-- 9 फोटो ग्रिड स्क्रीन -->
     <div id="screenPhotoGrid">
-      <div class="sub-header" style="background:#fff; color:#111; border-bottom:1px solid #ddd;">
+      <div class="sub-header" style="background:#fff; color:#111; border-bottom:1px solid #ddd; display:flex; align-items:center; justify-content:space-between; padding:15px 20px;">
         <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridScreen()">❮</div>
         <h2>Profile photo</h2>
-        <div style="width:20px;"></div>
+        <div style="font-size:14px; font-weight:bold; color:#1e3c72; cursor:pointer;" onclick="triggerEditPhoto()">Edit Photo</div>
       </div>
       <div class="grid-9-container" id="grid9Container"></div>
     </div>
@@ -341,10 +345,10 @@
       </div>
     </div>
 
-    <!-- क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ छोटे बटन के साथ) -->
+    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff;">
-        <span style="font-weight:bold;">Edit Photo</span>
+        <span style="font-weight:bold;">Edit Photo (1080×1080)</span>
       </div>
       <div class="editor-canvas-area">
         <img id="editorImagePreview" src="" alt="Preview">
@@ -355,7 +359,7 @@
       </div>
     </div>
 
-    <!-- CUSTOM ALERT MODAL (बिना ब्राउज़र नाम के) -->
+    <!-- CUSTOM ALERT MODAL -->
     <div id="customAlertModal" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
@@ -528,7 +532,6 @@
         if(plusIcon) plusIcon.style.display = isMyProfile ? "block" : "none";
       }
 
-      // नाम सेव होने पर पेंसिल आइकॉन छिपाना
       if(userName && !userName.startsWith("User_")) {
         if(editNameBtn) editNameBtn.style.display = "none";
       } else {
@@ -564,7 +567,6 @@
       updatePrivacyHeart();
     }
 
-    // नाम बदलने का प्रॉम्प्ट (Prompt) फंक्शन
     function promptEditName() {
       if(!isMyProfile) return;
       let newName = prompt("Enter your name:", userName);
@@ -583,7 +585,6 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // 9 फोटो ग्रिड रेंडर करना
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -610,6 +611,23 @@
       document.getElementById("screenPhotoGrid").style.display = "none";
     }
 
+    // 'Edit Photo' बटन का फंक्शन (1080x1080 मैचिंग के लिए पहला खाली स्लॉट चुनेगा)
+    function triggerEditPhoto() {
+      let targetSlot = 1;
+      for(let i=1; i<=9; i++) {
+        if(!localStorage.getItem("greedy_slot_" + i) || localStorage.getItem("greedy_slot_" + i) === "") {
+          targetSlot = i;
+          break;
+        }
+      }
+      activeSlotIndex = targetSlot;
+      document.getElementById("hiddenEditPhotoInput").click();
+    }
+
+    function handleEditPhotoFileSelect(event) {
+      processImageFile(event.target.files[0]);
+    }
+
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
       if (!isMyProfile) return;
@@ -627,7 +645,6 @@
       document.getElementById("tipsModal").style.display = "none";
     }
 
-    // Use it as profile picture
     function tipsUseAsProfile() {
       closeTipsModal();
       let val = localStorage.getItem("greedy_slot_" + selectedSlotForTips);
@@ -639,14 +656,12 @@
       }
     }
 
-    // Change picture (गैलरी खोलकर एडिटर में ले जाएगा)
     function tipsChangePicture() {
       closeTipsModal();
       activeSlotIndex = selectedSlotForTips;
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // Delete
     function tipsDeletePicture() {
       closeTipsModal();
       if(confirm("Delete this picture?")) {
@@ -655,28 +670,46 @@
       }
     }
 
-    // गैलरी से फाइल चुनने पर क्रॉप एडिटर स्क्रीन खोलना
     function handleGalleryFileSelect(event) {
-      let file = event.target.files[0];
+      processImageFile(event.target.files[0]);
+    }
+
+    // 1080x1080 स्क्वायर फॉर्मेट में फोटो को प्रोसेस करने का फंक्शन
+    function processImageFile(file) {
       if (file) {
         let reader = new FileReader();
         reader.onload = function(e) {
-          pendingImageObj = e.target.result;
-          document.getElementById("editorImagePreview").src = pendingImageObj;
-          document.getElementById("screenPhotoEditor").style.display = "flex";
+          let img = new Image();
+          img.onload = function() {
+            let canvas = document.createElement("canvas");
+            canvas.width = 1080;
+            canvas.height = 1080;
+            let ctx = canvas.getContext("2d");
+
+            let size = Math.min(img.width, img.height);
+            let startX = (img.width - size) / 2;
+            let startY = (img.height - size) / 2;
+
+            ctx.drawImage(img, startX, startY, size, size, 0, 0, 1080, 1080);
+            pendingImageObj = canvas.toDataURL("image/jpeg", 0.9);
+
+            document.getElementById("editorImagePreview").src = pendingImageObj;
+            document.getElementById("screenPhotoEditor").style.display = "flex";
+          }
+          img.src = e.target.result;
         }
         reader.readAsDataURL(file);
       }
     }
 
-    // ✖️ बटन दबाने पर फोटो हट जाएगी और यूज़र दूसरी फोटो ले सकेगा
+    // ✖️ बटन: फोटो हटाकर दोबारा गैलरी खोल देगा
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       pendingImageObj = null;
-      document.getElementById("hiddenGalleryInput").click(); // तुरंत दूसरी फोटो चुनने का विकल्प
+      document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन दबाने पर फोटो सेव हो जाएगी
+    // ✔️ बटन: 1080x1080 फोटो सेव कर देगा
     function confirmEditor() {
       if(pendingImageObj) {
         localStorage.setItem("greedy_slot_" + activeSlotIndex, pendingImageObj);
@@ -686,7 +719,6 @@
       }
     }
 
-    // कवर स्वाइप / ड्रैग करने पर नंबर जैसे फोटो बदलते रहना
     const coverContainer = document.getElementById("coverSlider");
     let isDragging = false;
     let startX = 0;
