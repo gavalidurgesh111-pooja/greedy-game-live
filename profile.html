@@ -132,32 +132,25 @@
       </div>
 
       <div class="cover-slider-container" id="coverSlider">
-        <!-- Page 1 -->
         <div class="cover-page" id="coverPage1">
           <div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="triggerCoverUpload(1)">+</div>
         </div>
-        <!-- Page 2 -->
         <div class="cover-page" id="coverPage2">
           <div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="triggerCoverUpload(2)">+</div>
         </div>
-        <!-- Page 3 -->
         <div class="cover-page" id="coverPage3">
           <div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="triggerCoverUpload(3)">+</div>
         </div>
-        <!-- Page 4 -->
         <div class="cover-page" id="coverPage4">
           <div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="triggerCoverUpload(4)">+</div>
         </div>
-        <!-- Page 5 -->
         <div class="cover-page" id="coverPage5">
           <div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="triggerCoverUpload(5)">+</div>
         </div>
-        <!-- Page 6 -->
         <div class="cover-page" id="coverPage6">
           <div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="triggerCoverUpload(6)">+</div>
         </div>
       </div>
-      <!-- हिडन फाइल इनपुट कवर अपलोड के लिए -->
       <input type="file" id="hiddenCoverInput" accept="image/*" style="display:none;" onchange="handleCoverFileSelect(event)">
 
       <div class="profile-header-area">
@@ -192,7 +185,8 @@
         </div>
       </div>
 
-      <div class="stats-container" onclick="alert('Recharge Modal')">
+      <!-- रिचार्ज / वॉलेट बैलेंस पर क्लिक करने पर मोडल या अलर्ट -->
+      <div class="stats-container" onclick="openCoinSendModal()">
         <div class="stat-item">
           <div class="stat-val">🪙 <span id="profBalance">0</span></div>
           <div class="stat-label">Wallet Balance</div>
@@ -289,7 +283,12 @@
         <h3>🎨 Select Avatar & Frame</h3>
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
          
-        <div class="grid-options" id="frameOptionsGrid"></div>
+        <div class="grid-options" id="frameOptionsGrid">
+          <div class="grid-item" onclick="applyFrameClass('peacock')">Peacock Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('lion')">Lion Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('star')">Star Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('sun')">Sun Frame</div>
+        </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
 
@@ -327,9 +326,9 @@
   <script>
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
-      localStorage.setItem("greedy_coins", "0");
-      localStorage.setItem("greedy_won", "0");
-      localStorage.setItem("greedy_level", "0");
+      localStorage.setItem("greedy_coins", "1000");
+      localStorage.setItem("greedy_won", "500");
+      localStorage.setItem("greedy_level", "1");
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_privacy", "false");
@@ -342,13 +341,13 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let customFrameUrl = localStorage.getItem("greedy_custom_frame"] || "";
+    let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
     let activeCoverIndex = 1;
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -388,11 +387,6 @@
         }
       }
 
-      // अगर दूसरा यूज़र है, तो सिर्फ '+' आइकॉन छिपेंगे, बाकी सारे बटन चालू रहेंगे
-      if (!isMyProfile) {
-        document.querySelectorAll('.owner-only-elem').forEach(el => el.style.display = 'none');
-      }
-      
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none" && !customFrameUrl) {
         frameEl.style.display = "none";
@@ -430,6 +424,11 @@
     }
 
     function applyFrameClass(frameName) {
+      currentFrame = frameName;
+      customFrameUrl = "";
+      localStorage.setItem("greedy_frame", frameName);
+      localStorage.removeItem("greedy_custom_frame");
+
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
@@ -440,6 +439,7 @@
       } else {
         frameEl.style.display = "none";
       }
+      closeFrameModal();
     }
 
     function applyCustomFrame(frameUrl) {
@@ -480,14 +480,6 @@
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     
-    function selectCustomFrame(frameUrl) {
-      customFrameUrl = frameUrl;
-      localStorage.setItem("greedy_custom_frame", frameUrl);
-      localStorage.removeItem("greedy_frame");
-      applyCustomFrame(frameUrl);
-      closeFrameModal();
-    }
-
     function previewAvatar(event) {
       let file = event.target.files[0];
       if (file) {
