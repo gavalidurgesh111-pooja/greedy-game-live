@@ -9,8 +9,8 @@
     body { background: #000; display: flex; justify-content: center; color: #333; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
     
-    /* Cover Slider Area (1080x1080 Square Format Aspect Ratio) */
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
+    /* Cover Slider Area (6 Pages) */
+    .cover-slider-container { width: 100%; height: 210px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
@@ -198,7 +198,7 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* 1080x1080 स्क्वायर क्रॉप बॉक्स */
+    /* 1080x1080 अनुपात वाला चौकोर फिक्सड क्रॉप बॉक्स */
     .crop-frame-box {
       width: 340px;
       height: 340px;
@@ -362,7 +362,7 @@
       </div>
     </div>
 
-    <!-- 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन -->
+    <!-- 1080x1080 क्रॉप / एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div style="width:100%; height:40px;"></div>
       <div class="editor-canvas-area" id="editorCanvasArea">
