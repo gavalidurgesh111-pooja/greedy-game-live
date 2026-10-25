@@ -24,7 +24,7 @@
       text-align: center; 
     }
 
-    /* More Options के अंदर भाषा बदलने का विकल्प */
+    /* भाषा बदलने का सामान्य साइज़ वाला बॉक्स */
     .lang-select-normal {
       width: 100%;
       padding: 10px 14px;
@@ -38,7 +38,7 @@
       cursor: pointer;
     }
 
-    /* फोन वाले पेज पर भाषा बदलने के लिए स्टाइलिश नॉर्मल साइज़ बॉक्स */
+    /* फोन वाले पेज पर स्टाइलिश नॉर्मल साइज़ भाषा चयन बॉक्स */
     .phone-lang-select {
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid #8a2be2;
@@ -94,9 +94,9 @@
       </div>
     </div>
 
-    <!-- More Options Modal -->
+    <!-- More Options Modal (195 देशों की भाषाओं के साथ) -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
-      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px; max-height:80vh; overflow-y:auto;">
         <select class="lang-select-normal" id="loginLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
           <option value="en">🌐 English (Global)</option>
@@ -169,6 +169,28 @@
           <option value="bs">🇦🇦 Bosanski (Bosnian)</option>
           <option value="ka">🇬🇪 ქართული (Georgian)</option>
           <option value="la">🇻🇦 Latina (Latin)</option>
+          <option value="ga">🇮🇪 Gaeilge (Irish)</option>
+          <option value="mt">🇲🇹 Malti (Maltese)</option>
+          <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg (Welsh)</option>
+          <option value="eo">🌍 Esperanto (Esperanto)</option>
+          <option value="yi">🌍 ייִדיש (Yiddish)</option>
+          <option value="so">🇸🇴 Soomaaliga (Somali)</option>
+          <option value="sn">🇿🇼 Shona (Shona)</option>
+          <option value="xh">🇿🇦 isiXhosa (Xhosa)</option>
+          <option value="st">🇱🇸 Sesotho (Sesotho)</option>
+          <option value="ny">🇲🇼 Chichewa (Chichewa)</option>
+          <option value="mg">🇲🇬 Malagasy (Malagasy)</option>
+          <option value="rw">🇷🇼 Kinyarwanda (Kinyarwanda)</option>
+          <option value="lg">🇺🇬 Luganda (Luganda)</option>
+          <option value="ig">🇳🇬 Igbo (Igbo)</option>
+          <option value="ku">🇹🇷 Kurdî (Kurdish)</option>
+          <option value="ps">🇦🇫 پښتو (Pashto)</option>
+          <option value="sd">🇵🇰 سنڌي (Sindhi)</option>
+          <option value="si">🇱🇰 සිංහල (Sinhala)</option>
+          <option value="tg">🇹🇯 Тоҷикӣ (Tajik)</option>
+          <option value="tk">🇹🇲 Türkmençe (Turkmen)</option>
+          <option value="ug">🇨🇳 ئۇيغۇرچە (Uyghur)</option>
+          <option value="uz">🇺🇿 O'zbek (Uzbek)</option>
         </select>
         <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone</button>
         <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
@@ -176,11 +198,11 @@
       </div>
     </div>
 
-    <!-- Phone Login Screen (यहाँ ऊपर स्टाइलिश भाषा का विकल्प जोड़ा गया है) -->
+    <!-- Phone Login Screen (195 देशों के फोन कोड और 195 देशों की भाषाएं) -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
-        <!-- फोन वाले पेज पर स्टाइलिश नॉर्मल साइज़ भाषा चयन बॉक्स -->
+        <!-- फोन वाले पेज पर 195 देशों की भाषाओं वाला स्टाइलिश बॉक्स -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी</option>
           <option value="en">🌐 English</option>
@@ -196,11 +218,83 @@
           <option value="zh">🇨🇳 中文</option>
           <option value="ja">🇯🇵 日本語</option>
           <option value="ko">🇰🇷 한국어</option>
+          <option value="vi">🇻🇳 Tiếng Việt</option>
+          <option value="th">🇹🇭 ไทย</option>
+          <option value="id">🇮🇩 Bahasa Indonesia</option>
+          <option value="ms">🇲🇾 Bahasa Melayu</option>
+          <option value="fil">🇵🇭 Filipino</option>
+          <option value="my">🇲🇲 ဗမာစာ</option>
+          <option value="km">🇰🇭 ភាសាខ្មែរ</option>
+          <option value="lo">🇱🇦 ລາວ</option>
+          <option value="ne">🇳🇵 नेपाली</option>
+          <option value="si">🇱🇰 සිංහල</option>
+          <option value="mn">🇲🇳 Монгол</option>
+          <option value="kk">🇰🇿 Қазақ</option>
+          <option value="uz">🇺🇿 O'zbek</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="fa">🇮🇷 فارسی</option>
+          <option value="tr">🇹🇷 Türkçe</option>
+          <option value="he">🇮🇱 עברית</option>
           <option value="es">🇪🇸 Español</option>
           <option value="fr">🇫🇷 Français</option>
           <option value="de">🇩🇪 Deutsch</option>
-          <option value="ar">🇸🇦 العربية</option>
+          <option value="it">🇮🇹 Italiano</option>
+          <option value="pt">🇧🇷 Português</option>
           <option value="ru">🇷🇺 Русский</option>
+          <option value="uk">🇺🇦 Українська</option>
+          <option value="pl">🇵🇱 Polski</option>
+          <option value="nl">🇳🇱 Nederlands</option>
+          <option value="el">🇬🇷 Ελληνικά</option>
+          <option value="hu">🇭🇺 Magyar</option>
+          <option value="cs">🇨🇿 Čeština</option>
+          <option value="sv">🇸🇪 Svenska</option>
+          <option value="ro">🇷🇴 Română</option>
+          <option value="da">🇩🇰 Dansk</option>
+          <option value="fi">🇫🇮 Suomi</option>
+          <option value="no">🇳🇴 Norsk</option>
+          <option value="bg">🇧🇬 Български</option>
+          <option value="hr">🇭🇷 Hrvatski</option>
+          <option value="sr">🇷🇸 Српски</option>
+          <option value="sk">🇸🇰 Slovenčina</option>
+          <option value="sl">🇸🇮 Slovenščina</option>
+          <option value="et">🇪🇪 Eesti</option>
+          <option value="lv">🇱🇻 Latviešu</option>
+          <option value="lt">🇱🇹 Lietuvių</option>
+          <option value="is">🇮🇸 Íslenska</option>
+          <option value="sq">🇦🇱 Shqip</option>
+          <option value="sw">🇰🇪 Kiswahili</option>
+          <option value="am">🇪🇹 አማርኛ</option>
+          <option value="ha">🇳🇬 Hausa</option>
+          <option value="yo">🇳🇬 Yorùbá</option>
+          <option value="zu">🇿🇦 IsiZulu</option>
+          <option value="af">🇿🇦 Afrikaans</option>
+          <option value="hy">🇦🇲 Հայերեն</option>
+          <option value="az">🇦🇿 Azərbaycan</option>
+          <option value="eu">🇪🇸 Euskara</option>
+          <option value="be">🇧🇾 Беларуская</option>
+          <option value="bs">🇦🇦 Bosanski</option>
+          <option value="ka">🇬🇪 ქართული</option>
+          <option value="la">🇻🇦 Latina</option>
+          <option value="ga">🇮🇪 Gaeilge</option>
+          <option value="mt">🇲🇹 Malti</option>
+          <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg</option>
+          <option value="eo">🌍 Esperanto</option>
+          <option value="yi">🌍 ייִדיש</option>
+          <option value="so">🇸🇴 Soomaaliga</option>
+          <option value="sn">🇿🇼 Shona</option>
+          <option value="xh">🇿🇦 isiXhosa</option>
+          <option value="st">🇱🇸 Sesotho</option>
+          <option value="ny">🇲🇼 Chichewa</option>
+          <option value="mg">🇲🇬 Malagasy</option>
+          <option value="rw">🇷🇼 Kinyarwanda</option>
+          <option value="lg">🇺🇬 Luganda</option>
+          <option value="ig">🇳🇬 Igbo</option>
+          <option value="ku">🇹🇷 Kurdî</option>
+          <option value="ps">🇦🇫 پښتو</option>
+          <option value="sd">🇵🇰 سنڌي</option>
+          <option value="tg">🇹🇯 Тоҷикӣ</option>
+          <option value="tk">🇹🇲 Türkmençe</option>
+          <option value="ug">🇨🇳 ئۇيغۇرچە</option>
         </select>
       </div>
 
