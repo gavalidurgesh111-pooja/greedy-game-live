@@ -37,6 +37,7 @@
       background-repeat: no-repeat !important;
       background-position: center !important;
       z-index: 10 !important;
+      display: none; /* डिफ़ॉल्ट रूप से छिपा रहेगा जब तक सेलेक्ट न हो */
     }
 
     /* 4 खास फ्रेम स्टाइल्स */
@@ -107,7 +108,7 @@
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Change Frame & Avatar">
           <img src="https://api.dicebear.com/7.x/bottts/svg?seed=NewUser1" class="avatar-img" id="profAvatarImg">
-          <div class="avatar-frame frame-peacock" id="profAvatarFrame"></div>
+          <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
         <div class="user-name-row">
@@ -226,25 +227,18 @@
       </div>
     </div>
 
-    <!-- FRAME & AVATAR MODAL (फ्रेम के URL यहाँ से हटा दिए गए हैं) -->
+    <!-- FRAME & AVATAR MODAL -->
     <div id="modalFrame" class="modal-overlay">
       <div class="modal-box">
         <h3>🎨 Select Avatar & Frame</h3>
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
          
-        <div class="grid-options">
-          <!-- यहाँ आप बाद में नया फ्रेम 1 जोड़ सकते हैं -->
-          <div class="frame-option" data-frame="">
-            <div style="width: 30px; height: 30px; border-radius: 50%; background: #eee;"></div>
-            <span style="font-size:11px; font-weight:bold;">फ्रेम 1 (नया जोड़ें)</span>
-          </div>
-
-          <!-- यहाँ आप बाद में नया फ्रेम 2 जोड़ सकते हैं -->
-          <div class="frame-option" data-frame="">
-            <div style="width: 30px; height: 30px; border-radius: 50%; background: #eee;"></div>
-            <span style="font-size:11px; font-weight:bold;">फ्रेम 2 (नया जोड़ें)</span>
-          </div>
+        <div class="grid-options" id="frameOptionsGrid">
+          <!-- डायनामिक फ्रेम विकल्प या साफ़ विकल्प -->
         </div>
+
+        <!-- फ्रेम हटाने का बटन -->
+        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame (फ्रेम हटाएं)</button>
 
         <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery):</p>
         <input type="file" id="customAvatarInput" accept="image/*" onchange="previewAvatar(event)" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:12px;">
@@ -299,7 +293,7 @@
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_privacy", "false");
-      localStorage.setItem("greedy_frame", "peacock");
+      localStorage.setItem("greedy_frame", "none"); // डिफ़ॉल्ट रूप से कोई फ्रेम नहीं
       localStorage.setItem("greedy_avatar", "https://api.dicebear.com/7.x/bottts/svg?seed=NewUser1");
       localStorage.setItem("greedy_cover", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80");
     }
@@ -310,7 +304,7 @@
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
-    let currentFrame = localStorage.getItem("greedy_frame") || "peacock";
+    let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "https://api.dicebear.com/7.x/bottts/svg?seed=NewUser1";
     let currentCover = localStorage.getItem("greedy_cover") || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80";
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
@@ -325,10 +319,17 @@
       document.getElementById("profAvatarImg").src = currentAvatar;
       document.getElementById("profCoverDiv").style.background = `url('${currentCover}') center/cover`;
       
-      if (customFrameUrl) {
-        applyCustomFrame(customFrameUrl);
+      const frameEl = document.getElementById("profAvatarFrame");
+
+      if (currentFrame === "none" && !customFrameUrl) {
+        frameEl.style.display = "none"; // फ्रेम पूरी तरह छिपा रहेगा
       } else {
-        applyFrameClass(currentFrame);
+        frameEl.style.display = "block";
+        if (customFrameUrl) {
+          applyCustomFrame(customFrameUrl);
+        } else {
+          applyFrameClass(currentFrame);
+        }
       }
       updatePrivacyHeart();
     }
@@ -336,16 +337,20 @@
     function applyFrameClass(frameName) {
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
+      frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
-      if(frameName === 'peacock') frameEl.classList.add('frame-peacock');
-      else if(frameName === 'lion') frameEl.classList.add('frame-lion');
-      else if(frameName === 'star') frameEl.classList.add('frame-star');
-      else if(frameName === 'sun') frameEl.classList.add('frame-sun');
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun'].forEach(cls => frameEl.classList.remove(cls));
+      if(frameName !== 'none') {
+        frameEl.classList.add('frame-' + frameName);
+      } else {
+        frameEl.style.display = "none";
+      }
     }
 
     function applyCustomFrame(frameUrl) {
       const targetFrame = document.getElementById("profAvatarFrame");
       if (targetFrame) {
+        targetFrame.style.display = "block";
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
         targetFrame.style.backgroundSize = "100% 100%";
@@ -354,6 +359,15 @@
         targetFrame.style.border = "none";
         targetFrame.style.borderRadius = "50%";
       }
+    }
+
+    function removeFrame() {
+      currentFrame = "none";
+      customFrameUrl = "";
+      localStorage.setItem("greedy_frame", "none");
+      localStorage.removeItem("greedy_custom_frame");
+      document.getElementById("profAvatarFrame").style.display = "none";
+      closeFrameModal();
     }
 
     function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
@@ -463,18 +477,6 @@
         </div>
       `;
     }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      const frameOptions = document.querySelectorAll('.frame-option');
-      frameOptions.forEach(function(option) {
-        option.addEventListener('click', function() {
-          let frameUrl = this.getAttribute('data-frame');
-          if (frameUrl) {
-            selectCustomFrame(frameUrl);
-          }
-        });
-      });
-    });
 
     window.onload = () => { initProfile(); };
   </script>
