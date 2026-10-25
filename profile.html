@@ -18,22 +18,20 @@
 
     /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
-    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; }
+    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #fff; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; overflow: hidden; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
     
-    /* अवतार फ्रेम को एकदम सही बॉर्डर पर फिट करने के लिए स्टाइल */
+    /* अवतार फ्रेम को एकदम सही गोल बॉर्डर पर फिट करने के लिए स्टाइल */
     .avatar-frame {
       position: absolute !important;
-      top: -5px !important;
-      left: -5px !important;
-      right: -5px !important;
-      bottom: -5px !important;
-      width: calc(100% + 10px) !important;
-      height: calc(100% + 10px) !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
       border-radius: 50% !important;
       pointer-events: none !important;
       box-sizing: border-box !important;
-      background-size: 100% 100% !important;
+      background-size: cover !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
       z-index: 10 !important;
@@ -346,7 +344,7 @@
       if (targetFrame) {
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
-        targetFrame.style.backgroundSize = "100% 100%";
+        targetFrame.style.backgroundSize = "cover";
         targetFrame.style.backgroundPosition = "center";
         targetFrame.style.backgroundRepeat = "no-repeat";
         targetFrame.style.border = "none";
