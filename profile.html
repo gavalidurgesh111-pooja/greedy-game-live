@@ -454,11 +454,14 @@
         <h3>🎨 Select Avatar & Frame</h3>
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
          
-        <div class="grid-options" id="frameOptionsGrid">
+       <div class="grid-options" id="frameOptionsGrid">
           <div class="grid-item" onclick="applyFrameClass('peacock')">Peacock Frame</div>
           <div class="grid-item" onclick="applyFrameClass('lion')">Lion Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('star')">Star Frame</div>
+          <div class="grid-item" onclick="applyFieldClass('star')">Star Frame</div>
           <div class="grid-item" onclick="applyFrameClass('sun')">Sun Frame</div>
+          <!-- नई फ्रेम्स यहाँ जोड़ें -->
+          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
         </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
@@ -829,9 +832,18 @@
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun'].forEach(cls => frameEl.classList.remove(cls));
+      
+      // पुरानी सारी क्लासेज हटाएँ
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2'].forEach(cls => frameEl.classList.remove(cls));
+      
       if(frameName !== 'none') {
-        frameEl.classList.add('frame-' + frameName);
+        if(frameName === 'custom1') {
+          frameEl.classList.add('frame-custom1');
+        } else if(frameName === 'custom2') {
+          frameEl.classList.add('frame-custom2');
+        } else {
+          frameEl.classList.add('frame-' + frameName);
+        }
       } else {
         frameEl.style.display = "none";
       }
