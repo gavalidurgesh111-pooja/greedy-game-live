@@ -62,8 +62,11 @@
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
-    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 95%; max-width: 380px; max-height: 80vh; overflow-y: auto; }
-    .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92% !important; max-width: 380px !important; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
+    .grid-options { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; margin-top: 15px; width: 100% !important; }
+    .frame-option { display: flex !important; align-items: center !important; gap: 8px !important; padding: 8px !important; border: 1px solid #ddd !important; border-radius: 8px !important; cursor: pointer !important; background: #fafafa !important; width: 100% !important; }
+
+    
     .grid-item { border: 2px solid #ddd; border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; font-size: 13px; font-weight: bold; }
     .grid-item:hover { border-color: #1e3c72; background: #f0f4ff; }
   </style>
