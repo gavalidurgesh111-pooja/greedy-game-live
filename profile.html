@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* फुल स्क्रीन फोटो एडिटर और एडजस्टमेंट बॉक्स */
+    /* पहली फोटो जैसा क्रॉप / एडिटर स्क्रीन (बॉक्स फिक्स और फोटो बाहर जा सकेगी) */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -198,23 +198,26 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* बीच का फिक्सड क्रॉप/एडजस्टमेंट बॉक्स (तस्वीर जैसा) */
+    /* फिक्सड क्रॉप बॉक्स (पहली फोटो की तरह) */
     .crop-frame-box {
-      width: 340px;
-      height: 420px;
-      border: 1.5px solid rgba(255, 255, 255, 0.7);
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
-      position: relative;
-      overflow: hidden;
+      width: 100%;
+      height: 210px;
+      border: 1.5px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82);
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      z-index: 10;
+    }
+    /* फोटो जो बॉक्स के बाहर भी जा सकेगी और ड्रैग होगी */
+    #editorImagePreview {
+      position: absolute;
       cursor: grab;
+      user-select: none;
       z-index: 5;
     }
-    .crop-frame-box:active { cursor: grabbing; }
-    .crop-frame-box img {
-      position: absolute;
-      user-select: none;
-      pointer-events: none;
-    }
+    #editorImagePreview:active { cursor: grabbing; }
 
     .editor-bottom-bar {
       width: 100%;
@@ -361,15 +364,14 @@
       </div>
     </div>
 
-    <!-- क्रॉप / एडिटर स्क्रीन (फुल स्क्रीन फोटो और बीच का बॉक्स) -->
+    <!-- क्रॉप / एडिटर स्क्रीन (पहली फोटो जैसा फ्री ड्रैग इंटरफेस) -->
     <div id="screenPhotoEditor">
-      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff; z-index:20;">
+      <div style="width:100%; padding:10px 20px; display:flex; justify-content:space-between; align-items:center; color:#fff; z-index:25;">
         <span style="font-weight:bold;">Edit Photo</span>
       </div>
       <div class="editor-canvas-area" id="editorCanvasArea">
-        <div class="crop-frame-box" id="cropFrameBox">
-          <img id="editorImagePreview" src="" alt="Preview">
-        </div>
+        <img id="editorImagePreview" src="" alt="Preview">
+        <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
         <button class="editor-btn-small btn-cancel-edit" onclick="cancelEditor()">✖️</button>
@@ -704,13 +706,13 @@
             let preview = document.getElementById("editorImagePreview");
             preview.src = rawImageObj.src;
             
-            // फोटो अपनी फुल साइज में खुलेगी, यूज़र बॉक्स के अंदर एडजस्ट कर सकेगा
-            imgScale = Math.max(340 / rawImageObj.width, 420 / rawImageObj.height);
+            // फोटो अपनी फुल साइज में स्क्रीन पर खुलेगी (पहली फोटो की तरह)
+            imgScale = Math.max(480 / rawImageObj.width, 210 / rawImageObj.height);
             preview.style.width = (rawImageObj.width * imgScale) + "px";
             preview.style.height = (rawImageObj.height * imgScale) + "px";
             
-            imgX = (340 - (rawImageObj.width * imgScale)) / 2;
-            imgY = (420 - (rawImageObj.height * imgScale)) / 2;
+            imgX = (480 - (rawImageObj.width * imgScale)) / 2;
+            imgY = (window.innerHeight - (rawImageObj.height * imgScale)) / 2;
             preview.style.left = imgX + "px";
             preview.style.top = imgY + "px";
 
@@ -722,11 +724,11 @@
       }
     }
 
-    // उंगली से फोटो को ऊपर-नीचे और दाएं-बाएं ड्रैग करने का लॉजिक
-    const cropBox = document.getElementById("cropFrameBox");
-    if(cropBox) {
-      cropBox.addEventListener('mousedown', startImgDrag);
-      cropBox.addEventListener('touchstart', startImgDrag);
+    // फोटो को उंगली से ऊपर-नीचे और दाएं-बाएं ड्रैग करने का लॉजिक (बॉक्स फिक्स रहेगा)
+    const editorArea = document.getElementById("editorCanvasArea");
+    if(editorArea) {
+      editorArea.addEventListener('mousedown', startImgDrag);
+      editorArea.addEventListener('touchstart', startImgDrag);
       window.addEventListener('mousemove', onImgDrag);
       window.addEventListener('touchmove', onImgDrag);
       window.addEventListener('mouseup', endImgDrag);
@@ -770,24 +772,27 @@
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन: सेव होते ही फोटो सेव होकर सीधे प्रोफाइल फोटो पेज (9-ग्रिड) पर आ जाएगा
+    // ✔️ बटन: फिक्सड बॉक्स के अंदर की फोटो को क्रॉप करके सेव करेगा और सीधे 9-ग्रिड पेज पर लाएगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
-        canvas.width = 340;
-        canvas.height = 420;
+        canvas.width = 480;
+        canvas.height = 210;
         let ctx = canvas.getContext("2d");
 
         let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
 
-        let sX = (-imgX / renderedWidth) * rawImageObj.width;
-        let sY = (-imgY / renderedHeight) * rawImageObj.height;
-        let sW = (340 / renderedWidth) * rawImageObj.width;
-        let sH = (420 / renderedHeight) * rawImageObj.height;
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        let previewRect = preview.getBoundingClientRect();
 
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 340, 420);
+        let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
+        let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
+        let sW = (box.width / renderedWidth) * rawImageObj.width;
+        let sH = (box.height / renderedHeight) * rawImageObj.height;
+
+        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 480, 210);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
         localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
