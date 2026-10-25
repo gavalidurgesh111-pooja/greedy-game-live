@@ -11,7 +11,7 @@
       background-size: cover;
     }
 
-    /* 'GOLD COIN' नाम की स्टाइलिश और आकर्षक डिज़ाइन */
+    /* Gold Coin नाम की आकर्षक और शानदार डिज़ाइन */
     .brand-title { 
       font-size: 48px; 
       font-weight: 900; 
@@ -20,11 +20,11 @@
       -webkit-text-fill-color: transparent;
       letter-spacing: 1.5px; 
       text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
-      margin-top: 20px; 
+      margin-top: 40px; 
       text-align: center; 
     }
 
-    /* More Options के अंदर भाषा चयन बॉक्स के लिए सामान्य डिज़ाइन */
+    /* More Options के अंदर भाषा बदलने का विकल्प */
     .lang-select-normal {
       width: 100%;
       padding: 10px 14px;
@@ -38,6 +38,20 @@
       cursor: pointer;
     }
 
+    /* फोन वाले पेज पर भाषा बदलने के लिए स्टाइलिश नॉर्मल साइज़ बॉक्स */
+    .phone-lang-select {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid #8a2be2;
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      outline: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(138, 43, 226, 0.2);
+    }
+
     .policy-page { display: none; position: fixed; inset: 0; z-index: 9999; background: #ffffff; flex-direction: column; padding: 20px; color: #222; overflow-y: auto; text-align: left; }
     .policy-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
     .policy-header h2 { font-size: 22px; font-weight: 900; color: #1e3c72; }
@@ -46,13 +60,11 @@
     .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
     .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; background: none; border: none; font-weight: bold; }
     
-    /* शुरू में बटन धुंधला और बंद रहेगा */
     #submitBtn {
       opacity: 0.4;
       pointer-events: none;
-      transition: 0.3s 
+      transition: 0.3s;
     }
-    /* नंबर डालते ही बटन पूरी तरह चालू और चमकीला हो जाएगा */
     #submitBtn.active {
       opacity: 1;
       pointer-events: auto;
@@ -66,7 +78,6 @@
   <div id="authFlowContainer">
     <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
-      <!-- स्टाइलिश गोल्ड कॉइन नाम -->
       <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
       <div class="auth-bottom-panel">
@@ -83,11 +94,9 @@
       </div>
     </div>
 
-    <!-- More Options Modal (भाषा का विकल्प और लॉगिन के अन्य विकल्प यहाँ हैं) -->
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        
-        <!-- भाषा बदलने का सामान्य साइज़ वाला विकल्प -->
         <select class="lang-select-normal" id="loginLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
           <option value="en">🌐 English (Global)</option>
@@ -161,35 +170,44 @@
           <option value="ka">🇬🇪 ქართული (Georgian)</option>
           <option value="la">🇻🇦 Latina (Latin)</option>
         </select>
-
         <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone</button>
         <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
         <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
       </div>
     </div>
 
-    <!-- Phone Login Screen (195 देशों के फोन कोड) -->
-    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative;">
-      <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
+    <!-- Phone Login Screen (यहाँ ऊपर स्टाइलिश भाषा का विकल्प जोड़ा गया है) -->
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        <!-- फोन वाले पेज पर स्टाइलिश नॉर्मल साइज़ भाषा चयन बॉक्स -->
+        <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
+          <option value="hi" selected>🇮🇳 हिंदी</option>
+          <option value="en">🌐 English</option>
+          <option value="mr">🇮🇳 मराठी</option>
+          <option value="gu">🇮🇳 ગુજરાતી</option>
+          <option value="bn">🇧🇩 বাংলা</option>
+          <option value="ta">🇮🇳 தமிழ்</option>
+          <option value="te">🇮🇳 తెలుగు</option>
+          <option value="kn">🇮🇳 ಕನ್ನಡ</option>
+          <option value="ml">🇮🇳 മലയാളം</option>
+          <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+          <option value="ur">🇵🇰 اردو</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="ko">🇰🇷 한국어</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="ru">🇷🇺 Русский</option>
+        </select>
+      </div>
+
       <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Register / log in</div>
       <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:8px 12px;">
         <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:130px; outline:none; cursor:pointer;">
           <option value="+91">🇮🇳 (+91) India</option>
-          <option value="+1">🇺🇸/🇨🇦 (+1) USA/Canada</option>
-          <option value="+44">🇬🇧 (+44) UK</option>
-          <option value="+61">🇦🇺 (+61) Australia</option>
-          <option value="+81">🇯🇵 (+81) Japan</option>
-          <option value="+86">🇨🇳 (+86) China</option>
-          <option value="+49">🇩🇪 (+49) Germany</option>
-          <option value="+33">🇫🇷 (+33) France</option>
-          <option value="+7">🇷🇺 (+7) Russia</option>
-          <option value="+55">🇧🇷 (+55) Brazil</option>
-          <option value="+971">🇦🇪 (+971) UAE</option>
-          <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
-          <option value="+92">🇵🇰 (+92) Pakistan</option>
-          <option value="+880">🇧🇩 (+880) Bangladesh</option>
-          <option value="+94">🇱🇰 (+94) Sri Lanka</option>
-          <option value="+977">🇳🇵 (+977) Nepal</option>
           <option value="+93">🇦🇫 (+93) Afghanistan</option>
           <option value="+355">🇦🇱 (+355) Albania</option>
           <option value="+213">🇩🇿 (+213) Algeria</option>
@@ -197,9 +215,12 @@
           <option value="+244">🇦🇴 (+244) Angola</option>
           <option value="+54">🇦🇷 (+54) Argentina</option>
           <option value="+374">🇦🇲 (+374) Armenia</option>
+          <option value="+61">🇦🇺 (+61) Australia</option>
           <option value="+43">🇦🇹 (+43) Austria</option>
           <option value="+994">🇦🇿 (+994) Azerbaijan</option>
           <option value="+973">🇧🇭 (+973) Bahrain</option>
+          <option value="+880">🇧🇩 (+880) Bangladesh</option>
+          <option value="+375">🇧🇾 (+375) Belarus</option>
           <option value="+32">🇧🇪 (+32) Belgium</option>
           <option value="+501">🇧🇿 (+501) Belize</option>
           <option value="+229">🇧🇯 (+229) Benin</option>
@@ -207,15 +228,19 @@
           <option value="+591">🇧🇴 (+591) Bolivia</option>
           <option value="+387">🇧🇦 (+387) Bosnia</option>
           <option value="+267">🇧🇼 (+267) Botswana</option>
+          <option value="+55">🇧🇷 (+55) Brazil</option>
+          <option value="+673">🇧🇳 (+673) Brunei</option>
           <option value="+359">🇧🇬 (+359) Bulgaria</option>
           <option value="+226">🇧🇫 (+226) Burkina Faso</option>
           <option value="+257">🇧🇮 (+257) Burundi</option>
           <option value="+855">🇰🇭 (+855) Cambodia</option>
           <option value="+237">🇨🇲 (+237) Cameroon</option>
+          <option value="+1">🇨🇦 (+1) Canada</option>
           <option value="+238">🇨🇻 (+238) Cape Verde</option>
           <option value="+236">🇨🇫 (+236) Central African Rep</option>
           <option value="+235">🇹🇩 (+235) Chad</option>
           <option value="+56">🇨🇱 (+56) Chile</option>
+          <option value="+86">🇨🇳 (+86) China</option>
           <option value="+57">🇨🇴 (+57) Colombia</option>
           <option value="+269">🇰🇲 (+269) Comoros</option>
           <option value="+242">🇨🇬 (+242) Congo</option>
@@ -237,9 +262,11 @@
           <option value="+251">🇪🇹 (+251) Ethiopia</option>
           <option value="+679">🇫🇯 (+679) Fiji</option>
           <option value="+358">🇫🇮 (+358) Finland</option>
+          <option value="+33">🇫🇷 (+33) France</option>
           <option value="+241">🇬🇦 (+241) Gabon</option>
           <option value="+220">🇬🇲 (+220) Gambia</option>
           <option value="+995">🇬🇪 (+995) Georgia</option>
+          <option value="+49">🇩🇪 (+49) Germany</option>
           <option value="+233">🇬🇭 (+233) Ghana</option>
           <option value="+30">🇬🇷 (+30) Greece</option>
           <option value="+502">🇬🇹 (+502) Guatemala</option>
@@ -258,6 +285,7 @@
           <option value="+972">🇮🇱 (+972) Israel</option>
           <option value="+39">🇮🇹 (+39) Italy</option>
           <option value="+1876">🇯🇲 (+1876) Jamaica</option>
+          <option value="+81">🇯🇵 (+81) Japan</option>
           <option value="+962">🇯🇴 (+962) Jordan</option>
           <option value="+7">🇰🇿 (+7) Kazakhstan</option>
           <option value="+254">🇰🇪 (+254) Kenya</option>
@@ -297,6 +325,7 @@
           <option value="+95">🇲🇲 (+95) Myanmar</option>
           <option value="+264">🇳🇦 (+264) Namibia</option>
           <option value="+674">🇳🇷 (+674) Nauru</option>
+          <option value="+977">🇳🇵 (+977) Nepal</option>
           <option value="+31">🇳🇱 (+31) Netherlands</option>
           <option value="+64">🇳🇿 (+64) New Zealand</option>
           <option value="+505">🇳🇮 (+505) Nicaragua</option>
@@ -304,6 +333,7 @@
           <option value="+234">🇳🇬 (+234) Nigeria</option>
           <option value="+47">🇳🇴 (+47) Norway</option>
           <option value="+968">🇴🇲 (+968) Oman</option>
+          <option value="+92">🇵🇰 (+92) Pakistan</option>
           <option value="+680">🇵🇼 (+680) Palau</option>
           <option value="+507">🇵🇦 (+507) Panama</option>
           <option value="+675">🇵🇬 (+675) Papua New Guinea</option>
@@ -314,10 +344,12 @@
           <option value="+351">🇵🇹 (+351) Portugal</option>
           <option value="+974">🇶🇦 (+974) Qatar</option>
           <option value="+40">🇷🇴 (+40) Romania</option>
+          <option value="+7">🇷🇺 (+7) Russia</option>
           <option value="+250">🇷🇼 (+250) Rwanda</option>
           <option value="+685">🇼🇸 (+685) Samoa</option>
           <option value="+378">🇸🇲 (+378) San Marino</option>
           <option value="+239">🇸🇹 (+239) Sao Tome</option>
+          <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
           <option value="+221">🇸🇳 (+221) Senegal</option>
           <option value="+381">🇷🇸 (+381) Serbia</option>
           <option value="+248">🇸🇨 (+248) Seychelles</option>
@@ -351,6 +383,9 @@
           <option value="+688">🇹🇻 (+688) Tuvalu</option>
           <option value="+256">🇺🇬 (+256) Uganda</option>
           <option value="+380">🇺🇦 (+380) Ukraine</option>
+          <option value="+971">🇦🇪 (+971) UAE</option>
+          <option value="+44">🇬🇧 (+44) UK</option>
+          <option value="+1">🇺🇸 (+1) USA</option>
           <option value="+598">🇺🇾 (+598) Uruguay</option>
           <option value="+998">🇺🇿 (+998) Uzbekistan</option>
           <option value="+678">🇻🇺 (+678) Vanuatu</option>
@@ -420,7 +455,7 @@
     }
     function selectEmailOption() {
       closeMoreOptionsSheet();
-      alert("Email login option login coming soon!");
+      alert("Email login option coming soon!");
     }
     function socialLoginNotice(provider) {
       alert(provider + " login selected. Please use More Options for phone login.");
