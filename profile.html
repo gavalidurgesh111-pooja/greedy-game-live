@@ -10,11 +10,13 @@
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
     
     /* Cover & Top Bar */
-    .profile-cover { width: 100%; height: 210px; background: #111 url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80') center/cover; position: relative; }
+    .profile-cover { width: 100%; height: 210px; background: #111 center/cover; position: relative; display: flex; align-items: flex-end; justify-content: flex-end; padding: 15px; }
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; }
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
-    .cover-edit-badge { position: absolute; bottom: 10px; right: 15px; background: rgba(0,0,0,0.6); color: #fff; padding: 4px 10px; border-radius: 12px; font-size: 11px; cursor: pointer; }
+    
+    /* कवर फोटो पर '+' आइकॉन */
+    .cover-plus-btn { background: rgba(0,0,0,0.6); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; cursor: pointer; border: 1.5px solid #fff; }
 
     /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -45px; position: relative; z-index: 2; }
@@ -85,9 +87,6 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .frame-option { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #fafafa; width: 100%; }
     .frame-option:hover { border-color: #1e3c72; background: #f0f4ff; }
-
-    .grid-item { border: 2px solid #ddd; border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; font-size: 13px; font-weight: bold; }
-    .grid-item:hover { border-color: #1e3c72; background: #f0f4ff; }
   </style>
 </head>
 <body>
@@ -102,13 +101,15 @@
           <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
           <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
         </div>
-        <div class="cover-edit-badge" onclick="openCoverModal()">📷 Change Cover (6 Photos)</div>
+        <!-- कवर फोटो लगाने के लिए '+' बटन -->
+        <div class="cover-plus-btn" onclick="document.getElementById('customCoverInput').click()" title="Change Cover Photo">+</div>
+        <input type="file" id="customCoverInput" accept="image/*" onchange="previewCover(event)" style="display:none;">
       </div>
       
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Change Frame & Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
-          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:2;">+</div>
+          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
@@ -234,32 +235,18 @@
         <h3>🎨 Select Avatar & Frame</h3>
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
          
-        <div class="grid-options" id="frameOptionsGrid">
-          <!-- डायनामिक फ्रेम विकल्प या साफ़ विकल्प -->
-        </div>
+        <div class="grid-options" id="frameOptionsGrid"></div>
 
         <!-- फ्रेम हटाने का बटन -->
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame (फ्रेम हटाएं)</button>
 
         <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery):</p>
         <input type="file" id="customAvatarInput" accept="image/*" onchange="previewAvatar(event)" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:12px;">
-        <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
-      </div>
-    </div>
+        
+        <!-- प्रोफाइल फोटो हटाने का बटन -->
+        <button onclick="removeAvatarPhoto()" style="width:100%; margin-top:8px; padding:8px; background:#d9534f; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🗑️ Remove Profile Photo (प्रोफाइल फोटो हटाएं)</button>
 
-    <!-- COVER PHOTO MODAL (6 Photos) -->
-    <div id="modalCover" class="modal-overlay">
-      <div class="modal-box">
-        <h3>🖼️ Select Cover Photo (6 Options)</h3>
-        <div class="grid-options">
-          <div class="grid-item" onclick="setCover(1)"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 1</div>
-          <div class="grid-item" onclick="setCover(2)"><img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 2</div>
-          <div class="grid-item" onclick="setCover(3)"><img src="https://images.unsplash.com/photo-1426604966848-d7adacbd02bff?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 3</div>
-          <div class="grid-item" onclick="setCover(4)"><img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 4</div>
-          <div class="grid-item" onclick="setCover(5)"><img src="https://images.unsplash.com/photo-1511497584788-876761197069?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 5</div>
-          <div class="grid-item" onclick="setCover(6)"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300&q=80" style="width:100%; height:50px; object-fit:cover; border-radius:4px;"><br>Photo 6</div>
-        </div>
-        <button onclick="closeCoverModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
+        <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
       </div>
     </div>
 
@@ -295,8 +282,8 @@
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
-      localStorage.setItem("greedy_avatar", ""); // नया यूज़र आते ही अवतार खाली रहेगा
-      localStorage.setItem("greedy_cover", "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80");
+      localStorage.setItem("greedy_avatar", ""); 
+      localStorage.setItem("greedy_cover", ""); 
     }
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
@@ -307,7 +294,7 @@
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let currentCover = localStorage.getItem("greedy_cover") || "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80";
+    let currentCover = localStorage.getItem("greedy_cover") || "";
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
 
     function initProfile() {
@@ -321,8 +308,7 @@
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
 
-      // फोटो होने पर फोटो दिखेगी और '+' आइकॉन पूरी तरह छिप जाएगा
-      if (currentAvatar && currentAvatar.trim() !== "" && currentAvatar !== "null") {
+      if (currentAvatar && currentAvatar.trim() !== "") {
         avatarImg.src = currentAvatar;
         avatarImg.style.display = "block";
         if(plusIcon) plusIcon.style.display = "none";
@@ -331,7 +317,11 @@
         if(plusIcon) plusIcon.style.display = "block";
       }
 
-      document.getElementById("profCoverDiv").style.background = `url('${currentCover}') center/cover`;
+      if (currentCover && currentCover.trim() !== "") {
+        document.getElementById("profCoverDiv").style.background = `url('${currentCover}') center/cover`;
+      } else {
+        document.getElementById("profCoverDiv").style.background = "#111";
+      }
       
       const frameEl = document.getElementById("profAvatarFrame");
 
@@ -384,6 +374,14 @@
       closeFrameModal();
     }
 
+    function removeAvatarPhoto() {
+      currentAvatar = "";
+      localStorage.setItem("greedy_avatar", "");
+      document.getElementById("profAvatarImg").style.display = "none";
+      document.getElementById("avatarPlusIcon").style.display = "block";
+      closeFrameModal();
+    }
+
     function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     
@@ -403,36 +401,27 @@
           let imageUrl = e.target.result;
           currentAvatar = imageUrl;
           localStorage.setItem("greedy_avatar", imageUrl);
-          
-          let avatarImg = document.getElementById("profAvatarImg");
-          let plusIcon = document.getElementById("avatarPlusIcon");
-          
-          avatarImg.src = imageUrl;
-          avatarImg.style.display = "block";
-          if(plusIcon) plusIcon.style.display = "none"; // फोटो अपलोड होते ही '+' आइकॉन छिप जाएगा
-          
+          document.getElementById("profAvatarImg").src = imageUrl;
+          document.getElementById("profAvatarImg").style.display = "block";
+          document.getElementById("avatarPlusIcon").style.display = "none";
           closeFrameModal();
         }
         reader.readAsDataURL(file);
       }
     }
 
-    function openCoverModal() { document.getElementById("modalCover").style.display = "flex"; }
-    function closeCoverModal() { document.getElementById("modalCover").style.display = "none"; }
-
-    function setCover(num) {
-      const covers = [
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&q=80",
-        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&q=80",
-        "https://images.unsplash.com/photo-1426604966848-d7adacbd02bff?w=800&q=80",
-        "https://images.unsplash.com/photo-1454496522488-7a8e488e8606?w=800&q=80",
-        "https://images.unsplash.com/photo-1511497584788-876761197069?w=800&q=80",
-        "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80"
-      ];
-      currentCover = covers[num-1];
-      localStorage.setItem("greedy_cover", currentCover);
-      document.getElementById("profCoverDiv").style.background = `url('${currentCover}') center/cover`;
-      closeCoverModal();
+    function previewCover(event) {
+      let file = event.target.files[0];
+      if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          let imageUrl = e.target.result;
+          currentCover = imageUrl;
+          localStorage.setItem("greedy_cover", imageUrl);
+          document.getElementById("profCoverDiv").style.background = `url('${imageUrl}') center/cover`;
+        }
+        reader.readAsDataURL(file);
+      }
     }
 
     function copyMyId() {
