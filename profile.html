@@ -7,7 +7,7 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
     body { background: #000; display: flex; justify-content: center; color: #333; }
-    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; }
+    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 40px; overflow-x: hidden; }
     
     /* Cover Slider Area (1080x1080 Square Format Aspect Ratio) */
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
@@ -176,7 +176,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन (फिक्सड बॉक्स और फुल साइज़ इमेज ड्रैग) */
+    /* 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन */
     #screenPhotoEditor {
       display: none;
       position: absolute;
@@ -198,7 +198,7 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* 1080x1080 स्क्वायर क्रॉप बॉक्स (जो अपनी जगह फिक्स रहेगा) */
+    /* 1080x1080 अनुपात वाला चौकोर फिक्सड क्रॉप बॉक्स */
     .crop-frame-box {
       width: 340px;
       height: 340px;
@@ -362,7 +362,7 @@
       </div>
     </div>
 
-    <!-- 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ बटन के साथ) -->
+    <!-- 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div style="width:100%; height:40px;"></div>
       <div class="editor-canvas-area" id="editorCanvasArea">
@@ -759,14 +759,12 @@
       isDraggingImg = false;
     }
 
-    // ✖️ बटन: फोटो हटाकर दोबारा गैलरी खोल देगा
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // ✔️ बटन: बॉक्स के अंदर की फोटो को 1080x1080 में क्रॉप करके सेव करेगा और 9-ग्रिड पेज पर लाएगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
