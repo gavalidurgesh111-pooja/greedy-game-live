@@ -182,7 +182,7 @@
       position: absolute;
       inset: 0;
       background: #000;
-      z-index: 150;
+      z-index: 200;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
@@ -198,11 +198,11 @@
       overflow: hidden;
       touch-action: none;
     }
-    /* 1080x1080 अनुपात वाला चौकोर फिक्सड क्रॉप बॉक्स */
+    /* 1080x1080 स्क्वायर क्रॉप बॉक्स */
     .crop-frame-box {
-      width: 340px;
-      height: 340px;
-      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      width: 320px;
+      height: 320px;
+      border: 2px solid rgba(255, 255, 255, 0.95);
       box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
       position: absolute;
       top: 50%;
@@ -219,27 +219,29 @@
     }
     #editorImagePreview:active { cursor: grabbing; }
 
+    /* नीचे के ✖️ और ✔️ बटन अब हमेशा साफ़ और फिक्स दिखेंगे */
     .editor-bottom-bar {
       width: 100%;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      padding: 15px 30px;
-      background: rgba(20,20,20,0.9);
-      z-index: 20;
+      padding: 20px 40px;
+      background: #111;
+      z-index: 300;
+      position: relative;
     }
     .editor-btn-small {
-      width: 42px;
-      height: 42px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       font-weight: bold;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
     }
     .btn-cancel-edit { background: #333; color: #fff; }
     .btn-confirm-edit { background: #00c853; color: #fff; }
@@ -362,9 +364,9 @@
       </div>
     </div>
 
-    <!-- 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन -->
+    <!-- 1080x1080 स्क्वायर क्रॉप / एडिटर स्क्रीन (✖️ और ✔️ बटन के साथ) -->
     <div id="screenPhotoEditor">
-      <div style="width:100%; height:40px;"></div>
+      <div style="width:100%; height:20px;"></div>
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
         <div class="crop-frame-box" id="cropFrameBox"></div>
