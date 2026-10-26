@@ -375,25 +375,34 @@
 
   <script>
     // ==========================================
-    // प्रोफाइल पेज का बैक बटन गार्ड (सिर्फ प्रोफाइल और सेटिंग्स के अंदर रोकने के लिए)
+    // मोबाइल के फिजिकल और स्क्रीन दोनों बैक बटन का पक्का गार्ड
     // ==========================================
-    history.pushState({page: "profile"}, "", window.location.href);
-
+    history.pushState(null, null, window.location.href);
     window.addEventListener('popstate', function (event) {
-      // जब यूज़र बैक बटन दबाएगा, यह उसे बाहर नहीं जाने देगा बल्कि मुख्य प्रोफाइल स्क्रीन पर ले आएगा
-      history.pushState({page: "profile"}, "", window.location.href);
-  
+      // फोन का बैक बटन दबते ही यह उसे तुरंत रोक लेगा और आगे नहीं जाने देगा
+      history.pushState(null, null, window.location.href);
+      
+      // यह सुनिश्चित करेगा कि यूज़र अगर किसी सब-स्क्रीन (जैसे सेटिंग्स या अबाउट) में है, 
+      // तो वह बंद होकर सिर्फ मुख्य प्रोफाइल पर आ जाए, बाहर कभी न जाए
       let settingsPage = document.getElementById("screenSettingsPage");
+      let aboutScreen = document.getElementById("screenAboutMe");
+      let groupsScreen = document.getElementById("screenGroups");
+      let photoGrid = document.getElementById("screenPhotoGrid");
       let profileScreen = document.getElementById("screenProfile");
-  
-      if (settingsPage) settingsPage.style.display = "none";
-      if (profileScreen) {
+      
+      if(settingsPage) settingsPage.style.display = "none";
+      if(aboutScreen) aboutScreen.style.display = "none";
+      if(groupsScreen) groupsScreen.style.display = "none";
+      if(photoGrid) photoGrid.style.display = "none";
+      
+      if(profileScreen) {
         profileScreen.style.display = "block";
         if (typeof initProfile === "function") {
           initProfile();
         }
       }
     });
+
 
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
