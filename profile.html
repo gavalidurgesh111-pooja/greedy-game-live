@@ -374,7 +374,6 @@
   </div>
 
   <script>
-    // सेशन गार्ड: सुनिश्चित करें कि प्रोफाइल पेज पर आने के बाद लॉगिन/रजिस्ट्रेशन स्टेट हमेशा लॉक रहे
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
@@ -506,12 +505,10 @@
     function openPhotoGridScreen() {
       render9Grid();
       document.getElementById("screenPhotoGrid").style.display = "flex";
-      history.replaceState({screen: 'photoGrid'}, "", window.location.href);
     }
     function closePhotoGridScreen() {
       document.getElementById("screenPhotoGrid").style.display = "none";
       initProfile();
-      history.replaceState({screen: 'profile'}, "", window.location.href);
     }
 
     function triggerEditPhoto() {
@@ -613,7 +610,6 @@
           preview.style.top = imgY + "px";
 
           document.getElementById("screenPhotoEditor").style.display = "flex";
-          history.replaceState({screen: 'photoEditor'}, "", window.location.href);
         }
         rawImageObj.src = e.target.result;
       }
@@ -795,13 +791,9 @@
     function openFrameModal() { 
       if (isMyProfile) {
         document.getElementById("modalFrame").style.display = "flex";
-        history.replaceState({screen: 'frameModal'}, "", window.location.href);
       }
     }
-    function closeFrameModal() { 
-      document.getElementById("modalFrame").style.display = "none"; 
-      history.replaceState({screen: 'profile'}, "", window.location.href);
-    }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
@@ -812,7 +804,6 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
-      history.replaceState({screen: 'settings'}, "", window.location.href);
     }
     
     // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
@@ -820,26 +811,18 @@
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
       initProfile();
-      history.replaceState({screen: 'profile'}, "", window.location.href);
     }
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
-      // जब यूज़र लॉग आउट करेगा, तब हम लॉगइन स्टेटस को हटाकर उसे वापस शुरुआती लिंक पर भेज देंगे
+      // जब यूज़र लॉग आउट करेगा, तभी वह वापस शुरुआती इंडेक्स/लॉगिन पेज पर जा सकेगा
       setTimeout(() => {
-        localStorage.removeItem("greedy_initialized"); // या संबंधित सेशन फ्लैग
-        window.location.href = "index.html"; // यहाँ अपनी मुख्य शुरुआती वेबसाइट/लॉगिन लिंक दें
+        window.location.href = "index.html"; 
       }, 800);
     }
 
-    function openAboutMeScreen() { 
-      document.getElementById("screenAboutMe").style.display = "flex";
-      history.replaceState({screen: 'aboutMe'}, "", window.location.href);
-    }
-    function closeAboutMeScreen() { 
-      document.getElementById("screenAboutMe").style.display = "none"; 
-      history.replaceState({screen: 'profile'}, "", window.location.href);
-    }
+    function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
+    function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
     
     function togglePrivacy() {
       if (!isMyProfile) return;
@@ -862,23 +845,11 @@
       }
     }
 
-    function openGroupsScreen() { 
-      document.getElementById("screenGroups").style.display = "flex";
-      history.replaceState({screen: 'groups'}, "", window.location.href);
-    }
-    function closeGroupsScreen() { 
-      document.getElementById("screenGroups").style.display = "none"; 
-      history.replaceState({screen: 'profile'}, "", window.location.href);
-    }
+    function openGroupsScreen() { document.getElementById("screenGroups").style.display = "flex"; }
+    function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
 
-    function openCoinSendModal() { 
-      document.getElementById("modalCoinSend").style.display = "flex";
-      history.replaceState({screen: 'coinSend'}, "", window.location.href);
-    }
-    function closeCoinSendModal() { 
-      document.getElementById("modalCoinSend").style.display = "none"; 
-      history.replaceState({screen: 'profile'}, "", window.location.href);
-    }
+    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
+    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
@@ -892,21 +863,16 @@
       showCustomAlert(`Successfully sent ${amt} coins to ${targetId}!`);
     }
 
-    function openSettingsModal() { 
-      document.getElementById("modalSettings").style.display = "flex";
-      history.replaceState({screen: 'settingsModal'}, "", window.location.href);
-    }
-    function closeSettingsModal() { 
-      document.getElementById("modalSettings").style.display = "none"; 
-      history.replaceState({screen: 'profile'}, "", window.location.href);
-    }
+    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    // अचूक बैक-बटन गार्ड और स्टेट ओवरराइट (ReplaceState Strategy)
+    // सबसे महत्वपूर्ण नियम: profile.html पर बैक बटन का रास्ता पूरी तरह बंद करना
+    // जैसे ही यूज़र इस पेज पर आता है, हम हिस्ट्री में एक लूप बना देते हैं
     window.addEventListener('popstate', function(event) {
-      // यदि यूज़र पीछे जाने की कोशिश करे, तो ब्राउज़र की हिस्ट्री को हमेशा प्रोफाइल या सेटिंग्स पर रीप्रेस कर दें
-      let settingsPageVisible = document.getElementById("screenSettingsPage").style.display === "flex";
+      // यूज़र चाहे जितनी बार बैक दबाए, उसे वापस प्रोफाइल या सेटिंग्स पर ही रोक लो, पीछे नहीं जाने देना है
+      history.pushState({page: "profile_locked"}, "", window.location.href);
       
-      // सभी खुली हुई सब-स्क्रीन और मोडल को बंद करें
+      // कोई भी खुली हुई सब-स्क्रीन या मोडल हो तो उसे बंद करके मुख्य प्रोफाइल पर ले आओ
       document.getElementById("screenPhotoEditor").style.display = "none";
       document.getElementById("screenPhotoGrid").style.display = "none";
       document.getElementById("screenAboutMe").style.display = "none";
@@ -916,24 +882,18 @@
       document.getElementById("modalSettings").style.display = "none";
       document.getElementById("tipsModal").style.display = "none";
       document.getElementById("customAlertModal").style.display = "none";
-
-      if (settingsPageVisible) {
-        document.getElementById("screenSettingsPage").style.display = "none";
-        document.getElementById("screenProfile").style.display = "block";
-        initProfile();
-        history.replaceState({screen: 'profile'}, "", window.location.href);
-      } else {
-        document.getElementById("screenProfile").style.display = "block";
-        document.getElementById("screenSettingsPage").style.display = "none";
-        initProfile();
-        history.replaceState({screen: 'profile'}, "", window.location.href);
-      }
+      
+      // अगर सेटिंग्स खुली थी तो बंद करके प्रोफाइल दिखाओ
+      document.getElementById("screenSettingsPage").style.display = "none";
+      document.getElementById("screenProfile").style.display = "block";
+      initProfile();
     });
 
     window.onload = () => { 
       initProfile(); 
-      // यह कोड पीछे के 'More Options' या 'Register/Login' पेज के रास्ते को हमेशा के लिए ओवरराइट कर देता है
-      history.replaceState({screen: 'profile'}, "", window.location.href);
+      // पेज लोड होते ही हिस्ट्री में स्टेट भर देते हैं ताकि बैक बटन दबाने पर ब्राउज़र पीछे (index.html पर) न जा सके
+      history.pushState({page: "profile_locked"}, "", window.location.href);
+      history.pushState({page: "profile_locked"}, "", window.location.href);
     };
   </script>
 </body>
