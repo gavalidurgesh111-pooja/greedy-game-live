@@ -882,8 +882,11 @@
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // बैक बटन लॉजिक (Profile और Settings के बीच हमेशा लूप बनाए रखेगा)
+    // नेविगेशन और बैक बटन को रोकने व कंट्रोल करने के लिए पुख्ता लॉजिक
     window.addEventListener('popstate', function(event) {
+      // हमेशा एक नई हिस्ट्री जोड़ें ताकि ब्राउज़र कभी भी लॉगिन पेज या बाहर न जा सके
+      history.pushState({screen: 'guard'}, "");
+
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
       let aboutVisible = document.getElementById("screenAboutMe").style.display === "flex";
@@ -906,25 +909,22 @@
       } else {
         let profileDisplay = document.getElementById("screenProfile").style.display;
         if (profileDisplay === "none") {
-          // यदि सेटिंग्स पर हैं, तो प्रोफाइल पर जाएँ
+          // यदि सेटिंग्स पर हैं, तो बैक दबाने पर प्रोफाइल पर जाएँ
           document.getElementById("screenSettingsPage").style.display = "none";
           document.getElementById("screenProfile").style.display = "block";
           initProfile();
-          history.pushState({screen: 'profile'}, "");
         } else {
-          // यदि प्रोफाइल पर हैं, तो सेटिंग्स पर जाएँ
+          // यदि प्रोफाइल पर हैं, तो बैक दबाने पर सेटिंग्स पर जाएँ
           document.getElementById("screenProfile").style.display = "none";
           document.getElementById("screenSettingsPage").style.display = "flex";
-          history.pushState({screen: 'settings'}, "");
         }
       }
     });
 
     window.onload = () => { 
       initProfile(); 
-      history.replaceState({screen: 'profile'}, "");
-      // यह सुनिश्चित करता है कि पेज लोड होते ही बैक स्टेट एक्टिव रहे
-      history.pushState({screen: 'profile_guard'}, "");
+      history.pushState({screen: 'profile'}, "");
+      history.pushState({screen: 'guard'}, "");
     };
   </script>
 </body>
