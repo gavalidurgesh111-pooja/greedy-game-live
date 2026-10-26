@@ -374,10 +374,13 @@
   </div>
 
   <script>
-    // प्रोफाइल पेज का अपना आंतरिक नेविगेशन और बैक बटन कंट्रोल (बिना किसी बाहरी पेज के जिक्र के)
+    // ==========================================
+    // प्रोफाइल पेज का बैक बटन गार्ड (सिर्फ प्रोफाइल और सेटिंग्स के अंदर रोकने के लिए)
+    // ==========================================
     history.pushState({page: "profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
+      // जब यूज़र बैक बटन दबाएगा, यह उसे बाहर नहीं जाने देगा बल्कि मुख्य प्रोफाइल स्क्रीन पर ले आएगा
       history.pushState({page: "profile"}, "", window.location.href);
   
       let settingsPage = document.getElementById("screenSettingsPage");
