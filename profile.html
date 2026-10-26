@@ -149,8 +149,7 @@
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
-      <!-- पेज का बैक बटन भी अब ठीक इसी फंक्शन को कॉल करेगा -->
-      <div class="profile-back-btn" onclick="handleUniversalBack()">❮</div>
+      <div class="profile-back-btn" onclick="openSettingsPage()">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
@@ -197,7 +196,7 @@
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="handleUniversalBack()">Inbox message</button>
+          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
         </div>
       </div>
 
@@ -274,7 +273,7 @@
     <!-- SETTINGS PAGE -->
     <div id="screenSettingsPage" class="sub-screen">
       <div class="sub-header">
-        <div style="cursor:pointer; font-size:20px;" onclick="handleUniversalBack()">❮</div>
+        <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
         <h2>Settings</h2>
         <div style="width:20px;"></div>
       </div>
@@ -506,12 +505,11 @@
     function openPhotoGridScreen() {
       render9Grid();
       document.getElementById("screenPhotoGrid").style.display = "flex";
-      history.replaceState({page: 'grid'}, "", window.location.href);
+      history.pushState({screen: 'photoGrid'}, "", window.location.href);
     }
     function closePhotoGridScreen() {
       document.getElementById("screenPhotoGrid").style.display = "none";
       initProfile();
-      history.replaceState({page: 'profile'}, "", window.location.href);
     }
 
     function triggerEditPhoto() {
@@ -613,7 +611,7 @@
           preview.style.top = imgY + "px";
 
           document.getElementById("screenPhotoEditor").style.display = "flex";
-          history.replaceState({page: 'editor'}, "", window.location.href);
+          history.pushState({screen: 'photoEditor'}, "", window.location.href);
         }
         rawImageObj.src = e.target.result;
       }
@@ -671,7 +669,6 @@
       } else {
         document.getElementById("hiddenAvatarInput").click();
       }
-      history.replaceState({page: 'profile'}, "", window.location.href);
     }
 
     function confirmEditor() {
@@ -796,52 +793,40 @@
     function openFrameModal() { 
       if (isMyProfile) {
         document.getElementById("modalFrame").style.display = "flex";
-        history.replaceState({page: 'modal'}, "", window.location.href);
+        history.pushState({screen: 'frameModal'}, "", window.location.href);
       }
     }
-    function closeFrameModal() { 
-      document.getElementById("modalFrame").style.display = "none"; 
-      history.replaceState({page: 'profile'}, "", window.location.href);
-    }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // ==========================================
-    // यूनिवर्सल बैक बटन लॉजिक (स्क्रीन बटन और मोबाइल बटन दोनों के लिए एक जैसा)
-    // ==========================================
-    function handleUniversalBack() {
-      let profileDisplay = document.getElementById("screenProfile").style.display;
-      
-      if (profileDisplay === "none") {
-        // अगर अभी सेटिंग्स पेज पर हैं, तो वापस प्रोफाइल पर आ जाओ
-        document.getElementById("screenSettingsPage").style.display = "none";
-        document.getElementById("screenProfile").style.display = "block";
-        initProfile();
-        history.replaceState({page: 'profile'}, "", window.location.href);
-      } else {
-        // अगर अभी प्रोफाइल पेज पर हैं, तो सेटिंग्स पेज पर चले जाओ
-        document.getElementById("screenProfile").style.display = "none";
-        document.getElementById("screenSettingsPage").style.display = "flex";
-        history.replaceState({page: 'settings'}, "", window.location.href);
-      }
+    // प्रोफाइल पेज से सेटिंग पेज पर जाने के लिए
+    function openSettingsPage() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenSettingsPage").style.display = "flex";
+      history.pushState({screen: 'settings'}, "", window.location.href);
+    }
+    
+    // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
+    function closeSettingsPage() {
+      document.getElementById("screenSettingsPage").style.display = "none";
+      document.getElementById("screenProfile").style.display = "block";
+      initProfile();
     }
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
-      // यहाँ आप चाहें तो यूज़र को लॉगिन पेज पर भेज सकते हैं: window.location.href = 'login.html';
+      // जब यूज़र लॉग आउट करेगा, तभी वह रजिस्ट्रेशन/लॉगिन पेज पर जा सकेगा
     }
 
     function openAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "flex";
-      history.replaceState({page: 'about'}, "", window.location.href);
+      history.pushState({screen: 'aboutMe'}, "", window.location.href);
     }
-    function closeAboutMeScreen() { 
-      document.getElementById("screenAboutMe").style.display = "none"; 
-      history.replaceState({page: 'profile'}, "", window.location.href);
-    }
+    function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
     
     function togglePrivacy() {
       if (!isMyProfile) return;
@@ -866,21 +851,15 @@
 
     function openGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "flex";
-      history.replaceState({page: 'groups'}, "", window.location.href);
+      history.pushState({screen: 'groups'}, "", window.location.href);
     }
-    function closeGroupsScreen() { 
-      document.getElementById("screenGroups").style.display = "none"; 
-      history.replaceState({page: 'profile'}, "", window.location.href);
-    }
+    function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
 
     function openCoinSendModal() { 
       document.getElementById("modalCoinSend").style.display = "flex";
-      history.replaceState({page: 'coin'}, "", window.location.href);
+      history.pushState({screen: 'coinSend'}, "", window.location.href);
     }
-    function closeCoinSendModal() { 
-      document.getElementById("modalCoinSend").style.display = "none"; 
-      history.replaceState({page: 'profile'}, "", window.location.href);
-    }
+    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
@@ -896,38 +875,52 @@
 
     function openSettingsModal() { 
       document.getElementById("modalSettings").style.display = "flex";
-      history.replaceState({page: 'settings_modal'}, "", window.location.href);
+      history.pushState({screen: 'settingsModal'}, "", window.location.href);
     }
-    function closeSettingsModal() { 
-      document.getElementById("modalSettings").style.display = "none"; 
-      history.replaceState({page: 'profile'}, "", window.location.href);
-    }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // जब भी यूज़र अपने मोबाइल या कंप्यूटर का बैक बटन दबाएगा, यही फंक्शन चलेगा और स्क्रीन बटन जैसा ही काम करेगा!
+    // सबसे सटीक और परफेक्ट बैक बटन लॉजिक (मोबाइल और पेज दोनों के लिए)
     window.addEventListener('popstate', function(event) {
-      // किसी भी सब-स्क्रीन या मॉडल को बंद करें
-      document.getElementById("screenPhotoEditor").style.display = "none";
-      document.getElementById("screenPhotoGrid").style.display = "none";
-      document.getElementById("screenAboutMe").style.display = "none";
-      document.getElementById("screenGroups").style.display = "none";
-      document.getElementById("modalFrame").style.display = "none";
-      document.getElementById("modalCoinSend").style.display = "none";
-      document.getElementById("modalSettings").style.display = "none";
-      document.getElementById("tipsModal").style.display = "none";
-      document.getElementById("customAlertModal").style.display = "none";
+      let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
+      let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
+      let aboutVisible = document.getElementById("screenAboutMe").style.display === "flex";
+      let groupsVisible = document.getElementById("screenGroups").style.display === "flex";
+      let frameModalVisible = document.getElementById("modalFrame").style.display === "flex";
+      let coinModalVisible = document.getElementById("modalCoinSend").style.display === "flex";
+      let settingsModalVisible = document.getElementById("modalSettings").style.display === "flex";
+      let settingsPageVisible = document.getElementById("screenSettingsPage").style.display === "flex";
+      let tipsModalVisible = document.getElementById("tipsModal").style.display === "flex";
+      let alertModalVisible = document.getElementById("customAlertModal").style.display === "flex";
 
-      // अब यूनिवर्सल बैक फंक्शन को कॉल करें
-      handleUniversalBack();
+      // यदि कोई भी अंदर का ऑप्शन, मोडल या सेटिंग्स खुली है, तो बैक दबाने पर वह सिर्फ 'profile.html' (मुख्य प्रोफाइल) पर वापस आएगी!
+      if (editorVisible || gridVisible || aboutVisible || groupsVisible || frameModalVisible || coinModalVisible || settingsModalVisible || settingsPageVisible || tipsModalVisible || alertModalVisible) {
+        document.getElementById("screenPhotoEditor").style.display = "none";
+        document.getElementById("screenPhotoGrid").style.display = "none";
+        document.getElementById("screenAboutMe").style.display = "none";
+        document.getElementById("screenGroups").style.display = "none";
+        document.getElementById("modalFrame").style.display = "none";
+        document.getElementById("modalCoinSend").style.display = "none";
+        document.getElementById("modalSettings").style.display = "none";
+        document.getElementById("screenSettingsPage").style.display = "none";
+        document.getElementById("tipsModal").style.display = "none";
+        document.getElementById("customAlertModal").style.display = "none";
+        
+        document.getElementById("screenProfile").style.display = "block";
+        initProfile();
+      } else {
+        // अगर यूज़र पहले से प्रोफाइल पेज पर है और फिर भी बैक दबाता है, तो उसे लॉगिन/रजिस्ट्रेशन पर जाने से रोकने के लिए वापस प्रोफाइल पर ही रोक दें और हिस्ट्री लॉक रखें
+        history.pushState({screen: 'profile_lock'}, "", window.location.href);
+      }
     });
 
     window.onload = () => { 
       initProfile(); 
-      // यह सुनिश्चित करता है कि पेज लोड होते ही हिस्ट्री में सिर्फ प्रोफाइल स्टेट रहे, पिछला रजिस्ट्रेशन पेज हमेशा के लिए गायब हो जाए
-      history.replaceState({page: 'profile'}, "", window.location.href);
-      history.pushState({page: 'loop_lock'}, "", window.location.href);
+      // यह सुनिश्चित करता है कि यूज़र के अंदर आने के बाद पीछे का रजिस्ट्रेशन पेज हमेशा के लिए ब्लॉक हो जाए
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+      history.pushState({screen: 'profile_lock'}, "", window.location.href);
     };
   </script>
 </body>
