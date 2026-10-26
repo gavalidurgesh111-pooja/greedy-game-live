@@ -270,7 +270,7 @@
       </div>
     </div>
 
-    <!-- SETTINGS PAGE (लॉग आउट बटन थोड़ा ऊपर और साफ दिखने के लिए सेट किया गया है) -->
+    <!-- SETTINGS PAGE -->
     <div id="screenSettingsPage" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
@@ -283,7 +283,6 @@
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
         </div>
-        <!-- Log Out बटन को स्क्रीन पर ऊपर और साफ दिखने के लिए सेट किया गया है -->
         <div style="margin-bottom: 90px;">
           <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
         </div>
@@ -883,7 +882,7 @@
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // बैक बटन दबाने पर Profile और Settings के बीच लूप बनाए रखने के लिए
+    // बैक बटन लॉजिक (Profile और Settings के बीच हमेशा लूप बनाए रखेगा)
     window.addEventListener('popstate', function(event) {
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
@@ -907,13 +906,13 @@
       } else {
         let profileDisplay = document.getElementById("screenProfile").style.display;
         if (profileDisplay === "none") {
-          // अगर सेटिंग्स पर हैं तो प्रोफाइल पर जाएँ
+          // यदि सेटिंग्स पर हैं, तो प्रोफाइल पर जाएँ
           document.getElementById("screenSettingsPage").style.display = "none";
           document.getElementById("screenProfile").style.display = "block";
           initProfile();
           history.pushState({screen: 'profile'}, "");
         } else {
-          // अगर प्रोफाइल पर हैं तो सेटिंग्स पर जाएँ
+          // यदि प्रोफाइल पर हैं, तो सेटिंग्स पर जाएँ
           document.getElementById("screenProfile").style.display = "none";
           document.getElementById("screenSettingsPage").style.display = "flex";
           history.pushState({screen: 'settings'}, "");
@@ -924,6 +923,8 @@
     window.onload = () => { 
       initProfile(); 
       history.replaceState({screen: 'profile'}, "");
+      // यह सुनिश्चित करता है कि पेज लोड होते ही बैक स्टेट एक्टिव रहे
+      history.pushState({screen: 'profile_guard'}, "");
     };
   </script>
 </body>
