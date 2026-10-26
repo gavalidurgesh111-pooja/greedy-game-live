@@ -374,6 +374,7 @@
   </div>
 
   <script>
+    // सेशन गार्ड: सुनिश्चित करें कि प्रोफाइल पेज पर आने के बाद लॉगिन/रजिस्ट्रेशन स्टेट हमेशा लॉक रहे
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
@@ -505,11 +506,12 @@
     function openPhotoGridScreen() {
       render9Grid();
       document.getElementById("screenPhotoGrid").style.display = "flex";
-      history.pushState({screen: 'photoGrid'}, "", window.location.href);
+      history.replaceState({screen: 'photoGrid'}, "", window.location.href);
     }
     function closePhotoGridScreen() {
       document.getElementById("screenPhotoGrid").style.display = "none";
       initProfile();
+      history.replaceState({screen: 'profile'}, "", window.location.href);
     }
 
     function triggerEditPhoto() {
@@ -611,7 +613,7 @@
           preview.style.top = imgY + "px";
 
           document.getElementById("screenPhotoEditor").style.display = "flex";
-          history.pushState({screen: 'photoEditor'}, "", window.location.href);
+          history.replaceState({screen: 'photoEditor'}, "", window.location.href);
         }
         rawImageObj.src = e.target.result;
       }
@@ -793,10 +795,13 @@
     function openFrameModal() { 
       if (isMyProfile) {
         document.getElementById("modalFrame").style.display = "flex";
-        history.pushState({screen: 'frameModal'}, "", window.location.href);
+        history.replaceState({screen: 'frameModal'}, "", window.location.href);
       }
     }
-    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
+    function closeFrameModal() { 
+      document.getElementById("modalFrame").style.display = "none"; 
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+    }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
@@ -807,7 +812,7 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
-      history.pushState({screen: 'settings'}, "", window.location.href);
+      history.replaceState({screen: 'settings'}, "", window.location.href);
     }
     
     // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
@@ -815,21 +820,26 @@
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
       initProfile();
+      history.replaceState({screen: 'profile'}, "", window.location.href);
     }
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
-      // जब यूज़र लॉग आउट करेगा, तभी वह वापस अपनी शुरुआती लिंक पर जा सकेगा
+      // जब यूज़र लॉग आउट करेगा, तब हम लॉगइन स्टेटस को हटाकर उसे वापस शुरुआती लिंक पर भेज देंगे
       setTimeout(() => {
-        window.location.href = "index.html"; // यहाँ अपनी मुख्य वेबसाइट या होम पेज की लिंक दें
-      }, 1000);
+        localStorage.removeItem("greedy_initialized"); // या संबंधित सेशन फ्लैग
+        window.location.href = "index.html"; // यहाँ अपनी मुख्य शुरुआती वेबसाइट/लॉगिन लिंक दें
+      }, 800);
     }
 
     function openAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "flex";
-      history.pushState({screen: 'aboutMe'}, "", window.location.href);
+      history.replaceState({screen: 'aboutMe'}, "", window.location.href);
     }
-    function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
+    function closeAboutMeScreen() { 
+      document.getElementById("screenAboutMe").style.display = "none"; 
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+    }
     
     function togglePrivacy() {
       if (!isMyProfile) return;
@@ -854,15 +864,21 @@
 
     function openGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "flex";
-      history.pushState({screen: 'groups'}, "", window.location.href);
+      history.replaceState({screen: 'groups'}, "", window.location.href);
     }
-    function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
+    function closeGroupsScreen() { 
+      document.getElementById("screenGroups").style.display = "none"; 
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+    }
 
     function openCoinSendModal() { 
       document.getElementById("modalCoinSend").style.display = "flex";
-      history.pushState({screen: 'coinSend'}, "", window.location.href);
+      history.replaceState({screen: 'coinSend'}, "", window.location.href);
     }
-    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
+    function closeCoinSendModal() { 
+      document.getElementById("modalCoinSend").style.display = "none"; 
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+    }
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
@@ -878,63 +894,46 @@
 
     function openSettingsModal() { 
       document.getElementById("modalSettings").style.display = "flex";
-      history.pushState({screen: 'settingsModal'}, "", window.location.href);
+      history.replaceState({screen: 'settingsModal'}, "", window.location.href);
     }
-    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
+    function closeSettingsModal() { 
+      document.getElementById("modalSettings").style.display = "none"; 
+      history.replaceState({screen: 'profile'}, "", window.location.href);
+    }
 
-    function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
-    function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
-
-    // होम/लॉगिन पेज के रास्ते को हमेशा के लिए ब्लॉक करने वाला और प्रोफाइल-सेटिंग्स का लूप बनाने वाला कोड:
+    // अचूक बैक-बटन गार्ड और स्टेट ओवरराइट (ReplaceState Strategy)
     window.addEventListener('popstate', function(event) {
-      let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
-      let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
-      let aboutVisible = document.getElementById("screenAboutMe").style.display === "flex";
-      let groupsVisible = document.getElementById("screenGroups").style.display === "flex";
-      let frameModalVisible = document.getElementById("modalFrame").style.display === "flex";
-      let coinModalVisible = document.getElementById("modalCoinSend").style.display === "flex";
-      let settingsModalVisible = document.getElementById("modalSettings").style.display === "flex";
+      // यदि यूज़र पीछे जाने की कोशिश करे, तो ब्राउज़र की हिस्ट्री को हमेशा प्रोफाइल या सेटिंग्स पर रीप्रेस कर दें
       let settingsPageVisible = document.getElementById("screenSettingsPage").style.display === "flex";
-      let tipsModalVisible = document.getElementById("tipsModal").style.display === "flex";
-      let alertModalVisible = document.getElementById("customAlertModal").style.display === "flex";
+      
+      // सभी खुली हुई सब-स्क्रीन और मोडल को बंद करें
+      document.getElementById("screenPhotoEditor").style.display = "none";
+      document.getElementById("screenPhotoGrid").style.display = "none";
+      document.getElementById("screenAboutMe").style.display = "none";
+      document.getElementById("screenGroups").style.display = "none";
+      document.getElementById("modalFrame").style.display = "none";
+      document.getElementById("modalCoinSend").style.display = "none";
+      document.getElementById("modalSettings").style.display = "none";
+      document.getElementById("tipsModal").style.display = "none";
+      document.getElementById("customAlertModal").style.display = "none";
 
-      // यदि अंदर की कोई भी स्क्रीन या मोडल खुली है, तो बैक दबाने पर सीधे मुख्य प्रोफाइल पेज पर आ जाओ
-      if (editorVisible || gridVisible || aboutVisible || groupsVisible || frameModalVisible || coinModalVisible || settingsModalVisible || settingsPageVisible || tipsModalVisible || alertModalVisible) {
-        document.getElementById("screenPhotoEditor").style.display = "none";
-        document.getElementById("screenPhotoGrid").style.display = "none";
-        document.getElementById("screenAboutMe").style.display = "none";
-        document.getElementById("screenGroups").style.display = "none";
-        document.getElementById("modalFrame").style.display = "none";
-        document.getElementById("modalCoinSend").style.display = "none";
-        document.getElementById("modalSettings").style.display = "none";
+      if (settingsPageVisible) {
         document.getElementById("screenSettingsPage").style.display = "none";
-        document.getElementById("tipsModal").style.display = "none";
-        document.getElementById("customAlertModal").style.display = "none";
-        
         document.getElementById("screenProfile").style.display = "block";
         initProfile();
         history.replaceState({screen: 'profile'}, "", window.location.href);
       } else {
-        // यदि यूज़र मुख्य प्रोफाइल पेज पर है और फिर भी बैक दबाता है, तो उसे पीछे 'More Options' या 'Register/Login' पर जाने से रोकने के लिए सेटिंग्स पर भेज दें (या प्रोफाइल पर ही लॉक रखें)
-        let profileDisplay = document.getElementById("screenProfile").style.display;
-        if (profileDisplay !== "none") {
-          document.getElementById("screenProfile").style.display = "none";
-          document.getElementById("screenSettingsPage").style.display = "flex";
-          history.replaceState({screen: 'settings'}, "", window.location.href);
-        } else {
-          document.getElementById("screenSettingsPage").style.display = "none";
-          document.getElementById("screenProfile").style.display = "block";
-          initProfile();
-          history.replaceState({screen: 'profile'}, "", window.location.href);
-        }
+        document.getElementById("screenProfile").style.display = "block";
+        document.getElementById("screenSettingsPage").style.display = "none";
+        initProfile();
+        history.replaceState({screen: 'profile'}, "", window.location.href);
       }
     });
 
     window.onload = () => { 
       initProfile(); 
-      // यह कोड ब्राउज़र की हिस्ट्री से पीछे के होम/लॉगिन पेज के रास्ते को पूरी तरह काट देता है
+      // यह कोड पीछे के 'More Options' या 'Register/Login' पेज के रास्ते को हमेशा के लिए ओवरराइट कर देता है
       history.replaceState({screen: 'profile'}, "", window.location.href);
-      history.pushState({screen: 'profile_guard'}, "", window.location.href);
     };
   </script>
 </body>
