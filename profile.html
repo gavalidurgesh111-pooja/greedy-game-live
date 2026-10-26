@@ -46,7 +46,7 @@
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 20; }
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
 
-    /* Header & Avatar - फ्रेम साइज नॉर्मल छोटी और पोजीशन सेट */
+    /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: visible; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -126,17 +126,14 @@
       pointer-events: none !important;
     }
 
-    /* यूजरनेम और एक्टिव डेज पोजीशन (कवर फोटो के नीचे कोने में सही गैप पर) */
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 
-    /* Lv और ID को नीचे खिसकाया गया है */
     .tags-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
     .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 3px 10px; border-radius: 12px; }
     .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
 
-    /* Followers & Action Buttons को नीचे सेट किया गया है */
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 20px; }
     .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
@@ -145,20 +142,17 @@
     .profile-action-btns { display: flex; gap: 8px; }
     .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-    /* Wallet Balance और Total Won Coins को नीचे सेट किया गया है */
     .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; cursor: pointer; }
     .stat-item { text-align: center; }
     .stat-val { font-size: 16px; font-weight: 900; color: #222; }
     .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
 
-    /* Cards और उनके बीच का गैप */
     .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 35px; }
     .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
     .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
     .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
     .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
 
-    /* Sub-Screens & Modals */
     .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
     .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: linear-gradient(90deg, #1e3c72, #2a5298); color: #fff; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
@@ -336,6 +330,7 @@
       
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
       <input type="file" id="hiddenEditPhotoInput" accept="image/*" style="display:none;" onchange="handleEditPhotoFileSelect(event)">
+      <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
@@ -521,8 +516,8 @@
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
 
-        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery):</p>
-        <input type="file" id="customAvatarInput" accept="image/*" onchange="previewAvatar(event)" style="width:100%; padding:6px; border:1px solid #ccc; border-radius:6px; font-size:12px;">
+        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery with Crop):</p>
+        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Upload & Adjust Profile Photo</button>
         
         <button onclick="removeAvatarPhoto()" style="width:100%; margin-top:8px; padding:8px; background:#d9534f; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🗑️ Remove Profile Photo</button>
 
@@ -579,6 +574,7 @@
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
     
     let activeSlotIndex = 1;
+    let activeEditorMode = "cover"; // 'cover' या 'avatar'
     let rawImageObj = null;
 
     let imgX = 0, imgY = 0, imgScale = 1;
@@ -690,6 +686,7 @@
     }
 
     function triggerEditPhoto() {
+      activeEditorMode = "cover";
       let targetSlot = 1;
       for(let i=1; i<=9; i++) {
         if(!localStorage.getItem("greedy_slot_" + i) || localStorage.getItem("greedy_slot_" + i) === "") {
@@ -705,6 +702,16 @@
       loadEditorImage(event.target.files[0]);
     }
 
+    function triggerAvatarUpload() {
+      closeFrameModal();
+      activeEditorMode = "avatar";
+      document.getElementById("hiddenAvatarInput").click();
+    }
+
+    function handleAvatarFileSelect(event) {
+      loadEditorImage(event.target.files[0]);
+    }
+
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
       if (!isMyProfile) return;
@@ -713,6 +720,7 @@
       if (val && val.trim() !== "") {
         document.getElementById("tipsModal").style.display = "flex";
       } else {
+        activeEditorMode = "cover";
         activeSlotIndex = index;
         document.getElementById("hiddenGalleryInput").click();
       }
@@ -735,6 +743,7 @@
 
     function tipsChangePicture() {
       closeTipsModal();
+      activeEditorMode = "cover";
       activeSlotIndex = selectedSlotForTips;
       document.getElementById("hiddenGalleryInput").click();
     }
@@ -820,7 +829,11 @@
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
-      document.getElementById("hiddenGalleryInput").click();
+      if (activeEditorMode === "cover") {
+        document.getElementById("hiddenGalleryInput").click();
+      } else {
+        document.getElementById("hiddenAvatarInput").click();
+      }
     }
 
     function confirmEditor() {
@@ -845,12 +858,19 @@
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
-        localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
-        initProfile();
-        openPhotoGridScreen();
+        if (activeEditorMode === "cover") {
+          localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
+          initProfile();
+          openPhotoGridScreen();
+        } else {
+          currentAvatar = finalDataUrl;
+          localStorage.setItem("greedy_avatar", finalDataUrl);
+          initProfile();
+          showCustomAlert("Profile picture updated & adjusted successfully!");
+        }
       }
     }
 
@@ -935,23 +955,6 @@
       if (isMyProfile) document.getElementById("modalFrame").style.display = "flex"; 
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
-    
-    function previewAvatar(event) {
-      let file = event.target.files[0];
-      if (file) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-          let imageUrl = e.target.result;
-          currentAvatar = imageUrl;
-          localStorage.setItem("greedy_avatar", imageUrl);
-          document.getElementById("profAvatarImg").src = imageUrl;
-          document.getElementById("profAvatarImg").style.display = "block";
-          document.getElementById("avatarPlusIcon").style.display = "none";
-          closeFrameModal();
-        }
-        reader.readAsDataURL(file);
-      }
-    }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
