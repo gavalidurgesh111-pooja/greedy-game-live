@@ -655,11 +655,19 @@
     }
 
     function tipsDeletePicture() {
-      closeTipsModal();
-      if(confirm("Delete this picture?")) {
-        localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
-        initProfile();
+      // 1. सबसे पहले टिप्स वाले बॉक्स को तुरंत और पूरी तरह से छुपा दें (display: none)
+      let tipsModal = document.getElementById("tipsModal");
+      if (tipsModal) {
+        tipsModal.style.display = "none";
       }
+
+      // 2. थोड़ा सा नन्हा सा गैप देकर कंफर्मेशन बॉक्स खोलें ताकि पुराना मेनू आँख से ओझल हो चुका हो
+      setTimeout(function() {
+        if(confirm("Delete this picture?")) {
+          localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
+          initProfile();
+        }
+      }, 50);
     }
 
     function handleGalleryFileSelect(event) {
