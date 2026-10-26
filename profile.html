@@ -270,7 +270,7 @@
       </div>
     </div>
 
-    <!-- SETTINGS PAGE (यहाँ Log Out बटन को थोड़ा ऊपर रखा गया है ताकि आसानी से दिखे) -->
+    <!-- SETTINGS PAGE (लॉग आउट बटन थोड़ा ऊपर और साफ दिखने के लिए सेट किया गया है) -->
     <div id="screenSettingsPage" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
@@ -283,8 +283,8 @@
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
         </div>
-        <!-- Log Out बटन को थोड़ा ऊपर और साफ सुथरा रखा गया है -->
-        <div style="margin-bottom: 40px;">
+        <!-- Log Out बटन को स्क्रीन पर ऊपर और साफ दिखने के लिए सेट किया गया है -->
+        <div style="margin-bottom: 90px;">
           <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
         </div>
       </div>
@@ -804,16 +804,19 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // प्रोफाइल पेज से बैक दबाने पर Settings पेज खुलेगा
+    // प्रोफाइल पेज से सेटिंग पेज पर जाने के लिए
     function openSettingsPage() { 
+      document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
       history.pushState({screen: 'settings'}, "");
     }
     
-    // सेटिंग्स पेज से बैक दबाने पर Profile.html पेज खुलेगा
+    // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
+      document.getElementById("screenProfile").style.display = "block";
       initProfile();
+      history.pushState({screen: 'profile'}, "");
     }
 
     function handleLogout() {
@@ -880,11 +883,10 @@
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // मोबाइल या स्क्रीन के बैक बटन को हैंडल करने के लिए (Profile <-> Settings फ्लो)
+    // बैक बटन दबाने पर Profile और Settings के बीच लूप बनाए रखने के लिए
     window.addEventListener('popstate', function(event) {
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
-      let settingsVisible = document.getElementById("screenSettingsPage").style.display === "flex";
       let aboutVisible = document.getElementById("screenAboutMe").style.display === "flex";
       let groupsVisible = document.getElementById("screenGroups").style.display === "flex";
       let frameModalVisible = document.getElementById("modalFrame").style.display === "flex";
@@ -902,13 +904,20 @@
         document.getElementById("tipsModal").style.display = "none";
         document.getElementById("customAlertModal").style.display = "none";
         initProfile();
-      } else if (settingsVisible) {
-        // अगर यूजर सेटिंग्स पेज पर है और बैक दबाता है, तो प्रोफाइल पेज खुलेगा
-        document.getElementById("screenSettingsPage").style.display = "none";
-        initProfile();
       } else {
-        // अगर यूजर प्रोफाइल पेज पर है और बैक दबाता है, तो सेटिंग्स पेज खुलेगा
-        document.getElementById("screenSettingsPage").style.display = "flex";
+        let profileDisplay = document.getElementById("screenProfile").style.display;
+        if (profileDisplay === "none") {
+          // अगर सेटिंग्स पर हैं तो प्रोफाइल पर जाएँ
+          document.getElementById("screenSettingsPage").style.display = "none";
+          document.getElementById("screenProfile").style.display = "block";
+          initProfile();
+          history.pushState({screen: 'profile'}, "");
+        } else {
+          // अगर प्रोफाइल पर हैं तो सेटिंग्स पर जाएँ
+          document.getElementById("screenProfile").style.display = "none";
+          document.getElementById("screenSettingsPage").style.display = "flex";
+          history.pushState({screen: 'settings'}, "");
+        }
       }
     });
 
