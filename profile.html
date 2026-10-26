@@ -565,7 +565,7 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
@@ -833,7 +833,6 @@
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
-      // इनपुट वैल्यू को रीसेट करें ताकि दोबारा वही फाइल चुनने पर भी ऑनचेंज (onchange) इवेंट सही से काम करे
       document.getElementById("hiddenGalleryInput").value = "";
       document.getElementById("hiddenEditPhotoInput").value = "";
       document.getElementById("hiddenAvatarInput").value = "";
@@ -864,7 +863,6 @@
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
-        // इनपुट वैल्यू रीसेट करें
         document.getElementById("hiddenGalleryInput").value = "";
         document.getElementById("hiddenEditPhotoInput").value = "";
         document.getElementById("hiddenAvatarInput").value = "";
