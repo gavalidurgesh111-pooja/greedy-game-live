@@ -374,6 +374,32 @@
   </div>
 
   <script>
+    // प्रोफाइल पेज का गार्ड: सुनिश्चित करें कि सेशन बना रहे
+    if (!sessionStorage.getItem("is_user_inside")) {
+    sessionStorage.setItem("is_user_inside", "yes");
+   }
+
+    // ब्राउज़र की हिस्ट्री में एक पक्का घेरा बना दें
+    history.pushState({page: "profile"}, "", window.location.href);
+
+    window.addEventListener('popstate', function (event) {
+      // यूज़र चाहे जितनी बार बैक बटन दबाए, उसे कभी पीछे मत जाने दो
+      // उसे तुरंत वापस profile.html और उसके मुख्य डैशबोर्ड पर ले आओ
+      history.pushState({page: "profile"}, "", window.location.href);
+  
+      // यदि कोई सब-स्क्रीन या सेटिंग्स खुली है, तो उसे बंद करके मुख्य प्रोफाइल दिखाओ
+      let settingsPage = document.getElementById("screenSettingsPage");
+      let profileScreen = document.getElementById("screenProfile");
+  
+      if (settingsPage) settingsPage.style.display = "none";
+      if (profileScreen) {
+       profileScreen.style.display = "block";
+      if (typeof initProfile === "function") {
+       initProfile();
+       }
+     }
+   });
+
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
@@ -813,11 +839,14 @@
       initProfile();
     }
 
-    function handleLogout() {
-      showCustomAlert("Logged out successfully!");
-      // जब यूज़र लॉग आउट करेगा, तभी वह वापस शुरुआती इंडेक्स/लॉगिन पेज पर जा सकेगा
-      setTimeout(() => {
-        window.location.href = "index.html"; 
+     function handleLogout() {
+       // सेशन की निशानी को मिटा दें
+       sessionStorage.removeItem("is_user_inside");
+  
+       showCustomAlert("Logged out successfully!");
+       setTimeout(() => {
+         // अब यह वापस फ्रेश लॉगिन पेज पर जा सकता है
+         window.location.replace("index.html"); 
       }, 800);
     }
 
