@@ -278,14 +278,14 @@
       z-index: 20;
     }
     .editor-btn-small {
-      width: 42px;
-      height: 42px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       font-weight: bold;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
@@ -565,7 +565,7 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
+    let userId = localStorage.getItem("greedy_unique_id"] || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
@@ -574,7 +574,7 @@
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
     
     let activeSlotIndex = 1;
-    let activeEditorMode = "cover"; // 'cover' या 'avatar'
+    let activeEditorMode = "cover"; 
     let rawImageObj = null;
 
     let imgX = 0, imgY = 0, imgScale = 1;
@@ -699,7 +699,9 @@
     }
 
     function handleEditPhotoFileSelect(event) {
-      loadEditorImage(event.target.files[0]);
+      if(event.target.files && event.target.files[0]) {
+        loadEditorImage(event.target.files[0]);
+      }
     }
 
     function triggerAvatarUpload() {
@@ -709,7 +711,9 @@
     }
 
     function handleAvatarFileSelect(event) {
-      loadEditorImage(event.target.files[0]);
+      if(event.target.files && event.target.files[0]) {
+        loadEditorImage(event.target.files[0]);
+      }
     }
 
     let selectedSlotForTips = 1;
@@ -757,33 +761,33 @@
     }
 
     function handleGalleryFileSelect(event) {
-      loadEditorImage(event.target.files[0]);
+      if(event.target.files && event.target.files[0]) {
+        loadEditorImage(event.target.files[0]);
+      }
     }
 
     function loadEditorImage(file) {
-      if (file) {
-        let reader = new FileReader();
-        reader.onload = function(e) {
-          rawImageObj = new Image();
-          rawImageObj.onload = function() {
-            let preview = document.getElementById("editorImagePreview");
-            preview.src = rawImageObj.src;
-            
-            imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
-            preview.style.width = (rawImageObj.width * imgScale) + "px";
-            preview.style.height = (rawImageObj.height * imgScale) + "px";
-            
-            imgX = (window.innerWidth - (rawImageObj.width * imgScale)) / 2;
-            imgY = (window.innerHeight - (rawImageObj.height * imgScale)) / 2;
-            preview.style.left = imgX + "px";
-            preview.style.top = imgY + "px";
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        rawImageObj = new Image();
+        rawImageObj.onload = function() {
+          let preview = document.getElementById("editorImagePreview");
+          preview.src = rawImageObj.src;
+          
+          imgScale = Math.max(340 / rawImageObj.width, 340 / rawImageObj.height);
+          preview.style.width = (rawImageObj.width * imgScale) + "px";
+          preview.style.height = (rawImageObj.height * imgScale) + "px";
+          
+          imgX = (window.innerWidth - (rawImageObj.width * imgScale)) / 2;
+          imgY = (window.innerHeight - (rawImageObj.height * imgScale)) / 2;
+          preview.style.left = imgX + "px";
+          preview.style.top = imgY + "px";
 
-            document.getElementById("screenPhotoEditor").style.display = "flex";
-          }
-          rawImageObj.src = e.target.result;
+          document.getElementById("screenPhotoEditor").style.display = "flex";
         }
-        reader.readAsDataURL(file);
+        rawImageObj.src = e.target.result;
       }
+      reader.readAsDataURL(file);
     }
 
     const editorArea = document.getElementById("editorCanvasArea");
@@ -829,11 +833,10 @@
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
-      if (activeEditorMode === "cover") {
-        document.getElementById("hiddenGalleryInput").click();
-      } else {
-        document.getElementById("hiddenAvatarInput").click();
-      }
+      // इनपुट वैल्यू को रीसेट करें ताकि दोबारा वही फाइल चुनने पर भी ऑनचेंज (onchange) इवेंट सही से काम करे
+      document.getElementById("hiddenGalleryInput").value = "";
+      document.getElementById("hiddenEditPhotoInput").value = "";
+      document.getElementById("hiddenAvatarInput").value = "";
     }
 
     function confirmEditor() {
@@ -860,6 +863,11 @@
 
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
+
+        // इनपुट वैल्यू रीसेट करें
+        document.getElementById("hiddenGalleryInput").value = "";
+        document.getElementById("hiddenEditPhotoInput").value = "";
+        document.getElementById("hiddenAvatarInput").value = "";
 
         if (activeEditorMode === "cover") {
           localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
