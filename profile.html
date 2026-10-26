@@ -124,6 +124,50 @@
       z-index: 50 !important;
       pointer-events: none !important;
     }
+          /* कवर फोटो की सही साइज (पहली फोटो जैसी) */
+    .cover-photo-container, .profile-header-bg {
+      height: 220px !important;
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    /* फ्रेम की परफेक्ट साइज और पोजीशन (ताकि वह बिल्कुल संतुलित दिखे) */
+    .frame-custom1, .frame-custom2, .frame-custom3 {
+      background-size: 100% 100% !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      border: none !important;
+      box-shadow: none !important;
+      position: absolute !important;
+      top: -35px !important;
+      left: -35px !important;
+      right: -35px !important;
+      bottom: -35px !important;
+      width: calc(100% + 70px) !important;
+      height: calc(100% + 70px) !important;
+      z-index: 50 !important;
+      pointer-events: none !important;
+    }
+
+    /* यूजरनेम को थोड़ा नीचे खिसकाने के लिए */
+    .username-section, .profile-name {
+      margin-top: 15px !important;
+    }
+
+    /* Active Days वाला टैग कवर फोटो के नीचे कोने में सेट करने के लिए */
+    .active-days-badge {
+      position: absolute !important;
+      right: 15px !important;
+      bottom: -45px !important;
+      z-index: 60 !important;
+    }
+
+    /* पेज को नीचे आसानी से स्क्रॉल करने के लिए */
+    body, html {
+      height: 100% !important;
+      overflow-y: auto !important;
+      -webkit-overflow-scrolling: touch !important;
+    }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 10px; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
