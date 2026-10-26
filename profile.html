@@ -114,7 +114,7 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड गैलरी स्क्रीन */
+    /* 9 फोटो ग्रिड स्क्रीन */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f0f2f5; z-index: 60; flex-direction: column; }
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 15px; overflow-y: auto; flex: 1; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; }
@@ -149,7 +149,7 @@
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
-      <div class="profile-back-btn" onclick="openInboxMessage()">❮</div>
+      <div class="profile-back-btn" onclick="openSettingsPage()">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
@@ -196,7 +196,7 @@
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="openInboxMessage()">Inbox message</button>
+          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
         </div>
       </div>
 
@@ -270,36 +270,7 @@
       </div>
     </div>
 
-    <!-- INBOX MESSAGE SUB-SCREEN -->
-    <div id="screenInboxMessage" class="sub-screen">
-      <div class="sub-header">
-        <div style="cursor:pointer; font-size:20px;" onclick="closeInboxMessage()">❮</div>
-        <h2>Inbox message</h2>
-        <div style="width:20px;"></div>
-      </div>
-      <div style="padding:15px; display:flex; flex-direction:column; gap:15px; overflow-y:auto; flex:1;">
-        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; margin-bottom:8px;">
-            <span>Recent searches</span>
-            <span style="color:#e91e63; cursor:pointer;" onclick="clearSearches()">🗑</span>
-          </div>
-          <div id="recentSearchesList" style="font-size:12px; color:#666;">No recent searches</div>
-        </div>
-        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="display:flex; justify-content:space-between; font-weight:800; font-size:13px; margin-bottom:8px;">
-            <span>Recent Views</span>
-            <span style="color:#e91e63; cursor:pointer;" onclick="clearViews()">🗑</span>
-          </div>
-          <div id="recentViewsList" style="font-size:12px; color:#666;">No recent views</div>
-        </div>
-        <div style="background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="font-weight:800; font-size:13px; margin-bottom:10px;">🎮 All Game Players Today</div>
-          <div id="topPlayersContainer" style="display:flex; flex-direction:column; gap:8px;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SETTINGS SUB-SCREEN (नया सेटिंग्स पेज जिसमें सबसे नीचे Log Out ऑप्शन है) -->
+    <!-- SETTINGS PAGE (यहाँ Log Out बटन को थोड़ा ऊपर रखा गया है ताकि आसानी से दिखे) -->
     <div id="screenSettingsPage" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
@@ -312,8 +283,8 @@
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
           <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
         </div>
-        <!-- सबसे नीचे Log out का ऑप्शन -->
-        <div>
+        <!-- Log Out बटन को थोड़ा ऊपर और साफ सुथरा रखा गया है -->
+        <div style="margin-bottom: 40px;">
           <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
         </div>
       </div>
@@ -833,19 +804,13 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // जब प्रोफाइल पेज से बैक दबाया जाए तो इनबॉक्स मैसेज पेज खुलेगा
-    function openInboxMessage() { 
-      document.getElementById("screenInboxMessage").style.display = "flex"; 
-      renderTopPlayers();
-      history.pushState({screen: 'inbox'}, "");
-    }
-    function closeInboxMessage() { 
-      // जब इनबॉक्स मैसेज से बैक दबाया जाए तो सेटिंग्स पेज खुलेगा
-      document.getElementById("screenInboxMessage").style.display = "none";
+    // प्रोफाइल पेज से बैक दबाने पर Settings पेज खुलेगा
+    function openSettingsPage() { 
       document.getElementById("screenSettingsPage").style.display = "flex";
       history.pushState({screen: 'settings'}, "");
     }
-
+    
+    // सेटिंग्स पेज से बैक दबाने पर Profile.html पेज खुलेगा
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       initProfile();
@@ -853,7 +818,6 @@
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
-      // यहाँ आप चाहें तो लॉगिन पेज पर रीडायरेक्ट कर सकते हैं
     }
 
     function openAboutMeScreen() { 
@@ -916,20 +880,10 @@
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    function renderTopPlayers() {
-      document.getElementById("topPlayersContainer").innerHTML = `
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:8px; background:#f9f9f9; border-radius:8px;">
-          <span style="font-weight:bold; font-size:13px;">👑 KingRahul (#102938)</span>
-          <span style="color:#e65100; font-weight:bold; font-size:12px;">🪙 450,000</span>
-        </div>
-      `;
-    }
-
-    // मोबाइल या स्क्रीन के बैक बटन को हैंडल करने के लिए (Profile -> Inbox -> Settings का फ्लो)
+    // मोबाइल या स्क्रीन के बैक बटन को हैंडल करने के लिए (Profile <-> Settings फ्लो)
     window.addEventListener('popstate', function(event) {
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
-      let inboxVisible = document.getElementById("screenInboxMessage").style.display === "flex";
       let settingsVisible = document.getElementById("screenSettingsPage").style.display === "flex";
       let aboutVisible = document.getElementById("screenAboutMe").style.display === "flex";
       let groupsVisible = document.getElementById("screenGroups").style.display === "flex";
@@ -949,15 +903,12 @@
         document.getElementById("customAlertModal").style.display = "none";
         initProfile();
       } else if (settingsVisible) {
+        // अगर यूजर सेटिंग्स पेज पर है और बैक दबाता है, तो प्रोफाइल पेज खुलेगा
         document.getElementById("screenSettingsPage").style.display = "none";
         initProfile();
-      } else if (inboxVisible) {
-        document.getElementById("screenInboxMessage").style.display = "none";
-        document.getElementById("screenSettingsPage").style.display = "flex";
       } else {
-        // अगर यूजर प्रोफाइल पेज पर है और बैक दबाता है, तो इनबॉक्स मैसेज खुलेगा
-        document.getElementById("screenInboxMessage").style.display = "flex";
-        renderTopPlayers();
+        // अगर यूजर प्रोफाइल पेज पर है और बैक दबाता है, तो सेटिंग्स पेज खुलेगा
+        document.getElementById("screenSettingsPage").style.display = "flex";
       }
     });
 
