@@ -588,7 +588,11 @@
       }
     }
     function goToProfile() {
-      window.location.href = "profile.html";
+      // 1. यह सिर्फ तब तक याद रखेगा जब तक ब्राउज़र/टैब खुला है
+      sessionStorage.setItem("is_user_inside", "yes");
+
+      // 2. यूजर को आगे भेज दें
+      window.location.replace("profile.html");
     }
   </script>
 </body>
