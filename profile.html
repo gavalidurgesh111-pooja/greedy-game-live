@@ -800,13 +800,13 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // प्रोफाइल पेज से सेटिंग पेज पर जाने के लिए
+    // प्रोफाइल पेज से सेटिंग पेज पर जाने के लिए (स्क्रीन वाला तीर बटन)
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
     }
     
-    // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
+    // सेटिंग पेज से प्रोफाइल पेज पर वापस आने के लिए (स्क्रीन वाला तीर बटन)
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
@@ -866,34 +866,15 @@
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    // सबसे महत्वपूर्ण नियम: profile.html पर बैक बटन का रास्ता पूरी तरह बंद करना
-    // जैसे ही यूज़र इस पेज पर आता है, हम हिस्ट्री में एक लूप बना देते हैं
+    // मोबाइल फोन के फिजिकल/सिस्टम बैक बटन को profile.html पर पूरी तरह निष्क्रिय करना
+    window.history.pushState(null, "", window.location.href);
     window.addEventListener('popstate', function(event) {
-      // यूज़र चाहे जितनी बार बैक दबाए, उसे वापस प्रोफाइल या सेटिंग्स पर ही रोक लो, पीछे नहीं जाने देना है
-      history.pushState({page: "profile_locked"}, "", window.location.href);
-      
-      // कोई भी खुली हुई सब-स्क्रीन या मोडल हो तो उसे बंद करके मुख्य प्रोफाइल पर ले आओ
-      document.getElementById("screenPhotoEditor").style.display = "none";
-      document.getElementById("screenPhotoGrid").style.display = "none";
-      document.getElementById("screenAboutMe").style.display = "none";
-      document.getElementById("screenGroups").style.display = "none";
-      document.getElementById("modalFrame").style.display = "none";
-      document.getElementById("modalCoinSend").style.display = "none";
-      document.getElementById("modalSettings").style.display = "none";
-      document.getElementById("tipsModal").style.display = "none";
-      document.getElementById("customAlertModal").style.display = "none";
-      
-      // अगर सेटिंग्स खुली थी तो बंद करके प्रोफाइल दिखाओ
-      document.getElementById("screenSettingsPage").style.display = "none";
-      document.getElementById("screenProfile").style.display = "block";
-      initProfile();
+      // जैसे ही यूजर फोन का बैक बटन दबाएगा, यह कोड उसे वापस यहीं रोक देगा और पीछे नहीं जाने देगा
+      window.history.pushState(null, "", window.location.href);
     });
 
     window.onload = () => { 
       initProfile(); 
-      // पेज लोड होते ही हिस्ट्री में स्टेट भर देते हैं ताकि बैक बटन दबाने पर ब्राउज़र पीछे (index.html पर) न जा सके
-      history.pushState({page: "profile_locked"}, "", window.location.href);
-      history.pushState({page: "profile_locked"}, "", window.location.href);
     };
   </script>
 </body>
