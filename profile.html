@@ -819,7 +819,8 @@
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
-      // जब यूज़र लॉग आउट करेगा, तभी वह रजिस्ट्रेशन/लॉगिन पेज पर जा सकेगा
+      // जब यूज़र लॉग आउट करेगा, तभी वह वापस शुरुआती लिंक (या लॉगिन पेज) पर जा सकेगा
+      // window.location.href = 'index.html'; // यहाँ अपनी मुख्य वेबसाइट का लिंक या लॉगिन पेज दे सकते हैं
     }
 
     function openAboutMeScreen() { 
@@ -882,7 +883,9 @@
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // सबसे सटीक और परफेक्ट बैक बटन लॉजिक (मोबाइल और पेज दोनों के लिए)
+    // बैक बटन का बिल्कुल सही और पक्का नियम:
+    // जब यूज़र प्रोफाइल पेज पर हो या अंदर के किसी भी ऑप्शन में हो, बैक दबाने पर वह हमेशा प्रोफाइल और सेटिंग्स के बीच ही रहेगा। 
+    // वह कभी भी पीछे 'More Options' या 'Register/Login' पेज पर नहीं जा सकता, जब तक कि वह खुद Log Out न करे!
     window.addEventListener('popstate', function(event) {
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
@@ -895,7 +898,7 @@
       let tipsModalVisible = document.getElementById("tipsModal").style.display === "flex";
       let alertModalVisible = document.getElementById("customAlertModal").style.display === "flex";
 
-      // यदि कोई भी अंदर का ऑप्शन, मोडल या सेटिंग्स खुली है, तो बैक दबाने पर वह सिर्फ 'profile.html' (मुख्य प्रोफाइल) पर वापस आएगी!
+      // यदि कोई भी अंदर की स्क्रीन खुली है, तो बैक दबाने पर सीधे मुख्य प्रोफाइल पेज पर आ जाओ
       if (editorVisible || gridVisible || aboutVisible || groupsVisible || frameModalVisible || coinModalVisible || settingsModalVisible || settingsPageVisible || tipsModalVisible || alertModalVisible) {
         document.getElementById("screenPhotoEditor").style.display = "none";
         document.getElementById("screenPhotoGrid").style.display = "none";
@@ -910,17 +913,28 @@
         
         document.getElementById("screenProfile").style.display = "block";
         initProfile();
+        history.replaceState({screen: 'profile'}, "", window.location.href);
       } else {
-        // अगर यूज़र पहले से प्रोफाइल पेज पर है और फिर भी बैक दबाता है, तो उसे लॉगिन/रजिस्ट्रेशन पर जाने से रोकने के लिए वापस प्रोफाइल पर ही रोक दें और हिस्ट्री लॉक रखें
-        history.pushState({screen: 'profile_lock'}, "", window.location.href);
+        // अगर यूज़र मुख्य प्रोफाइल पेज पर है और फिर भी बैक दबाता है, तो उसे सेटिंग्स पर ले जाओ (या प्रोफाइल पर ही रखो, ताकि कभी पीछे न जाए)
+        let profileDisplay = document.getElementById("screenProfile").style.display;
+        if (profileDisplay !== "none") {
+          document.getElementById("screenProfile").style.display = "none";
+          document.getElementById("screenSettingsPage").style.display = "flex";
+          history.replaceState({screen: 'settings'}, "", window.location.href);
+        } else {
+          document.getElementById("screenSettingsPage").style.display = "none";
+          document.getElementById("screenProfile").style.display = "block";
+          initProfile();
+          history.replaceState({screen: 'profile'}, "", window.location.href);
+        }
       }
     });
 
     window.onload = () => { 
       initProfile(); 
-      // यह सुनिश्चित करता है कि यूज़र के अंदर आने के बाद पीछे का रजिस्ट्रेशन पेज हमेशा के लिए ब्लॉक हो जाए
+      // यह लाइन पीछे के 'More Options' और 'Register/Login' पेज के रास्ते को पूरी तरह काट देती है 
       history.replaceState({screen: 'profile'}, "", window.location.href);
-      history.pushState({screen: 'profile_lock'}, "", window.location.href);
+      history.pushState({screen: 'profile_guard'}, "", window.location.href);
     };
   </script>
 </body>
