@@ -375,33 +375,79 @@
 
   <script>
     // ==========================================
-    // मोबाइल के फिजिकल और स्क्रीन दोनों बैक बटन का पक्का गार्ड
+    // स्मार्ट बैक बटन गार्ड (पॉपअप और स्क्रीन दोनों को संभालने के लिए)
     // ==========================================
     history.pushState(null, null, window.location.href);
+
     window.addEventListener('popstate', function (event) {
-      // फोन का बैक बटन दबते ही यह उसे तुरंत रोक लेगा और आगे नहीं जाने देगा
       history.pushState(null, null, window.location.href);
-      
-      // यह सुनिश्चित करेगा कि यूज़र अगर किसी सब-स्क्रीन (जैसे सेटिंग्स या अबाउट) में है, 
-      // तो वह बंद होकर सिर्फ मुख्य प्रोफाइल पर आ जाए, बाहर कभी न जाए
+
+      // 1. सबसे पहले चेक करें कि क्या स्क्रीन पर कोई पॉपअप खुला है? अगर हाँ, तो उसे बंद करें
+      let customAlert = document.getElementById("customAlertModal");
+      let modalFrame = document.getElementById("modalFrame");
+      let modalCoinSend = document.getElementById("modalCoinSend");
+      let modalSettings = document.getElementById("modalSettings");
+      let tipsModal = document.getElementById("tipsModal");
+      let photoEditor = document.getElementById("screenPhotoEditor");
+
+      if (customAlert && customAlert.style.display === "flex") {
+        customAlert.style.display = "none";
+        return;
+      }
+      if (modalFrame && modalFrame.style.display === "flex") {
+        modalFrame.style.display = "none";
+        return;
+      }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") {
+        modalCoinSend.style.display = "none";
+        return;
+      }
+      if (modalSettings && modalSettings.style.display === "flex") {
+        modalSettings.style.display = "none";
+        return;
+      }
+      if (tipsModal && tipsModal.style.display === "flex") {
+        tipsModal.style.display = "none";
+        return;
+      }
+      if (photoEditor && photoEditor.style.display === "flex") {
+        photoEditor.style.display = "none";
+        return;
+      }
+
+      // 2. इसके बाद चेक करें कि क्या कोई सब-स्क्रीन (जैसे सेटिंग्स, अबाउट, ग्रिड) खुली है?
       let settingsPage = document.getElementById("screenSettingsPage");
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
       let photoGrid = document.getElementById("screenPhotoGrid");
       let profileScreen = document.getElementById("screenProfile");
-      
-      if(settingsPage) settingsPage.style.display = "none";
-      if(aboutScreen) aboutScreen.style.display = "none";
-      if(groupsScreen) groupsScreen.style.display = "none";
-      if(photoGrid) photoGrid.style.display = "none";
-      
-      if(profileScreen) {
+
+      if (settingsPage && settingsPage.style.display === "flex") {
+        closeSettingsPage();
+        return;
+      }
+      if (aboutScreen && aboutScreen.style.display === "flex") {
+        closeAboutMeScreen();
+        return;
+      }
+      if (groupsScreen && groupsScreen.style.display === "flex") {
+        closeGroupsScreen();
+        return;
+      }
+      if (photoGrid && photoGrid.style.display === "flex") {
+        closePhotoGridScreen();
+        return;
+      }
+
+      // 3. अगर कुछ भी खुला नहीं है, तो यूज़र मुख्य प्रोफाइल पर सुरक्षित रहेगा और बाहर नहीं जा पाएगा
+      if (profileScreen) {
         profileScreen.style.display = "block";
         if (typeof initProfile === "function") {
           initProfile();
         }
       }
     });
+
 
 
     if (!localStorage.getItem("greedy_initialized")) {
