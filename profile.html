@@ -505,7 +505,6 @@
     function openPhotoGridScreen() {
       render9Grid();
       document.getElementById("screenPhotoGrid").style.display = "flex";
-      history.pushState({screen: 'photoGrid'}, "");
     }
     function closePhotoGridScreen() {
       document.getElementById("screenPhotoGrid").style.display = "none";
@@ -611,7 +610,6 @@
           preview.style.top = imgY + "px";
 
           document.getElementById("screenPhotoEditor").style.display = "flex";
-          history.pushState({screen: 'photoEditor'}, "");
         }
         rawImageObj.src = e.target.result;
       }
@@ -791,10 +789,7 @@
     }
 
     function openFrameModal() { 
-      if (isMyProfile) {
-        document.getElementById("modalFrame").style.display = "flex";
-        history.pushState({screen: 'frameModal'}, "");
-      }
+      if (isMyProfile) document.getElementById("modalFrame").style.display = "flex"; 
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
@@ -807,7 +802,7 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
-      history.pushState({screen: 'settings'}, "");
+      history.pushState({page: 'settings'}, "");
     }
     
     // सेटिंग पेज से प्रोफाइल पेज पर आने के लिए
@@ -815,17 +810,15 @@
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
       initProfile();
-      history.pushState({screen: 'profile'}, "");
+      history.pushState({page: 'profile'}, "");
     }
 
     function handleLogout() {
       showCustomAlert("Logged out successfully!");
+      // जब यूज़र लॉग आउट करेगा, तभी वह बाहर या लॉगिन पेज पर जा सकेगा
     }
 
-    function openAboutMeScreen() { 
-      document.getElementById("screenAboutMe").style.display = "flex";
-      history.pushState({screen: 'aboutMe'}, "");
-    }
+    function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
     function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
     
     function togglePrivacy() {
@@ -849,16 +842,10 @@
       }
     }
 
-    function openGroupsScreen() { 
-      document.getElementById("screenGroups").style.display = "flex";
-      history.pushState({screen: 'groups'}, "");
-    }
+    function openGroupsScreen() { document.getElementById("screenGroups").style.display = "flex"; }
     function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
 
-    function openCoinSendModal() { 
-      document.getElementById("modalCoinSend").style.display = "flex";
-      history.pushState({screen: 'coinSend'}, "");
-    }
+    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
     function processCoinSend() {
@@ -873,19 +860,16 @@
       showCustomAlert(`Successfully sent ${amt} coins to ${targetId}!`);
     }
 
-    function openSettingsModal() { 
-      document.getElementById("modalSettings").style.display = "flex";
-      history.pushState({screen: 'settingsModal'}, "");
-    }
+    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
     function clearSearches() { document.getElementById("recentSearchesList").innerText = "No recent searches"; }
     function clearViews() { document.getElementById("recentViewsList").innerText = "No recent views"; }
 
-    // नेविगेशन और बैक बटन को रोकने व कंट्रोल करने के लिए पुख्ता लॉजिक
+    // यूनिवर्सल बैक बटन कंट्रोल (मोबाइल, कंप्यूटर या पेज का बैक बटन - सभी पर एक जैसा काम करेगा)
     window.addEventListener('popstate', function(event) {
-      // हमेशा एक नई हिस्ट्री जोड़ें ताकि ब्राउज़र कभी भी लॉगिन पेज या बाहर न जा सके
-      history.pushState({screen: 'guard'}, "");
+      // हमेशा हिस्ट्री को आगे बढ़ा कर लॉक रखें ताकि यूज़र कभी भी लॉगिन/रजिस्ट्रेशन या बाहर न जा सके
+      history.pushState({page: 'guard'}, "");
 
       let editorVisible = document.getElementById("screenPhotoEditor").style.display === "flex";
       let gridVisible = document.getElementById("screenPhotoGrid").style.display === "flex";
@@ -909,12 +893,12 @@
       } else {
         let profileDisplay = document.getElementById("screenProfile").style.display;
         if (profileDisplay === "none") {
-          // यदि सेटिंग्स पर हैं, तो बैक दबाने पर प्रोफाइल पर जाएँ
+          // अगर सेटिंग्स पर हैं, तो बैक दबाने पर हमेशा प्रोफाइल पर जाएँ
           document.getElementById("screenSettingsPage").style.display = "none";
           document.getElementById("screenProfile").style.display = "block";
           initProfile();
         } else {
-          // यदि प्रोफाइल पर हैं, तो बैक दबाने पर सेटिंग्स पर जाएँ
+          // अगर प्रोफाइल पर हैं, तो बैक दबाने पर हमेशा सेटिंग्स पर जाएँ
           document.getElementById("screenProfile").style.display = "none";
           document.getElementById("screenSettingsPage").style.display = "flex";
         }
@@ -923,8 +907,8 @@
 
     window.onload = () => { 
       initProfile(); 
-      history.pushState({screen: 'profile'}, "");
-      history.pushState({screen: 'guard'}, "");
+      history.replaceState({page: 'profile'}, "");
+      history.pushState({page: 'guard'}, "");
     };
   </script>
 </body>
