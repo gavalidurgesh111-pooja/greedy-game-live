@@ -374,31 +374,23 @@
   </div>
 
   <script>
-    // प्रोफाइल पेज का गार्ड: सुनिश्चित करें कि सेशन बना रहे
-    if (!sessionStorage.getItem("is_user_inside")) {
-    sessionStorage.setItem("is_user_inside", "yes");
-   }
-
-    // ब्राउज़र की हिस्ट्री में एक पक्का घेरा बना दें
+    // प्रोफाइल पेज का अपना आंतरिक नेविगेशन और बैक बटन कंट्रोल (बिना किसी बाहरी पेज के जिक्र के)
     history.pushState({page: "profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      // यूज़र चाहे जितनी बार बैक बटन दबाए, उसे कभी पीछे मत जाने दो
-      // उसे तुरंत वापस profile.html और उसके मुख्य डैशबोर्ड पर ले आओ
       history.pushState({page: "profile"}, "", window.location.href);
   
-      // यदि कोई सब-स्क्रीन या सेटिंग्स खुली है, तो उसे बंद करके मुख्य प्रोफाइल दिखाओ
       let settingsPage = document.getElementById("screenSettingsPage");
       let profileScreen = document.getElementById("screenProfile");
   
       if (settingsPage) settingsPage.style.display = "none";
       if (profileScreen) {
-       profileScreen.style.display = "block";
-      if (typeof initProfile === "function") {
-       initProfile();
-       }
-     }
-   });
+        profileScreen.style.display = "block";
+        if (typeof initProfile === "function") {
+          initProfile();
+        }
+      }
+    });
 
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
@@ -826,28 +818,19 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // प्रोफाइल पेज से सेटिंग पेज पर जाने के लिए (स्क्रीन वाला तीर बटन)
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
     }
     
-    // सेटिंग पेज से प्रोफाइल पेज पर वापस आने के लिए (स्क्रीन वाला तीर बटन)
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
       initProfile();
     }
 
-     function handleLogout() {
-       // सेशन की निशानी को मिटा दें
-       sessionStorage.removeItem("is_user_inside");
-  
-       showCustomAlert("Logged out successfully!");
-       setTimeout(() => {
-         // अब यह वापस फ्रेश लॉगिन पेज पर जा सकता है
-         window.location.replace("index.html"); 
-      }, 800);
+    function handleLogout() {
+      showCustomAlert("Logged out successfully!");
     }
 
     function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
@@ -894,13 +877,6 @@
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
-
-    // मोबाइल फोन के फिजिकल/सिस्टम बैक बटन को profile.html पर पूरी तरह निष्क्रिय करना
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener('popstate', function(event) {
-      // जैसे ही यूजर फोन का बैक बटन दबाएगा, यह कोड उसे वापस यहीं रोक देगा और पीछे नहीं जाने देगा
-      window.history.pushState(null, "", window.location.href);
-    });
 
     window.onload = () => { 
       initProfile(); 
