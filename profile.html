@@ -133,17 +133,17 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (परफेक्ट क्रॉप बॉक्स और बाउंड्री रूल्स) --- */
+    /* --- फोटो एडिटर स्क्रीन --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* क्रॉप बॉक्स साइज: 964px × 960px (स्क्रीन के लेफ्ट-राइट से जुड़ा हुआ और बिल्कुल फिक्स) */
+    /* क्रॉप बॉक्स: अब यह स्क्रीन के left और right दोनों कोनों से पूरी तरह जुड़ा हुआ (100% चौड़ाई) और 1080×1576 अनुपात के मुताबिक सेट है */
     .crop-frame-box {
-      width: 90vw;
-      max-width: 385px;
-      height: 383px; /* अनुपात 964:960 के अनुसार */
+      width: 100%;
+      height: calc(100vw * (1576 / 1080));
+      max-height: 85vh;
       border: 2px solid rgba(255, 255, 255, 0.9);
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -497,7 +497,7 @@
     let rawImageObj = null;
 
     let imgX = 0, imgY = 0, imgScale = 1;
-    let minScale = 1; // मिनिमम स्केल ताकि फोटो कभी भी फ्रेम से छोटी न पड़े
+    let minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
@@ -696,7 +696,7 @@
           
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           
-          // फोटो को उसके ऑरिजिनल साइज के अनुपात में क्रॉप बॉक्स को पूरी तरह ढकने के हिसाब से सेट करना
+          // फोटो कितनी भी बड़ी या छोटी हो, यह क्रॉप बॉक्स को पूरी तरह ढकने के हिसाब से स्केल होगी
           let scaleX = box.width / rawImageObj.width;
           let scaleY = box.height / rawImageObj.height;
           minScale = Math.max(scaleX, scaleY);
@@ -708,7 +708,7 @@
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          // फोटो को क्रॉप बॉक्स के बिल्कुल सेंटर में रखना
+          // फोटो क्रॉप बॉक्स के बिल्कुल सेंटर में खुलेगी
           imgX = box.left + (box.width - renderW) / 2;
           imgY = box.top + (box.height - renderH) / 2;
           
@@ -722,14 +722,13 @@
       reader.readAsDataURL(file);
     }
 
-    // --- सख्त बाउंड्री लिमिट्स और ड्रैग/जूम लॉजिक ---
+    // --- सख्त बाउंड्री लिमिट्स (फोटो फ्रेम से बाहर नहीं जाएगी) ---
     function enforceBoundaries() {
       if(!rawImageObj) return;
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = rawImageObj.width * imgScale;
       let renderH = rawImageObj.height * imgScale;
 
-      // 1. लेफ्ट और राइट बाउंड्री: फोटो फ्रेम से बाहर खाली जगह नहीं छोड़नी चाहिए
       if (imgX > box.left) {
         imgX = box.left;
       }
@@ -737,7 +736,6 @@
         imgX = box.left + box.width - renderW;
       }
 
-      // 2. ऊपर और नीचे बाउंड्री: यूजर फोटो को नीचे खींचे तो ऊपर की लाइन तक रुके, ऊपर खींचे तो नीचे की लाइन तक रुके
       if (imgY > box.top) {
         imgY = box.top;
       }
