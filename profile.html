@@ -448,13 +448,11 @@
       }
     });
 
-
-
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "");
-      localStorage.setItem("greedy_level", "");
+      localStorage.setItem("greedy_won", "0");
+      localStorage.setItem("greedy_level", "1");
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_privacy", "false");
@@ -655,13 +653,11 @@
     }
 
     function tipsDeletePicture() {
-      // 1. सबसे पहले टिप्स वाले बॉक्स को तुरंत और पूरी तरह से छुपा दें (display: none)
       let tipsModal = document.getElementById("tipsModal");
       if (tipsModal) {
         tipsModal.style.display = "none";
       }
 
-      // 2. थोड़ा सा नन्हा सा गैप देकर कंफर्मेशन बॉक्स खोलें ताकि पुराना मेनू आँख से ओझल हो चुका हो
       setTimeout(function() {
         if(confirm("Delete this picture?")) {
           localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
@@ -896,16 +892,12 @@
     }
 
     function handleLogout() {
-      // सिर्फ यह बताएं कि यूजर अब अंदर नहीं है (ताकि वह दोबारा लॉगिन कर सके)
-      // ध्यान रखें: हम यहाँ localStorage को बिल्कुल नहीं छू रहे हैं, ताकि यूजर का डेटा सेफ रहे!
       sessionStorage.removeItem("is_user_inside");
       
       showCustomAlert("Logged out successfully!");
       setTimeout(() => {
         window.location.replace("index.html"); 
       }, 800);
-    }
-
     }
 
     function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
