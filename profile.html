@@ -137,6 +137,9 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
     
+    /* क्रॉप फ्रेम बॉक्स: सही फिक्स साइज */
+    .crop-frame-box { width: 94%; max-width: 440px; height: 320px; border: 2px solid rgba(0, 0, 0, 0.9); box-shadow: 0 0 0 9999px rgba(255, 255, 255, 0.95); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
     #editorImagePreview:active { cursor: grabbing; }
 
@@ -255,6 +258,7 @@
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
+        <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
         <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
@@ -676,19 +680,18 @@
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
-          let canvasArea = document.getElementById("editorCanvasArea");
-          let areaW = canvasArea.clientWidth || window.innerWidth;
-          let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
-
-          imgScale = Math.max(areaW / rawImageObj.width, areaH / rawImageObj.height);
+          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+          
+          imgScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
           let renderW = rawImageObj.width * imgScale;
           let renderH = rawImageObj.height * imgScale;
 
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          imgX = (areaW - renderW) / 2;
-          imgY = (areaH - renderH) / 2;
+          imgX = box.left + (box.width - renderW) / 2;
+          imgY = box.top + (box.height - renderH) / 2;
+          
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
 
@@ -699,19 +702,17 @@
       reader.readAsDataURL(file);
     }
 
-    // सख्त बाउंड्री लिमिट: फोटो स्क्रीन एरिया से बाहर पूरी तरह गायब नहीं होगी
+    // सख्त बाउंड्री लिमिट: फोटो क्रॉप फ्रेम से बाहर पूरी तरह गायब नहीं होगी
     function enforceBoundaries() {
       let preview = document.getElementById("editorImagePreview");
-      let canvasArea = document.getElementById("editorCanvasArea");
-      let areaW = canvasArea.clientWidth || window.innerWidth;
-      let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
+      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = parseFloat(preview.style.width);
       let renderH = parseFloat(preview.style.height);
 
-      if (imgX > areaW - 100) imgX = areaW - 100;
-      if (imgY > areaH - 100) imgY = areaH - 100;
-      if (imgX + renderW < 100) imgX = 100 - renderW;
-      if (imgY + renderH < 100) imgY = 100 - renderH;
+      if (imgX > box.left) imgX = box.left;
+      if (imgY > box.top) imgY = box.top;
+      if (imgX + renderW < box.left + box.width) imgX = box.left + box.width - renderW;
+      if (imgY + renderH < box.top + box.height) imgY = box.top + box.height - renderH;
 
       preview.style.left = imgX + "px";
       preview.style.top = imgY + "px";
@@ -730,10 +731,14 @@
         if(!rawImageObj) return;
         e.preventDefault();
         let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-        imgScale *= zoomFactor;
-        if(imgScale < 0.2) imgScale = 0.2;
-        if(imgScale > 5.0) imgScale = 5.0;
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        
+        let newScale = imgScale * zoomFactor;
+        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
+        if(newScale < minScale) newScale = minScale;
+        if(newScale > 5.0) newScale = 5.0;
 
+        imgScale = newScale;
         let preview = document.getElementById("editorImagePreview");
         preview.style.width = (rawImageObj.width * imgScale) + "px";
         preview.style.height = (rawImageObj.height * imgScale) + "px";
@@ -762,10 +767,14 @@
           e.touches[0].clientY - e.touches[1].clientY
         );
         let zoomFactor = currentDistance / initialPinchDistance;
-        imgScale *= zoomFactor;
-        if(imgScale < 0.2) imgScale = 0.2;
-        if(imgScale > 5.0) imgScale = 5.0;
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        
+        let newScale = imgScale * zoomFactor;
+        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
+        if(newScale < minScale) newScale = minScale;
+        if(newScale > 5.0) newScale = 5.0;
 
+        imgScale = newScale;
         let preview = document.getElementById("editorImagePreview");
         preview.style.width = (rawImageObj.width * imgScale) + "px";
         preview.style.height = (rawImageObj.height * imgScale) + "px";
@@ -817,17 +826,14 @@
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
 
-        let canvasArea = document.getElementById("editorCanvasArea");
-        let areaW = canvasArea.clientWidth || window.innerWidth;
-        let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        let previewRect = preview.getBoundingClientRect();
 
-        let sX = (-imgX / renderedWidth) * rawImageObj.width;
-        let sY = (-imgY / renderedHeight) * rawImageObj.height;
-        let sW = (areaW / renderedWidth) * rawImageObj.width;
-        let sH = (areaH / renderedHeight) * rawImageObj.height;
+        let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
+        let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
+        let sW = (box.width / renderedWidth) * rawImageObj.width;
+        let sH = (box.height / renderedHeight) * rawImageObj.height;
 
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, 1080, 1080);
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
