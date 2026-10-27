@@ -115,18 +115,14 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड स्क्रीन - स्क्रीनशॉट जैसी शैली */
+    /* 9 फोटो ग्रिड स्क्रीन */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* पहले बॉक्स पर 👤 और 1 का मार्क (स्क्रीनशॉट के जैसा) */
-    .cell-badge-profile { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.65); color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; display: flex; align-items: center; gap: 4px; font-weight: bold; }
-    
-    /* बाकी बॉक्स पर संख्या का मार्क */
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: bold; }
-    
+    .cell-badge-profile { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 8px; display: flex; align-items: center; gap: 3px; font-weight: normal; }
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 8px; font-weight: normal; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     /* टिप्स (Tips) पॉपअप मेनू */
@@ -136,16 +132,20 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* स्क्रीनशॉट जैसा फोटो एडिटर स्क्रीन */
+    /* --- नया फोटो एडिटर डिज़ाइन (फुल स्क्रीन फोटो और छोटे, फीके नीचे के मार्क) --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
-    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #111; }
-    .crop-frame-box { width: 320px; height: 320px; border: 2px solid rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
+    
+    /* चौरस क्रॉप बॉक्स - स्क्रीन के बीचोंबीच */
+    .crop-frame-box { width: 320px; height: 320px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
     #editorImagePreview:active { cursor: grabbing; }
 
-    .editor-bottom-bar { width: 100%; height: 75px; background: #ffffff; display: flex; justify-content: space-around; align-items: center; z-index: 25; border-top: 1px solid #ddd; }
-    .editor-bottom-btn { background: none; border: none; font-size: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; transition: background 0.2s; }
-    .editor-bottom-btn:active { background: #f0f0f0; }
+    /* नीचे की पट्टी: एकदम साफ़, रंग फीका (transparent/dark style) और छोटे मार्क */
+    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-around; align-items: center; z-index: 25; border-top: 1px solid #222; }
+    .editor-bottom-btn { background: none; border: none; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; transition: color 0.2s, background 0.2s; }
+    .editor-bottom-btn:active { background: rgba(255,255,255,0.1); color: #fff; }
   </style>
 </head>
 <body>
@@ -233,7 +233,7 @@
       </div>
     </div>
 
-    <!-- 9 फोटो ग्रिड स्क्रीन (स्क्रीनशॉट जैसी शैली: पहला बॉक्स प्रोफाइल, बाकी कवर) -->
+    <!-- 9 फोटो ग्रिड स्क्रीन -->
     <div id="screenPhotoGrid" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridScreen()">❮</div>
@@ -254,15 +254,15 @@
       </div>
     </div>
 
-    <!-- फोटो एडिटर स्क्रीन -->
+    <!-- फोटो एडिटर स्क्रीन (फुल स्क्रीन फोटो और छोटे, फीके बटन) -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
         <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
-        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✖️</button>
-        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✔️</button>
+        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
+        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
       </div>
     </div>
 
@@ -564,7 +564,6 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // 9 फोटो ग्रिड रेंडर करने का नया नियम (पहला बॉक्स प्रोफाइल फोटो, बाकी कवर)
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -575,7 +574,6 @@
         cell.onclick = () => handleGridCellClick(i);
 
         if(i === 1) {
-          // पहला बॉक्स हमेशा प्रोफाइल फोटो के लिए है
           let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
           if(profPic && profPic.trim() !== "") {
             cell.innerHTML = `<img src="${profPic}"><div class="cell-badge-profile">👤 1</div>`;
@@ -583,7 +581,6 @@
             cell.innerHTML = `<div class="plus-sign">+</div><div class="cell-badge-profile">👤 1</div>`;
           }
         } else {
-          // बाकी के बॉक्स कवर फोटो स्लॉट (i-1) के लिए हैं
           let slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || "";
           if(slotVal && slotVal.trim() !== "") {
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
@@ -604,17 +601,13 @@
       initProfile();
     }
 
-    let selectedGridIndex = 1;
     function handleGridCellClick(index) {
       if (!isMyProfile) return;
-      selectedGridIndex = index;
       
       if(index === 1) {
-        // पहला बॉक्स क्लिक होने पर सीधे प्रोफाइल फोटो एडिटर खुलेगा
         activeEditorMode = "avatar";
         document.getElementById("hiddenAvatarInput").click();
       } else {
-        // बाकी बॉक्स क्लिक होने पर कवर स्लॉट (index - 1) खुलेगा
         let slotNum = index - 1;
         let val = localStorage.getItem("greedy_slot_" + slotNum) || "";
         if(val && val.trim() !== "") {
@@ -686,12 +679,16 @@
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
-          imgScale = Math.max(320 / rawImageObj.width, 320 / rawImageObj.height);
+          // फोटो को फुल स्क्रीन साइज के हिसाब से बेहतरीन फिट और ज़ूम करने का लॉजिक
+          let screenW = window.innerWidth;
+          let screenH = window.innerHeight - 65; // नीचे की बार छोड़कर
+          imgScale = Math.max(screenW / rawImageObj.width, screenH / rawImageObj.height);
+          
           preview.style.width = (rawImageObj.width * imgScale) + "px";
           preview.style.height = (rawImageObj.height * imgScale) + "px";
           
-          imgX = (window.innerWidth - (rawImageObj.width * imgScale)) / 2;
-          imgY = (window.innerHeight - 75 - (rawImageObj.height * imgScale)) / 2;
+          imgX = (screenW - (rawImageObj.width * imgScale)) / 2;
+          imgY = (screenH - (rawImageObj.height * imgScale)) / 2;
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
 
