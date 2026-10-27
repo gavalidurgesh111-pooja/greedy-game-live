@@ -94,8 +94,8 @@
     .profile-action-btns { display: flex; gap: 8px; }
     .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-    /* stats-container अब पूरी तरह से सामान्य है, इसपर कोई क्लिक फंक्शन या कर्सर नहीं है */
-    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
+    /* वॉलेट बैलेंस वाले हिस्से पर वापस क्लिक फंक्शन (cursor: pointer) सेट कर दिया है ताकि वह पहले की तरह काम करे */
+    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; cursor: pointer; }
     .stat-item { text-align: center; }
     .stat-val { font-size: 16px; font-weight: 900; color: #222; }
     .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
@@ -201,8 +201,8 @@
         </div>
       </div>
 
-      <!-- यहाँ बैलेंस और टोटल वॉन कॉइंस सिर्फ गिनती दिखाने के लिए हैं, इन पर कोई क्लिक या पॉपअप नहीं खुलेगा -->
-      <div class="stats-container">
+      <!-- यहाँ Wallet Balance पर क्लिक करने पर वापस openCoinSendModal खुलेगा, जैसा आपका पहले था -->
+      <div class="stats-container" onclick="openCoinSendModal()">
         <div class="stat-item">
           <div class="stat-val">🪙 <span id="profBalance">0</span></div>
           <div class="stat-label">Wallet Balance</div>
@@ -450,7 +450,7 @@
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "0"); // Total Won Coins की शुरुआत अब 0 से होगी
+      localStorage.setItem("greedy_won", "0"); // Total Won Coins की शुरुआत 0 से
       localStorage.setItem("greedy_level", "1");
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
@@ -840,7 +840,7 @@
         targetFrame.style.display = "block";
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
-        targetFrame.style.backgroundSize = "100% 100%";
+        targetFrame.style.backgroundSize = "100% 100% ";
         targetFrame.style.backgroundPosition = "center";
         targetFrame.style.backgroundRepeat = "no-repeat";
         targetFrame.style.border = "none";
@@ -931,7 +931,7 @@
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
-      let amt = parseInt(document.getElementById("sendCoinAmount" ).value);
+      let amt = parseInt(document.getElementById("sendCoinAmount").value);
       if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
       if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount or insufficient balance!"); return; }
       coins -= amt;
