@@ -78,6 +78,20 @@
     .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
+    
+    /* यह नया कोड यहाँ डालें ताकि फ्रेम सही साइज में दिखे */
+    .frame-container {
+        position: relative;
+        width: 350px; 
+        height: 350px;
+        margin: 0 auto; 
+    }
+
+    .moving-frame {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
