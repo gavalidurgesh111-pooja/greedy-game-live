@@ -133,12 +133,24 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (हाई क्वालिटी शार्प रेंडरिंग) --- */
+    /* --- फोटो एडिटर स्क्रीन --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* क्रॉप बॉक्स साइज: 964px × 960px (जैसे आपने निर्देश दिया) */
-    .crop-frame-box { width: 964px; max-width: 964px; height: 960px; max-height: 960px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    /* बीच का क्रॉप बॉक्स (964 × 960 साइज और बॉर्डर / डार्क शेड के साथ वापस जोड़ा गया) */
+    .crop-frame-box {
+      width: 90%;
+      max-width: 360px;
+      height: 358px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 10;
+    }
     
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
     #editorImagePreview:active { cursor: grabbing; }
@@ -685,7 +697,6 @@
           let areaW = canvasArea.clientWidth || window.innerWidth;
           let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
 
-          // मिका (Mika) ऐप जैसा हाई-क्वालिटी फिटिंग लॉजिक
           imgScale = Math.max(areaW / rawImageObj.width, areaH / rawImageObj.height);
           let renderW = rawImageObj.width * imgScale;
           let renderH = rawImageObj.height * imgScale;
@@ -796,12 +807,10 @@
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
-        // बिल्कुल सटीक रेज़ॉल्यूशन: 1080 × 1576 (हाई क्वालिटी शार्प रेंडरिंग के साथ)
         canvas.width = 1080;
-        canvas.height = 1576;
+        canvas.height = 1576; // आउटपुट फोटो साइज: 1080 × 1576
         let ctx = canvas.getContext("2d");
 
-        // पिक्सेल स्मूथनिंग इनेबल करना ताकि ज़ूम करने पर फोटो फटे नहीं (Anti-aliasing / High Quality Rendering)
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
@@ -818,7 +827,7 @@
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1576);
-        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95); // 95% हाई क्वालिटी आउटपुट
+        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
