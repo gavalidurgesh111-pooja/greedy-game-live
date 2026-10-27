@@ -94,9 +94,13 @@
     .profile-action-btns { display: flex; gap: 8px; }
     .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
-    /* वॉलेट बैलेंस वाले हिस्से पर वापस क्लिक फंक्शन (cursor: pointer) सेट कर दिया है ताकि वह पहले की तरह काम करे */
-    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; cursor: pointer; }
-    .stat-item { text-align: center; }
+    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
+    
+    /* सिर्फ Wallet Balance वाले हिस्से पर क्लिक करने का कर्सर और नियम रहेगा */
+    .stat-item-balance { text-align: center; cursor: pointer; }
+    /* Total Won Coins वाले हिस्से पर कोई क्लिक नहीं रहेगा */
+    .stat-item-won { text-align: center; }
+
     .stat-val { font-size: 16px; font-weight: 900; color: #222; }
     .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
 
@@ -201,13 +205,15 @@
         </div>
       </div>
 
-      <!-- यहाँ Wallet Balance पर क्लिक करने पर वापस openCoinSendModal खुलेगा, जैसा आपका पहले था -->
-      <div class="stats-container" onclick="openCoinSendModal()">
-        <div class="stat-item">
+      <!-- यहाँ Wallet Balance और Total Won Coins को अलग-अलग कर दिया है -->
+      <div class="stats-container">
+        <!-- सिर्फ Wallet Balance पर क्लिक करने पर कॉइन भेजने वाला बॉक्स खुलेगा -->
+        <div class="stat-item-balance" onclick="openCoinSendModal()">
           <div class="stat-val">🪙 <span id="profBalance">0</span></div>
           <div class="stat-label">Wallet Balance</div>
         </div>
-        <div class="stat-item">
+        <!-- Total Won Coins पर कोई क्लिक फंक्शन नहीं है, यह सिर्फ गिनती दिखाएगा -->
+        <div class="stat-item-won">
           <div class="stat-val">🏆 <span id="profWon">0</span></div>
           <div class="stat-label">Total Won Coins</div>
         </div>
@@ -450,7 +456,7 @@
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "0"); // Total Won Coins की शुरुआत 0 से
+      localStorage.setItem("greedy_won", "0");
       localStorage.setItem("greedy_level", "1");
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
@@ -459,6 +465,11 @@
       localStorage.setItem("greedy_avatar", ""); 
       for(let i=1; i<=9; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
+      }
+    } else {
+      // अगर पहले से 500 सेव हो गया है, तो उसे जबरदस्ती 0 कर दें ताकि शुरुआत 0 से हो
+      if (localStorage.getItem("greedy_won") === "500") {
+        localStorage.setItem("greedy_won", "0");
       }
     }
 
@@ -840,7 +851,7 @@
         targetFrame.style.display = "block";
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
-        targetFrame.style.backgroundSize = "100% 100% ";
+        targetFrame.style.backgroundSize = "100% 100%";
         targetFrame.style.backgroundPosition = "center";
         targetFrame.style.backgroundRepeat = "no-repeat";
         targetFrame.style.border = "none";
