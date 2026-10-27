@@ -133,15 +133,15 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (सफेद बैकग्राउंड और एक जैसी फिक्स क्रॉप साइज के साथ) --- */
+    /* --- फोटो एडिटर स्क्रीन --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
     
-    /* सभी फोटो के लिए क्रॉप बॉक्स की साइज एक जैसी और बिल्कुल फिक्स */
+    /* क्रॉप बॉक्स की साइज सभी फोटो के लिए बिल्कुल फिक्स और एक जैसी */
     .crop-frame-box { width: 94%; max-width: 440px; height: 320px; border: 2px solid rgba(0, 0, 0, 0.9); box-shadow: 0 0 0 9999px rgba(255, 255, 255, 0.95); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
-    #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; transition: transform 0.15s ease-out; }
-    #editorImagePreview:active { cursor: grabbing; transition: none; }
+    #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
+    #editorImagePreview:active { cursor: grabbing; }
 
     .editor-bottom-bar { width: 100%; height: 65px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #ddd; }
     .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #333; transition: color 0.2s, background 0.2s; }
@@ -470,7 +470,7 @@
     }
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
-    let userName = localStorage.getItem("greedy_name"] || "User_368282";
+    let userName = localStorage.getItem("greedy_name") || "User_368282";
     let userId = localStorage.getItem("greedy_unique_id") || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
@@ -682,7 +682,7 @@
           
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           
-          // सभी फोटो के लिए फिक्स और एक जैसी साइज (क्वालिटी और स्केल परफेक्ट)
+          // सभी फोटो के लिए एक जैसी फिक्स और सही साइज (क्वालिटी बरकरार रखने के लिए)
           imgScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
           let renderW = rawImageObj.width * imgScale;
           let renderH = rawImageObj.height * imgScale;
@@ -703,7 +703,7 @@
       reader.readAsDataURL(file);
     }
 
-    // स्नैप-बैक / बाउंस-बैक बाउंड्री लॉजिक (खींचने पर बाहर जाएगी, छोड़ने पर वापस बॉक्स की लाइन पर आएगी)
+    // स्नैप-बैक / बाउंस-बैक लॉजिक (खींचने पर बाहर जाएगी, छोड़ने पर वापस बॉक्स की लाइन पर आएगी)
     function snapBackImage() {
       let preview = document.getElementById("editorImagePreview");
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
@@ -745,7 +745,7 @@
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
         
         let newScale = imgScale * zoomFactor;
-        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height) * 0.8;
+        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
         if(newScale < minScale) newScale = minScale;
         if(newScale > 5.0) newScale = 5.0;
 
@@ -782,7 +782,7 @@
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
         
         let newScale = imgScale * zoomFactor;
-        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height) * 0.8;
+        let minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
         if(newScale < minScale) newScale = minScale;
         if(newScale > 5.0) newScale = 5.0;
 
@@ -817,7 +817,7 @@
     function endImgDrag() {
       if (isDraggingImg) {
         isDraggingImg = false;
-        snapBackImage(); // उंगली छोड़ने पर फोटो वापस अपनी सही पोजीशन/लाइन पर आ जाएगी
+        snapBackImage();
       }
       initialPinchDistance = null;
     }
