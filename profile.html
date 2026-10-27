@@ -121,11 +121,8 @@
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
-    /* पहला बॉक्स: नीचे-बाएँ 👤 और नीचे-दाएँ 1 (या जैसा स्क्रीनशॉट में है) */
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; }
     .cell-badge-profile-right { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
-    
-    /* बाकी बॉक्स: नीचे-दाएँ नंबर मार्कर */
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
@@ -136,7 +133,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (स्क्रीनशॉट 1 के जैसा लेआउट और जूम सपोर्ट) --- */
+    /* --- फोटो एडिटर स्क्रीन (जैसे पहली फोटो में दिखाया गया है) --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
@@ -258,14 +255,13 @@
       </div>
     </div>
 
-    <!-- फोटो एडिटर स्क्रीन (जैसे पहली फोटो में दिखाया गया है) -->
+    <!-- फोटो एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
         <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
-        <!-- Cancel बटन दबाने पर सीधे गैलरी/ग्रिड स्क्रीन खुलेगी -->
         <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
         <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
       </div>
@@ -685,14 +681,19 @@
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
-          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-          imgScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
+          let canvasArea = document.getElementById("editorCanvasArea");
+          let areaW = canvasArea.clientWidth || window.innerWidth;
+          let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
+
+          imgScale = Math.max(areaW / rawImageObj.width, areaH / rawImageObj.height);
+          let renderW = rawImageObj.width * imgScale;
+          let renderH = rawImageObj.height * imgScale;
+
+          preview.style.width = renderW + "px";
+          preview.style.height = renderH + "px";
           
-          preview.style.width = (rawImageObj.width * imgScale) + "px";
-          preview.style.height = (rawImageObj.height * imgScale) + "px";
-          
-          imgX = (window.innerWidth - (rawImageObj.width * imgScale)) / 2;
-          imgY = (window.innerHeight - 65 - (rawImageObj.height * imgScale)) / 2;
+          imgX = (areaW - renderW) / 2;
+          imgY = (areaH - renderH) / 2;
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
 
@@ -711,7 +712,7 @@
       window.addEventListener('touchmove', onImgDrag);
       window.addEventListener('mouseup', endImgDrag);
       window.addEventListener('touchend', endImgDrag);
-      // माउस व्हील से ज़ूम सपोर्ट
+      
       editorArea.addEventListener('wheel', (e) => {
         if(!rawImageObj) return;
         e.preventDefault();
@@ -783,7 +784,6 @@
       initialPinchDistance = null;
     }
 
-    // Cancel बटन दबाने पर अब एडिटर बंद होकर सीधे गैलरी/ग्रिड स्क्रीन खुलेगी
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
       rawImageObj = null;
