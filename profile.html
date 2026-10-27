@@ -453,8 +453,8 @@
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "500");
-      localStorage.setItem("greedy_level", "1");
+      localStorage.setItem("greedy_won", " ");
+      localStorage.setItem("greedy_level", " ");
       localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_privacy", "false");
@@ -842,7 +842,7 @@
     function applyCustomFrame(frameUrl) {
       const targetFrame = document.getElementById("profAvatarFrame");
       if (targetFrame) {
-        targetFrame.style.display = "block";
+        targetFrame.style.display = "gray";
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
         targetFrame.style.backgroundSize = "100% 100%";
@@ -896,7 +896,16 @@
     }
 
     function handleLogout() {
+      // सिर्फ यह बताएं कि यूजर अब अंदर नहीं है (ताकि वह दोबारा लॉगिन कर सके)
+      // ध्यान रखें: हम यहाँ localStorage को बिल्कुल नहीं छू रहे हैं, ताकि यूजर का डेटा सेफ रहे!
+      sessionStorage.removeItem("is_user_inside");
+      
       showCustomAlert("Logged out successfully!");
+      setTimeout(() => {
+        window.location.replace("index.html"); 
+      }, 800);
+    }
+
     }
 
     function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
