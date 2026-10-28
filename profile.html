@@ -136,13 +136,13 @@
     <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
-      <div class="profile-back-btn" onclick="openSettingsPage()">❮</div>
+      <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (क्लिक करते ही profile-photo.html पर जाएगा) -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -509,6 +509,7 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
+    // --- अंदर ही स्क्रीन बदलने के सही फंक्शन्स (बाहر नहीं भेजेंगे) ---
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
@@ -525,8 +526,14 @@
       setTimeout(() => { window.location.replace("index.html"); }, 800);
     }
 
-    function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
-    function closeAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "none"; }
+    function openAboutMeScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenAboutMe").style.display = "flex"; 
+    }
+    function closeAboutMeScreen() { 
+      document.getElementById("screenAboutMe").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
     
     function togglePrivacy() {
       if (!isMyProfile) return;
@@ -549,8 +556,15 @@
       }
     }
 
-    function openGroupsScreen() { document.getElementById("screenGroups").style.display = "flex"; }
-    function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
+    function openGroupsScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenGroups").style.display = "flex"; 
+    }
+    function closeGroupsScreen() { 
+      document.getElementById("screenGroups").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
+
     function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
