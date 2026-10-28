@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>User Profile - Greedy Coin</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
@@ -27,6 +27,7 @@
       justify-content: center;
     }
 
+    /* Upload बटन - अब इस पर लॉन्ग प्रेस करने से कोई टेक्स्ट सेलेक्ट मेनू नहीं खुलेगा */
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -44,6 +45,9 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       letter-spacing: 0.5px;
       cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
       transition: transform 0.1s ease, background 0.1s ease;
     }
     .cover-center-plus:active {
@@ -553,19 +557,22 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का सटीक सेटअप (नियम: केवल भरी हुई फोटो और ठीक अगला 1 'Upload' बटन दिखेगा) ---
+      // --- सटीक 9 कवर पेजेस का सेटअप (केवल भरी हुई फोटो और ठीक अगला 1 स्वतंत्र 'Upload' बटन दिखेगा) ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-      let lastFilledIndex = 1;
-      if (avatarPic && avatarPic.trim() !== "") lastFilledIndex = 1;
-
+      
+      // गणना करें कि कितने स्लॉट भरे हुए हैं
+      let filledCount = 0;
+      if (avatarPic && avatarPic.trim() !== "") filledCount = 1; // slot 1 (avatar)
       for(let i = 1; i <= 8; i++) {
         let val = localStorage.getItem("greedy_slot_" + i) || "";
         if (val && val.trim() !== "") {
-          lastFilledIndex = i + 1;
+          filledCount = i + 1;
         } else {
           break;
         }
       }
+      // अगला 1 स्वतंत्र अपलोड बटन दिखाने की अनुमति (अधिकतम 9)
+      let maxVisiblePages = filledCount < 9 ? filledCount + 1 : 9;
 
       for(let i=1; i<=9; i++) {
         let pageEl = document.getElementById("coverPage" + i);
@@ -582,17 +589,18 @@
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
+          pageEl.style.display = "flex";
         } else {
-          // केवल तभी अपलोड बटन दिखाएं जब यह स्लॉट अगले वैध क्रम (lastFilledIndex) पर हो और 9 से आगे न हो
-          if (isMyProfile && i <= (lastFilledIndex < 9 ? lastFilledIndex + 1 : 9) && (i === 1 || (i === 2 ? avatarPic : localStorage.getItem("greedy_slot_" + (i-2))) )) {
+          if (isMyProfile && i <= maxVisiblePages) {
             pageEl.style.backgroundImage = "none";
+            pageEl.style.display = "flex";
             if(plusEl) {
               plusEl.style.display = "flex";
               plusEl.innerText = "Upload";
             }
           } else {
             pageEl.style.backgroundImage = "none";
-            if(plusEl) plusEl.style.display = "none";
+            pageEl.style.display = "none"; // जो पन्ने अभी आने बाकी हैं, उन्हें छिपा दें ताकि आगे स्क्रول न हो सके
           }
         }
       }
@@ -618,7 +626,7 @@
         if(slider) {
           let secondPage = document.getElementById("coverPage2");
           let slot1Val = localStorage.getItem("greedy_slot_1") || "";
-          if(secondPage && slot1Val && slot1Val.trim() !== "") {
+          if(secondPage && secondPage.style.display !== "none" && slot1Val && slot1Val.trim() !== "") {
             slider.scrollLeft = secondPage.offsetLeft;
           } else {
             slider.scrollLeft = 0;
@@ -649,18 +657,18 @@
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
-      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-
-      let lastFilledIndex = 1;
-      if (avatarPic && avatarPic.trim() !== "") lastFilledIndex = 1;
+      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar"] || "";
+      let filledCount = 0;
+      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
       for(let i = 1; i <= 8; i++) {
         let val = localStorage.getItem("greedy_slot_" + i) || "";
         if (val && val.trim() !== "") {
-          lastFilledIndex = i + 1;
+          filledCount = i + 1;
         } else {
           break;
         }
       }
+      let maxGrid = filledCount < 9 ? filledCount + 1 : 9;
 
       for(let i=1; i<=9; i++) {
         let cell = document.createElement("div");
@@ -677,10 +685,12 @@
         if(slotVal && slotVal.trim() !== "") {
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
         } else {
-          if (isMyProfile && i <= (lastFilledIndex < 9 ? lastFilledIndex + 1 : 9) && (i === 1 || (i === 2 ? avatarPic : localStorage.getItem("greedy_slot_" + (i-2))) )) {
+          if (isMyProfile && i <= maxGrid) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+            cell.style.display = "flex";
           } else {
             cell.innerHTML = `<div class="badge-num">${i}</div>`;
+            cell.style.display = "none";
           }
         }
         container.appendChild(cell);
@@ -1023,8 +1033,6 @@
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvasW, canvasH);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
-        let savedSlotIndex = (activeEditorMode === "cover") ? activeSlotIndex : 1;
-
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
@@ -1039,7 +1047,7 @@
         }
         initProfile();
         
-        // --- नियम: फोटो सेव होते ही सीधे उसी नई फोटो वाले पन्ने पर जाकर रुक जाना चाहिए ---
+        // --- नियम: फोटो सेव होते ही सीधे उसी नए अपलोड किए गए पन्ने पर जाकर रुक जाना चाहिए ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if(slider) {
@@ -1053,7 +1061,7 @@
       }
     }
 
-    // --- नियम: स्क्रॉल लॉक (यूजर केवल भरी हुई तस्वीरों और ठीक अगले 1 'Upload' बटन तक ही स्क्रॉल कर पाएगा) ---
+    // --- नियम: सख्त स्क्रॉल लॉक (यूजर केवल भरी हुई तस्वीरों और ठीक अगले 1 'Upload' बटन तक ही स्क्रॉल कर पाएगा, आगे नहीं) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
