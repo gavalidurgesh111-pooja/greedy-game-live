@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area (6 Pages) */
+    /* Cover Slider Area (9 Pages) */
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
@@ -21,14 +21,12 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      /* दूसरी फोटो के जैसी पर्पल/बैंगनी थीम और बैकग्राउंड रंग */
       background-color: #9b51e0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    /* प्लस के निशान को हटाकर 'Upload' बटन जैसा सुंदर स्टाइल दिया गया है */
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -187,6 +185,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
+      <!-- 9 कवर पेजेस का डायनेमिक स्लाइडर कंटेनर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2">Upload</div></div>
@@ -194,6 +193,9 @@
         <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4">Upload</div></div>
         <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5">Upload</div></div>
         <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6">Upload</div></div>
+        <div class="cover-page" id="coverPage7"><div class="cover-center-plus owner-only-elem" id="plusCover7">Upload</div></div>
+        <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8">Upload</div></div>
+        <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9">Upload</div></div>
       </div>
       
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -487,7 +489,7 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=6; i++) {
+      for(let i=1; i<=9; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
       }
     } else {
@@ -546,16 +548,46 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      for(let i=1; i<=6; i++) {
-        let slotVal = localStorage.getItem("greedy_slot_" + i) || "";
+      // --- 9 कवर पेजेस को अपडेट करना (1 नंबर हमेशा प्रोफाइल फोटो रहेगी, और आगे की फोटो डायनेमिक लोड होंगी) ---
+      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+      
+      for(let i=1; i<=9; i++) {
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
+        if(!pageEl) continue;
+
+        let slotVal = "";
+        if (i === 1) {
+          slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो शो करेगा
+        } else {
+          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; // 2 से 9 तक कवर स्लॉट्स
+        }
+
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
-          pageEl.style.backgroundImage = "none";
-          if(plusEl) plusEl.style.display = isMyProfile ? "flex" : "none"; 
+          // अगर यह स्लॉट खाली है, तो चेक करें कि क्या पिछला स्लॉट भरा हुआ है (ताकि क्रम से ही अगला 'Upload' बटन दिखे)
+          let showUploadBtn = false;
+          if (i === 1) {
+            showUploadBtn = true;
+          } else {
+            let prevVal = (i === 2) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i-2)) || "");
+            if (prevVal && prevVal.trim() !== "") {
+              showUploadBtn = true;
+            }
+          }
+
+          if (isMyProfile && showUploadBtn) {
+            pageEl.style.backgroundImage = "none";
+            if(plusEl) {
+              plusEl.style.display = "flex";
+              plusEl.innerText = "Upload";
+            }
+          } else {
+            pageEl.style.backgroundImage = "none";
+            if(plusEl) plusEl.style.display = "none";
+          }
         }
       }
 
@@ -573,6 +605,23 @@
         }
       }
       updatePrivacyHeart();
+
+      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो (index 1) दिखेगी ---
+      setTimeout(() => {
+        let slider = document.getElementById("coverSlider");
+        if(slider) {
+          let secondPage = document.getElementById("coverPage2");
+          if(secondPage) {
+            // अगर 2 नंबर फोटो मौजूद है, तो उसे पहले दिखाएं, अन्यथा 1 नंबर दिखाएं
+            let slot1Val = localStorage.getItem("greedy_slot_1") || "";
+            if(slot1Val && slot1Val.trim() !== "") {
+              slider.scrollLeft = secondPage.offsetLeft;
+            } else {
+              slider.scrollLeft = 0;
+            }
+          }
+        }
+      }, 50);
     }
 
     function promptEditName() {
@@ -597,24 +646,38 @@
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
+      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+
       for(let i=1; i<=9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
         cell.onclick = () => handleGridCellClick(i);
 
-        if(i === 1) {
-          let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-          if(profPic && profPic.trim() !== "") {
-            cell.innerHTML = `<img src="${profPic}"><div class="cell-badge-profile-left">👤</div><div class="cell-badge-profile-right">1</div>`;
-          } else {
-            cell.innerHTML = `<div class="plus-sign">+</div><div class="cell-badge-profile-left">👤</div><div class="cell-badge-profile-right">1</div>`;
-          }
+        let slotVal = "";
+        if (i === 1) {
+          slotVal = avatarPic;
         } else {
-          let slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || "";
-          if(slotVal && slotVal.trim() !== "") {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || "";
+        }
+
+        if(slotVal && slotVal.trim() !== "") {
+          cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+        } else {
+          // क्रम से अगला Upload दिखने का नियम
+          let showPlus = false;
+          if (i === 1) {
+            showPlus = true;
           } else {
-            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+            let prevVal = (i === 2) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i-2)) || "");
+            if (prevVal && prevVal.trim() !== "") {
+              showPlus = true;
+            }
+          }
+
+          if (isMyProfile && showPlus) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          } else {
+            cell.innerHTML = `<div class="badge-num">${i}</div>`;
           }
         }
         container.appendChild(cell);
@@ -639,8 +702,14 @@
       if (!isMyProfile) return;
       
       if(index === 1) {
-        activeEditorMode = "avatar";
-        document.getElementById("hiddenAvatarInput").click();
+        let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+        if (profPic && profPic.trim() !== "") {
+          selectedSlotForTips = 0; // 0 म्हणजे प्रोफाइल फोटो
+          document.getElementById("tipsModal").style.display = "flex";
+        } else {
+          activeEditorMode = "avatar";
+          document.getElementById("hiddenAvatarInput").click();
+        }
       } else {
         let slotNum = index - 1;
         let val = localStorage.getItem("greedy_slot_" + slotNum) || "";
@@ -662,20 +731,27 @@
 
     function tipsUseAsProfile() {
       closeTipsModal();
-      let val = localStorage.getItem("greedy_slot_" + selectedSlotForTips);
-      if(val) {
-        currentAvatar = val;
-        localStorage.setItem("greedy_avatar", val);
-        initProfile();
-        showCustomAlert("Updated as profile picture!");
+      if(selectedSlotForTips > 0) {
+        let val = localStorage.getItem("greedy_slot_" + selectedSlotForTips);
+        if(val) {
+          currentAvatar = val;
+          localStorage.setItem("greedy_avatar", val);
+          initProfile();
+          showCustomAlert("Updated as profile picture!");
+        }
       }
     }
 
     function tipsChangePicture() {
       closeTipsModal();
-      activeEditorMode = "cover";
-      activeSlotIndex = selectedSlotForTips;
-      document.getElementById("hiddenGalleryInput").click();
+      if(selectedSlotForTips === 0) {
+        activeEditorMode = "avatar";
+        document.getElementById("hiddenAvatarInput").click();
+      } else {
+        activeEditorMode = "cover";
+        activeSlotIndex = selectedSlotForTips;
+        document.getElementById("hiddenGalleryInput").click();
+      }
     }
 
     function tipsDeletePicture() {
@@ -686,22 +762,27 @@
 
       setTimeout(function() {
         if(confirm("Delete this picture?")) {
-          localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
+          if(selectedSlotForTips === 0) {
+            currentAvatar = "";
+            localStorage.setItem("greedy_avatar", "");
+          } else {
+            localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
 
-          let activePhotos = [];
-          for(let i = 1; i <= 6; i++) {
-            let p = localStorage.getItem("greedy_slot_" + i);
-            if(p && p.trim() !== "") {
-              activePhotos.push(p);
+            let activePhotos = [];
+            for(let i = 1; i <= 8; i++) {
+              let p = localStorage.getItem("greedy_slot_" + i);
+              if(p && p.trim() !== "") {
+                activePhotos.push(p);
+              }
             }
-          }
 
-          for(let i = 1; i <= 6; i++) {
-            localStorage.setItem("greedy_slot_" + i, "");
-          }
+            for(let i = 1; i <= 8; i++) {
+              localStorage.setItem("greedy_slot_" + i, "");
+            }
 
-          for(let i = 0; i < activePhotos.length; i++) {
-            localStorage.setItem("greedy_slot_" + (i + 1), activePhotos[i]);
+            for(let i = 0; i < activePhotos.length; i++) {
+              localStorage.setItem("greedy_slot_" + (i + 1), activePhotos[i]);
+            }
           }
 
           initProfile();
@@ -975,7 +1056,7 @@
     }
 
     function applyCustomFrame(frameUrl) {
-      const targetFrame = document.getElementById("profAvatarFile");
+      const targetFrame = document.getElementById("profAvatarFrame");
       if (targetFrame) {
         targetFrame.style.display = "block";
         targetFrame.className = "avatar-frame";
