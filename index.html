@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <!-- More Options Modal (195 देशों की भाषाओं के साथ) -->
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px; max-height:80vh; overflow-y:auto;">
         <select class="lang-select-normal" id="loginLangSelector" onchange="changeLanguage(this.value)">
@@ -186,7 +186,6 @@
           <option value="ku">🇹🇷 Kurdî (Kurdish)</option>
           <option value="ps">🇦🇫 پښتو (Pashto)</option>
           <option value="sd">🇵🇰 سنڌي (Sindhi)</option>
-          <option value="si">🇱🇰 සිංහල (Sinhala)</option>
           <option value="tg">🇹🇯 Тоҷикӣ (Tajik)</option>
           <option value="tk">🇹🇲 Türkmençe (Turkmen)</option>
           <option value="ug">🇨🇳 ئۇيغۇرچە (Uyghur)</option>
@@ -198,11 +197,10 @@
       </div>
     </div>
 
-    <!-- Phone Login Screen (195 देशों के फोन कोड और 195 देशों की भाषाएं) -->
+    <!-- Phone Login Screen -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
-        <!-- फोन वाले पेज पर 195 देशों की भाषाओं वाला स्टाइलिश बॉक्स -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी</option>
           <option value="en">🌐 English</option>
@@ -492,16 +490,31 @@
         <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
       </div>
       <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;">
-        <button class="btn-round-next" id="submitBtn" onclick="goToProfile()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button>
+        <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button>
       </div>
     </div>
 
-    <!-- Password Screen -->
-    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative;">
+    <!-- Password Screen (दूसरी तस्वीर के जैसा बिल्कुल सटीक डिज़ाइन) -->
+    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh;">
       <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
+      
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
-      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Log in</div>
-      <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:10px 14px;"><input type="password" class="pass-input" id="passInput" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;"></div>
+      
+      <!-- जैसा दूसरी तस्वीर में ऊपर है: Log in / Enter Password -->
+      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
+      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password</div>
+
+      <!-- पासवर्ड इनपुट बॉक्स और आँख का आइकॉन -->
+      <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
+        <input type="password" class="pass-input" id="passInput" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+        <span onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:18px; color:#666; padding:0 5px;" title="Show/Hide Password">👁️</span>
+      </div>
+
+      <!-- जैसा दूसरी तस्वीर में नीचे है: Forgot password -->
+      <div style="margin-top:15px; text-align:center;">
+        <span onclick="forgotPasswordAction()" style="color:#4a148c; font-size:14px; font-weight:600; cursor:pointer; text-decoration:underline;">Forgot password</span>
+      </div>
+
       <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" style="width:60px; height:60px; border-radius:50%; background:#5e229e; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button></div>
     </div>
 
@@ -562,10 +575,30 @@
       document.getElementById("screenPass").style.display = "none";
       document.getElementById("screenPhone").style.display = "flex";
     }
+    function goToPasswordScreen() {
+      let phone = document.getElementById("phoneInput").value.trim();
+      if(!phone) {
+        alert("Please enter phone number first!");
+        return;
+      }
+      document.getElementById("screenPhone").style.display = "none";
+      document.getElementById("screenPass").style.display = "flex";
+    }
+    function togglePasswordVisibility() {
+      let passInput = document.getElementById("passInput");
+      if (passInput.type === "password") {
+        passInput.type = "text";
+      } else {
+        passInput.type = "password";
+      }
+    }
+    function forgotPasswordAction() {
+      alert("Password reset instructions will be sent via SMS/OTP.");
+    }
     function doFinalLogin() {
       document.getElementById("loadingOverlay").style.display = "flex";
       setTimeout(() => {
-        window.location.href = "profile.html";
+        window.location.replace("profile.html");
       }, 1000);
     }
     function openDoc(type) {
@@ -588,10 +621,7 @@
       }
     }
     function goToProfile() {
-      // 1. यह सिर्फ तब तक याद रखेगा जब तक ब्राउज़र/टैब खुला है
       sessionStorage.setItem("is_user_inside", "yes");
-
-      // 2. यूजर को आगे भेज दें
       window.location.replace("profile.html");
     }
   </script>
