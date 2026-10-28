@@ -138,7 +138,7 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    /* Unsaved Changes Modal */
+    /* Unsaved Changes Modal (Tips) */
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
     .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
@@ -280,14 +280,14 @@
     <!-- Profile photo पेज -->
     <div id="screenPhotoGrid" class="sub-screen">
       <div class="sub-header">
-        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridWithoutSaving()">❮</div>
+        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
         <h2>Profile photo</h2>
         <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
       </div>
       <div class="grid-9-container" id="grid9Container"></div>
     </div>
 
-    <!-- अनसेव्ड चेंज वाला टिप्स पॉपअप (अब सिर्फ तभी आएगा जब यूजर चाहे तो, या हेटया जा सकता है) -->
+    <!-- Unsaved Changes Modal (Tips) -->
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
         <h3>Tips</h3>
@@ -301,7 +301,7 @@
 
     <!-- टिप्स (Tips) पॉपअप मेनू -->
     <div id="tipsModal" class="modal-overlay">
-      <div class="modal-box">
+      <div class="tips-box">
         <h3>Tips</h3>
         <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
         <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
@@ -437,7 +437,7 @@
 
   <script>
     // ==========================================
-    // अल्टीमेट बैक बटन सुरक्षा गार्ड (वेबसाइट से बाहर जाने पर शत-प्रतिशत रोक)
+    // सटीक बैक बटन और पॉपअप लॉजिक (लिंक से बाहर जाने पर पूर्ण रोक)
     // ==========================================
     history.pushState({page: "main_profile"}, "", window.location.href);
 
@@ -473,19 +473,32 @@
         tipsModal.style.display = "none";
         return;
       }
-      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        unsavedTipsModal.style.display = "none";
-        return;
-      }
       if (photoEditor && photoEditor.style.display === "flex") {
         photoEditor.style.display = "none";
         return;
       }
 
-      // **मुख्य सुधार:** यदि यूजर फोटो ग्रिड स्क्रीन पर है और उसने मोबाइल का बैक बटन दबाया, 
-      // तो बिना किसी पॉपअप के तुरंत फोटो सेव किए बिना सीधे प्रोफाइल पेज पर लौट आए[span_4](start_span)[span_4](end_span)।
+      // **नया नियम लागू:** यदि यूजर फोटो ग्रिड पेज पर है और उसने मोबाइल का बैक बटन दबाया
       if (photoGrid && photoGrid.style.display === "flex") {
-        closePhotoGridWithoutSaving();
+        if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
+          // अगर पॉपअप खुला हुआ है और यूजर ने दोबारा बैक बटन दबा दिया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)[span_4](start_span)[span_4](end_span)
+          closePhotoGridWithoutSaving();
+        } else {
+          // पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा[span_5](start_span)[span_5](end_span)
+          let hasChanges = false;
+          if (currentAvatarTemp !== currentAvatar) hasChanges = true;
+          for(let i=1; i<=8; i++) {
+            if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
+              hasChanges = true;
+              break;
+            }
+          }
+          if (hasChanges) {
+            unsavedTipsModal.style.display = "flex";
+          } else {
+            closePhotoGridWithoutSaving();
+          }
+        }
         return;
       }
 
@@ -733,7 +746,7 @@
 
     let currentAvatarTemp = "";
 
-    // **नया नियम:** बिना सेव किए (या बैक बटन दबाने पर) सीधा प्रोफाइल पेज पर जाने का फंक्शन (फोटो सेव नहीं होगी)
+    // बिना सेव किए प्रोफाइल पेज पर लौटने का फंक्शन[span_6](start_span)[span_6](end_span)
     function closePhotoGridWithoutSaving() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -744,11 +757,28 @@
       initProfile();
     }
 
+    // ऊपर बाएं कोने के बैक तीर (❮) को दबाने पर पहले पॉपअप दिखाना
+    function handleGridBackAction() {
+      let hasChanges = false;
+      if (currentAvatarTemp !== currentAvatar) hasChanges = true;
+      for(let i=1; i<=8; i++) {
+        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
+          hasChanges = true;
+          break;
+        }
+      }
+      if (hasChanges) {
+        document.getElementById("unsavedTipsModal").style.display = "flex";
+      } else {
+        closePhotoGridWithoutSaving();
+      }
+    }
+
     function confirmNoThanks() {
       closePhotoGridWithoutSaving();
     }
 
-    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_5](start_span)[span_5](end_span)
+    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_7](start_span)[span_7](end_span)
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
