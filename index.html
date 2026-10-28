@@ -71,6 +71,19 @@
       background: #00cd00 !important;
       box-shadow: 0 0 15px #00cd00;
     }
+
+    /* पासवर्ड बटन के लिए एक्टिव स्टेट (जब ठीक 8 कैरेक्टर हों) */
+    #passSubmitBtn {
+      opacity: 0.4;
+      pointer-events: none;
+      transition: 0.3s;
+    }
+    #passSubmitBtn.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: #00cd00 !important;
+      box-shadow: 0 0 15px #00cd00;
+    }
   </style>
 </head>
 <body>
@@ -198,7 +211,7 @@
     </div>
 
     <!-- Phone Login Screen -->
-    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333;">
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; padding-bottom:100px; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
@@ -489,24 +502,24 @@
         </select>
         <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
       </div>
-      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;">
+      <!-- नॉर्मल पैडिंग वाला बटन जो स्क्रीन के नीचे छिपेगा नहीं -->
+      <div class="next-btn-container" style="margin-top:40px; display:flex; justify-content:flex-end;">
         <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button>
       </div>
     </div>
 
-    <!-- Password Screen (दूसरी तस्वीर के जैसा बिल्कुल सही और असली आँख के आइकॉन वाला डिज़ाइन) -->
-    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh;">
+    <!-- Password Screen (पासवर्ड इनपुट और ठीक 8 कैरेक्टर लिमिट के साथ) -->
+    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; padding-bottom:100px; overflow-y:auto;">
       <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
       
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
       
-      <!-- जैसा दूसरी तस्वीर में ऊपर है: Log in / Enter Password -->
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
-      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password</div>
+      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password (Exact 8 characters)</div>
 
-      <!-- पासवर्ड इनपुट बॉक्स और बिल्कुल वैसी ही खुली/बंद आँख का आइकॉन (SVG) -->
+      <!-- पासवर्ड इनपुट बॉक्स (टाइप करते ही हरा रंग) -->
       <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
-        <input type="password" class="pass-input" id="passInput" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+        <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         <!-- आँख का आइकॉन (SVG) -->
         <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -514,12 +527,14 @@
         </svg>
       </div>
 
-      <!-- जैसा दूसरी तस्वीर में नीचे है: Forgot password -->
       <div style="margin-top:15px; text-align:center;">
         <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password</span>
       </div>
 
-      <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" style="width:60px; height:60px; border-radius:50%; background:#5e229e; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button></div>
+      <!-- नॉर्मल पैडिंग वाला पासवर्ड सेव/नेक्स्ट बटन (जो ठीक 8 कैरेक्टर होने पर हरा होगा) -->
+      <div class="next-btn-container" style="margin-top:40px; display:flex; justify-content:flex-end;">
+        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button>
+      </div>
     </div>
 
     <!-- Terms & Conditions Page -->
@@ -593,11 +608,9 @@
       let eyeIcon = document.getElementById("eyeIcon");
       if (passInput.type === "password") {
         passInput.type = "text";
-        // बंद आँख या कटी हुई आँख का SVG (जब पासवर्ड दिख रहा हो)
         eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
       } else {
         passInput.type = "password";
-        // खुली आँख का SVG (जब पासवर्ड छुपा हुआ हो)
         eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
       }
     }
@@ -605,6 +618,11 @@
       alert("Password reset instructions will be sent via SMS/OTP.");
     }
     function doFinalLogin() {
+      let passVal = document.getElementById("passInput").value;
+      if(passVal.length !== 8) {
+        alert("Password must be exactly 8 characters!");
+        return;
+      }
       document.getElementById("loadingOverlay").style.display = "flex";
       setTimeout(() => {
         window.location.replace("profile.html");
@@ -629,6 +647,29 @@
         btn.classList.remove("active");
       }
     }
+    
+    // पासवर्ड इनपुट वैलिडेट करने और हरा रंग देने का फंक्शन (ठीक 8 अंकों/अक्षरों के लिए)
+    function checkPasswordInput(input) {
+      let val = input.value;
+      let btn = document.getElementById("passSubmitBtn");
+      
+      // जब यूजर टाइप करे तो टेक्स्ट का रंग हरा (Green) हो जाए
+      if(val.length > 0) {
+        input.style.color = "#00cd00";
+        input.style.fontWeight = "bold";
+      } else {
+        input.style.color = "#333";
+        input.style.fontWeight = "normal";
+      }
+
+      // अगर ठीक 8 कैरेक्टर हैं तभी बटन एक्टिव और हरा होगा
+      if (val.length === 8) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
     function goToProfile() {
       sessionStorage.setItem("is_user_inside", "yes");
       window.location.replace("profile.html");
