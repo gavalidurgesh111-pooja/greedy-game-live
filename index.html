@@ -9,9 +9,10 @@
     body { 
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #111 url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed; 
       background-size: cover;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Gold Coin नाम की आकर्षक और शानदार डिज़ाइन */
     .brand-title { 
       font-size: 48px; 
       font-weight: 900; 
@@ -24,7 +25,6 @@
       text-align: center; 
     }
 
-    /* भाषा बदलने का सामान्य साइज़ वाला बॉक्स */
     .lang-select-normal {
       width: 100%;
       padding: 10px 14px;
@@ -38,7 +38,6 @@
       cursor: pointer;
     }
 
-    /* फोन वाले पेज पर स्टाइलिश नॉर्मल साइज़ भाषा चयन बॉक्स */
     .phone-lang-select {
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid #8a2be2;
@@ -60,6 +59,19 @@
     .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
     .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; background: none; border: none; font-weight: bold; }
     
+    /* बटन को नीचे फिक्स करने की क्लास */
+    .bottom-fixed-btn-container {
+      position: fixed;
+      bottom: 25px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 25px;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+
     #submitBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -72,7 +84,6 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* पासवर्ड बटन के लिए एक्टिव स्टेट (जब ठीक 8 कैरेक्टर हों) */
     #passSubmitBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -206,12 +217,12 @@
         </select>
         <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone</button>
         <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border-none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
       </div>
     </div>
 
     <!-- Phone Login Screen -->
-    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; padding-bottom:100px; overflow-y:auto;">
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
@@ -309,231 +320,236 @@
         </select>
       </div>
 
-      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Register / log in</div>
-      <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:8px 12px;">
-        <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:130px; outline:none; cursor:pointer;">
-          <option value="+91">🇮🇳 (+91) India</option>
-          <option value="+93">🇦🇫 (+93) Afghanistan</option>
-          <option value="+355">🇦🇱 (+355) Albania</option>
-          <option value="+213">🇩🇿 (+213) Algeria</option>
-          <option value="+376">🇦🇩 (+376) Andorra</option>
-          <option value="+244">🇦🇴 (+244) Angola</option>
-          <option value="+54">🇦🇷 (+54) Argentina</option>
-          <option value="+374">🇦🇲 (+374) Armenia</option>
-          <option value="+61">🇦🇺 (+61) Australia</option>
-          <option value="+43">🇦🇹 (+43) Austria</option>
-          <option value="+994">🇦🇿 (+994) Azerbaijan</option>
-          <option value="+973">🇧🇭 (+973) Bahrain</option>
-          <option value="+880">🇧🇩 (+880) Bangladesh</option>
-          <option value="+375">🇧🇾 (+375) Belarus</option>
-          <option value="+32">🇧🇪 (+32) Belgium</option>
-          <option value="+501">🇧🇿 (+501) Belize</option>
-          <option value="+229">🇧🇯 (+229) Benin</option>
-          <option value="+975">🇧🇹 (+975) Bhutan</option>
-          <option value="+591">🇧🇴 (+591) Bolivia</option>
-          <option value="+387">🇧🇦 (+387) Bosnia</option>
-          <option value="+267">🇧🇼 (+267) Botswana</option>
-          <option value="+55">🇧🇷 (+55) Brazil</option>
-          <option value="+673">🇧🇳 (+673) Brunei</option>
-          <option value="+359">🇧🇬 (+359) Bulgaria</option>
-          <option value="+226">🇧🇫 (+226) Burkina Faso</option>
-          <option value="+257">🇧🇮 (+257) Burundi</option>
-          <option value="+855">🇰🇭 (+855) Cambodia</option>
-          <option value="+237">🇨🇲 (+237) Cameroon</option>
-          <option value="+1">🇨🇦 (+1) Canada</option>
-          <option value="+238">🇨🇻 (+238) Cape Verde</option>
-          <option value="+236">🇨🇫 (+236) Central African Rep</option>
-          <option value="+235">🇹🇩 (+235) Chad</option>
-          <option value="+56">🇨🇱 (+56) Chile</option>
-          <option value="+86">🇨🇳 (+86) China</option>
-          <option value="+57">🇨🇴 (+57) Colombia</option>
-          <option value="+269">🇰🇲 (+269) Comoros</option>
-          <option value="+242">🇨🇬 (+242) Congo</option>
-          <option value="+506">🇨🇷 (+506) Costa Rica</option>
-          <option value="+385">🇭🇷 (+385) Croatia</option>
-          <option value="+53">🇨🇺 (+53) Cuba</option>
-          <option value="+357">🇨🇾 (+357) Cyprus</option>
-          <option value="+420">🇨🇿 (+420) Czech Republic</option>
-          <option value="+45">🇩🇰 (+45) Denmark</option>
-          <option value="+253">🇩🇯 (+253) Djibouti</option>
-          <option value="+1767">🇩🇲 (+1767) Dominica</option>
-          <option value="+1809">🇩🇴 (+1809) Dominican Rep</option>
-          <option value="+593">🇪🇨 (+593) Ecuador</option>
-          <option value="+20">🇪🇬 (+20) Egypt</option>
-          <option value="+503">🇸🇻 (+503) El Salvador</option>
-          <option value="+240">🇬🇶 (+240) Equatorial Guinea</option>
-          <option value="+291">🇪🇷 (+291) Eritrea</option>
-          <option value="+372">🇪🇪 (+372) Estonia</option>
-          <option value="+251">🇪🇹 (+251) Ethiopia</option>
-          <option value="+679">🇫🇯 (+679) Fiji</option>
-          <option value="+358">🇫🇮 (+358) Finland</option>
-          <option value="+33">🇫🇷 (+33) France</option>
-          <option value="+241">🇬🇦 (+241) Gabon</option>
-          <option value="+220">🇬🇲 (+220) Gambia</option>
-          <option value="+995">🇬🇪 (+995) Georgia</option>
-          <option value="+49">🇩🇪 (+49) Germany</option>
-          <option value="+233">🇬🇭 (+233) Ghana</option>
-          <option value="+30">🇬🇷 (+30) Greece</option>
-          <option value="+502">🇬🇹 (+502) Guatemala</option>
-          <option value="+224">🇬🇳 (+224) Guinea</option>
-          <option value="+245">🇬🇼 (+245) Guinea-Bissau</option>
-          <option value="+592">🇬🇾 (+592) Guyana</option>
-          <option value="+509">🇭🇹 (+509) Haiti</option>
-          <option value="+504">🇭🇳 (+504) Honduras</option>
-          <option value="+852">🇭🇰 (+852) Hong Kong</option>
-          <option value="+36">🇭🇺 (+36) Hungary</option>
-          <option value="+354">🇮🇸 (+354) Iceland</option>
-          <option value="+62">🇮🇩 (+62) Indonesia</option>
-          <option value="+98">🇮🇷 (+98) Iran</option>
-          <option value="+964">🇮🇶 (+964) Iraq</option>
-          <option value="+353">🇮🇪 (+353) Ireland</option>
-          <option value="+972">🇮🇱 (+972) Israel</option>
-          <option value="+39">🇮🇹 (+39) Italy</option>
-          <option value="+1876">🇯🇲 (+1876) Jamaica</option>
-          <option value="+81">🇯🇵 (+81) Japan</option>
-          <option value="+962">🇯🇴 (+962) Jordan</option>
-          <option value="+7">🇰🇿 (+7) Kazakhstan</option>
-          <option value="+254">🇰🇪 (+254) Kenya</option>
-          <option value="+686">🇰🇮 (+686) Kiribati</option>
-          <option value="+850">🇰🇵 (+850) North Korea</option>
-          <option value="+82">🇰🇷 (+82) South Korea</option>
-          <option value="+965">🇰🇼 (+965) Kuwait</option>
-          <option value="+996">🇰🇬 (+996) Kyrgyzstan</option>
-          <option value="+856">🇱🇦 (+856) Laos</option>
-          <option value="+371">🇱🇻 (+371) Latvia</option>
-          <option value="+961">🇱🇧 (+961) Lebanon</option>
-          <option value="+266">🇱🇸 (+266) Lesotho</option>
-          <option value="+231">🇱🇷 (+231) Liberia</option>
-          <option value="+218">🇱🇾 (+218) Libya</option>
-          <option value="+423">🇱🇮 (+423) Liechtenstein</option>
-          <option value="+370">🇱🇹 (+370) Lithuania</option>
-          <option value="+352">🇱🇺 (+352) Luxembourg</option>
-          <option value="+853">🇲🇴 (+853) Macau</option>
-          <option value="+389">🇲🇰 (+389) North Macedonia</option>
-          <option value="+261">🇲🇬 (+261) Madagascar</option>
-          <option value="+265">🇲🇼 (+265) Malawi</option>
-          <option value="+60">🇲🇾 (+60) Malaysia</option>
-          <option value="+960">🇲🇻 (+960) Maldives</option>
-          <option value="+223">🇲🇱 (+223) Mali</option>
-          <option value="+356">🇲🇹 (+356) Malta</option>
-          <option value="+692">🇲🇭 (+692) Marshall Islands</option>
-          <option value="+222">🇲🇷 (+222) Mauritania</option>
-          <option value="+230">🇲🇺 (+230) Mauritius</option>
-          <option value="+52">🇲🇽 (+52) Mexico</option>
-          <option value="+691">🇫🇲 (+691) Micronesia</option>
-          <option value="+373">🇲🇩 (+373) Moldova</option>
-          <option value="+377">🇲🇨 (+377) Monaco</option>
-          <option value="+976">🇲🇳 (+976) Mongolia</option>
-          <option value="+382">🇲🇪 (+382) Montenegro</option>
-          <option value="+212">🇲🇦 (+212) Morocco</option>
-          <option value="+258">🇲🇿 (+258) Mozambique</option>
-          <option value="+95">🇲🇲 (+95) Myanmar</option>
-          <option value="+264">🇳🇦 (+264) Namibia</option>
-          <option value="+674">🇳🇷 (+674) Nauru</option>
-          <option value="+977">🇳🇵 (+977) Nepal</option>
-          <option value="+31">🇳🇱 (+31) Netherlands</option>
-          <option value="+64">🇳🇿 (+64) New Zealand</option>
-          <option value="+505">🇳🇮 (+505) Nicaragua</option>
-          <option value="+227">🇳🇪 (+227) Niger</option>
-          <option value="+234">🇳🇬 (+234) Nigeria</option>
-          <option value="+47">🇳🇴 (+47) Norway</option>
-          <option value="+968">🇴🇲 (+968) Oman</option>
-          <option value="+92">🇵🇰 (+92) Pakistan</option>
-          <option value="+680">🇵🇼 (+680) Palau</option>
-          <option value="+507">🇵🇦 (+507) Panama</option>
-          <option value="+675">🇵🇬 (+675) Papua New Guinea</option>
-          <option value="+595">🇵🇾 (+595) Paraguay</option>
-          <option value="+51">🇵🇪 (+51) Peru</option>
-          <option value="+63">🇵🇭 (+63) Philippines</option>
-          <option value="+48">🇵🇱 (+48) Poland</option>
-          <option value="+351">🇵🇹 (+351) Portugal</option>
-          <option value="+974">🇶🇦 (+974) Qatar</option>
-          <option value="+40">🇷🇴 (+40) Romania</option>
-          <option value="+7">🇷🇺 (+7) Russia</option>
-          <option value="+250">🇷🇼 (+250) Rwanda</option>
-          <option value="+685">🇼🇸 (+685) Samoa</option>
-          <option value="+378">🇸🇲 (+378) San Marino</option>
-          <option value="+239">🇸🇹 (+239) Sao Tome</option>
-          <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
-          <option value="+221">🇸🇳 (+221) Senegal</option>
-          <option value="+381">🇷🇸 (+381) Serbia</option>
-          <option value="+248">🇸🇨 (+248) Seychelles</option>
-          <option value="+232">🇸🇱 (+232) Sierra Leone</option>
-          <option value="+65">🇸🇬 (+65) Singapore</option>
-          <option value="+421">🇸🇰 (+421) Slovakia</option>
-          <option value="+386">🇸🇮 (+386) Slovenia</option>
-          <option value="+677">🇸🇧 (+677) Solomon Islands</option>
-          <option value="+252">🇸🇴 (+252) Somalia</option>
-          <option value="+27">🇿🇦 (+27) South Africa</option>
-          <option value="+211">🇸🇸 (+211) South Sudan</option>
-          <option value="+34">🇪🇸 (+34) Spain</option>
-          <option value="+94">🇱🇰 (+94) Sri Lanka</option>
-          <option value="+249">🇸🇩 (+249) Sudan</option>
-          <option value="+597">🇸🇷 (+597) Suriname</option>
-          <option value="+268">🇸🇿 (+268) Eswatini</option>
-          <option value="+46">🇸🇪 (+46) Sweden</option>
-          <option value="+41">🇨🇭 (+41) Switzerland</option>
-          <option value="+963">🇸🇾 (+963) Syria</option>
-          <option value="+886">🇹🇼 (+886) Taiwan</option>
-          <option value="+992">🇹🇯 (+992) Tajikistan</option>
-          <option value="+255">🇹🇿 (+255) Tanzania</option>
-          <option value="+66">🇹🇭 (+66) Thailand</option>
-          <option value="+670">🇹🇱 (+670) Timor-Leste</option>
-          <option value="+228">🇹🇬 (+228) Togo</option>
-          <option value="+676">🇹🇴 (+676) Tonga</option>
-          <option value="+1868">🇹🇹 (+1868) Trinidad and Tobago</option>
-          <option value="+216">🇹🇳 (+216) Tunisia</option>
-          <option value="+90">🇹🇷 (+90) Turkey</option>
-          <option value="+993">🇹🇲 (+993) Turkmenistan</option>
-          <option value="+688">🇹🇻 (+688) Tuvalu</option>
-          <option value="+256">🇺🇬 (+256) Uganda</option>
-          <option value="+380">🇺🇦 (+380) Ukraine</option>
-          <option value="+971">🇦🇪 (+971) UAE</option>
-          <option value="+44">🇬🇧 (+44) UK</option>
-          <option value="+1">🇺🇸 (+1) USA</option>
-          <option value="+598">🇺🇾 (+598) Uruguay</option>
-          <option value="+998">🇺🇿 (+998) Uzbekistan</option>
-          <option value="+678">🇻🇺 (+678) Vanuatu</option>
-          <option value="+58">🇻🇪 (+58) Venezuela</option>
-          <option value="+84">🇻🇳 (+84) Vietnam</option>
-          <option value="+967">🇾🇪 (+967) Yemen</option>
-          <option value="+260">🇿🇲 (+260) Zambia</option>
-          <option value="+263">🇿🇼 (+263) Zimbabwe</option>
-        </select>
-        <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
+      <!-- नंबर डालने वाले बॉक्स को ऊपर से नीचे खिसकाने के लिए margin-top बढ़ा दिया गया है -->
+      <div style="margin-top: 40px;">
+        <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Register / log in</div>
+        <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:8px 12px;">
+          <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:130px; outline:none; cursor:pointer;">
+            <option value="+91">🇮🇳 (+91) India</option>
+            <option value="+93">🇦🇫 (+93) Afghanistan</option>
+            <option value="+355">🇦🇱 (+355) Albania</option>
+            <option value="+213">🇩🇿 (+213) Algeria</option>
+            <option value="+376">🇦🇩 (+376) Andorra</option>
+            <option value="+244">🇦🇴 (+244) Angola</option>
+            <option value="+54">🇦🇷 (+54) Argentina</option>
+            <option value="+374">🇦🇲 (+374) Armenia</option>
+            <option value="+61">🇦🇺 (+61) Australia</option>
+            <option value="+43">🇦🇹 (+43) Austria</option>
+            <option value="+994">🇦🇿 (+994) Azerbaijan</option>
+            <option value="+973">🇧🇭 (+973) Bahrain</option>
+            <option value="+880">🇧🇩 (+880) Bangladesh</option>
+            <option value="+375">🇧🇾 (+375) Belarus</option>
+            <option value="+32">🇧🇪 (+32) Belgium</option>
+            <option value="+501">🇧🇿 (+501) Belize</option>
+            <option value="+229">🇧🇯 (+229) Benin</option>
+            <option value="+975">🇧🇹 (+975) Bhutan</option>
+            <option value="+591">🇧🇴 (+591) Bolivia</option>
+            <option value="+387">🇧🇦 (+387) Bosnia</option>
+            <option value="+267">🇧🇼 (+267) Botswana</option>
+            <option value="+55">🇧🇷 (+55) Brazil</option>
+            <option value="+673">🇧🇳 (+673) Brunei</option>
+            <option value="+359">🇧🇬 (+359) Bulgaria</option>
+            <option value="+226">🇧🇫 (+226) Burkina Faso</option>
+            <option value="+257">🇧🇮 (+257) Burundi</option>
+            <option value="+855">🇰🇭 (+855) Cambodia</option>
+            <option value="+237">🇨🇲 (+237) Cameroon</option>
+            <option value="+1">🇨🇦 (+1) Canada</option>
+            <option value="+238">🇨🇻 (+238) Cape Verde</option>
+            <option value="+236">🇨🇫 (+236) Central African Rep</option>
+            <option value="+235">🇹🇩 (+235) Chad</option>
+            <option value="+56">🇨🇱 (+56) Chile</option>
+            <option value="+86">🇨🇳 (+86) China</option>
+            <option value="+57">🇨🇴 (+57) Colombia</option>
+            <option value="+269">🇰🇲 (+269) Comoros</option>
+            <option value="+242">🇨🇬 (+242) Congo</option>
+            <option value="+506">🇨🇷 (+506) Costa Rica</option>
+            <option value="+385">🇭🇷 (+385) Croatia</option>
+            <option value="+53">🇨🇺 (+53) Cuba</option>
+            <option value="+357">🇨🇾 (+357) Cyprus</option>
+            <option value="+420">🇨🇿 (+420) Czech Republic</option>
+            <option value="+45">🇩🇰 (+45) Denmark</option>
+            <option value="+253">🇩🇯 (+253) Djibouti</option>
+            <option value="+1767">🇩🇲 (+1767) Dominica</option>
+            <option value="+1809">🇩🇴 (+1809) Dominican Rep</option>
+            <option value="+593">🇪🇨 (+593) Ecuador</option>
+            <option value="+20">🇪🇬 (+20) Egypt</option>
+            <option value="+503">🇸🇻 (+503) El Salvador</option>
+            <option value="+240">🇬🇶 (+240) Equatorial Guinea</option>
+            <option value="+291">🇪🇷 (+291) Eritrea</option>
+            <option value="+372">🇪🇪 (+372) Estonia</option>
+            <option value="+251">🇪🇹 (+251) Ethiopia</option>
+            <option value="+679">🇫🇯 (+679) Fiji</option>
+            <option value="+358">🇫🇮 (+358) Finland</option>
+            <option value="+33">🇫🇷 (+33) France</option>
+            <option value="+241">🇬🇦 (+241) Gabon</option>
+            <option value="+220">🇬🇲 (+220) Gambia</option>
+            <option value="+995">🇬🇪 (+995) Georgia</option>
+            <option value="+49">🇩🇪 (+49) Germany</option>
+            <option value="+233">🇬🇭 (+233) Ghana</option>
+            <option value="+30">🇬🇷 (+30) Greece</option>
+            <option value="+502">🇬🇹 (+502) Guatemala</option>
+            <option value="+224">🇬🇳 (+224) Guinea</option>
+            <option value="+245">🇬🇼 (+245) Guinea-Bissau</option>
+            <option value="+592">🇬🇾 (+592) Guyana</option>
+            <option value="+509">🇭🇹 (+509) Haiti</option>
+            <option value="+504">🇭🇳 (+504) Honduras</option>
+            <option value="+852">🇭🇰 (+852) Hong Kong</option>
+            <option value="+36">🇭🇺 (+36) Hungary</option>
+            <option value="+354">🇮🇸 (+354) Iceland</option>
+            <option value="+62">🇮🇩 (+62) Indonesia</option>
+            <option value="+98">🇮🇷 (+98) Iran</option>
+            <option value="+964">🇮🇶 (+964) Iraq</option>
+            <option value="+353">🇮🇪 (+353) Ireland</option>
+            <option value="+972">🇮🇱 (+972) Israel</option>
+            <option value="+39">🇮🇹 (+39) Italy</option>
+            <option value="+1876">🇯🇲 (+1876) Jamaica</option>
+            <option value="+81">🇯🇵 (+81) Japan</option>
+            <option value="+962">🇯🇴 (+962) Jordan</option>
+            <option value="+7">🇰🇿 (+7) Kazakhstan</option>
+            <option value="+254">🇰🇪 (+254) Kenya</option>
+            <option value="+686">🇰🇮 (+686) Kiribati</option>
+            <option value="+850">🇰🇵 (+850) North Korea</option>
+            <option value="+82">🇰🇷 (+82) South Korea</option>
+            <option value="+965">🇰🇼 (+965) Kuwait</option>
+            <option value="+996">🇰🇬 (+996) Kyrgyzstan</option>
+            <option value="+856">🇱🇦 (+856) Laos</option>
+            <option value="+371">🇱🇻 (+371) Latvia</option>
+            <option value="+961">🇱🇧 (+961) Lebanon</option>
+            <option value="+266">🇱🇸 (+266) Lesotho</option>
+            <option value="+231">🇱🇷 (+231) Liberia</option>
+            <option value="+218">🇱🇾 (+218) Libya</option>
+            <option value="+423">🇱🇮 (+423) Liechtenstein</option>
+            <option value="+370">🇱🇹 (+370) Lithuania</option>
+            <option value="+352">🇱🇺 (+352) Luxembourg</option>
+            <option value="+853">🇲🇴 (+853) Macau</option>
+            <option value="+389">🇲🇰 (+389) North Macedonia</option>
+            <option value="+261">🇲🇬 (+261) Madagascar</option>
+            <option value="+265">🇲🇼 (+265) Malawi</option>
+            <option value="+60">🇲🇾 (+60) Malaysia</option>
+            <option value="+960">🇲🇻 (+960) Maldives</option>
+            <option value="+223">🇲🇱 (+223) Mali</option>
+            <option value="+356">🇲🇹 (+356) Malta</option>
+            <option value="+692">🇲🇭 (+692) Marshall Islands</option>
+            <option value="+222">🇲🇷 (+222) Mauritania</option>
+            <option value="+230">🇲🇺 (+230) Mauritius</option>
+            <option value="+52">🇲🇽 (+52) Mexico</option>
+            <option value="+691">🇫🇲 (+691) Micronesia</option>
+            <option value="+373">🇲🇩 (+373) Moldova</option>
+            <option value="+377">🇲🇨 (+377) Monaco</option>
+            <option value="+976">🇲🇳 (+976) Mongolia</option>
+            <option value="+382">🇲🇪 (+382) Montenegro</option>
+            <option value="+212">🇲🇦 (+212) Morocco</option>
+            <option value="+258">🇲🇿 (+258) Mozambique</option>
+            <option value="+95">🇲🇲 (+95) Myanmar</option>
+            <option value="+264">🇳🇦 (+264) Namibia</option>
+            <option value="+674">🇳🇷 (+674) Nauru</option>
+            <option value="+977">🇳🇵 (+977) Nepal</option>
+            <option value="+31">🇳🇱 (+31) Netherlands</option>
+            <option value="+64">🇳🇿 (+64) New Zealand</option>
+            <option value="+505">🇳🇮 (+505) Nicaragua</option>
+            <option value="+227">🇳🇪 (+227) Niger</option>
+            <option value="+234">🇳🇬 (+234) Nigeria</option>
+            <option value="+47">🇳🇴 (+47) Norway</option>
+            <option value="+968">🇴🇲 (+968) Oman</option>
+            <option value="+92">🇵🇰 (+92) Pakistan</option>
+            <option value="+680">🇵🇼 (+680) Palau</option>
+            <option value="+507">🇵🇦 (+507) Panama</option>
+            <option value="+675">🇵🇬 (+675) Papua New Guinea</option>
+            <option value="+595">🇵🇾 (+595) Paraguay</option>
+            <option value="+51">🇵🇪 (+51) Peru</option>
+            <option value="+63">🇵🇭 (+63) Philippines</option>
+            <option value="+48">🇵🇱 (+48) Poland</option>
+            <option value="+351">🇵🇹 (+351) Portugal</option>
+            <option value="+974">🇶🇦 (+974) Qatar</option>
+            <option value="+40">🇷🇴 (+40) Romania</option>
+            <option value="+7">🇷🇺 (+7) Russia</option>
+            <option value="+250">🇷🇼 (+250) Rwanda</option>
+            <option value="+685">🇼🇸 (+685) Samoa</option>
+            <option value="+378">🇸🇲 (+378) San Marino</option>
+            <option value="+239">🇸🇹 (+239) Sao Tome</option>
+            <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
+            <option value="+221">🇸🇳 (+221) Senegal</option>
+            <option value="+381">🇷🇸 (+381) Serbia</option>
+            <option value="+248">🇸🇨 (+248) Seychelles</option>
+            <option value="+232">🇸🇱 (+232) Sierra Leone</option>
+            <option value="+65">🇸🇬 (+65) Singapore</option>
+            <option value="+421">🇸🇰 (+421) Slovakia</option>
+            <option value="+386">🇸🇮 (+386) Slovenia</option>
+            <option value="+677">🇸🇧 (+677) Solomon Islands</option>
+            <option value="+252">🇸🇴 (+252) Somalia</option>
+            <option value="+27">🇿🇦 (+27) South Africa</option>
+            <option value="+211">🇸🇸 (+211) South Sudan</option>
+            <option value="+34">🇪🇸 (+34) Spain</option>
+            <option value="+94">🇱🇰 (+94) Sri Lanka</option>
+            <option value="+249">🇸🇩 (+249) Sudan</option>
+            <option value="+597">🇸🇷 (+597) Suriname</option>
+            <option value="+268">🇸🇿 (+268) Eswatini</option>
+            <option value="+46">🇸🇪 (+46) Sweden</option>
+            <option value="+41">🇨🇭 (+41) Switzerland</option>
+            <option value="+963">🇸🇾 (+963) Syria</option>
+            <option value="+886">🇹🇼 (+886) Taiwan</option>
+            <option value="+992">🇹🇯 (+992) Tajikistan</option>
+            <option value="+255">🇹🇿 (+255) Tanzania</option>
+            <option value="+66">🇹🇭 (+66) Thailand</option>
+            <option value="+670">🇹🇱 (+670) Timor-Leste</option>
+            <option value="+228">🇹🇬 (+228) Togo</option>
+            <option value="+676">🇹🇴 (+676) Tonga</option>
+            <option value="+1868">🇹🇹 (+1868) Trinidad and Tobago</option>
+            <option value="+216">🇹🇳 (+216) Tunisia</option>
+            <option value="+90">🇹🇷 (+90) Turkey</option>
+            <option value="+993">🇹🇲 (+993) Turkmenistan</option>
+            <option value="+688">🇹🇻 (+688) Tuvalu</option>
+            <option value="+256">🇺🇬 (+256) Uganda</option>
+            <option value="+380">🇺🇦 (+380) Ukraine</option>
+            <option value="+971">🇦🇪 (+971) UAE</option>
+            <option value="+44">🇬🇧 (+44) UK</option>
+            <option value="+1">🇺🇸 (+1) USA</option>
+            <option value="+598">🇺🇾 (+598) Uruguay</option>
+            <option value="+998">🇺🇿 (+998) Uzbekistan</option>
+            <option value="+678">🇻🇺 (+678) Vanuatu</option>
+            <option value="+58">🇻🇪 (+58) Venezuela</option>
+            <option value="+84">🇻🇳 (+84) Vietnam</option>
+            <option value="+967">🇾🇪 (+967) Yemen</option>
+            <option value="+260">🇿🇲 (+260) Zambia</option>
+            <option value="+263">🇿🇼 (+263) Zimbabwe</option>
+          </select>
+          <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
+        </div>
       </div>
-      <!-- नॉर्मल पैडिंग वाला बटन जो स्क्रीन के नीचे छिपेगा नहीं -->
-      <div class="next-btn-container" style="margin-top:40px; display:flex; justify-content:flex-end;">
-        <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;">➔</button>
+      
+      <!-- बटन नीचे फिक्स रहेगा -->
+      <div class="bottom-fixed-btn-container">
+        <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
       </div>
     </div>
 
-    <!-- Password Screen (पासवर्ड इनपुट और ठीक 8 कैरेक्टर लिमिट के साथ) -->
-    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; padding-bottom:100px; overflow-y:auto;">
+    <!-- Password Screen -->
+    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
       
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
       
-      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
-      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password (Exact 8 characters)</div>
+      <!-- पासवर्ड वाले बॉक्स को भी ऊपर से थोड़ा नीचे कर दिया गया है -->
+      <div style="margin-top: 40px;">
+        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
+        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password (Exact 8 characters)</div>
 
-      <!-- पासवर्ड इनपुट बॉक्स (टाइप करते ही हरा रंग) -->
-      <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
-        <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
-        <!-- आँख का आइकॉन (SVG) -->
-        <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-          <circle cx="12" cy="12" r="3"></circle>
-        </svg>
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
+          <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+          <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </div>
+
+        <div style="margin-top:15px; text-align:center;">
+          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password</span>
+        </div>
       </div>
 
-      <div style="margin-top:15px; text-align:center;">
-        <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password</span>
-      </div>
-
-      <!-- नॉर्मल पैडिंग वाला पासवर्ड सेव/नेक्स्ट बटन (जो ठीक 8 कैरेक्टर होने पर हरा होगा) -->
-      <div class="next-btn-container" style="margin-top:40px; display:flex; justify-content:flex-end;">
-        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button>
+      <!-- पासवर्ड पेज का बटन भी नीचे फिक्स है -->
+      <div class="bottom-fixed-btn-container">
+        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLogin()">➔</button>
       </div>
     </div>
 
@@ -648,12 +664,10 @@
       }
     }
     
-    // पासवर्ड इनपुट वैलिडेट करने और हरा रंग देने का फंक्शन (ठीक 8 अंकों/अक्षरों के लिए)
     function checkPasswordInput(input) {
       let val = input.value;
       let btn = document.getElementById("passSubmitBtn");
       
-      // जब यूजर टाइप करे तो टेक्स्ट का रंग हरा (Green) हो जाए
       if(val.length > 0) {
         input.style.color = "#00cd00";
         input.style.fontWeight = "bold";
@@ -662,7 +676,6 @@
         input.style.fontWeight = "normal";
       }
 
-      // अगर ठीक 8 कैरेक्टर हैं तभी बटन एक्टिव और हरा होगा
       if (val.length === 8) {
         btn.classList.add("active");
       } else {
