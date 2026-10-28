@@ -501,7 +501,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.setItem("greedy_won", "0");
+        localStorage.getItem("greedy_won", "0");
       }
     }
 
@@ -601,7 +601,6 @@
         }
       }
 
-      // 7, 8, 9 कवर पेजेस छिपा दें (चूँकि इन्हें हटा दिया गया है)
       for(let i=7; i<=9; i++) {
         let p = document.getElementById("coverPage" + i);
         if(p) p.style.display = "none";
@@ -621,19 +620,6 @@
         }
       }
       updatePrivacyHeart();
-
-      setTimeout(() => {
-        let slider = document.getElementById("coverSlider");
-        if(slider) {
-          let secondPage = document.getElementById("coverPage2");
-          let slot1Val = localStorage.getItem("greedy_slot_1") || "";
-          if(secondPage && secondPage.style.display !== "none" && slot1Val && slot1Val.trim() !== "") {
-            slider.scrollLeft = secondPage.offsetLeft;
-          } else {
-            slider.scrollLeft = 0;
-          }
-        }
-      }, 50);
     }
 
     function promptEditName() {
@@ -654,7 +640,7 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का 6-स्लॉट सटीक क्रम (Row 1 में 1,2,3 और Row 2 में 4,5,6 - बिना किसी गैप के, 7,8,9 पूरी तरह से हटे हुए) ---
+    // --- Profile photo पेज का 6-स्लॉट सटीक क्रम ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -666,7 +652,7 @@
         cell.className = "grid-cell";
         
         let slotVal = "";
-        let realSlot = i; // 1 से 6 तक सीधे लगातार स्लॉट (Row 1: 1,2,3 और Row 2: 4,5,6)
+        let realSlot = i;
 
         if (realSlot === 1) {
           slotVal = avatarPic;
@@ -684,7 +670,6 @@
           }
           cell.style.display = "flex";
         } else {
-          // नियम: Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हो (या 1 नंबर खाली हो)
           let showUpload = false;
           if (realSlot === 1) showUpload = true;
           else if (realSlot === 2 && avatarPic) showUpload = true;
@@ -1026,28 +1011,36 @@
         document.getElementById("hiddenGalleryInput").value = "";
         document.getElementById("hiddenAvatarInput").value = "";
 
+        let savedTargetIndex = activeSlotIndex;
+
         if (activeEditorMode === "cover") {
           localStorage.setItem("greedy_slot_" + activeSlotIndex, finalDataUrl);
         } else {
           currentAvatar = finalDataUrl;
           localStorage.setItem("greedy_avatar", finalDataUrl);
+          savedTargetIndex = 1;
         }
+
         initProfile();
         
+        // --- ऑटोमैटिक नेविगेशन: फोटो सेव होने के बाद कवर स्लाइडर को तुरंत अगले खाली स्लॉट पर ले जाएं ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if(slider) {
-            let targetPageIndex = (activeEditorMode === "cover") ? (activeSlotIndex + 1) : 1;
-            let targetPage = document.getElementById("coverPage" + targetPageIndex);
+            // यदि पहला स्लॉट भरा तो दूसरे पर, दूसरा भरा तो तीसरे पर (अधिकतम पेज 6 तक)
+            let nextPageIndex = savedTargetIndex + 1;
+            if (nextPageIndex > 6) nextPageIndex = 6;
+            
+            let targetPage = document.getElementById("coverPage" + nextPageIndex);
             if(targetPage && targetPage.style.display !== "none") {
               slider.scrollLeft = targetPage.offsetLeft;
             }
           }
-        }, 100);
+        }, 120);
       }
     }
 
-    // --- स्क्रॉल लॉक नियम (अधिकतम 6 पेजेस तक सीमित) ---
+    // --- स्क्रॉल लॉक नियम ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
