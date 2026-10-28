@@ -27,7 +27,6 @@
       justify-content: center;
     }
 
-    /* Upload बटन क्लिक इफ़ेक्ट */
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -554,7 +553,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का डायनेमिक सेटअप ---
+      // --- 9 कवर पेजेस का सटीक डायनेमिक सेटअप ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
       for(let i=1; i<=9; i++) {
@@ -564,7 +563,7 @@
 
         let slotVal = "";
         if (i === 1) {
-          slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो शो करेगा
+          slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो रहेगी
         } else {
           slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; 
         }
@@ -573,6 +572,7 @@
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
+          // सटीक नियम: अगला Upload बटन तभी दिखेगा जब उससे ठीक पिछला स्लॉट भरा हुआ हो, और कुल 9 पन्नों तक ही सीमित रहे
           let showUploadBtn = false;
           if (i === 1) {
             showUploadBtn = true;
@@ -611,7 +611,7 @@
       }
       updatePrivacyHeart();
 
-      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो दिखेगी ---
+      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो दिखेगी (अगर मौजूद है) ---
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if(slider) {
@@ -699,7 +699,7 @@
       openPhotoGridScreen();
     }
 
-    // --- कवर पेज पर दिए गए 'Upload' बटन को क्लिक करते ही गैलरी/एडिटर खुलने का नियम ---
+    // --- कवर पेज पर 'Upload' बटन दबाते ही सीधे गैलरी/एडिटर खुलेगा ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       if (coverIndex === 1) {
@@ -1042,8 +1042,8 @@
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
-        let maxAllowedIndex = 0;
-        let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+        let maxAllowedIndex = 1;
+        let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar"] || "";
         if (avatarPic && avatarPic.trim() !== "") maxAllowedIndex = 1;
 
         for(let i = 1; i <= 8; i++) {
