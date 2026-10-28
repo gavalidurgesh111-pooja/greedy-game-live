@@ -128,16 +128,14 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड स्क्रीन */
+    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
-    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; }
-    .cell-badge-profile-right { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
+    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
 
     /* टिप्स (Tips) पॉपअप मेनू */
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
@@ -194,7 +192,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर: क्लिक करने पर अब सीधे 9-फोटोज ग्रिड पेज ओपन होगा -->
+      <!-- कवर स्लाइडर: क्लिक करने पर सीधे Profile photo (9-फोटोज ग्रिड) पेज खुलेगा -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -502,7 +500,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.setItem("greedy_won", "0");
+        localStorage.getItem("greedy_won", "0");
       }
     }
 
@@ -556,7 +554,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का सटीक सेटअप ---
+      // --- कवर पेजेस सेटअप ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       let totalVisible = 1;
       if (avatarPic && avatarPic.trim() !== "") {
@@ -617,7 +615,6 @@
       }
       updatePrivacyHeart();
 
-      // --- नियम: प्रोफाइल खोलते ही सबसे पहले 2 नंबर की फोटो दिखेगी (यदि मौजूद है) ---
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if(slider) {
@@ -650,22 +647,30 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
+    // --- Profile photo पेज का 9-ग्रिड क्रम (बिल्कुल दूसरी तस्वीर जैसा सटीक सेटअप) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+      
+      // गणना करें कि कितने स्लॉट भरे हुए हैं ताकि अगला Upload बटन सही क्रम में आए
       let filledCount = 0;
-      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
-      for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("greedy_slot_" + i) || "";
-        if (val && val.trim() !== "") {
-          filledCount = i + 1;
-        } else {
-          break;
+      if (avatarPic && avatarPic.trim() !== "") {
+        filledCount = 1; // 1 नंबर स्लॉट (प्रोफाइल फोटो) भरा है
+        for(let i = 1; i <= 8; i++) {
+          let val = localStorage.getItem("greedy_slot_" + i) || "";
+          if (val && val.trim() !== "") {
+            filledCount = i + 1;
+          } else {
+            break;
+          }
         }
+      } else {
+        filledCount = 0; // अगर 1 नंबर खाली है तो केवल 1 नंबर पर ही Upload दिखेगा
       }
       let maxGrid = filledCount < 9 ? filledCount + 1 : 9;
+      if (maxGrid < 1) maxGrid = 1;
 
       for(let i=1; i<=9; i++) {
         let cell = document.createElement("div");
@@ -680,7 +685,6 @@
         }
 
         if(slotVal && slotVal.trim() !== "") {
-          // जैसा दूसरी फोटो में है: 1 नंबर सेल में प्रोफाइल बैज और फोटो
           if(i === 1) {
             cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
           } else {
@@ -696,8 +700,9 @@
             }
             cell.style.display = "flex";
           } else {
-            cell.innerHTML = `<div class="badge-num">${i}</div>`;
-            cell.style.display = "none";
+            // जो स्लॉट अभी क्रम में नहीं आए हैं, उन्हें खाली (+) और नंबर के साथ दिखाएं या छिपाएं जैसा दूसरी तस्वीर में है
+            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+            cell.style.display = (i <= maxGrid + 1) ? "flex" : "flex"; 
           }
         }
         container.appendChild(cell);
@@ -718,7 +723,6 @@
       openPhotoGridScreen();
     }
 
-    // --- नियम: कवर पेज पर 'Upload' बटन दबाते ही सीधे Profile photo (9-फोटोज ग्रिड) पेज खुलेगा ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       openPhotoGridScreen();
