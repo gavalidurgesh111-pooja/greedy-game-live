@@ -77,6 +77,16 @@
     .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    
+    /* कस्टम फ्रेम 4 (टाइगर फ्रेम) */
+    .frame-custom4 { 
+      background-image: url('tiger-frame4.webp') !important; 
+      background-size: 100% 100% !important; 
+      background-repeat: no-repeat !important; 
+      background-position: center !important; 
+      border: none !important; 
+      box-shadow: none !important; 
+    }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -133,17 +143,29 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (जैसे पहली फोटो में दिखाया गया है) --- */
+    /* --- फोटो एडिटर स्क्रीन --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* बीच का क्रॉप बॉक्स: लेफ्ट-राइट से स्क्रीन बॉर्डर तक चौड़ा, ऊपर-नीचे से सुरक्षित */
-    .crop-frame-box { width: 96%; max-width: 460px; height: 320px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    /* क्रॉप बॉक्स: लेफ्ट-राइट किनारों से पूरी तरह जुड़ा हुआ और फिक्स */
+    .crop-frame-box { 
+      width: 100%; 
+      max-width: 100%; 
+      height: 350px; 
+      border: 2px solid rgba(255, 255, 255, 0.9); 
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); 
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%); 
+      pointer-events: none; 
+      z-index: 10; 
+    }
     
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
     #editorImagePreview:active { cursor: grabbing; }
 
-    /* सबसे नीचे की पट्टी: जैसे स्क्रीनशॉट में कोने में ✖️ और ✔️ दिए गए हैं */
+    /* सबसे नीचे की पट्टी */
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
     .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; transition: color 0.2s, background 0.2s; }
     .editor-bottom-btn:active { background: rgba(255,255,255,0.1); color: #fff; }
@@ -344,6 +366,7 @@
           <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
           <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
           <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
+          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
         </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
@@ -865,7 +888,7 @@
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
       
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3'].forEach(cls => frameEl.classList.remove(cls));
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
       
       if(frameName !== 'none') {
         frameEl.classList.add('frame-' + frameName);
@@ -983,7 +1006,7 @@
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
+    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
 
     window.onload = () => { 
       initProfile(); 
