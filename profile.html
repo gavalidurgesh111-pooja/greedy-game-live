@@ -27,7 +27,7 @@
       justify-content: center;
     }
 
-    /* बटन दबाने पर क्लिक इफ़ेक्ट (Active Feedback) */
+    /* Upload बटन क्लिक इफ़ेक्ट */
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -192,8 +192,8 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- 9 कवर पेजेस का स्लाइडर (नियम: स्क्रॉल लॉक और डायनेमिक अपलोड बटन) -->
-      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
+      <!-- 9 कवर पेजेस का स्लाइडर -->
+      <div class="cover-slider-container" id="coverSlider">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); handleCoverUpload(1)">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); handleCoverUpload(2)">Upload</div></div>
         <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); handleCoverUpload(3)">Upload</div></div>
@@ -206,7 +206,6 @@
       </div>
       
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
-      <input type="file" id="hiddenEditPhotoInput" accept="image/*" style="display:none;" onchange="handleEditPhotoFileSelect(event)">
       <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
 
       <div class="profile-header-area">
@@ -555,7 +554,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का सेटअप (1 नंबर हमेशा प्रोफाइल फोटो रहेगी, आगे के स्लॉट क्रम से खुलेंगे) ---
+      // --- 9 कवर पेजेस का डायनेमिक सेटअप ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
       for(let i=1; i<=9; i++) {
@@ -567,14 +566,13 @@
         if (i === 1) {
           slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो शो करेगा
         } else {
-          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; // 2 से 9 स्लॉट (slots 1 to 8 in storage)
+          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; 
         }
 
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
-          // नियम: अगला Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हुआ हो
           let showUploadBtn = false;
           if (i === 1) {
             showUploadBtn = true;
@@ -701,7 +699,7 @@
       openPhotoGridScreen();
     }
 
-    // --- कवर पेज पर दिए गए 'Upload' बटन को सीधे क्लिक करने पर गैलरी खुलने का नियम ---
+    // --- कवर पेज पर दिए गए 'Upload' बटन को क्लिक करते ही गैलरी/एडिटर खुलने का नियम ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       if (coverIndex === 1) {
@@ -1040,11 +1038,10 @@
       }
     }
 
-    // --- नियम: स्क्रॉल करते समय जितनी फोटो अपलोड हैं, स्लाइडर उससे आगे नहीं जाएगा (Lock Scroll) ---
+    // --- नियम: स्क्रॉल लॉक (यूजर केवल अपलोड की गई तस्वीरों तक ही स्क्रॉल कर पाएगा) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
-        // यह सुनिश्चित करता है कि यूजर केवल भरी हुई तस्वीरों तक ही स्क्रॉल कर सके
         let maxAllowedIndex = 0;
         let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
         if (avatarPic && avatarPic.trim() !== "") maxAllowedIndex = 1;
@@ -1052,7 +1049,7 @@
         for(let i = 1; i <= 8; i++) {
           let val = localStorage.getItem("greedy_slot_" + i) || "";
           if(val && val.trim() !== "") {
-            maxAllowedIndex = i + 1; // 1 profile + 8 slots = up to 9 pages
+            maxAllowedIndex = i + 1; 
           } else {
             break;
           }
