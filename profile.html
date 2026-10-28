@@ -553,9 +553,20 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का सटीक सेटअप ---
+      // --- 9 कवर पेजेस का सटीक सेटअप (नियम: केवल भरी हुई फोटो और ठीक अगला 1 'Upload' बटन दिखेगा) ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-      
+      let lastFilledIndex = 1;
+      if (avatarPic && avatarPic.trim() !== "") lastFilledIndex = 1;
+
+      for(let i = 1; i <= 8; i++) {
+        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        if (val && val.trim() !== "") {
+          lastFilledIndex = i + 1;
+        } else {
+          break;
+        }
+      }
+
       for(let i=1; i<=9; i++) {
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
@@ -572,17 +583,8 @@
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
-          let showUploadBtn = false;
-          if (i === 1) {
-            showUploadBtn = true;
-          } else {
-            let prevVal = (i === 2) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i-2)) || "");
-            if (prevVal && prevVal.trim() !== "") {
-              showUploadBtn = true;
-            }
-          }
-
-          if (isMyProfile && showUploadBtn) {
+          // केवल तभी अपलोड बटन दिखाएं जब यह स्लॉट अगले वैध क्रम (lastFilledIndex) पर हो और 9 से आगे न हो
+          if (isMyProfile && i <= (lastFilledIndex < 9 ? lastFilledIndex + 1 : 9) && (i === 1 || (i === 2 ? avatarPic : localStorage.getItem("greedy_slot_" + (i-2))) )) {
             pageEl.style.backgroundImage = "none";
             if(plusEl) {
               plusEl.style.display = "flex";
@@ -649,6 +651,17 @@
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
 
+      let lastFilledIndex = 1;
+      if (avatarPic && avatarPic.trim() !== "") lastFilledIndex = 1;
+      for(let i = 1; i <= 8; i++) {
+        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        if (val && val.trim() !== "") {
+          lastFilledIndex = i + 1;
+        } else {
+          break;
+        }
+      }
+
       for(let i=1; i<=9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -664,17 +677,7 @@
         if(slotVal && slotVal.trim() !== "") {
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
         } else {
-          let showPlus = false;
-          if (i === 1) {
-            showPlus = true;
-          } else {
-            let prevVal = (i === 2) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i-2)) || "");
-            if (prevVal && prevVal.trim() !== "") {
-              showPlus = true;
-            }
-          }
-
-          if (isMyProfile && showPlus) {
+          if (isMyProfile && i <= (lastFilledIndex < 9 ? lastFilledIndex + 1 : 9) && (i === 1 || (i === 2 ? avatarPic : localStorage.getItem("greedy_slot_" + (i-2))) )) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
           } else {
             cell.innerHTML = `<div class="badge-num">${i}</div>`;
@@ -698,7 +701,7 @@
       openPhotoGridScreen();
     }
 
-    // --- फिक्स: कवर पेज पर 'Upload' बटन दबाते ही सही स्लॉट सेट होकर गैलरी/एडिटर खुलेगा ---
+    // --- कवर पेज पर 'Upload' बटन क्लिक हैंडलर ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       if (coverIndex === 1) {
@@ -1020,6 +1023,8 @@
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvasW, canvasH);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
+        let savedSlotIndex = (activeEditorMode === "cover") ? activeSlotIndex : 1;
+
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
@@ -1033,18 +1038,22 @@
           localStorage.setItem("greedy_avatar", finalDataUrl);
         }
         initProfile();
-        // सेव होने के बाद ऑटोमैटिक रूप से उस नए अपलोड किए गए पन्ने पर फोकस/स्क्रॉल करें
+        
+        // --- नियम: फोटो सेव होते ही सीधे उसी नई फोटो वाले पन्ने पर जाकर रुक जाना चाहिए ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if(slider) {
-            let targetPage = document.getElementById("coverPage" + (activeEditorMode === "cover" ? (activeSlotIndex + 1) : 1));
-            if(targetPage) slider.scrollLeft = targetPage.offsetLeft;
+            let targetPageIndex = (activeEditorMode === "cover") ? (activeSlotIndex + 1) : 1;
+            let targetPage = document.getElementById("coverPage" + targetPageIndex);
+            if(targetPage) {
+              slider.scrollLeft = targetPage.offsetLeft;
+            }
           }
         }, 100);
       }
     }
 
-    // --- नियम: स्क्रॉल लॉक (यूजर केवल अपलोड की गई तस्वीरों और अगले 1 'Upload' बटन तक ही स्क्रॉल कर पाएगा) ---
+    // --- नियम: स्क्रॉल लॉक (यूजर केवल भरी हुई तस्वीरों और ठीक अगले 1 'Upload' बटन तक ही स्क्रॉल कर पाएगा) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
@@ -1060,7 +1069,6 @@
             break;
           }
         }
-        // अगला 1 'Upload' बटन दिखने की अनुमति दें
         if (maxAllowedIndex < 9) maxAllowedIndex += 1;
 
         let pageWidth = coverContainer.clientWidth;
