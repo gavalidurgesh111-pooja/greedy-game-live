@@ -287,7 +287,7 @@
       <div class="grid-9-container" id="grid9Container"></div>
     </div>
 
-    <!-- Unsaved Changes Tips Modal -->
+    <!-- Unsaved Changes Modal -->
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
         <h3>Tips</h3>
@@ -427,7 +427,7 @@
     <!-- SETTINGS MODAL -->
     <div id="modalSettings" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
-        <h3>Website Settings</h3>
+        <h3>WebsiteSettings</h3>
         <p style="font-size:13px; color:#666; margin:15px 0;">All global settings configurations.</p>
         <button onclick="closeSettingsModal()" style="padding:8px 20px; background:#333; color:#fff; border:none; border-radius:8px; cursor:pointer;">Close</button>
       </div>
@@ -437,13 +437,14 @@
 
   <script>
     // ==========================================
-    // कठोर बैक बटन गार्ड (वेबसाइट से बाहर जाने से पूरी तरह रोकना)
+    // कठोर बैक बटन लॉक (मोबाइल या ब्राउज़र बैक से लिंक के बाहर जाने पर पूर्ण रोक)
     // ==========================================
-    history.pushState({page: "profile_locked"}, "", window.location.href);
+    history.pushState({page: "locked_profile"}, "", window.location.href);
+    history.pushState({page: "locked_profile_anchor"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      // यूजर को कभी भी बाहर न जाने देने के लिए हिस्ट्री स्टेट को बार-बार री-पुश करें
-      history.pushState({page: "profile_locked"}, "", window.location.href);
+      // यूजर को कभी भी बाहर न जाने देने के लिए हिस्ट्री स्टैक को तुरंत री-पुश करें
+      history.pushState({page: "locked_profile"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -474,16 +475,12 @@
         tipsModal.style.display = "none";
         return;
       }
-      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        // जब तक यूजर नो-थैंक्स या सेव नहीं दबाता, पॉपअप बंद नहीं होगा
-        return;
-      }
       if (photoEditor && photoEditor.style.display === "flex") {
         photoEditor.style.display = "none";
         return;
       }
 
-      // यदि यूजर फोटो ग्रिड पेज पर है और फोन का बैक बटन दबाया
+      // अगर यूजर फोटो ग्रिड स्क्रीन पर है और मोबाइल बैक बटन दबाया
       if (photoGrid && photoGrid.style.display === "flex") {
         tryClosePhotoGridScreen();
         return;
@@ -743,7 +740,7 @@
       }
 
       if (hasChanges) {
-        // जब तक यूजर NO, THANKS या SAVE न दबाए, तब तक पॉपअप खुला रहेगा और बाहर नहीं जाने देगा
+        // जब तक यूजर NO, THANKS या SAVE न दबाए, पॉपअप खुला रहेगा
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         document.getElementById("screenPhotoGrid").style.display = "none";
