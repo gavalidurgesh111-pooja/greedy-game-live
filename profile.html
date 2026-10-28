@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area (6 Pages) - सही आस्पेक्ट रेशियो ताकि फोटो खिंचे नहीं */
+    /* Cover Slider Area (6 Pages) */
     .cover-slider-container { width: 100%; height: 280px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
@@ -139,7 +139,7 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* क्रॉप बॉक्स: सही अनुपात (4:5) ताकि कवर फोटो बिल्कुल परफेक्ट शेप में कटे */
+    /* क्रॉप बॉक्स: फिक्स और स्क्रीन के लेफ्ट-राइट किनारों से जुड़ा हुआ */
     .crop-frame-box { 
       width: 100%; 
       max-width: 100%; 
@@ -702,12 +702,14 @@
       reader.onload = function(e) {
         rawImageObj = new Image();
         rawImageObj.onload = function() {
+          // सबसे पहले एडिटर स्क्रीन को तुरंत दिखाएं ताकि ब्लैक स्क्रीन न आए
+          document.getElementById("screenPhotoEditor").style.display = "flex";
+
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           
-          // फोटो बिना फटे और बिना काली स्क्रीन के तुरंत सही साइज में लोड हो
           let scaleX = box.width / rawImageObj.width;
           let scaleY = box.height / rawImageObj.height;
           minScale = Math.max(scaleX, scaleY);
@@ -724,8 +726,6 @@
           
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
-
-          document.getElementById("screenPhotoEditor").style.display = "flex";
         }
         rawImageObj.src = e.target.result;
       }
@@ -864,7 +864,7 @@
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
         canvas.width = 1080;
-        canvas.height = 1350; // सही 4:5 आस्पेक्ट रेशियो ताकि प्रोफाइल पर फोटो बिल्कुल न खिंचे
+        canvas.height = 1350;
         let ctx = canvas.getContext("2d");
 
         ctx.imageSmoothingEnabled = true;
@@ -1021,7 +1021,6 @@
       updatePrivacyHeart();
     }
     
-    function updatePrivacyHead() {}
     function updatePrivacyHeart() {
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
