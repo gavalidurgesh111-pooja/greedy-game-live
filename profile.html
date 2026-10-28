@@ -483,7 +483,7 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=9; i++) {
+      for(let i=1; i<=6; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
       }
     } else {
@@ -626,7 +626,6 @@
       initProfile();
     }
 
-    // --- यहाँ नया फंक्शन जोड़ा गया है जो फ्रेम पॉपअप बंद करके प्रोफाइल फोटो (9-फोटोज ग्रिड) पेज पर ले जाएगा ---
     function triggerAvatarUpload() {
       closeFrameModal();
       openPhotoGridScreen();
@@ -675,6 +674,7 @@
       document.getElementById("hiddenGalleryInput").click();
     }
 
+    // --- फोटो डिलीट होने पर ऑटोमैटिक आगे की फोटो अगले क्रम में खिसकाने (Shift) वाला नियम ---
     function tipsDeletePicture() {
       let tipsModal = document.getElementById("tipsModal");
       if (tipsModal) {
@@ -683,7 +683,28 @@
 
       setTimeout(function() {
         if(confirm("Delete this picture?")) {
+          // 1. सबसे पहले वर्तमान स्लॉट खाली करें
           localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
+
+          // 2. सभी 6 स्लॉट की वैल्यू एकत्र करें और केवल भरी हुई (valid) फोटो छाँटें
+          let activePhotos = [];
+          for(let i = 1; i <= 6; i++) {
+            let p = localStorage.getItem("greedy_slot_" + i);
+            if(p && p.trim() !== "") {
+              activePhotos.push(p);
+            }
+          }
+
+          // 3. सभी स्लॉट पहले खाली करें
+          for(let i = 1; i <= 6; i++) {
+            localStorage.setItem("greedy_slot_" + i, "");
+          }
+
+          // 4. बची हुई फोटो को दोबारा क्रम से (1, 2, 3...) भर दें ताकि बीच का खाली गैप खत्म हो जाए
+          for(let i = 0; i < activePhotos.length; i++) {
+            localStorage.setItem("greedy_slot_" + (i + 1), activePhotos[i]);
+          }
+
           initProfile();
           render9Grid();
         }
