@@ -77,16 +77,7 @@
     .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
     .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    
-    /* कस्टम फ्रेम 4 (टाइगर फ्रेम) */
-    .frame-custom4 { 
-      background-image: url('tiger-frame4.webp') !important; 
-      background-size: 100% 100% !important; 
-      background-repeat: no-repeat !important; 
-      background-position: center !important; 
-      border: none !important; 
-      box-shadow: none !important; 
-    }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -147,7 +138,7 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* क्रॉप बॉक्स: लेफ्ट-राइट किनारों से पूरी तरह जुड़ा हुआ और फिक्स */
+    /* क्रॉप बॉक्स: फिक्स और स्क्रीन के लेफ्ट-राइट किनारों से जुड़ा हुआ */
     .crop-frame-box { 
       width: 100%; 
       max-width: 100%; 
@@ -162,7 +153,17 @@
       z-index: 10; 
     }
     
-    #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
+    /* फोटो की क्वालिटी और शार्प दिखने के लिए रेंडरिंग सुधार */
+    #editorImagePreview { 
+      position: absolute; 
+      cursor: grab; 
+      user-select: none; 
+      z-index: 5; 
+      max-width: none !important;
+      max-height: none !important;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
     #editorImagePreview:active { cursor: grabbing; }
 
     /* सबसे नीचे की पट्टी */
@@ -508,6 +509,7 @@
     let rawImageObj = null;
 
     let imgX = 0, imgY = 0, imgScale = 1;
+    let minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
@@ -704,19 +706,23 @@
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
-          let canvasArea = document.getElementById("editorCanvasArea");
-          let areaW = canvasArea.clientWidth || window.innerWidth;
-          let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
+          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+          
+          // फोटो के प्राकृतिक आस्पेक्ट रेशियो को बनाए रखते हुए सही साइज सेट करना (ताकि धुंधली या लंबी न हो)
+          let scaleX = box.width / rawImageObj.width;
+          let scaleY = box.height / rawImageObj.height;
+          minScale = Math.max(scaleX, scaleY);
+          imgScale = minScale;
 
-          imgScale = Math.max(areaW / rawImageObj.width, areaH / rawImageObj.height);
           let renderW = rawImageObj.width * imgScale;
           let renderH = rawImageObj.height * imgScale;
 
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          imgX = (areaW - renderW) / 2;
-          imgY = (areaH - renderH) / 2;
+          imgX = box.left + (box.width - renderW) / 2;
+          imgY = box.top + (box.height - renderH) / 2;
+          
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
 
@@ -725,6 +731,32 @@
         rawImageObj.src = e.target.result;
       }
       reader.readAsDataURL(file);
+    }
+
+    // --- सख्त बाउंड्री लिमिट्स (ताकि फोटो फ्रेम से बाहर खाली न छूटे) ---
+    function enforceBoundaries() {
+      if(!rawImageObj) return;
+      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+      let renderW = rawImageObj.width * imgScale;
+      let renderH = rawImageObj.height * imgScale;
+
+      if (imgX > box.left) {
+        imgX = box.left;
+      }
+      if (imgX + renderW < box.left + box.width) {
+        imgX = box.left + box.width - renderW;
+      }
+
+      if (imgY > box.top) {
+        imgY = box.top;
+      }
+      if (imgY + renderH < box.top + box.height) {
+        imgY = box.top + box.height - renderH;
+      }
+
+      let preview = document.getElementById("editorImagePreview");
+      preview.style.left = imgX + "px";
+      preview.style.top = imgY + "px";
     }
 
     const editorArea = document.getElementById("editorCanvasArea");
@@ -740,13 +772,22 @@
         if(!rawImageObj) return;
         e.preventDefault();
         let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-        imgScale *= zoomFactor;
-        if(imgScale < 0.2) imgScale = 0.2;
-        if(imgScale > 5.0) imgScale = 5.0;
+        let newScale = imgScale * zoomFactor;
+        
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        let scaleX = box.width / rawImageObj.width;
+        let scaleY = box.height / rawImageObj.height;
+        let currentMin = Math.max(scaleX, scaleY);
 
+        if(newScale < currentMin) newScale = currentMin;
+        if(newScale > 5.0) newScale = 5.0;
+
+        imgScale = newScale;
         let preview = document.getElementById("editorImagePreview");
         preview.style.width = (rawImageObj.width * imgScale) + "px";
         preview.style.height = (rawImageObj.height * imgScale) + "px";
+
+        enforceBoundaries();
       }, { passive: false });
     }
 
@@ -771,15 +812,23 @@
           e.touches[0].clientY - e.touches[1].clientY
         );
         let zoomFactor = currentDistance / initialPinchDistance;
-        imgScale *= zoomFactor;
-        if(imgScale < 0.2) imgScale = 0.2;
-        if(imgScale > 5.0) imgScale = 5.0;
+        let newScale = imgScale * zoomFactor;
+        
+        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+        let scaleX = box.width / rawImageObj.width;
+        let scaleY = box.height / rawImageObj.height;
+        let currentMin = Math.max(scaleX, scaleY);
 
+        if(newScale < currentMin) newScale = currentMin;
+        if(newScale > 5.0) newScale = 5.0;
+
+        imgScale = newScale;
         let preview = document.getElementById("editorImagePreview");
         preview.style.width = (rawImageObj.width * imgScale) + "px";
         preview.style.height = (rawImageObj.height * imgScale) + "px";
 
         initialPinchDistance = currentDistance;
+        enforceBoundaries();
         e.preventDefault();
         return;
       }
@@ -794,9 +843,7 @@
       imgX += dx;
       imgY += dy;
 
-      let preview = document.getElementById("editorImagePreview");
-      preview.style.left = imgX + "px";
-      preview.style.top = imgY + "px";
+      enforceBoundaries();
 
       startMouseX = clientX;
       startMouseY = clientY;
@@ -822,6 +869,9 @@
         canvas.height = 1080;
         let ctx = canvas.getContext("2d");
 
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
         let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
@@ -835,7 +885,7 @@
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1080);
-        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.9);
+        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
@@ -1006,7 +1056,7 @@
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
     window.onload = () => { 
       initProfile(); 
