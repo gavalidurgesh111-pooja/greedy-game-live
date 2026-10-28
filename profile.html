@@ -142,7 +142,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (हमेशा 2 नंबर पेज पर सेट रहेगा, 1 नंबर लेफ्ट में रहेगा) -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -463,11 +463,11 @@
       }
       updatePrivacyHeart();
 
-      // **यहाँ मुख्य बदलाव किया गया है:** पेज खुलते ही या वापस आते ही हमेशा 2 नंबर की फोटो सामने दिखेगी, और 1 नंबर की फोटो बाईं तरफ अंदर रहेगी
+      // स्लाइडर हमेशा 2 नंबर फोटो पर सेट रहेगा और 1 नंबर लेफ्ट में अंदर रहेगी
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if (slider) {
-          slider.scrollLeft = slider.clientWidth; // दूसरे पेज पर सेट कर देगा
+          slider.scrollLeft = slider.clientWidth;
         }
       }, 50);
     }
@@ -599,7 +599,7 @@
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
-      let amt = parseInt(document.getElementById("sendCoinAmount.value");
+      let amt = parseInt(document.getElementById("sendCoinAmount").value);
       if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
       if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
       coins -= amt;
