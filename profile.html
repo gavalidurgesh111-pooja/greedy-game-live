@@ -27,6 +27,7 @@
       justify-content: center;
     }
 
+    /* बटन दबाने पर क्लिक इफ़ेक्ट (Active Feedback) */
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -43,6 +44,12 @@
       z-index: 5;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.1s ease;
+    }
+    .cover-center-plus:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
@@ -185,17 +192,17 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- 9 कवर पेजेस का डायनेमिक स्लाइडर कंटेनर -->
+      <!-- 9 कवर पेजेस का स्लाइडर (नियम: स्क्रॉल लॉक और डायनेमिक अपलोड बटन) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1">Upload</div></div>
-        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2">Upload</div></div>
-        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3">Upload</div></div>
-        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4">Upload</div></div>
-        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5">Upload</div></div>
-        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6">Upload</div></div>
-        <div class="cover-page" id="coverPage7"><div class="cover-center-plus owner-only-elem" id="plusCover7">Upload</div></div>
-        <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8">Upload</div></div>
-        <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9">Upload</div></div>
+        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); handleCoverUpload(1)">Upload</div></div>
+        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); handleCoverUpload(2)">Upload</div></div>
+        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); handleCoverUpload(3)">Upload</div></div>
+        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="event.stopPropagation(); handleCoverUpload(4)">Upload</div></div>
+        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="event.stopPropagation(); handleCoverUpload(5)">Upload</div></div>
+        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="event.stopPropagation(); handleCoverUpload(6)">Upload</div></div>
+        <div class="cover-page" id="coverPage7"><div class="cover-center-plus owner-only-elem" id="plusCover7" onclick="event.stopPropagation(); handleCoverUpload(7)">Upload</div></div>
+        <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8" onclick="event.stopPropagation(); handleCoverUpload(8)">Upload</div></div>
+        <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9" onclick="event.stopPropagation(); handleCoverUpload(9)">Upload</div></div>
       </div>
       
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -489,7 +496,7 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=9; i++) {
+      for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
       }
     } else {
@@ -548,7 +555,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस को अपडेट करना (1 नंबर हमेशा प्रोफाइल फोटो रहेगी, और आगे की फोटो डायनेमिक लोड होंगी) ---
+      // --- 9 कवर पेजेस का सेटअप (1 नंबर हमेशा प्रोफाइल फोटो रहेगी, आगे के स्लॉट क्रम से खुलेंगे) ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
       for(let i=1; i<=9; i++) {
@@ -560,14 +567,14 @@
         if (i === 1) {
           slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो शो करेगा
         } else {
-          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; // 2 से 9 तक कवर स्लॉट्स
+          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; // 2 से 9 स्लॉट (slots 1 to 8 in storage)
         }
 
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
-          // अगर यह स्लॉट खाली है, तो चेक करें कि क्या पिछला स्लॉट भरा हुआ है (ताकि क्रम से ही अगला 'Upload' बटन दिखे)
+          // नियम: अगला Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हुआ हो
           let showUploadBtn = false;
           if (i === 1) {
             showUploadBtn = true;
@@ -606,19 +613,16 @@
       }
       updatePrivacyHeart();
 
-      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो (index 1) दिखेगी ---
+      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो दिखेगी ---
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if(slider) {
           let secondPage = document.getElementById("coverPage2");
-          if(secondPage) {
-            // अगर 2 नंबर फोटो मौजूद है, तो उसे पहले दिखाएं, अन्यथा 1 नंबर दिखाएं
-            let slot1Val = localStorage.getItem("greedy_slot_1") || "";
-            if(slot1Val && slot1Val.trim() !== "") {
-              slider.scrollLeft = secondPage.offsetLeft;
-            } else {
-              slider.scrollLeft = 0;
-            }
+          let slot1Val = localStorage.getItem("greedy_slot_1") || "";
+          if(secondPage && slot1Val && slot1Val.trim() !== "") {
+            slider.scrollLeft = secondPage.offsetLeft;
+          } else {
+            slider.scrollLeft = 0;
           }
         }
       }, 50);
@@ -663,7 +667,6 @@
         if(slotVal && slotVal.trim() !== "") {
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
         } else {
-          // क्रम से अगला Upload दिखने का नियम
           let showPlus = false;
           if (i === 1) {
             showPlus = true;
@@ -698,13 +701,39 @@
       openPhotoGridScreen();
     }
 
+    // --- कवर पेज पर दिए गए 'Upload' बटन को सीधे क्लिक करने पर गैलरी खुलने का नियम ---
+    function handleCoverUpload(coverIndex) {
+      if (!isMyProfile) return;
+      if (coverIndex === 1) {
+        let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+        if(profPic && profPic.trim() !== "") {
+          selectedSlotForTips = 0;
+          document.getElementById("tipsModal").style.display = "flex";
+        } else {
+          activeEditorMode = "avatar";
+          document.getElementById("hiddenAvatarInput").click();
+        }
+      } else {
+        let slotNum = coverIndex - 1;
+        let val = localStorage.getItem("greedy_slot_" + slotNum) || "";
+        if(val && val.trim() !== "") {
+          selectedSlotForTips = slotNum;
+          document.getElementById("tipsModal").style.display = "flex";
+        } else {
+          activeEditorMode = "cover";
+          activeSlotIndex = slotNum;
+          document.getElementById("hiddenGalleryInput").click();
+        }
+      }
+    }
+
     function handleGridCellClick(index) {
       if (!isMyProfile) return;
       
       if(index === 1) {
         let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
         if (profPic && profPic.trim() !== "") {
-          selectedSlotForTips = 0; // 0 म्हणजे प्रोफाइल फोटो
+          selectedSlotForTips = 0;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
           activeEditorMode = "avatar";
@@ -1011,27 +1040,30 @@
       }
     }
 
+    // --- नियम: स्क्रॉल करते समय जितनी फोटो अपलोड हैं, स्लाइडर उससे आगे नहीं जाएगा (Lock Scroll) ---
     const coverContainer = document.getElementById("coverSlider");
-    let isDragging = false;
-    let startX = 0;
     if(coverContainer) {
-      coverContainer.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        startX = e.clientX;
-      });
-      coverContainer.addEventListener('mousemove', (e) => {
-        if(!isDragging) return;
-        let diff = e.clientX - startX;
-        if(Math.abs(diff) > 50) {
-          if(diff > 0) {
-            coverContainer.scrollBy({ left: -300, behavior: 'smooth' });
+      coverContainer.addEventListener('scroll', () => {
+        // यह सुनिश्चित करता है कि यूजर केवल भरी हुई तस्वीरों तक ही स्क्रॉल कर सके
+        let maxAllowedIndex = 0;
+        let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+        if (avatarPic && avatarPic.trim() !== "") maxAllowedIndex = 1;
+
+        for(let i = 1; i <= 8; i++) {
+          let val = localStorage.getItem("greedy_slot_" + i) || "";
+          if(val && val.trim() !== "") {
+            maxAllowedIndex = i + 1; // 1 profile + 8 slots = up to 9 pages
           } else {
-            coverContainer.scrollBy({ left: 300, behavior: 'smooth' });
+            break;
           }
-          isDragging = false;
+        }
+
+        let pageWidth = coverContainer.clientWidth;
+        let targetMaxScroll = (maxAllowedIndex - 1) * pageWidth;
+        if (coverContainer.scrollLeft > targetMaxScroll) {
+          coverContainer.scrollLeft = targetMaxScroll;
         }
       });
-      coverContainer.addEventListener('mouseup', () => { isDragging = false; });
     }
 
     function applyFrameClass(frameName) {
