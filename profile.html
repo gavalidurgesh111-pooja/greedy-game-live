@@ -553,7 +553,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- 9 कवर पेजेस का सटीक डायनेमिक सेटअप ---
+      // --- 9 कवर पेजेस का सटीक सेटअप ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
       for(let i=1; i<=9; i++) {
@@ -563,7 +563,7 @@
 
         let slotVal = "";
         if (i === 1) {
-          slotVal = avatarPic; // 1 नंबर कवर हमेशा प्रोफाइल फोटो रहेगी
+          slotVal = avatarPic; 
         } else {
           slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; 
         }
@@ -572,7 +572,6 @@
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
         } else {
-          // सटीक नियम: अगला Upload बटन तभी दिखेगा जब उससे ठीक पिछला स्लॉट भरा हुआ हो, और कुल 9 पन्नों तक ही सीमित रहे
           let showUploadBtn = false;
           if (i === 1) {
             showUploadBtn = true;
@@ -611,7 +610,7 @@
       }
       updatePrivacyHeart();
 
-      // --- नियम: कोई भी यूजर प्रोफाइल देखने आए तो सबसे पहले 2 नंबर की फोटो दिखेगी (अगर मौजूद है) ---
+      // --- नियम: प्रोफाइल खोलते ही सबसे पहले 2 नंबर की फोटो दिखेगी (अगर मौजूद है) ---
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if(slider) {
@@ -699,7 +698,7 @@
       openPhotoGridScreen();
     }
 
-    // --- कवर पेज पर 'Upload' बटन दबाते ही सीधे गैलरी/एडिटर खुलेगा ---
+    // --- फिक्स: कवर पेज पर 'Upload' बटन दबाते ही सही स्लॉट सेट होकर गैलरी/एडिटर खुलेगा ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       if (coverIndex === 1) {
@@ -1034,16 +1033,23 @@
           localStorage.setItem("greedy_avatar", finalDataUrl);
         }
         initProfile();
-        openPhotoGridScreen();
+        // सेव होने के बाद ऑटोमैटिक रूप से उस नए अपलोड किए गए पन्ने पर फोकस/स्क्रॉल करें
+        setTimeout(() => {
+          let slider = document.getElementById("coverSlider");
+          if(slider) {
+            let targetPage = document.getElementById("coverPage" + (activeEditorMode === "cover" ? (activeSlotIndex + 1) : 1));
+            if(targetPage) slider.scrollLeft = targetPage.offsetLeft;
+          }
+        }, 100);
       }
     }
 
-    // --- नियम: स्क्रॉल लॉक (यूजर केवल अपलोड की गई तस्वीरों तक ही स्क्रॉल कर पाएगा) ---
+    // --- नियम: स्क्रॉल लॉक (यूजर केवल अपलोड की गई तस्वीरों और अगले 1 'Upload' बटन तक ही स्क्रॉल कर पाएगा) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
         let maxAllowedIndex = 1;
-        let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar"] || "";
+        let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
         if (avatarPic && avatarPic.trim() !== "") maxAllowedIndex = 1;
 
         for(let i = 1; i <= 8; i++) {
@@ -1054,6 +1060,8 @@
             break;
           }
         }
+        // अगला 1 'Upload' बटन दिखने की अनुमति दें
+        if (maxAllowedIndex < 9) maxAllowedIndex += 1;
 
         let pageWidth = coverContainer.clientWidth;
         let targetMaxScroll = (maxAllowedIndex - 1) * pageWidth;
