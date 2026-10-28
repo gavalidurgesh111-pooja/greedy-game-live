@@ -9,8 +9,8 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area (6 Pages) */
-    .cover-slider-container { width: 100%; height: 280px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
+    /* Cover Slider Area (6 Pages) - अब यह क्रॉप बॉक्स के बिल्कुल समान अनुपात में है */
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
@@ -18,7 +18,7 @@
       height: 100%;
       scroll-snap-align: start;
       position: relative;
-      background-size: contain;
+      background-size: 100% 100%;
       background-repeat: no-repeat;
       background-position: center;
       background-color: #111;
@@ -139,11 +139,11 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* क्रॉप बॉक्स: फिक्स और स्क्रीन के लेफ्ट-राइट किनारों से जुड़ा हुआ */
+    /* क्रॉप बॉक्स: आस्पेक्ट रेशियो 1080:1200 के अनुसार बिल्कुल सटीक फिक्स किया गया है */
     .crop-frame-box { 
       width: 100%; 
       max-width: 100%; 
-      height: 350px; 
+      height: 360px; 
       border: 2px solid rgba(255, 255, 255, 0.9); 
       box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); 
       position: absolute; 
@@ -702,7 +702,6 @@
       reader.onload = function(e) {
         rawImageObj = new Image();
         
-        // जैसे ही फाइल सिलेक्ट हो, तुरंत एडिटर स्क्रीन खोलें ताकि ब्लैक स्क्रीन न दिखे
         document.getElementById("screenPhotoEditor").style.display = "flex";
         let preview = document.getElementById("editorImagePreview");
         preview.src = e.target.result;
@@ -864,7 +863,7 @@
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
         canvas.width = 1080;
-        canvas.height = 1350;
+        canvas.height = 1200; // बिल्कुल सटीक अनुपात (1080x1200) ताकि प्रोफाइल पेज पर फोटो बिल्कुल सही फिट हो
         let ctx = canvas.getContext("2d");
 
         ctx.imageSmoothingEnabled = true;
@@ -882,7 +881,7 @@
         let sW = (box.width / renderedWidth) * rawImageObj.width;
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1350);
+        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, 1080, 1200);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
         document.getElementById("screenPhotoEditor").style.display = "none";
