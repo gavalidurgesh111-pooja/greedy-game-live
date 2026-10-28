@@ -59,7 +59,6 @@
     .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
     .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; background: none; border: none; font-weight: bold; }
     
-    /* बटन को नीचे फिक्स करने की क्लास */
     .bottom-fixed-btn-container {
       position: fixed;
       bottom: 25px;
@@ -118,7 +117,7 @@
       </div>
     </div>
 
-    <!-- More Options Modal -->
+    <!-- More Options Modal (195 देशों की भाषाएँ) -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px; max-height:80vh; overflow-y:auto;">
         <select class="lang-select-normal" id="loginLangSelector" onchange="changeLanguage(this.value)">
@@ -214,14 +213,172 @@
           <option value="tk">🇹🇲 Türkmençe (Turkmen)</option>
           <option value="ug">🇨🇳 ئۇيغۇرچە (Uyghur)</option>
           <option value="uz">🇺🇿 O'zbek (Uzbek)</option>
+          <!-- Additional 140+ official country languages to complete 195 nations -->
+          <option value="sm">🇼🇸 Samoan (Samoa)</option>
+          <option value="to">🇹🇴 Tongan (Tonga)</option>
+          <option value="fj">🇫🇯 Fijian (Fiji)</option>
+          <option value="mi">🇳🇿 Maori (New Zealand)</option>
+          <option value="dv">🇲🇻 Divehi (Maldives)</option>
+          <option value="dz">🇧🇹 Dzongkha (Bhutan)</option>
+          <option value="bi">🇻🇺 Bislama (Vanuatu)</option>
+          <option value="ho">🇵🇬 Hiri Motu (Papua New Guinea)</option>
+          <option value="ty">🇵🇫 Tahitian (French Polynesia)</option>
+          <option value="ch">🇬🇺 Chamorro (Guam)</option>
+          <option value="mh">🇲🇭 Marshallese (Marshall Islands)</option>
+          <option value="na">🇳🇷 Nauruan (Nauru)</option>
+          <option value="tv">🇹🇻 Tuvaluan (Tuvalu)</option>
+          <option value="gil">🇰🇮 Gilbertese (Kiribati)</option>
+          <option value="niu">🇳🇺 Niuean (Niue)</option>
+          <option value="rar">🇨🇰 Cook Islands Maori (Cook Islands)</option>
+          <option value="tkl">🇹🇰 Tokelauan (Tokelau)</option>
+          <option value="cal">🇳🇨 Drehu (New Caledonia)</option>
+          <option value="pau">🇵🇼 Palauan (Palau)</option>
+          <option value="crs">🇸🇨 Seselwa Creole (Seychelles)</option>
+          <option value="mfe">🇲🇺 Mauritian Creole (Mauritius)</option>
+          <option value="com">🇰🇲 Comorian (Comoros)</option>
+          <option value="sg">🇨🇫 Sango (Central African Republic)</option>
+          <option value="ln">🇨🇩 Lingala (DR Congo)</option>
+          <option value="kg">🇨🇬 Kongo (Congo)</option>
+          <option value="rn">🇧🇮 Kirundi (Burundi)</option>
+          <option value="st">🇱🇸 Sesotho (Lesotho)</option>
+          <option value="ss">🇸🇿 Swazi (Eswatini)</option>
+          <option value="tn">🇧🇼 Tswana (Botswana)</option>
+          <option value="ts">🇿🇦 Tsonga (South Africa)</option>
+          <option value="ve">🇿🇦 Venda (South Africa)</option>
+          <option value="nr">🇿🇦 Ndebele (South Africa)</option>
+          <option value="ny">🇲🇼 Nyanja (Malawi)</option>
+          <option value="tum">🇲🇼 Tumbuka (Malawi)</option>
+          <option value="bem">🇿🇲 Bemba (Zambia)</option>
+          <option value="toi">🇿🇲 Tonga (Zambia)</option>
+          <option value="loz">🇿🇲 Lozi (Zambia)</option>
+          <option value="nya">🇿🇼 Ndebele (Zimbabwe)</option>
+          <option value="kj">🇳🇴 Kuanyama (Namibia)</option>
+          <option value="ndh">🇳🇦 Ndonga (Namibia)</option>
+          <option value="her">🇳🇦 Herero (Namibia)</option>
+          <option value="kua">🇦🇴 Kwanyama (Angola)</option>
+          <option value="umb">🇦🇴 Umbundu (Angola)</option>
+          <option value="kik">🇰🇪 Kikuyu (Kenya)</option>
+          <option value="luo">🇰🇪 Luo (Kenya)</option>
+          <option value="kam">🇰🇪 Kamba (Kenya)</option>
+          <option value="som">🇸🇴 Somali (Somalia)</option>
+          <option value="tir">🇪🇷 Tigrinya (Eritrea)</option>
+          <option value="tig">🇪🇷 Tigre (Eritrea)</option>
+          <option value="aar">🇩🇯 Afar (Djibouti)</option>
+          <option value="orm">🇪🇹 Oromo (Ethiopia)</option>
+          <option value="som">🇪🇹 Somali (Ethiopia)</option>
+          <option value="sid">🇪🇹 Sidamo (Ethiopia)</option>
+          <option value="kin">🇷🇼 Kinyarwanda (Rwanda)</option>
+          <option value="run">🇧🇮 Kirundi (Burundi)</option>
+          <option value="gand">🇺🇬 Luganda (Uganda)</option>
+          <option value="ach">🇺🇬 Acholi (Uganda)</option>
+          <option value="nyn">🇺🇬 Nyankole (Uganda)</option>
+          <option value="swh">🇹🇿 Swahili (Tanzania)</option>
+          <option value="suk">🇹🇿 Sukuma (Tanzania)</option>
+          <option value="mac">🇲🇿 Makhuwa (Mozambique)</option>
+          <option value="tsw">🇲🇿 Tsonga (Mozambique)</option>
+          <option value="nya">🇲🇼 Chichewa (Malawi)</option>
+          <option value="mlg">🇲🇬 Malagasy (Madagascar)</option>
+          <option value="run">🇸🇨 Seychellois Creole (Seychelles)</option>
+          <option value="crs">🇲🇺 Morisyen (Mauritius)</option>
+          <option value="fao">🇫🇴 Faroese (Faroe Islands)</option>
+          <option value="kal">🇬🇱 Greenlandic (Greenland)</option>
+          <option value="gle">🇮🇪 Irish Gaelic (Ireland)</option>
+          <option value="gla">🇬🇧 Scottish Gaelic (United Kingdom)</option>
+          <option value="cym">🇬🇧 Welsh (United Kingdom)</option>
+          <option value="cor">🇬🇧 Cornish (United Kingdom)</option>
+          <option value="glv">🇮🇲 Manx (Isle of Man)</option>
+          <option value="nrf">🇬🇬 Jèrriais (Jersey)</option>
+          <option value="nrf">🇬🇬 Guernésiais (Guernsey)</option>
+          <option value="fao">🇦🇽 Åland Islands Swedish (Åland)</option>
+          <option value="sme">🇳🇴 Sami (Norway)</option>
+          <option value="sme">🇸🇪 Sami (Sweden)</option>
+          <option value="sme">🇫🇮 Sami (Finland)</option>
+          <option value="krl">🇫🇮 Karelian (Finland)</option>
+          <option value="liv">🇱🇻 Livonian (Latvia)</option>
+          <option value="sgs">🇱🇹 Samogitian (Lithuania)</option>
+          <option value="vro">🇪🇪 Võro (Estonia)</option>
+          <option value="ltg">🇱🇻 Latgalian (Latvia)</option>
+          <option value="bel">🇧🇾 Belarusian (Belarus)</option>
+          <option value="rus">🇺🇦 Russian (Ukraine)</option>
+          <option value="hun">🇷🇴 Hungarian (Romania)</option>
+          <option value="bul">🇷🇸 Bulgarian (Serbia)</option>
+          <option value="rom">🇷🇴 Romani (Romania)</option>
+          <option value="gag">🇲🇩 Gagauz (Moldova)</option>
+          <option value="abk">🇬🇪 Abkhazian (Georgia)</option>
+          <option value="oss">🇬🇪 Ossetian (Georgia)</option>
+          <option value="che">🇷🇺 Chechen (Russia)</option>
+          <option value="tat">🇷🇺 Tatar (Russia)</option>
+          <option value="bak">🇷🇺 Bashkir (Russia)</option>
+          <option value="chv">🇷🇺 Chuvash (Russia)</option>
+          <option value="sah">🇷🇺 Yakut (Russia)</option>
+          <option value="udm">🇷🇺 Udmurt (Russia)</option>
+          <option value="mhr">🇷🇺 Mari (Russia)</option>
+          <option value="myv">🇷🇺 Erzya (Russia)</option>
+          <option value="mdf">🇷🇺 Moksha (Russia)</option>
+          <option value="kom">🇷🇺 Komi (Russia)</option>
+          <option value="nya">🇲🇼 Nyanja (Malawi)</option>
+          <option value="tuk">🇹🇲 Turkmen (Turkmenistan)</option>
+          <option value="uzb">🇺🇿 Uzbek (Uzbekistan)</option>
+          <option value="kaz">🇰🇿 Kazakh (Kazakhstan)</option>
+          <option value="kir">🇰🇬 Kyrgyz (Kyrgyzstan)</option>
+          <option value="tgk">🇹🇯 Tajik (Tajikistan)</option>
+          <option value="mon">🇲🇳 Mongolian (Mongolia)</option>
+          <option value="uig">🇨🇳 Uyghur (China)</option>
+          <option value="tib">🇨🇳 Tibetan (China)</option>
+          <option value="mon">🇨🇳 Inner Mongolian (China)</option>
+          <option value="kor">🇰🇵 Korean (North Korea)</option>
+          <option value="lao">🇱🇦 Lao (Laos)</option>
+          <option value="khm">🇰🇭 Khmer (Cambodia)</option>
+          <option value="vie">🇻🇳 Vietnamese (Vietnam)</option>
+          <option value="tha">🇹🇭 Thai (Thailand)</option>
+          <option value="mya">🇲🇲 Burmese (Myanmar)</option>
+          <option value="msa">🇲🇾 Malay (Malaysia)</option>
+          <option value="ind">🇮🇩 Indonesian (Indonesia)</option>
+          <option value="tet">🇹🇱 Tetum (Timor-Leste)</option>
+          <option value="fil">🇵🇭 Tagalog (Philippines)</option>
+          <option value="ceb">🇵🇭 Cebuano (Philippines)</option>
+          <option value="ilo">🇵🇭 Ilocano (Philippines)</option>
+          <option value="hin">🇮🇳 Hindi (India)</option>
+          <option value="ben">🇮🇳 Bengali (India)</option>
+          <option value="tel">🇮🇳 Telugu (India)</option>
+          <option value="mar">🇮🇳 Marathi (India)</option>
+          <option value="tam">🇮🇳 Tamil (India)</option>
+          <option value="urd">🇮🇳 Urdu (India)</option>
+          <option value="guj">🇮🇳 Gujarati (India)</option>
+          <option value="kan">🇮🇳 Kannada (India)</option>
+          <option value="mal">🇮🇳 Malayalam (India)</option>
+          <option value="pun">🇮🇳 Punjabi (India)</option>
+          <option value="sin">🇱🇰 Sinhala (Sri Lanka)</option>
+          <option value="tam">🇱🇰 Tamil (Sri Lanka)</option>
+          <option value="div">🇲🇻 Maldivian (Maldives)</option>
+          <option value="nep">🇳🇵 Nepali (Nepal)</option>
+          <option value="dzo">🇧🇹 Dzongkha (Bhutan)</option>
+          <option value="urd">🇵🇰 Urdu (Pakistan)</option>
+          <option value="pun">🇵🇰 Punjabi (Pakistan)</option>
+          <option value="pus">🇵🇰 Pashto (Pakistan)</option>
+          <option value="snd">🇵🇰 Sindhi (Pakistan)</option>
+          <option value="per">🇮🇷 Persian (Iran)</option>
+          <option value="kur">🇮🇶 Kurdish (Iraq)</option>
+          <option value="ara">🇸🇾 Arabic (Syria)</option>
+          <option value="ara">🇱🇧 Arabic (Lebanon)</option>
+          <option value="ara">🇯🇴 Arabic (Jordan)</option>
+          <option value="heb">🇮🇱 Hebrew (Israel)</option>
+          <option value="ara">🇵🇸 Arabic (Palestine)</option>
+          <option value="ara">🇸🇦 Arabic (Saudi Arabia)</option>
+          <option value="ara">🇾🇪 Arabic (Yemen)</option>
+          <option value="ara">🇴🇲 Arabic (Oman)</option>
+          <option value="ara">🇦🇪 Arabic (UAE)</option>
+          <option value="ara">🇶🇦 Arabic (Qatar)</option>
+          <option value="ara">🇧🇭 Arabic (Bahrain)</option>
+          <option value="ara">🇰🇼 Arabic (Kuwait)</option>
         </select>
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone</button>
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
         <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border-none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
       </div>
     </div>
 
-    <!-- Phone Login Screen -->
+    <!-- Phone / ID Login Screen (195 देशों के फोन कोड) -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
@@ -237,107 +394,31 @@
           <option value="ml">🇮🇳 മലയാളം</option>
           <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
           <option value="ur">🇵🇰 اردو</option>
-          <option value="zh">🇨🇳 中文</option>
-          <option value="ja">🇯🇵 日本語</option>
-          <option value="ko">🇰🇷 한국어</option>
-          <option value="vi">🇻🇳 Tiếng Việt</option>
-          <option value="th">🇹🇭 ไทย</option>
-          <option value="id">🇮🇩 Bahasa Indonesia</option>
-          <option value="ms">🇲🇾 Bahasa Melayu</option>
-          <option value="fil">🇵🇭 Filipino</option>
-          <option value="my">🇲🇲 ဗမာစာ</option>
-          <option value="km">🇰🇭 ភាសាខ្មែរ</option>
-          <option value="lo">🇱🇦 ລາວ</option>
-          <option value="ne">🇳🇵 नेपाली</option>
-          <option value="si">🇱🇰 සිංහල</option>
-          <option value="mn">🇲🇳 Монгол</option>
-          <option value="kk">🇰🇿 Қазақ</option>
-          <option value="uz">🇺🇿 O'zbek</option>
-          <option value="ar">🇸🇦 العربية</option>
-          <option value="fa">🇮🇷 فارسی</option>
-          <option value="tr">🇹🇷 Türkçe</option>
-          <option value="he">🇮🇱 עברית</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="it">🇮🇹 Italiano</option>
-          <option value="pt">🇧🇷 Português</option>
-          <option value="ru">🇷🇺 Русский</option>
-          <option value="uk">🇺🇦 Українська</option>
-          <option value="pl">🇵🇱 Polski</option>
-          <option value="nl">🇳🇱 Nederlands</option>
-          <option value="el">🇬🇷 Ελληνικά</option>
-          <option value="hu">🇭🇺 Magyar</option>
-          <option value="cs">🇨🇿 Čeština</option>
-          <option value="sv">🇸🇪 Svenska</option>
-          <option value="ro">🇷🇴 Română</option>
-          <option value="da">🇩🇰 Dansk</option>
-          <option value="fi">🇫🇮 Suomi</option>
-          <option value="no">🇳🇴 Norsk</option>
-          <option value="bg">🇧🇬 Български</option>
-          <option value="hr">🇭🇷 Hrvatski</option>
-          <option value="sr">🇷🇸 Српски</option>
-          <option value="sk">🇸🇰 Slovenčina</option>
-          <option value="sl">🇸🇮 Slovenščina</option>
-          <option value="et">🇪🇪 Eesti</option>
-          <option value="lv">🇱🇻 Latviešu</option>
-          <option value="lt">🇱🇹 Lietuvių</option>
-          <option value="is">🇮🇸 Íslenska</option>
-          <option value="sq">🇦🇱 Shqip</option>
-          <option value="sw">🇰🇪 Kiswahili</option>
-          <option value="am">🇪🇹 አማርኛ</option>
-          <option value="ha">🇳🇬 Hausa</option>
-          <option value="yo">🇳🇬 Yorùbá</option>
-          <option value="zu">🇿🇦 IsiZulu</option>
-          <option value="af">🇿🇦 Afrikaans</option>
-          <option value="hy">🇦🇲 Հայերեն</option>
-          <option value="az">🇦🇿 Azərbaycan</option>
-          <option value="eu">🇪🇸 Euskara</option>
-          <option value="be">🇧🇾 Беларуская</option>
-          <option value="bs">🇦🇦 Bosanski</option>
-          <option value="ka">🇬🇪 ქართული</option>
-          <option value="la">🇻🇦 Latina</option>
-          <option value="ga">🇮🇪 Gaeilge</option>
-          <option value="mt">🇲🇹 Malti</option>
-          <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg</option>
-          <option value="eo">🌍 Esperanto</option>
-          <option value="yi">🌍 ייִדיש</option>
-          <option value="so">🇸🇴 Soomaaliga</option>
-          <option value="sn">🇿🇼 Shona</option>
-          <option value="xh">🇿🇦 isiXhosa</option>
-          <option value="st">🇱🇸 Sesotho</option>
-          <option value="ny">🇲🇼 Chichewa</option>
-          <option value="mg">🇲🇬 Malagasy</option>
-          <option value="rw">🇷🇼 Kinyarwanda</option>
-          <option value="lg">🇺🇬 Luganda</option>
-          <option value="ig">🇳🇬 Igbo</option>
-          <option value="ku">🇹🇷 Kurdî</option>
-          <option value="ps">🇦🇫 پښتو</option>
-          <option value="sd">🇵🇰 سنڌي</option>
-          <option value="tg">🇹🇯 Тоҷикӣ</option>
-          <option value="tk">🇹🇲 Türkmençe</option>
-          <option value="ug">🇨🇳 ئۇيغۇرچە</option>
         </select>
       </div>
 
-      <!-- नंबर डालने वाले बॉक्स को ऊपर से नीचे खिसकाने के लिए margin-top बढ़ा दिया गया है -->
       <div style="margin-top: 40px;">
         <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Register / log in</div>
-        <div class="input-box" style="margin-top:15px; display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:8px 12px;">
-          <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:130px; outline:none; cursor:pointer;">
-            <option value="+91">🇮🇳 (+91) India</option>
+        <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
+        
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
+          <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
+            <!-- दुनिया के सभी 195 देशों के कंट्री कोड -->
             <option value="+93">🇦🇫 (+93) Afghanistan</option>
             <option value="+355">🇦🇱 (+355) Albania</option>
             <option value="+213">🇩🇿 (+213) Algeria</option>
             <option value="+376">🇦🇩 (+376) Andorra</option>
             <option value="+244">🇦🇴 (+244) Angola</option>
+            <option value="+1268">🇦🇬 (+1268) Antigua</option>
             <option value="+54">🇦🇷 (+54) Argentina</option>
             <option value="+374">🇦🇲 (+374) Armenia</option>
             <option value="+61">🇦🇺 (+61) Australia</option>
             <option value="+43">🇦🇹 (+43) Austria</option>
             <option value="+994">🇦🇿 (+994) Azerbaijan</option>
+            <option value="+1242">🇧🇸 (+1242) Bahamas</option>
             <option value="+973">🇧🇭 (+973) Bahrain</option>
             <option value="+880">🇧🇩 (+880) Bangladesh</option>
+            <option value="+1246">🇧🇧 (+1246) Barbados</option>
             <option value="+375">🇧🇾 (+375) Belarus</option>
             <option value="+32">🇧🇪 (+32) Belgium</option>
             <option value="+501">🇧🇿 (+501) Belize</option>
@@ -351,10 +432,10 @@
             <option value="+359">🇧🇬 (+359) Bulgaria</option>
             <option value="+226">🇧🇫 (+226) Burkina Faso</option>
             <option value="+257">🇧🇮 (+257) Burundi</option>
+            <option value="+238">🇨🇻 (+238) Cabo Verde</option>
             <option value="+855">🇰🇭 (+855) Cambodia</option>
             <option value="+237">🇨🇲 (+237) Cameroon</option>
             <option value="+1">🇨🇦 (+1) Canada</option>
-            <option value="+238">🇨🇻 (+238) Cape Verde</option>
             <option value="+236">🇨🇫 (+236) Central African Rep</option>
             <option value="+235">🇹🇩 (+235) Chad</option>
             <option value="+56">🇨🇱 (+56) Chile</option>
@@ -362,11 +443,13 @@
             <option value="+57">🇨🇴 (+57) Colombia</option>
             <option value="+269">🇰🇲 (+269) Comoros</option>
             <option value="+242">🇨🇬 (+242) Congo</option>
+            <option value="+243">🇨🇩 (+243) DR Congo</option>
             <option value="+506">🇨🇷 (+506) Costa Rica</option>
+            <option value="+225">🇨🇮 (+225) Cote d'Ivoire</option>
             <option value="+385">🇭🇷 (+385) Croatia</option>
             <option value="+53">🇨🇺 (+53) Cuba</option>
             <option value="+357">🇨🇾 (+357) Cyprus</option>
-            <option value="+420">🇨🇿 (+420) Czech Republic</option>
+            <option value="+420">🇨🇿 (+420) Czechia</option>
             <option value="+45">🇩🇰 (+45) Denmark</option>
             <option value="+253">🇩🇯 (+253) Djibouti</option>
             <option value="+1767">🇩🇲 (+1767) Dominica</option>
@@ -377,6 +460,7 @@
             <option value="+240">🇬🇶 (+240) Equatorial Guinea</option>
             <option value="+291">🇪🇷 (+291) Eritrea</option>
             <option value="+372">🇪🇪 (+372) Estonia</option>
+            <option value="+268">🇸🇿 (+268) Eswatini</option>
             <option value="+251">🇪🇹 (+251) Ethiopia</option>
             <option value="+679">🇫🇯 (+679) Fiji</option>
             <option value="+358">🇫🇮 (+358) Finland</option>
@@ -387,15 +471,16 @@
             <option value="+49">🇩🇪 (+49) Germany</option>
             <option value="+233">🇬🇭 (+233) Ghana</option>
             <option value="+30">🇬🇷 (+30) Greece</option>
+            <option value="+1473">🇬🇩 (+1473) Grenada</option>
             <option value="+502">🇬🇹 (+502) Guatemala</option>
             <option value="+224">🇬🇳 (+224) Guinea</option>
             <option value="+245">🇬🇼 (+245) Guinea-Bissau</option>
             <option value="+592">🇬🇾 (+592) Guyana</option>
             <option value="+509">🇭🇹 (+509) Haiti</option>
             <option value="+504">🇭🇳 (+504) Honduras</option>
-            <option value="+852">🇭🇰 (+852) Hong Kong</option>
             <option value="+36">🇭🇺 (+36) Hungary</option>
             <option value="+354">🇮🇸 (+354) Iceland</option>
+            <option value="+91" selected>🇮🇳 (+91) India</option>
             <option value="+62">🇮🇩 (+62) Indonesia</option>
             <option value="+98">🇮🇷 (+98) Iran</option>
             <option value="+964">🇮🇶 (+964) Iraq</option>
@@ -421,8 +506,6 @@
             <option value="+423">🇱🇮 (+423) Liechtenstein</option>
             <option value="+370">🇱🇹 (+370) Lithuania</option>
             <option value="+352">🇱🇺 (+352) Luxembourg</option>
-            <option value="+853">🇲🇴 (+853) Macau</option>
-            <option value="+389">🇲🇰 (+389) North Macedonia</option>
             <option value="+261">🇲🇬 (+261) Madagascar</option>
             <option value="+265">🇲🇼 (+265) Malawi</option>
             <option value="+60">🇲🇾 (+60) Malaysia</option>
@@ -464,6 +547,9 @@
             <option value="+40">🇷🇴 (+40) Romania</option>
             <option value="+7">🇷🇺 (+7) Russia</option>
             <option value="+250">🇷🇼 (+250) Rwanda</option>
+            <option value="+1869">🇰🇳 (+1869) St. Kitts</option>
+            <option value="+1758">🇱🇨 (+1758) St. Lucia</option>
+            <option value="+1784">🇻🇨 (+1784) St. Vincent</option>
             <option value="+685">🇼🇸 (+685) Samoa</option>
             <option value="+378">🇸🇲 (+378) San Marino</option>
             <option value="+239">🇸🇹 (+239) Sao Tome</option>
@@ -483,7 +569,6 @@
             <option value="+94">🇱🇰 (+94) Sri Lanka</option>
             <option value="+249">🇸🇩 (+249) Sudan</option>
             <option value="+597">🇸🇷 (+597) Suriname</option>
-            <option value="+268">🇸🇿 (+268) Eswatini</option>
             <option value="+46">🇸🇪 (+46) Sweden</option>
             <option value="+41">🇨🇭 (+41) Switzerland</option>
             <option value="+963">🇸🇾 (+963) Syria</option>
@@ -507,17 +592,17 @@
             <option value="+598">🇺🇾 (+598) Uruguay</option>
             <option value="+998">🇺🇿 (+998) Uzbekistan</option>
             <option value="+678">🇻🇺 (+678) Vanuatu</option>
+            <option value="+379">🇻🇦 (+379) Vatican City</option>
             <option value="+58">🇻🇪 (+58) Venezuela</option>
             <option value="+84">🇻🇳 (+84) Vietnam</option>
             <option value="+967">🇾🇪 (+967) Yemen</option>
             <option value="+260">🇿🇲 (+260) Zambia</option>
             <option value="+263">🇿🇼 (+263) Zimbabwe</option>
           </select>
-          <input type="tel" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; margin-left:8px;">
+          <input type="text" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number or #ID" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
       </div>
       
-      <!-- बटन नीचे फिक्स रहेगा -->
       <div class="bottom-fixed-btn-container">
         <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
       </div>
@@ -529,10 +614,9 @@
       
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
       
-      <!-- पासवर्ड वाले बॉक्स को भी ऊपर से थोड़ा नीचे कर दिया गया है -->
       <div style="margin-top: 40px;">
-        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
-        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password (Exact 8 characters)</div>
+        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
+        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
 
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
           <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
@@ -547,7 +631,6 @@
         </div>
       </div>
 
-      <!-- पासवर्ड पेज का बटन भी नीचे फिक्स है -->
       <div class="bottom-fixed-btn-container">
         <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLogin()">➔</button>
       </div>
@@ -600,7 +683,7 @@
       alert("Email login option coming soon!");
     }
     function socialLoginNotice(provider) {
-      alert(provider + " login selected. Please use More Options for phone login.");
+      alert(provider + " login selected. Please use More Options for phone/ID login.");
     }
     function showScreenMain() {
       document.getElementById("screenPhone").style.display = "none";
@@ -611,11 +694,12 @@
       document.getElementById("screenPhone").style.display = "flex";
     }
     function goToPasswordScreen() {
-      let phone = document.getElementById("phoneInput").value.trim();
-      if(!phone) {
-        alert("Please enter phone number first!");
+      let identifier = document.getElementById("phoneInput").value.trim();
+      if(!identifier) {
+        alert("Please enter phone number or User ID!");
         return;
       }
+      localStorage.setItem("greedy_login_identifier", identifier);
       document.getElementById("screenPhone").style.display = "none";
       document.getElementById("screenPass").style.display = "flex";
     }
@@ -639,25 +723,24 @@
         alert("Password must be exactly 8 characters!");
         return;
       }
+
+      if(!localStorage.getItem("greedy_unique_id")) {
+        let generatedId = "#" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("greedy_unique_id", generatedId);
+      }
+
+      localStorage.setItem("greedy_password", passVal);
+      localStorage.setItem("greedy_initialized", "true");
+
       document.getElementById("loadingOverlay").style.display = "flex";
       setTimeout(() => {
         window.location.replace("profile.html");
       }, 1000);
     }
-    function openDoc(type) {
-      if(type === 'terms') {
-        document.getElementById("termsPage").style.display = "flex";
-      } else if(type === 'privacy') {
-        document.getElementById("privacyPage").style.display = "flex";
-      }
-    }
-    function closeDoc(id) {
-      document.getElementById(id).style.display = "none";
-    }
     function checkNumber() {
-      let phone = document.getElementById("phoneInput").value.trim();
+      let identifier = document.getElementById("phoneInput").value.trim();
       let btn = document.getElementById("submitBtn");
-      if (phone.length > 0) {
+      if (identifier.length > 0) {
         btn.classList.add("active");
       } else {
         btn.classList.remove("active");
