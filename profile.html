@@ -121,8 +121,9 @@
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
-    .cell-badge-profile { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 8px; display: flex; align-items: center; gap: 3px; font-weight: normal; }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 11px; padding: 2px 7px; border-radius: 8px; font-weight: normal; }
+    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; }
+    .cell-badge-profile-right { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     /* टिप्स (Tips) पॉपअप मेनू */
@@ -132,19 +133,19 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- नया फोटो एडिटर डिज़ाइन (फुल स्क्रीन फोटो और छोटे, फीके नीचे के मार्क) --- */
+    /* --- फोटो एडिटर स्क्रीन (जैसे पहली फोटो में दिखाया गया है) --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
-    /* चौरस क्रॉप बॉक्स - स्क्रीन के बीचोंबीच */
-    .crop-frame-box { width: 320px; height: 320px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    /* बीच का क्रॉप बॉक्स: लेफ्ट-राइट से स्क्रीन बॉर्डर तक चौड़ा, ऊपर-नीचे से सुरक्षित */
+    .crop-frame-box { width: 96%; max-width: 460px; height: 320px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.82); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; }
     #editorImagePreview:active { cursor: grabbing; }
 
-    /* नीचे की पट्टी: एकदम साफ़, रंग फीका (transparent/dark style) और छोटे मार्क */
-    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-around; align-items: center; z-index: 25; border-top: 1px solid #222; }
-    .editor-bottom-btn { background: none; border: none; font-size: 22px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; transition: color 0.2s, background 0.2s; }
+    /* सबसे नीचे की पट्टी: जैसे स्क्रीनशॉट में कोने में ✖️ और ✔️ दिए गए हैं */
+    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
+    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; transition: color 0.2s, background 0.2s; }
     .editor-bottom-btn:active { background: rgba(255,255,255,0.1); color: #fff; }
   </style>
 </head>
@@ -254,7 +255,7 @@
       </div>
     </div>
 
-    <!-- फोटो एडिटर स्क्रीन (फुल स्क्रीन फोटो और छोटे, फीके बटन) -->
+    <!-- फोटो एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
@@ -485,6 +486,7 @@
 
     let imgX = 0, imgY = 0, imgScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
+    let initialPinchDistance = null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const viewedId = urlParams.get("id");
@@ -576,9 +578,9 @@
         if(i === 1) {
           let profPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
           if(profPic && profPic.trim() !== "") {
-            cell.innerHTML = `<img src="${profPic}"><div class="cell-badge-profile">👤 1</div>`;
+            cell.innerHTML = `<img src="${profPic}"><div class="cell-badge-profile-left">👤</div><div class="cell-badge-profile-right">1</div>`;
           } else {
-            cell.innerHTML = `<div class="plus-sign">+</div><div class="cell-badge-profile">👤 1</div>`;
+            cell.innerHTML = `<div class="plus-sign">+</div><div class="cell-badge-profile-left">👤</div><div class="cell-badge-profile-right">1</div>`;
           }
         } else {
           let slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || "";
@@ -679,16 +681,19 @@
           let preview = document.getElementById("editorImagePreview");
           preview.src = rawImageObj.src;
           
-          // फोटो को फुल स्क्रीन साइज के हिसाब से बेहतरीन फिट और ज़ूम करने का लॉजिक
-          let screenW = window.innerWidth;
-          let screenH = window.innerHeight - 65; // नीचे की बार छोड़कर
-          imgScale = Math.max(screenW / rawImageObj.width, screenH / rawImageObj.height);
+          let canvasArea = document.getElementById("editorCanvasArea");
+          let areaW = canvasArea.clientWidth || window.innerWidth;
+          let areaH = canvasArea.clientHeight || (window.innerHeight - 65);
+
+          imgScale = Math.max(areaW / rawImageObj.width, areaH / rawImageObj.height);
+          let renderW = rawImageObj.width * imgScale;
+          let renderH = rawImageObj.height * imgScale;
+
+          preview.style.width = renderW + "px";
+          preview.style.height = renderH + "px";
           
-          preview.style.width = (rawImageObj.width * imgScale) + "px";
-          preview.style.height = (rawImageObj.height * imgScale) + "px";
-          
-          imgX = (screenW - (rawImageObj.width * imgScale)) / 2;
-          imgY = (screenH - (rawImageObj.height * imgScale)) / 2;
+          imgX = (areaW - renderW) / 2;
+          imgY = (areaH - renderH) / 2;
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
 
@@ -707,9 +712,29 @@
       window.addEventListener('touchmove', onImgDrag);
       window.addEventListener('mouseup', endImgDrag);
       window.addEventListener('touchend', endImgDrag);
+      
+      editorArea.addEventListener('wheel', (e) => {
+        if(!rawImageObj) return;
+        e.preventDefault();
+        let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+        imgScale *= zoomFactor;
+        if(imgScale < 0.2) imgScale = 0.2;
+        if(imgScale > 5.0) imgScale = 5.0;
+
+        let preview = document.getElementById("editorImagePreview");
+        preview.style.width = (rawImageObj.width * imgScale) + "px";
+        preview.style.height = (rawImageObj.height * imgScale) + "px";
+      }, { passive: false });
     }
 
     function startImgDrag(e) {
+      if (e.touches && e.touches.length === 2) {
+        initialPinchDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        return;
+      }
       isDraggingImg = true;
       startMouseX = e.touches ? e.touches[0].clientX : e.clientX;
       startMouseY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -717,6 +742,25 @@
     }
 
     function onImgDrag(e) {
+      if (e.touches && e.touches.length === 2 && initialPinchDistance) {
+        let currentDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        let zoomFactor = currentDistance / initialPinchDistance;
+        imgScale *= zoomFactor;
+        if(imgScale < 0.2) imgScale = 0.2;
+        if(imgScale > 5.0) imgScale = 5.0;
+
+        let preview = document.getElementById("editorImagePreview");
+        preview.style.width = (rawImageObj.width * imgScale) + "px";
+        preview.style.height = (rawImageObj.height * imgScale) + "px";
+
+        initialPinchDistance = currentDistance;
+        e.preventDefault();
+        return;
+      }
+
       if (!isDraggingImg) return;
       let clientX = e.touches ? e.touches[0].clientX : e.clientX;
       let clientY = e.touches ? e.touches[0].clientY : e.clientY;
@@ -737,6 +781,7 @@
 
     function endImgDrag() {
       isDraggingImg = false;
+      initialPinchDistance = null;
     }
 
     function cancelEditor() {
@@ -744,6 +789,7 @@
       rawImageObj = null;
       document.getElementById("hiddenGalleryInput").value = "";
       document.getElementById("hiddenAvatarInput").value = "";
+      openPhotoGridScreen();
     }
 
     function confirmEditor() {
@@ -781,7 +827,7 @@
           localStorage.setItem("greedy_avatar", finalDataUrl);
         }
         initProfile();
-        render9Grid();
+        openPhotoGridScreen();
       }
     }
 
