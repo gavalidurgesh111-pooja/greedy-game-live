@@ -301,7 +301,7 @@
 
     <!-- टिप्स (Tips) पॉपअप मेनू -->
     <div id="tipsModal" class="modal-overlay">
-      <div class="tips-box">
+      <div class="modal-box">
         <h3>Tips</h3>
         <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
         <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
@@ -437,7 +437,7 @@
 
   <script>
     // ==========================================
-    // सटीक बैक बटन और पॉपअप लॉजिक (लिंक से बाहर जाने पर पूर्ण रोक)
+    // फाइनल बैक बटन और पॉपअप नेविगेशन लॉजिक
     // ==========================================
     history.pushState({page: "main_profile"}, "", window.location.href);
 
@@ -478,13 +478,13 @@
         return;
       }
 
-      // **नया नियम लागू:** यदि यूजर फोटो ग्रिड पेज पर है और उसने मोबाइल का बैक बटन दबाया
+      // **सटीक नियम:** यदि यूजर फोटो ग्रिड पेज पर है और मोबाइल का बैक बटन दबाता है
       if (photoGrid && photoGrid.style.display === "flex") {
         if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-          // अगर पॉपअप खुला हुआ है और यूजर ने दोबारा बैक बटन दबा दिया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)[span_4](start_span)[span_4](end_span)
+          // अगर पॉपअप खुला है और यूजर ने दोबारा बैक बटन दबाया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)[span_0](start_span)[span_0](end_span)
           closePhotoGridWithoutSaving();
         } else {
-          // पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा[span_5](start_span)[span_5](end_span)
+          // पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा[span_1](start_span)[span_1](end_span)
           let hasChanges = false;
           if (currentAvatarTemp !== currentAvatar) hasChanges = true;
           for(let i=1; i<=8; i++) {
@@ -536,7 +536,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.getItem("greedy_won", "0");
+        localStorage.setItem("greedy_won", "0");
       }
     }
 
@@ -746,7 +746,7 @@
 
     let currentAvatarTemp = "";
 
-    // बिना सेव किए प्रोफाइल पेज पर लौटने का फंक्शन[span_6](start_span)[span_6](end_span)
+    // बिना सेव किए सीधे प्रोफाइल पेज पर लौटने का फंक्शन[span_2](start_span)[span_2](end_span)
     function closePhotoGridWithoutSaving() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -757,7 +757,7 @@
       initProfile();
     }
 
-    // ऊपर बाएं कोने के बैक तीर (❮) को दबाने पर पहले पॉपअप दिखाना
+    // बैक तीर (❮) दबाने पर चेक करना कि बदलाव हुए हैं या नहीं
     function handleGridBackAction() {
       let hasChanges = false;
       if (currentAvatarTemp !== currentAvatar) hasChanges = true;
@@ -774,11 +774,12 @@
       }
     }
 
+    // NO, THANKS दबाने पर बिना सेव किए प्रोफाइल पेज पर जाना[span_3](start_span)[span_3](end_span)
     function confirmNoThanks() {
       closePhotoGridWithoutSaving();
     }
 
-    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_7](start_span)[span_7](end_span)
+    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_4](start_span)[span_4](end_span)
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
