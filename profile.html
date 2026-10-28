@@ -10,7 +10,7 @@
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
     /* Cover Slider Area (6 Pages) */
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #111; cursor: pointer; }
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
@@ -21,26 +21,30 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      background-color: #111;
+      /* दूसरी फोटो के जैसी पर्पल/बैंगनी थीम और बैकग्राउंड रंग */
+      background-color: #9b51e0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    /* प्लस के निशान को हटाकर 'Upload' बटन जैसा सुंदर स्टाइल दिया गया है */
     .cover-center-plus {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.6);
+      width: 85%;
+      max-width: 260px;
+      height: 52px;
+      border-radius: 26px;
+      background: transparent;
       color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
-      font-weight: bold;
+      font-size: 18px;
+      font-weight: 600;
       border: 2px solid #fff;
       z-index: 5;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
     }
 
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
@@ -184,12 +188,12 @@
       </div>
 
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1">+</div></div>
-        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2">+</div></div>
-        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3">+</div></div>
-        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4">+</div></div>
-        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5">+</div></div>
-        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6">+</div></div>
+        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1">Upload</div></div>
+        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2">Upload</div></div>
+        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3">Upload</div></div>
+        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4">Upload</div></div>
+        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5">Upload</div></div>
+        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6">Upload</div></div>
       </div>
       
       <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -674,7 +678,6 @@
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // --- फोटो डिलीट होने पर ऑटोमैटिक आगे की फोटो अगले क्रम में खिसकाने (Shift) वाला नियम ---
     function tipsDeletePicture() {
       let tipsModal = document.getElementById("tipsModal");
       if (tipsModal) {
@@ -683,10 +686,8 @@
 
       setTimeout(function() {
         if(confirm("Delete this picture?")) {
-          // 1. सबसे पहले वर्तमान स्लॉट खाली करें
           localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
 
-          // 2. सभी 6 स्लॉट की वैल्यू एकत्र करें और केवल भरी हुई (valid) फोटो छाँटें
           let activePhotos = [];
           for(let i = 1; i <= 6; i++) {
             let p = localStorage.getItem("greedy_slot_" + i);
@@ -695,12 +696,10 @@
             }
           }
 
-          // 3. सभी स्लॉट पहले खाली करें
           for(let i = 1; i <= 6; i++) {
             localStorage.setItem("greedy_slot_" + i, "");
           }
 
-          // 4. बची हुई फोटो को दोबारा क्रम से (1, 2, 3...) भर दें ताकि बीच का खाली गैप खत्म हो जाए
           for(let i = 0; i < activePhotos.length; i++) {
             localStorage.setItem("greedy_slot_" + (i + 1), activePhotos[i]);
           }
@@ -976,7 +975,7 @@
     }
 
     function applyCustomFrame(frameUrl) {
-      const targetFrame = document.getElementById("profAvatarFrame");
+      const targetFrame = document.getElementById("profAvatarFile");
       if (targetFrame) {
         targetFrame.style.display = "block";
         targetFrame.className = "avatar-frame";
