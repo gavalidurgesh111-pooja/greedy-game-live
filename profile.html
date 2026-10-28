@@ -202,7 +202,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (1 से 9 तक) -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -437,12 +437,12 @@
 
   <script>
     // ==========================================
-    // स्मार्ट बैक बटन गार्ड
+    // स्मार्ट बैक बटन गार्ड (मोबाइल बैक बटन पर लिंक से बाहर जाने से रोकना)
     // ==========================================
-    history.pushState(null, null, window.location.href);
+    history.pushState({page: "profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      history.pushState(null, null, window.location.href);
+      history.pushState({page: "profile"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -451,6 +451,7 @@
       let tipsModal = document.getElementById("tipsModal");
       let unsavedTipsModal = document.getElementById("unsavedTipsModal");
       let photoEditor = document.getElementById("screenPhotoEditor");
+      let photoGrid = document.getElementById("screenPhotoGrid");
 
       if (customAlert && customAlert.style.display === "flex") {
         customAlert.style.display = "none";
@@ -481,11 +482,15 @@
         return;
       }
 
+      // अगर यूजर 'Profile photo' ग्रिड स्क्रीन पर है और मोबाइल बैक बटन दबाया
+      if (photoGrid && photoGrid.style.display === "flex") {
+        tryClosePhotoGridScreen();
+        return;
+      }
+
       let settingsPage = document.getElementById("screenSettingsPage");
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
-      let photoGrid = document.getElementById("screenPhotoGrid");
-      let profileScreen = document.getElementById("screenProfile");
 
       if (settingsPage && settingsPage.style.display === "flex") {
         closeSettingsPage();
@@ -498,17 +503,6 @@
       if (groupsScreen && groupsScreen.style.display === "flex") {
         closeGroupsScreen();
         return;
-      }
-      if (photoGrid && photoGrid.style.display === "flex") {
-        tryClosePhotoGridScreen();
-        return;
-      }
-
-      if (profileScreen) {
-        profileScreen.style.display = "block";
-        if (typeof initProfile === "function") {
-          initProfile();
-        }
       }
     });
 
@@ -665,7 +659,7 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का ग्रिड रेंडर (1 से 9 तक, जब 9 पूरे हों तो आगे ऑप्शन न आए) ---
+    // --- Profile photo पेज का ग्रिड रेंडर (1 से 9 तक) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -1203,7 +1197,7 @@
       } else {
         heart.innerText = "🤍";
         bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
       }
     }
 
