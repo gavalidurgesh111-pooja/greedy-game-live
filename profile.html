@@ -18,7 +18,6 @@
       height: 100%;
       scroll-snap-align: start;
       position: relative;
-      /* कवर फोटो अब बिना किसी खिंचाव के बिल्कुल सही और साफ दिखेगी */
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
@@ -136,7 +135,7 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* --- फोटो एडिटर स्क्रीन (क्रॉप बॉक्स आपके बताए अनुसार सुरक्षित है) --- */
+    /* --- फोटो एडिटर स्क्रीन --- */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     
@@ -627,6 +626,12 @@
       initProfile();
     }
 
+    // --- यहाँ नया फंक्शन जोड़ा गया है जो फ्रेम पॉपअप बंद करके प्रोफाइल फोटो (9-फोटोज ग्रिड) पेज पर ले जाएगा ---
+    function triggerAvatarUpload() {
+      closeFrameModal();
+      openPhotoGridScreen();
+    }
+
     function handleGridCellClick(index) {
       if (!isMyProfile) return;
       
@@ -862,9 +867,7 @@
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
-        // कवर फोटो के अनुपात को बिल्कुल सही रखने के लिए डायनामिक साइजिंग (बिना क्रॉप बॉक्स छेड़े)
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        let targetAspect = 480 / 320; // कवर स्लाइडर का अनुपात
         let cropAspect = box.width / box.height;
 
         let canvasW = 1080;
