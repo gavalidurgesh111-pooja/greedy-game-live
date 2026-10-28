@@ -128,7 +128,7 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) - बिना किसी गैप के लगातार क्रम (1 से 6) */
+    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) - 1 से 9 स्लॉट तक सपोर्ट */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -193,7 +193,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
+      <!-- कवर स्लाइडर (1 से 9 पेजेस तक सपोर्ट) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -268,7 +268,7 @@
       </div>
     </div>
 
-    <!-- 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) -->
+    <!-- Profile photo पेज (1 से 9 स्लॉट तक) -->
     <div id="screenPhotoGrid" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridScreen()">❮</div>
@@ -555,22 +555,25 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- कवर पेजेस सेटअप (1 से 6 लगातार क्रम, बिना गैप के) ---
+      // --- कवर पेजेस सेटअप (1 से 9 तक ऑटोमैटिक विजिबिलिटी) ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-      let totalVisible = 1;
-      if (avatarPic && avatarPic.trim() !== "") {
-        for(let i = 1; i <= 5; i++) {
-          let val = localStorage.getItem("greedy_slot_" + i) || "";
-          if (val && val.trim() !== "") {
-            totalVisible = i + 1;
-          } else {
-            break;
-          }
+      let filledCount = 0;
+      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
+      
+      for(let i = 1; i <= 8; i++) {
+        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        if (val && val.trim() !== "") {
+          filledCount = i + 1;
+        } else {
+          break;
         }
-        if (totalVisible < 6) totalVisible += 1;
       }
+      
+      let totalVisible = filledCount + 1;
+      if (totalVisible > 9) totalVisible = 9;
+      if (totalVisible < 1) totalVisible = 1;
 
-      for(let i=1; i<=6; i++) {
+      for(let i=1; i<=9; i++) {
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
         if(!pageEl) continue;
@@ -599,11 +602,6 @@
             pageEl.style.display = "none"; 
           }
         }
-      }
-
-      for(let i=7; i<=9; i++) {
-        let p = document.getElementById("coverPage" + i);
-        if(p) p.style.display = "none";
       }
 
       render9Grid();
@@ -640,14 +638,25 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का 6-स्लॉट सटीक क्रम ---
+    // --- Profile photo पेज का 1 से 9 स्लॉट तक डायनामिक क्रम ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
-      for(let i = 1; i <= 6; i++) {
+      let filledCount = 0;
+      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
+      for(let i = 1; i <= 8; i++) {
+        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        if (val && val.trim() !== "") filledCount = i + 1;
+        else break;
+      }
+      let maxGridSlots = filledCount + 1;
+      if (maxGridSlots > 9) maxGridSlots = 9;
+      if (maxGridSlots < 1) maxGridSlots = 1;
+
+      for(let i = 1; i <= maxGridSlots; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
         
@@ -780,14 +789,14 @@
             localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
 
             let activePhotos = [];
-            for(let i = 1; i <= 5; i++) {
+            for(let i = 1; i <= 8; i++) {
               let p = localStorage.getItem("greedy_slot_" + i);
               if(p && p.trim() !== "") {
                 activePhotos.push(p);
               }
             }
 
-            for(let i = 1; i <= 5; i++) {
+            for(let i = 1; i <= 8; i++) {
               localStorage.setItem("greedy_slot_" + i, "");
             }
 
@@ -1023,16 +1032,15 @@
 
         initProfile();
         
-        // --- ऑटोमैटिक नेविगेशन: फोटो सेव होने के बाद कवर स्लाइडर को तुरंत अगले खाली स्लॉट पर ले जाएं ---
+        // --- ऑटोमैटिक नेविगेशन (अगले स्लॉट पर फोकस, अधिकतम 9 तक) ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if(slider) {
-            // यदि पहला स्लॉट भरा तो दूसरे पर, दूसरा भरा तो तीसरे पर (अधिकतम पेज 6 तक)
             let nextPageIndex = savedTargetIndex + 1;
-            if (nextPageIndex > 6) nextPageIndex = 6;
+            if (nextPageIndex > 9) nextPageIndex = 9;
             
             let targetPage = document.getElementById("coverPage" + nextPageIndex);
-            if(targetPage && targetPage.style.display !== "none") {
+            if(targetPage) {
               slider.scrollLeft = targetPage.offsetLeft;
             }
           }
@@ -1040,26 +1048,26 @@
       }
     }
 
-    // --- स्क्रॉल लॉक नियम ---
+    // --- स्क्रॉल लॉक नियम (9 तक सीमित) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
-        let totalValidPages = 1;
         let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
-        if (avatarPic && avatarPic.trim() !== "") {
-          for(let i = 1; i <= 5; i++) {
-            let val = localStorage.getItem("greedy_slot_" + i) || "";
-            if (val && val.trim() !== "") {
-              totalValidPages = i + 1;
-            } else {
-              break;
-            }
+        let filledCount = 0;
+        if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
+        for(let i = 1; i <= 8; i++) {
+          let val = localStorage.getItem("greedy_slot_" + i) || "";
+          if (val && val.trim() !== "") {
+            filledCount = i + 1;
+          } else {
+            break;
           }
-          if (totalValidPages < 6) totalValidPages += 1;
         }
+        let totalVisible = filledCount + 1;
+        if (totalVisible > 9) totalVisible = 9;
 
         let pageWidth = coverContainer.clientWidth;
-        let targetMaxScroll = (totalValidPages - 1) * pageWidth;
+        let targetMaxScroll = (totalVisible - 1) * pageWidth;
         if (coverContainer.scrollLeft > targetMaxScroll) {
           coverContainer.scrollLeft = targetMaxScroll;
         }
