@@ -136,6 +136,7 @@
     
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
+    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     /* टिप्स (Tips) पॉपअप मेनू */
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
@@ -192,7 +193,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर: क्लिक करने पर सीधे Profile photo (9-फोटोज ग्रिड) पेज खुलेगा -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -500,7 +501,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.getItem("greedy_won", "0");
+        localStorage.setItem("greedy_won", "0");
       }
     }
 
@@ -647,17 +648,17 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का 9-ग्रिड क्रम (बिल्कुल दूसरी तस्वीर जैसा सटीक सेटअप) ---
+    // --- Profile photo पेज का 9-ग्रिड क्रम (बिल्कुल दूसरी तस्वीर जैसा: 1, 2, 3 के बाद 4, 5, 6... और बिना गैप के) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
-      // गणना करें कि कितने स्लॉट भरे हुए हैं ताकि अगला Upload बटन सही क्रम में आए
+      // यह निर्धारित करें कि कितने स्लॉट दिखने चाहिए (बिنا गैप के क्रम से 1 से 9 तक, और केवल 7, 8, 9 तभी दिखेंगे जब पिछली फोटो लगी हो)
       let filledCount = 0;
       if (avatarPic && avatarPic.trim() !== "") {
-        filledCount = 1; // 1 नंबर स्लॉट (प्रोफाइल फोटो) भरा है
+        filledCount = 1; // 1 नंबर स्लॉट (प्रोफाइल फोटो)
         for(let i = 1; i <= 8; i++) {
           let val = localStorage.getItem("greedy_slot_" + i) || "";
           if (val && val.trim() !== "") {
@@ -667,7 +668,7 @@
           }
         }
       } else {
-        filledCount = 0; // अगर 1 नंबर खाली है तो केवल 1 नंबर पर ही Upload दिखेगा
+        filledCount = 0; 
       }
       let maxGrid = filledCount < 9 ? filledCount + 1 : 9;
       if (maxGrid < 1) maxGrid = 1;
@@ -700,9 +701,9 @@
             }
             cell.style.display = "flex";
           } else {
-            // जो स्लॉट अभी क्रम में नहीं आए हैं, उन्हें खाली (+) और नंबर के साथ दिखाएं या छिपाएं जैसा दूसरी तस्वीर में है
             cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
-            cell.style.display = (i <= maxGrid + 1) ? "flex" : "flex"; 
+            // 7, 8, 9 तभी दिखेंगे जब उनके पिछले स्लॉट पर फोटो या अपलोड बटन आ चुका हो
+            cell.style.display = (i <= maxGrid) ? "flex" : "none"; 
           }
         }
         container.appendChild(cell);
@@ -723,6 +724,7 @@
       openPhotoGridScreen();
     }
 
+    // --- कवर पेज पर 'Upload' बटन दबाते ही सीधे Profile photo (9-फोटोज ग्रिड) पेज खुलेगा ---
     function handleCoverUpload(coverIndex) {
       if (!isMyProfile) return;
       openPhotoGridScreen();
@@ -1131,7 +1133,7 @@
       closeFrameModal();
     }
 
-    function openFrameModal() { 
+    openFrameModal = function() { 
       if (isMyProfile) {
         document.getElementById("modalFrame").style.display = "flex";
       }
