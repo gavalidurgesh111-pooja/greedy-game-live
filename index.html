@@ -653,18 +653,27 @@
 
     function doFinalLogin() {
       let passVal = document.getElementById("passInput").value;
+      let identifier = localStorage.getItem("greedy_login_identifier") || "user_phone";
+
       if(passVal.length !== 8) {
         alert("Password must be exactly 8 characters!");
         return;
       }
 
-      if(!localStorage.getItem("greedy_password")) {
+      let savedPassword = localStorage.getItem("greedy_saved_password_" + identifier);
+
+      if(!savedPassword) {
+        // नया यूज़र रजिस्ट्रेशन
+        localStorage.setItem("greedy_saved_password_" + identifier, passVal);
         localStorage.setItem("greedy_password", passVal);
-        let generatedId = "#" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("greedy_unique_id", generatedId);
+        
+        if(!localStorage.getItem("greedy_unique_id")) {
+          let generatedId = "#" + Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem("greedy_unique_id", generatedId);
+        }
       } else {
-        let savedPass = localStorage.getItem("greedy_password");
-        if(passVal !== savedPass) {
+        // पुराना यूज़र - पासवर्ड मैचिंग
+        if(passVal !== savedPassword) {
           alert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
