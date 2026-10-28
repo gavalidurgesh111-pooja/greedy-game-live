@@ -437,12 +437,13 @@
 
   <script>
     // ==========================================
-    // स्मार्ट बैक बटन गार्ड (मोबाइल बैक बटन पर लिंक से बाहर जाने से रोकना)
+    // कठोर बैक बटन गार्ड (वेबसाइट से बाहर जाने से पूरी तरह रोकना)
     // ==========================================
-    history.pushState({page: "profile"}, "", window.location.href);
+    history.pushState({page: "profile_locked"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      history.pushState({page: "profile"}, "", window.location.href);
+      // यूजर को कभी भी बाहर न जाने देने के लिए हिस्ट्री स्टेट को बार-बार री-पुश करें
+      history.pushState({page: "profile_locked"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -474,7 +475,7 @@
         return;
       }
       if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        unsavedTipsModal.style.display = "none";
+        // जब तक यूजर नो-थैंक्स या सेव नहीं दबाता, पॉपअप बंद नहीं होगा
         return;
       }
       if (photoEditor && photoEditor.style.display === "flex") {
@@ -482,7 +483,7 @@
         return;
       }
 
-      // अगर यूजर 'Profile photo' ग्रिड स्क्रीन पर है और मोबाइल बैक बटन दबाया
+      // यदि यूजर फोटो ग्रिड पेज पर है और फोन का बैक बटन दबाया
       if (photoGrid && photoGrid.style.display === "flex") {
         tryClosePhotoGridScreen();
         return;
@@ -522,7 +523,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.setItem("greedy_won", "0");
+        localStorage.getItem("greedy_won", "0");
       }
     }
 
@@ -742,6 +743,7 @@
       }
 
       if (hasChanges) {
+        // जब तक यूजर NO, THANKS या SAVE न दबाए, तब तक पॉपअप खुला रहेगा और बाहर नहीं जाने देगा
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         document.getElementById("screenPhotoGrid").style.display = "none";
@@ -749,7 +751,7 @@
       }
     }
 
-    // नियम 1: NO, THANKS दबाने पर फोटो सेव नहीं होगी और वह सीधे प्रोफाइल पेज पर जाएगा
+    // नियम: NO, THANKS दबाने पर फोटो सेव नहीं होगी और वह सीधा प्रोफाइल पेज पर जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -760,7 +762,7 @@
       initProfile();
     }
 
-    // नियम 2: SAVE बटन दबाने पर फोटो सेव हो जाएगी और वह प्रोफाइल पेज पर जाएगा
+    // नियम: SAVE बटन दबाने पर फोटो सेव होगी और वह प्रोफाइल पेज पर जाएगा
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
