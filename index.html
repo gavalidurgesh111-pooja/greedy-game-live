@@ -71,12 +71,12 @@
       z-index: 100;
     }
 
-    #submitBtn {
+    #submitBtn, #otpSubmitBtn {
       opacity: 0.4;
       pointer-events: none;
       transition: 0.3s;
     }
-    #submitBtn.active {
+    #submitBtn.active, #otpSubmitBtn.active {
       opacity: 1;
       pointer-events: auto;
       background: #00cd00 !important;
@@ -105,15 +105,13 @@
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           <span>Sign in with Facebook</span>
         </button>
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.15C3.26 21.36 7.33 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.24C.45 8.16 0 9.98 0 12s.45 3.84 1.24 5.42l4.04-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.58l4.04 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/></svg>
           <span>Sign in with Google</span>
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
-        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to <span class="terms-link" onclick="openDoc('terms')" style="cursor:pointer; color:#ffd700; text-decoration:underline;">Terms</span> & <span class="terms-link" onclick="openDoc('privacy')" style="cursor:pointer; color:#ffd700; text-decoration:underline;">Privacy Policy</span></span></div>
+        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
       </div>
     </div>
 
@@ -566,7 +564,25 @@
       </div>
       
       <div class="bottom-fixed-btn-container">
-        <button class="btn-round-next" id="submitBtn" onclick="goToPasswordScreen()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+        <button class="btn-round-next" id="submitBtn" onclick="sendOtpAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+      </div>
+    </div>
+
+    <!-- OTP Verification Screen -->
+    <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
+      <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
+      
+      <div style="margin-top: 40px;">
+        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter OTP Verification</div>
+        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">We have sent a 4-digit code to your number (Demo OTP: 1234)</div>
+
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
+          <input type="text" id="otpInput" maxlength="4" oninput="checkOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
+        </div>
+      </div>
+
+      <div class="bottom-fixed-btn-container">
+        <button class="btn-round-next" id="otpSubmitBtn" onclick="verifyOtpAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
       </div>
     </div>
 
@@ -574,11 +590,9 @@
     <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
       
-      <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
-      
       <div style="margin-top: 40px;">
-        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
-        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
+        <div class="step-title" id="passScreenTitle" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
+        <div id="passScreenSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
 
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
           <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
@@ -589,12 +603,12 @@
         </div>
 
         <div style="margin-top:15px; text-align:center;">
-          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password</span>
+          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
         </div>
       </div>
 
       <div class="bottom-fixed-btn-container">
-        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLogin()">➔</button>
+        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLoginOrRegister()">➔</button>
       </div>
     </div>
   </div>
@@ -623,19 +637,71 @@
       document.getElementById("screenMain").style.display = "flex";
     }
     function showScreenPhone() {
-      document.getElementById("screenPass").style.display = "none";
+      document.getElementById("screenOtp").style.display = "none";
       document.getElementById("screenPhone").style.display = "flex";
     }
-    function goToPasswordScreen() {
+
+    let currentIdentifier = "";
+    let isForgotPasswordFlow = false;
+
+    function sendOtpAction() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
         alert("Please enter phone number or User ID!");
         return;
       }
+      currentIdentifier = identifier;
       localStorage.setItem("greedy_login_identifier", identifier);
+
       document.getElementById("screenPhone").style.display = "none";
-      document.getElementById("screenPass").style.display = "flex";
+      document.getElementById("screenOtp").style.display = "flex";
     }
+
+    function checkNumber() {
+      let identifier = document.getElementById("phoneInput").value.trim();
+      let btn = document.getElementById("submitBtn");
+      if (identifier.length > 0) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
+    function checkOtpInput(input) {
+      let val = input.value;
+      let btn = document.getElementById("otpSubmitBtn");
+      if (val.length === 4) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
+    function verifyOtpAction() {
+      let otp = document.getElementById("otpInput").value.trim();
+      if(otp !== "1234") {
+        alert("Invalid OTP! (Demo OTP is 1234)");
+        return;
+      }
+
+      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
+
+      document.getElementById("screenOtp").style.display = "none";
+      document.getElementById("screenPass").style.display = "flex";
+
+      if(!isRegistered) {
+        document.getElementById("passScreenTitle").innerText = "Create Password";
+        document.getElementById("passScreenSub").innerText = "Set an exact 8-character password for your new account";
+        isForgotPasswordFlow = false;
+      } else if(isForgotPasswordFlow) {
+        document.getElementById("passScreenTitle").innerText = "Reset Password";
+        document.getElementById("passScreenSub").innerText = "Enter your new 8-character password (Your old account & ID will be restored)";
+      } else {
+        document.getElementById("passScreenTitle").innerText = "Enter Password";
+        document.getElementById("passScreenSub").innerText = "Enter your exact 8-character password";
+      }
+    }
+
     function togglePasswordVisibility() {
       let passInput = document.getElementById("passInput");
       let eyeIcon = document.getElementById("eyeIcon");
@@ -647,33 +713,55 @@
         eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
       }
     }
+
     function forgotPasswordAction() {
-      alert("Password reset instructions will be sent via SMS/OTP.");
+      isForgotPasswordFlow = true;
+      alert("OTP verification required to reset your password.");
+      document.getElementById("screenPass").style.display = "none";
+      document.getElementById("screenOtp").style.display = "flex";
     }
 
-    function doFinalLogin() {
+    function doFinalLoginOrRegister() {
       let passVal = document.getElementById("passInput").value;
-      let identifier = localStorage.getItem("greedy_login_identifier") || "user_phone";
-
       if(passVal.length !== 8) {
         alert("Password must be exactly 8 characters!");
         return;
       }
 
-      let savedPassword = localStorage.getItem("greedy_saved_password_" + identifier);
+      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
-      if(!savedPassword) {
-        // नया यूज़र रजिस्ट्रेशन
-        localStorage.setItem("greedy_saved_password_" + identifier, passVal);
+      if(!isRegistered) {
+        // **1. नया यूज़र रजिस्ट्रेशन (बिल्कुल फ्रेश प्रोफाइल)**
+        localStorage.setItem("greedy_user_registered_" + currentIdentifier, "true");
+        localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
         localStorage.setItem("greedy_password", passVal);
         
-        if(!localStorage.getItem("greedy_unique_id")) {
-          let generatedId = "#" + Math.floor(100000 + Math.random() * 900000);
-          localStorage.setItem("greedy_unique_id", generatedId);
+        let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("greedy_unique_id", freshId);
+        // इस नंबर के लिए उसकी यूनिक ID लिंक कर दें ताकि भविष्य में ID से भी लॉगिन हो सके
+        localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
+
+        localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+        localStorage.setItem("greedy_coins", "1000");
+        localStorage.setItem("greedy_won", "0");
+        localStorage.setItem("greedy_level", "1");
+        localStorage.setItem("greedy_avatar", "");
+        for(let i=1; i<=8; i++) {
+          localStorage.setItem("greedy_slot_" + i, "");
         }
+        alert("Account created successfully!");
+
+      } else if(isForgotPasswordFlow) {
+        // **2. पुराना यूज़र पासवर्ड भूल गया - OTP वेरीफाई करके नया पासवर्ड सेट किया (पुराना डेटा और ID सुरक्षित रहेगा)**
+        localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
+        localStorage.setItem("greedy_password", passVal);
+        isForgotPasswordFlow = false;
+        alert("Password reset successfully! Restoring your existing account.");
+
       } else {
-        // पुराना यूज़र - पासवर्ड मैचिंग
-        if(passVal !== savedPassword) {
+        // **3. सामान्य पुराना यूज़र लॉगिन**
+        let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
+        if(passVal !== savedPass) {
           alert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
@@ -684,16 +772,6 @@
       setTimeout(() => {
         window.location.replace("profile.html");
       }, 1000);
-    }
-
-    function checkNumber() {
-      let identifier = document.getElementById("phoneInput").value.trim();
-      let btn = document.getElementById("submitBtn");
-      if (identifier.length > 0) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
     }
     
     function checkPasswordInput(input) {
