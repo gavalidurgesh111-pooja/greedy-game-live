@@ -301,7 +301,7 @@
 
     <!-- टिप्स (Tips) पॉपअप मेनू -->
     <div id="tipsModal" class="modal-overlay">
-      <div class="modal-box">
+      <div class="tips-box">
         <h3>Tips</h3>
         <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
         <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
@@ -437,11 +437,43 @@
 
   <script>
     // ==========================================
-    // फाइनल बैक बटन और पॉपअप नेविगेशन लॉजिक
+    // सटीक बैक बटन और पॉपअप नेविगेशन लॉजिक (अल्टीमेट फिक्स)
     // ==========================================
     history.pushState({page: "main_profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
+      let photoGrid = document.getElementById("screenPhotoGrid");
+      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
+
+      // जब यूजर फोटो ग्रिड स्क्रीन पर है
+      if (photoGrid && photoGrid.style.display === "flex") {
+        let hasChanges = false;
+        if (currentAvatarTemp !== currentAvatar) hasChanges = true;
+        for(let i=1; i<=8; i++) {
+          if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
+            hasChanges = true;
+            break;
+          }
+        }
+
+        if (hasChanges) {
+          if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
+            // नियम: यदि पॉपअप खुला है और यूजर ने दोबारा बैक बटन दबा दिया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)
+            history.pushState({page: "main_profile"}, "", window.location.href);
+            closePhotoGridWithoutSaving();
+          } else {
+            // नियम: पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा और हिस्ट्री ब्लॉक रहेगी
+            history.pushState({page: "photo_grid_open"}, "", window.location.href);
+            unsavedTipsModal.style.display = "flex";
+          }
+        } else {
+          history.pushState({page: "main_profile"}, "", window.location.href);
+          closePhotoGridWithoutSaving();
+        }
+        return;
+      }
+
+      // अन्य स्क्रीन्स के लिए सामान्य लॉक
       history.pushState({page: "main_profile"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
@@ -449,75 +481,22 @@
       let modalCoinSend = document.getElementById("modalCoinSend");
       let modalSettings = document.getElementById("modalSettings");
       let tipsModal = document.getElementById("tipsModal");
-      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
       let photoEditor = document.getElementById("screenPhotoEditor");
-      let photoGrid = document.getElementById("screenPhotoGrid");
 
-      if (customAlert && customAlert.style.display === "flex") {
-        customAlert.style.display = "none";
-        return;
-      }
-      if (modalFrame && modalFrame.style.display === "flex") {
-        modalFrame.style.display = "none";
-        return;
-      }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") {
-        modalCoinSend.style.display = "none";
-        return;
-      }
-      if (modalSettings && modalSettings.style.display === "flex") {
-        modalSettings.style.display = "none";
-        return;
-      }
-      if (tipsModal && tipsModal.style.display === "flex") {
-        tipsModal.style.display = "none";
-        return;
-      }
-      if (photoEditor && photoEditor.style.display === "flex") {
-        photoEditor.style.display = "none";
-        return;
-      }
-
-      // **सटीक नियम:** यदि यूजर फोटो ग्रिड पेज पर है और मोबाइल का बैक बटन दबाता है
-      if (photoGrid && photoGrid.style.display === "flex") {
-        if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-          // अगर पॉपअप खुला है और यूजर ने दोबारा बैक बटन दबाया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)[span_0](start_span)[span_0](end_span)
-          closePhotoGridWithoutSaving();
-        } else {
-          // पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा[span_1](start_span)[span_1](end_span)
-          let hasChanges = false;
-          if (currentAvatarTemp !== currentAvatar) hasChanges = true;
-          for(let i=1; i<=8; i++) {
-            if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-              hasChanges = true;
-              break;
-            }
-          }
-          if (hasChanges) {
-            unsavedTipsModal.style.display = "flex";
-          } else {
-            closePhotoGridWithoutSaving();
-          }
-        }
-        return;
-      }
+      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
+      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
+      if (tipsModal && tipsModal.style.display === "flex") { tipsModal.style.display = "none"; return; }
+      if (photoEditor && photoEditor.style.display === "flex") { photoEditor.style.display = "none"; return; }
 
       let settingsPage = document.getElementById("screenSettingsPage");
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
 
-      if (settingsPage && settingsPage.style.display === "flex") {
-        closeSettingsPage();
-        return;
-      }
-      if (aboutScreen && aboutScreen.style.display === "flex") {
-        closeAboutMeScreen();
-        return;
-      }
-      if (groupsScreen && groupsScreen.style.display === "flex") {
-        closeGroupsScreen();
-        return;
-      }
+      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
+      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
+      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
     if (!localStorage.getItem("greedy_initialized")) {
@@ -746,7 +725,7 @@
 
     let currentAvatarTemp = "";
 
-    // बिना सेव किए सीधे प्रोफाइल पेज पर लौटने का फंक्शन[span_2](start_span)[span_2](end_span)
+    // बिना सेव किए प्रोफाइल पेज पर लौटने का फंक्शन
     function closePhotoGridWithoutSaving() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -774,12 +753,12 @@
       }
     }
 
-    // NO, THANKS दबाने पर बिना सेव किए प्रोफाइल पेज पर जाना[span_3](start_span)[span_3](end_span)
+    // NO, THANKS दबाने पर बिना सेव किए प्रोफाइल पेज पर जाना
     function confirmNoThanks() {
       closePhotoGridWithoutSaving();
     }
 
-    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_4](start_span)[span_4](end_span)
+    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
