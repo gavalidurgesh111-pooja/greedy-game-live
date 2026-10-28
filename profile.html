@@ -203,10 +203,10 @@
       </div>
 
       <!-- कवर स्लाइडर -->
-      <div class="cover-slider-container" id="coverSlider" onclick="trackPageVisit(); openPhotoGridScreen()">
-        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); trackPageVisit(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); trackPageVisit(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); trackPageVisit(); openPhotoGridScreen()">Upload</div></div>
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
+        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -246,7 +246,7 @@
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="trackPageVisit(); openSettingsPage()">Inbox message</button>
+          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
         </div>
       </div>
 
@@ -262,15 +262,15 @@
       </div>
 
       <div class="cards-wrapper">
-        <div class="action-card card-play" onclick="trackPageVisit(); showCustomAlert('Game arena will open in next step!')">
+        <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
           <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
           <div style="font-size:32px;">🎰</div>
         </div>
-        <div class="action-card card-about" onclick="trackPageVisit(); openAboutMeScreen()">
+        <div class="action-card card-about" onclick="openAboutMeScreen()">
           <div><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
           <div style="font-size:32px;">👤</div>
         </div>
-        <div class="action-card card-group" onclick="trackPageVisit(); openGroupsScreen()">
+        <div class="action-card card-group" onclick="openGroupsScreen()">
           <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
           <div style="font-size:32px;">🌐</div>
         </div>
@@ -340,9 +340,9 @@
       </div>
       <div style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; flex:1;">
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;" onclick="trackPageVisit()">Account Preferences</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;" onclick="trackPageVisit()">Notifications</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;" onclick="trackPageVisit()">Privacy & Security</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Account Preferences</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
         </div>
         <div style="margin-bottom: 90px;">
           <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
@@ -437,22 +437,13 @@
 
   <script>
     // ==========================================
-    // स्मार्ट पेज-विजिट काउंटर और बैक बटन नेविगेशन लॉक
+    // अल्टीमेट बैक बटन सुरक्षा गार्ड (लिंक से बाहर जाने पर शत-प्रतिशत रोक)
     // ==========================================
-    let visitedPagesCount = parseInt(sessionStorage.getItem("greedy_visited_count")) || 0;
-
-    function trackPageVisit() {
-      visitedPagesCount++;
-      sessionStorage.setItem("greedy_visited_count", visitedPagesCount);
-    }
-
-    history.pushState({page: "profile_active"}, "", window.location.href);
+    history.pushState({page: "main_profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      // यदि यूजर ने कम से कम 5-6 पेजेस/सेक्शन नहीं घूमे हैं, तो उसे बाहर जाने से रोकें और री-पुश करें
-      if (visitedPagesCount < 5) {
-        history.pushState({page: "profile_active"}, "", window.location.href);
-      }
+      // हमेशा हिस्ट्री को री-पुश करें ताकि ब्राउज़र बाहर न जा सके
+      history.pushState({page: "main_profile"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -483,14 +474,12 @@
         tipsModal.style.display = "none";
         return;
       }
-      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        return;
-      }
       if (photoEditor && photoEditor.style.display === "flex") {
         photoEditor.style.display = "none";
         return;
       }
 
+      // **मुख्य सुधार:** यदि यूजर फोटो ग्रिड पेज पर है और बैक बटन दबाता है, तो सीधे अनसेव्ड चेक ट्रिगर होगा
       if (photoGrid && photoGrid.style.display === "flex") {
         tryClosePhotoGridScreen();
         return;
@@ -512,11 +501,6 @@
         closeGroupsScreen();
         return;
       }
-
-      // यदि 5-6 बार घूमने का टारगेट पूरा हो चुका है, तो बैक बटन से बाहर जाने दें
-      if (visitedPagesCount >= 5 && event.state === null) {
-        window.history.back();
-      }
     });
 
     if (!localStorage.getItem("greedy_initialized")) {
@@ -535,7 +519,7 @@
       }
     } else {
       if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.setItem("greedy_won", "0");
+        localStorage.getItem("greedy_won", "0");
       }
     }
 
@@ -734,12 +718,13 @@
     }
 
     function openPhotoGridScreen() {
-      trackPageVisit();
       currentAvatarTemp = currentAvatar;
       for(let i=1; i<=8; i++) {
         localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
       }
       render9Grid();
+      // **महत्वपूर्ण:** जब फोटो ग्रिड खुले, तो हिस्ट्री में एक स्टेट जोड़ दें ताकि बैक बटन दबाने पर यह पेज कैच हो सके
+      history.pushState({page: "photo_grid_open"}, "", window.location.href);
       document.getElementById("screenPhotoGrid").style.display = "flex";
     }
 
@@ -756,6 +741,7 @@
       }
 
       if (hasChanges) {
+        // बदलाव होने पर 'Tips' पॉपअप दिखाएं (जब तक यूजर NO, THANKS या SAVE न दबाए, बाहर नहीं जाने देगा)
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         document.getElementById("screenPhotoGrid").style.display = "none";
@@ -763,6 +749,7 @@
       }
     }
 
+    // नियम 1: NO, THANKS दबाने पर फोटो सेव नहीं होगी और वह सीधे प्रोफाइल पेज पर जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -773,6 +760,7 @@
       initProfile();
     }
 
+    // नियम 2: SAVE बटन दबाने पर फोटो सेव होगी और वह प्रोफाइल पेज पर जाएगा
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
