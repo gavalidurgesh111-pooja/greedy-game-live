@@ -494,7 +494,7 @@
       </div>
     </div>
 
-    <!-- Password Screen (दूसरी तस्वीर के जैसा बिल्कुल सटीक डिज़ाइन) -->
+    <!-- Password Screen (दूसरी तस्वीर के जैसा बिल्कुल सही और असली आँख के आइकॉन वाला डिज़ाइन) -->
     <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh;">
       <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
       
@@ -504,15 +504,19 @@
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Log in</div>
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter Password</div>
 
-      <!-- पासवर्ड इनपुट बॉक्स और आँख का आइकॉन -->
+      <!-- पासवर्ड इनपुट बॉक्स और बिल्कुल वैसी ही खुली/बंद आँख का आइकॉन (SVG) -->
       <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
         <input type="password" class="pass-input" id="passInput" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
-        <span onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:18px; color:#666; padding:0 5px;" title="Show/Hide Password">👁️</span>
+        <!-- आँख का आइकॉन (SVG) -->
+        <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
       </div>
 
       <!-- जैसा दूसरी तस्वीर में नीचे है: Forgot password -->
       <div style="margin-top:15px; text-align:center;">
-        <span onclick="forgotPasswordAction()" style="color:#4a148c; font-size:14px; font-weight:600; cursor:pointer; text-decoration:underline;">Forgot password</span>
+        <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password</span>
       </div>
 
       <div class="next-btn-container" style="position:absolute; bottom:30px; right:20px;"><button class="btn-round-next" style="width:60px; height:60px; border-radius:50%; background:#5e229e; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="doFinalLogin()">➔</button></div>
@@ -586,10 +590,15 @@
     }
     function togglePasswordVisibility() {
       let passInput = document.getElementById("passInput");
+      let eyeIcon = document.getElementById("eyeIcon");
       if (passInput.type === "password") {
         passInput.type = "text";
+        // बंद आँख या कटी हुई आँख का SVG (जब पासवर्ड दिख रहा हो)
+        eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
       } else {
         passInput.type = "password";
+        // खुली आँख का SVG (जब पासवर्ड छुपा हुआ हो)
+        eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
       }
     }
     function forgotPasswordAction() {
