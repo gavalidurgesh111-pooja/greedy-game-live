@@ -115,10 +115,22 @@
       </div>
     </div>
 
-    <!-- More Options Modal (195 देशों की भाषाएँ) -->
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
-      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px; max-height:80vh; overflow-y:auto;">
-        <select class="lang-select-normal" id="loginLangSelector" onchange="changeLanguage(this.value)">
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Phone / ID Login Screen (यहाँ 195 देशों की भाषाएँ और 195 देशों के फोन कोड मौजूद हैं) -->
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        
+        <!-- 195 देशों की भाषाओं का मुख्य ड्रॉपडाउन (अब फोन स्क्रीन पर ऊपर दिखेगा) -->
+        <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
           <option value="en">🌐 English (Global)</option>
           <option value="mr">🇮🇳 मराठी (Marathi)</option>
@@ -340,20 +352,6 @@
           <option value="ara">🇸🇾 Arabic (Syria)</option>
           <option value="heb">🇮🇱 Hebrew (Israel)</option>
           <option value="ara">🇸🇦 Arabic (Saudi Arabia)</option>
-        </select>
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
-      </div>
-    </div>
-
-    <!-- Phone / ID Login Screen (195 देशों के फोन कोड) -->
-    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
-        <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
-          <option value="hi" selected>🇮🇳 हिंदी</option>
-          <option value="en">🌐 English</option>
         </select>
       </div>
 
@@ -738,7 +736,6 @@
         
         let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
         localStorage.setItem("greedy_unique_id", freshId);
-        // इस नंबर के लिए उसकी यूनिक ID लिंक कर दें ताकि भविष्य में ID से भी लॉगिन हो सके
         localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
 
         localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
