@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area (9 Pages) */
+    /* Cover Slider Area */
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
@@ -128,9 +128,9 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) */
+    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) - बिना किसी गैप के लगातार क्रम (1 से 6) */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; }
+    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
@@ -555,11 +555,11 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- कवर पेजेस सेटअप ---
+      // --- कवर पेजेस सेटअप (1 से 6 लगातार क्रम, बिना गैप के) ---
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       let totalVisible = 1;
       if (avatarPic && avatarPic.trim() !== "") {
-        for(let i = 1; i <= 8; i++) {
+        for(let i = 1; i <= 5; i++) {
           let val = localStorage.getItem("greedy_slot_" + i) || "";
           if (val && val.trim() !== "") {
             totalVisible = i + 1;
@@ -567,10 +567,10 @@
             break;
           }
         }
-        if (totalVisible < 9) totalVisible += 1;
+        if (totalVisible < 6) totalVisible += 1;
       }
 
-      for(let i=1; i<=9; i++) {
+      for(let i=1; i<=6; i++) {
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
         if(!pageEl) continue;
@@ -599,6 +599,12 @@
             pageEl.style.display = "none"; 
           }
         }
+      }
+
+      // 7, 8, 9 कवर पेजेस छिपा दें (चूँकि इन्हें हटा दिया गया है)
+      for(let i=7; i<=9; i++) {
+        let p = document.getElementById("coverPage" + i);
+        if(p) p.style.display = "none";
       }
 
       render9Grid();
@@ -648,73 +654,53 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का सटीक ग्रिड क्रम (Row 1 में 1,2,3 और Row 2 में 4,5,6 की लाइन, साथ ही 6 नंबर पर Upload बटन) ---
+    // --- Profile photo पेज का 6-स्लॉट सटीक क्रम (Row 1 में 1,2,3 और Row 2 में 4,5,6 - बिना किसी गैप के, 7,8,9 पूरी तरह से हटे हुए) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
-      // यह तय करें कि 4, 5, 6 (Row 2) कब दिखने चाहिए (यदि पिछला स्लॉट भरा हो)
-      let filledCount = 1;
-      if (avatarPic && avatarPic.trim() !== "") {
-        for(let i = 1; i <= 8; i++) {
-          let val = localStorage.getItem("greedy_slot_" + i) || "";
-          if (val && val.trim() !== "") {
-            filledCount = i + 1;
-          } else {
-            break;
-          }
-        }
-      }
-
-      for(let i = 1; i <= 9; i++) {
+      for(let i = 1; i <= 6; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
         
-        // ग्रिड पोजीशन री-मैप: 
-        // i = 1,2,3 -> Row 1 (स्लॉट 1,2,3)
-        // i = 4,5,6 -> Row 2 (स्लॉट 4,5,6 - जैसा आपने लाल बिंदुओं में दिखाया)
-        // i = 7,8,9 -> Row 3 (खाली / बाद के लिए)
-        
-        if (i <= 6) {
-          let realSlot = i; // 1 से 6 तक सीधे स्लॉट
-          let slotVal = "";
-          if (realSlot === 1) slotVal = avatarPic;
-          else slotVal = localStorage.getItem("greedy_slot_" + (realSlot - 1)) || "";
+        let slotVal = "";
+        let realSlot = i; // 1 से 6 तक सीधे लगातार स्लॉट (Row 1: 1,2,3 और Row 2: 4,5,6)
 
-          cell.onclick = () => handleGridCellClick(realSlot);
+        if (realSlot === 1) {
+          slotVal = avatarPic;
+        } else {
+          slotVal = localStorage.getItem("greedy_slot_" + (realSlot - 1)) || "";
+        }
 
-          if (slotVal && slotVal.trim() !== "") {
-            if (realSlot === 1) {
-              cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
-            } else {
-              cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${realSlot}</div>`;
-            }
+        cell.onclick = () => handleGridCellClick(realSlot);
+
+        if (slotVal && slotVal.trim() !== "") {
+          if (realSlot === 1) {
+            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
           } else {
-            // नियम: Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हो (या 1 नंबर खाली हो)
-            let showUpload = false;
-            if (realSlot === 1) showUpload = true;
-            else if (realSlot === 2 && avatarPic) showUpload = true;
-            else if (realSlot > 2 && localStorage.getItem("greedy_slot_" + (realSlot - 2))) showUpload = true;
-
-            if (isMyProfile && showUpload) {
-              if (realSlot === 1) {
-                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
-              } else {
-                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${realSlot}</div>`;
-              }
-            } else {
-              cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${realSlot}</div>`;
-            }
+            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${realSlot}</div>`;
           }
           cell.style.display = "flex";
         } else {
-          // Row 3 (7, 8, 9 - खाली)
-          cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+          // नियम: Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हो (या 1 नंबर खाली हो)
+          let showUpload = false;
+          if (realSlot === 1) showUpload = true;
+          else if (realSlot === 2 && avatarPic) showUpload = true;
+          else if (realSlot > 2 && localStorage.getItem("greedy_slot_" + (realSlot - 2))) showUpload = true;
+
+          if (isMyProfile && showUpload) {
+            if (realSlot === 1) {
+              cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
+            } else {
+              cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${realSlot}</div>`;
+            }
+          } else {
+            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${realSlot}</div>`;
+          }
           cell.style.display = "flex";
         }
-
         container.appendChild(cell);
       }
     }
@@ -809,14 +795,14 @@
             localStorage.setItem("greedy_slot_" + selectedSlotForTips, "");
 
             let activePhotos = [];
-            for(let i = 1; i <= 8; i++) {
+            for(let i = 1; i <= 5; i++) {
               let p = localStorage.getItem("greedy_slot_" + i);
               if(p && p.trim() !== "") {
                 activePhotos.push(p);
               }
             }
 
-            for(let i = 1; i <= 8; i++) {
+            for(let i = 1; i <= 5; i++) {
               localStorage.setItem("greedy_slot_" + i, "");
             }
 
@@ -1061,14 +1047,14 @@
       }
     }
 
-    // --- स्क्रॉल लॉक नियम ---
+    // --- स्क्रॉल लॉक नियम (अधिकतम 6 पेजेस तक सीमित) ---
     const coverContainer = document.getElementById("coverSlider");
     if(coverContainer) {
       coverContainer.addEventListener('scroll', () => {
         let totalValidPages = 1;
         let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
         if (avatarPic && avatarPic.trim() !== "") {
-          for(let i = 1; i <= 8; i++) {
+          for(let i = 1; i <= 5; i++) {
             let val = localStorage.getItem("greedy_slot_" + i) || "";
             if (val && val.trim() !== "") {
               totalValidPages = i + 1;
@@ -1076,7 +1062,7 @@
               break;
             }
           }
-          if (totalValidPages < 9) totalValidPages += 1;
+          if (totalValidPages < 6) totalValidPages += 1;
         }
 
         let pageWidth = coverContainer.clientWidth;
