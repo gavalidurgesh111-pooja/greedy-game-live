@@ -326,6 +326,30 @@
   </div>
 
   <script>
+    // हिस्ट्री लॉक ताकि यूजर गलती से बाहर न जाए
+    history.pushState({page: "profile_main"}, "", window.location.href);
+
+    window.addEventListener('popstate', function (event) {
+      history.pushState({page: "profile_main"}, "", window.location.href);
+
+      let customAlert = document.getElementById("customAlertModal");
+      let modalFrame = document.getElementById("modalFrame");
+      let modalCoinSend = document.getElementById("modalCoinSend");
+      let modalSettings = document.getElementById("modalSettings");
+      let settingsPage = document.getElementById("screenSettingsPage");
+      let aboutScreen = document.getElementById("screenAboutMe");
+      let groupsScreen = document.getElementById("screenGroups");
+
+      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
+      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
+
+      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
+      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
+      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
+    });
+
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
@@ -441,7 +465,6 @@
       updatePrivacyHeart();
     }
 
-    // नया पेज खोलने का फंक्शन
     function openPhotoGridScreen() {
       window.location.href = "profile-photo.html";
     }
@@ -509,7 +532,6 @@
       showCustomAlert("ID Copied: " + userId);
     }
 
-    // --- अंदर ही स्क्रीन बदलने के सही फंक्शन्स (बाहر नहीं भेजेंगे) ---
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
