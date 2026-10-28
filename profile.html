@@ -10,7 +10,7 @@
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
     /* Cover Slider Area */
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; }
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
@@ -142,7 +142,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
+      <!-- कवर स्लाइडर (हमेशा 2 नंबर पेज पर सेट रहेगा, 1 नंबर लेफ्ट में रहेगा) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -326,7 +326,6 @@
   </div>
 
   <script>
-    // हिस्ट्री लॉक ताकि यूजर गलती से बाहर न जाए
     history.pushState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -463,6 +462,14 @@
         }
       }
       updatePrivacyHeart();
+
+      // **यहाँ मुख्य बदलाव किया गया है:** पेज खुलते ही या वापस आते ही हमेशा 2 नंबर की फोटो सामने दिखेगी, और 1 नंबर की फोटो बाईं तरफ अंदर रहेगी
+      setTimeout(() => {
+        let slider = document.getElementById("coverSlider");
+        if (slider) {
+          slider.scrollLeft = slider.clientWidth; // दूसरे पेज पर सेट कर देगा
+        }
+      }, 50);
     }
 
     function openPhotoGridScreen() {
@@ -592,7 +599,7 @@
     
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
-      let amt = parseInt(document.getElementById("sendCoinAmount").value);
+      let amt = parseInt(document.getElementById("sendCoinAmount.value");
       if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
       if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
       coins -= amt;
@@ -603,7 +610,7 @@
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
+    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
 
     window.onload = () => { initProfile(); };
   </script>
