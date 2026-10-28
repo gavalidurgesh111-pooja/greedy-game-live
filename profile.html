@@ -749,6 +749,7 @@
       }
     }
 
+    // नियम 1: NO, THANKS दबाने पर फोटो सेव नहीं होगी और वह सीधे प्रोफाइल पेज पर जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
@@ -759,6 +760,7 @@
       initProfile();
     }
 
+    // नियम 2: SAVE बटन दबाने पर फोटो सेव हो जाएगी और वह प्रोफाइल पेज पर जाएगा
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
