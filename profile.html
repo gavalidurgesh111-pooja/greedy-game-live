@@ -127,66 +127,6 @@
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
-
-    /* Profile photo पेज */
-    #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
-    .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
-
-    /* Unsaved Changes Modal (Tips) */
-    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
-    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
-    .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
-    .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
-    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    .btn-no-thanks { color: #666; }
-    .btn-save-changes { color: #5e229e; }
-
-    /* टिप्स (Tips) पॉपअप मेनू */
-    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
-    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-    .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
-    .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
-    .tips-item:last-child { border-bottom: none; color: #d9534f; }
-
-    /* --- फोटो एडिटर स्क्रीन --- */
-    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
-    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
-    
-    .crop-frame-box { 
-      width: 100%; 
-      max-width: 100%; 
-      height: 360px; 
-      border: 2px solid rgba(255, 255, 255, 0.9); 
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); 
-      position: absolute; 
-      top: 50%; 
-      left: 50%; 
-      transform: translate(-50%, -50%); 
-      pointer-events: none; 
-      z-index: 10; 
-    }
-    
-    #editorImagePreview { 
-      position: absolute; 
-      cursor: grab; 
-      user-select: none; 
-      z-index: 5; 
-      display: block;
-      max-width: none !important;
-      max-height: none !important;
-    }
-    #editorImagePreview:active { cursor: grabbing; }
-
-    /* सबसे नीचे की पट्टी */
-    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
-    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; transition: color 0.2s, background 0.2s; }
-    .editor-bottom-btn:active { background: rgba(255,255,255,0.1); color: #fff; }
   </style>
 </head>
 <body>
@@ -202,7 +142,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
+      <!-- कवर स्लाइडर (क्लिक करते ही profile-photo.html पर जाएगा) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -214,9 +154,6 @@
         <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
       </div>
-      
-      <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
-      <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
@@ -274,60 +211,6 @@
           <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
           <div style="font-size:32px;">🌐</div>
         </div>
-      </div>
-    </div>
-
-    <!-- Profile photo पेज -->
-    <div id="screenPhotoGrid" class="sub-screen">
-      <div class="sub-header">
-        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
-        <h2>Profile photo</h2>
-        <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
-      </div>
-      <div class="grid-9-container" id="grid9Container"></div>
-    </div>
-
-    <!-- Unsaved Changes Modal (Tips) -->
-    <div id="unsavedTipsModal">
-      <div class="unsaved-tips-box">
-        <h3>Tips</h3>
-        <p>You have unsaved changes, do you want to save it?</p>
-        <div class="unsaved-tips-actions">
-          <span class="btn-no-thanks" onclick="confirmNoThanks()">NO, THANKS</span>
-          <span class="btn-save-changes" onclick="confirmSaveAndExit()">SAVE</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- टिप्स (Tips) पॉपअप मेनू -->
-    <div id="tipsModal" class="modal-overlay">
-      <div class="tips-box">
-        <h3>Tips</h3>
-        <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
-        <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
-        <div class="tips-item" onclick="tipsDeletePicture()">Delete</div>
-        <div style="margin-top:15px; text-align:right;"><button onclick="closeTipsModal()" style="padding:6px 14px; background:#ddd; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cancel</button></div>
-      </div>
-    </div>
-
-    <!-- फोटो एडिटर स्क्रीन -->
-    <div id="screenPhotoEditor">
-      <div class="editor-canvas-area" id="editorCanvasArea">
-        <img id="editorImagePreview" src="" alt="Preview">
-        <div class="crop-frame-box" id="cropFrameBox"></div>
-      </div>
-      <div class="editor-bottom-bar">
-        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
-        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
-      </div>
-    </div>
-
-    <!-- CUSTOM ALERT MODAL -->
-    <div id="customAlertModal" class="modal-overlay">
-      <div class="modal-box" style="text-align:center;">
-        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
-        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
-        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
 
@@ -404,11 +287,9 @@
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
 
-        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo (Gallery with Crop):</p>
-        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Upload & Adjust Profile Photo</button>
+        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo:</p>
+        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Open Photo Manager</button>
         
-        <button onclick="removeAvatarPhoto()" style="width:100%; margin-top:8px; padding:8px; background:#d9534f; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🗑️ Remove Profile Photo</button>
-
         <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
       </div>
     </div>
@@ -433,72 +314,18 @@
       </div>
     </div>
 
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="customAlertModal" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
+        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
+        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
+        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    // ==========================================
-    // सटीक बैक बटन और पॉपअप नेविगेशन लॉजिक (अल्टीमेट फिक्स)
-    // ==========================================
-    history.pushState({page: "main_profile"}, "", window.location.href);
-
-    window.addEventListener('popstate', function (event) {
-      let photoGrid = document.getElementById("screenPhotoGrid");
-      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
-
-      // जब यूजर फोटो ग्रिड स्क्रीन पर है
-      if (photoGrid && photoGrid.style.display === "flex") {
-        let hasChanges = false;
-        if (currentAvatarTemp !== currentAvatar) hasChanges = true;
-        for(let i=1; i<=8; i++) {
-          if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-            hasChanges = true;
-            break;
-          }
-        }
-
-        if (hasChanges) {
-          if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-            // नियम: यदि पॉपअप खुला है और यूजर ने दोबारा बैक बटन दबा दिया, तो पॉपअप बंद होकर सीधे प्रोफाइल पेज पर जाएगा (बिना सेव किए)
-            history.pushState({page: "main_profile"}, "", window.location.href);
-            closePhotoGridWithoutSaving();
-          } else {
-            // नियम: पहली बार बैक बटन दबाने पर 'Tips' वाला पॉपअप खुलेगा और हिस्ट्री ब्लॉक रहेगी
-            history.pushState({page: "photo_grid_open"}, "", window.location.href);
-            unsavedTipsModal.style.display = "flex";
-          }
-        } else {
-          history.pushState({page: "main_profile"}, "", window.location.href);
-          closePhotoGridWithoutSaving();
-        }
-        return;
-      }
-
-      // अन्य स्क्रीन्स के लिए सामान्य लॉक
-      history.pushState({page: "main_profile"}, "", window.location.href);
-
-      let customAlert = document.getElementById("customAlertModal");
-      let modalFrame = document.getElementById("modalFrame");
-      let modalCoinSend = document.getElementById("modalCoinSend");
-      let modalSettings = document.getElementById("modalSettings");
-      let tipsModal = document.getElementById("tipsModal");
-      let photoEditor = document.getElementById("screenPhotoEditor");
-
-      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
-      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
-      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
-      if (tipsModal && tipsModal.style.display === "flex") { tipsModal.style.display = "none"; return; }
-      if (photoEditor && photoEditor.style.display === "flex") { photoEditor.style.display = "none"; return; }
-
-      let settingsPage = document.getElementById("screenSettingsPage");
-      let aboutScreen = document.getElementById("screenAboutMe");
-      let groupsScreen = document.getElementById("screenGroups");
-
-      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
-      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
-      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
-    });
-
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
       localStorage.setItem("greedy_coins", "1000");
@@ -513,10 +340,6 @@
         localStorage.setItem("greedy_slot_" + i, "");
         localStorage.setItem("unsaved_slot_" + i, "");
       }
-    } else {
-      if (localStorage.getItem("greedy_won") === "500") {
-        localStorage.setItem("greedy_won", "0");
-      }
     }
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
@@ -528,15 +351,6 @@
     let currentFrame = localStorage.getItem("greedy_frame") || "none";
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
     let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
-    
-    let activeSlotIndex = 1;
-    let activeEditorMode = "cover"; 
-    let rawImageObj = null;
-
-    let imgX = 0, imgY = 0, imgScale = 1;
-    let minScale = 1;
-    let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
-    let initialPinchDistance = null;
 
     const urlParams = new URLSearchParams(window.location.search);
     const viewedId = urlParams.get("id");
@@ -569,8 +383,8 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // --- कवर पेजेस सेटअप (1 से 9 तक) ---
-      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+      // कवर पेजेस सेटअप
+      let avatarPic = currentAvatar || "";
       let filledCount = 0;
       if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
       
@@ -592,12 +406,7 @@
         let plusEl = document.getElementById("plusCover" + i);
         if(!pageEl) continue;
 
-        let slotVal = "";
-        if (i === 1) {
-          slotVal = avatarPic; 
-        } else {
-          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || ""; 
-        }
+        let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i-1)) || "");
 
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
@@ -618,8 +427,6 @@
         }
       }
 
-      render9Grid();
-
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none" && !customFrameUrl) {
         frameEl.style.display = "none";
@@ -632,6 +439,16 @@
         }
       }
       updatePrivacyHeart();
+    }
+
+    // नया पेज खोलने का फंक्शन
+    function openPhotoGridScreen() {
+      window.location.href = "profile-photo.html";
+    }
+
+    function triggerAvatarUpload() {
+      closeFrameModal();
+      openPhotoGridScreen();
     }
 
     function promptEditName() {
@@ -648,469 +465,20 @@
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
     }
-    function closeCustomAlert() {
-      document.getElementById("customAlertModal").style.display = "none";
-    }
-
-    // --- Profile photo पेज का ग्रिड रेंडर (1 से 9 तक) ---
-    function render9Grid() {
-      let container = document.getElementById("grid9Container");
-      container.innerHTML = "";
-      
-      let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
-      
-      let filledCount = 0;
-      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
-      for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("unsaved_slot_" + i) || "";
-        if (val && val.trim() !== "") filledCount = i + 1;
-        else break;
-      }
-      let maxGridSlots = filledCount + 1;
-      if (maxGridSlots > 9) maxGridSlots = 9;
-      if (maxGridSlots < 6) maxGridSlots = 6;
-
-      for(let i = 1; i <= maxGridSlots; i++) {
-        let cell = document.createElement("div");
-        cell.className = "grid-cell";
-        
-        let slotVal = "";
-        let realSlot = i;
-
-        if (realSlot === 1) {
-          slotVal = avatarPic;
-        } else {
-          slotVal = localStorage.getItem("unsaved_slot_" + (realSlot - 1)) || "";
-        }
-
-        cell.onclick = () => handleGridCellClick(realSlot);
-
-        if (slotVal && slotVal.trim() !== "") {
-          if (realSlot === 1) {
-            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
-          } else {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${realSlot}</div>`;
-          }
-          cell.style.display = "flex";
-        } else {
-          let showUpload = false;
-          if (realSlot === 1) showUpload = true;
-          else if (realSlot === 2 && avatarPic) showUpload = true;
-          else if (realSlot > 2 && localStorage.getItem("unsaved_slot_" + (realSlot - 2))) showUpload = true;
-
-          if (isMyProfile && showUpload) {
-            if (realSlot === 1) {
-              cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
-            } else {
-              cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${realSlot}</div>`;
-            }
-          } else {
-            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${realSlot}</div>`;
-          }
-          cell.style.display = "flex";
-        }
-        container.appendChild(cell);
-      }
-    }
-
-    function openPhotoGridScreen() {
-      currentAvatarTemp = currentAvatar;
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
-      }
-      render9Grid();
-      history.pushState({page: "photo_grid_open"}, "", window.location.href);
-      document.getElementById("screenPhotoGrid").style.display = "flex";
-    }
-
-    let currentAvatarTemp = "";
-
-    // बिना सेव किए प्रोफाइल पेज पर लौटने का फंक्शन
-    function closePhotoGridWithoutSaving() {
-      document.getElementById("unsavedTipsModal").style.display = "none";
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
-      }
-      currentAvatarTemp = currentAvatar;
-      document.getElementById("screenPhotoGrid").style.display = "none";
-      initProfile();
-    }
-
-    // बैक तीर (❮) दबाने पर चेक करना कि बदलाव हुए हैं या नहीं
-    function handleGridBackAction() {
-      let hasChanges = false;
-      if (currentAvatarTemp !== currentAvatar) hasChanges = true;
-      for(let i=1; i<=8; i++) {
-        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-          hasChanges = true;
-          break;
-        }
-      }
-      if (hasChanges) {
-        document.getElementById("unsavedTipsModal").style.display = "flex";
-      } else {
-        closePhotoGridWithoutSaving();
-      }
-    }
-
-    // NO, THANKS दबाने पर बिना सेव किए प्रोफाइल पेज पर जाना
-    function confirmNoThanks() {
-      closePhotoGridWithoutSaving();
-    }
-
-    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा
-    function saveAndClosePhotoGridScreen() {
-      currentAvatar = currentAvatarTemp;
-      localStorage.setItem("greedy_avatar", currentAvatar);
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
-      }
-      document.getElementById("unsavedTipsModal").style.display = "none";
-      document.getElementById("screenPhotoGrid").style.display = "none";
-      initProfile();
-    }
-
-    function confirmSaveAndExit() {
-      saveAndClosePhotoGridScreen();
-    }
-
-    function triggerAvatarUpload() {
-      closeFrameModal();
-      openPhotoGridScreen();
-    }
-
-    function handleCoverUpload(coverIndex) {
-      if (!isMyProfile) return;
-      openPhotoGridScreen();
-    }
-
-    function handleGridCellClick(index) {
-      if (!isMyProfile) return;
-      
-      if(index === 1) {
-        let profPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
-        if (profPic && profPic.trim() !== "") {
-          selectedSlotForTips = 0;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "avatar";
-          document.getElementById("hiddenAvatarInput").click();
-        }
-      } else {
-        let slotNum = index - 1;
-        let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
-        if(val && val.trim() !== "") {
-          selectedSlotForTips = slotNum;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "cover";
-          activeSlotIndex = slotNum;
-          document.getElementById("hiddenGalleryInput").click();
-        }
-      }
-    }
-
-    let selectedSlotForTips = 1;
-    function closeTipsModal() {
-      document.getElementById("tipsModal").style.display = "none";
-    }
-
-    function tipsUseAsProfile() {
-      closeTipsModal();
-      if(selectedSlotForTips > 0) {
-        let val = localStorage.getItem("unsaved_slot_" + selectedSlotForTips);
-        if(val) {
-          currentAvatarTemp = val;
-          showCustomAlert("Updated as profile picture (unsaved)!");
-          render9Grid();
-        }
-      }
-    }
-
-    function tipsChangePicture() {
-      closeTipsModal();
-      if(selectedSlotForTips === 0) {
-        activeEditorMode = "avatar";
-        document.getElementById("hiddenAvatarInput").click();
-      } else {
-        activeEditorMode = "cover";
-        activeSlotIndex = selectedSlotForTips;
-        document.getElementById("hiddenGalleryInput").click();
-      }
-    }
-
-    function tipsDeletePicture() {
-      let tipsModal = document.getElementById("tipsModal");
-      if (tipsModal) {
-        tipsModal.style.display = "none";
-      }
-
-      setTimeout(function() {
-        if(confirm("Delete this picture?")) {
-          if(selectedSlotForTips === 0) {
-            currentAvatarTemp = "";
-          } else {
-            localStorage.setItem("unsaved_slot_" + selectedSlotForTips, "");
-
-            let activePhotos = [];
-            for(let i = 1; i <= 8; i++) {
-              let p = localStorage.getItem("unsaved_slot_" + i);
-              if(p && p.trim() !== "") {
-                activePhotos.push(p);
-              }
-            }
-
-            for(let i = 1; i <= 8; i++) {
-              localStorage.setItem("unsaved_slot_" + i, "");
-            }
-
-            for(let i = 0; i < activePhotos.length; i++) {
-              localStorage.setItem("unsaved_slot_" + (i + 1), activePhotos[i]);
-            }
-          }
-
-          render9Grid();
-        }
-      }, 50);
-    }
-
-    function handleGalleryFileSelect(event) {
-      if(event.target.files && event.target.files[0]) {
-        loadEditorImage(event.target.files[0]);
-      }
-    }
-
-    function handleAvatarFileSelect(event) {
-      if(event.target.files && event.target.files[0]) {
-        loadEditorImage(event.target.files[0]);
-      }
-    }
-
-    function loadEditorImage(file) {
-      let reader = new FileReader();
-      reader.onload = function(e) {
-        rawImageObj = new Image();
-        
-        document.getElementById("screenPhotoEditor").style.display = "flex";
-        let preview = document.getElementById("editorImagePreview");
-        preview.src = e.target.result;
-
-        rawImageObj.onload = function() {
-          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-          
-          let scaleX = box.width / rawImageObj.width;
-          let scaleY = box.height / rawImageObj.height;
-          minScale = Math.max(scaleX, scaleY);
-          imgScale = minScale;
-
-          let renderW = rawImageObj.width * imgScale;
-          let renderH = rawImageObj.height * imgScale;
-
-          preview.style.width = renderW + "px";
-          preview.style.height = renderH + "px";
-          
-          imgX = box.left + (box.width - renderW) / 2;
-          imgY = box.top + (box.height - renderH) / 2;
-          
-          preview.style.left = imgX + "px";
-          preview.style.top = imgY + "px";
-        }
-        rawImageObj.src = e.target.result;
-      }
-      reader.readAsDataURL(file);
-    }
-
-    function enforceBoundaries() {
-      if(!rawImageObj) return;
-      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-      let renderW = rawImageObj.width * imgScale;
-      let renderH = rawImageObj.height * imgScale;
-
-      if (imgX > box.left) {
-        imgX = box.left;
-      }
-      if (imgX + renderW < box.left + box.width) {
-        imgX = box.left + box.width - renderW;
-      }
-
-      if (imgY > box.top) {
-        imgY = box.top;
-      }
-      if (imgY + renderH < box.top + box.height) {
-        imgY = box.top + box.height - renderH;
-      }
-
-      let preview = document.getElementById("editorImagePreview");
-      preview.style.left = imgX + "px";
-      preview.style.top = imgY + "px";
-    }
-
-    const editorArea = document.getElementById("editorCanvasArea");
-    if(editorArea) {
-      editorArea.addEventListener('mousedown', startImgDrag);
-      editorArea.addEventListener('touchstart', startImgDrag);
-      window.addEventListener('mousemove', onImgDrag);
-      window.addEventListener('touchmove', onImgDrag);
-      window.addEventListener('mouseup', endImgDrag);
-      window.addEventListener('touchend', endImgDrag);
-      
-      editorArea.addEventListener('wheel', (e) => {
-        if(!rawImageObj) return;
-        e.preventDefault();
-        let zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-        let newScale = imgScale * zoomFactor;
-        
-        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        let scaleX = box.width / rawImageObj.width;
-        let scaleY = box.height / rawImageObj.height;
-        let currentMin = Math.max(scaleX, scaleY);
-
-        if(newScale < currentMin) newScale = currentMin;
-        if(newScale > 5.0) newScale = 5.0;
-
-        imgScale = newScale;
-        let preview = document.getElementById("editorImagePreview");
-        preview.style.width = (rawImageObj.width * imgScale) + "px";
-        preview.style.height = (rawImageObj.height * imgScale) + "px";
-
-        enforceBoundaries();
-      }, { passive: false });
-    }
-
-    function startImgDrag(e) {
-      if (e.touches && e.touches.length === 2) {
-        initialPinchDistance = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        return;
-      }
-      isDraggingImg = true;
-      startMouseX = e.touches ? e.touches[0].clientX : e.clientX;
-      startMouseY = e.touches ? e.touches[0].clientY : e.clientY;
-      e.preventDefault();
-    }
-
-    function onImgDrag(e) {
-      if (e.touches && e.touches.length === 2 && initialPinchDistance) {
-        let currentDistance = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        let zoomFactor = currentDistance / initialPinchDistance;
-        let newScale = imgScale * zoomFactor;
-        
-        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        let scaleX = box.width / rawImageObj.width;
-        let scaleY = box.height / rawImageObj.height;
-        let currentMin = Math.max(scaleX, scaleY);
-
-        if(newScale < currentMin) newScale = currentMin;
-        if(newScale > 5.0) newScale = 5.0;
-
-        imgScale = newScale;
-        let preview = document.getElementById("editorImagePreview");
-        preview.style.width = (rawImageObj.width * imgScale) + "px";
-        preview.style.height = (rawImageObj.height * imgScale) + "px";
-
-        initialPinchDistance = currentDistance;
-        enforceBoundaries();
-        e.preventDefault();
-        return;
-      }
-
-      if (!isDraggingImg) return;
-      let clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      let clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      
-      let dx = clientX - startMouseX;
-      let dy = clientY - startMouseY;
-
-      imgX += dx;
-      imgY += dy;
-
-      enforceBoundaries();
-
-      startMouseX = clientX;
-      startMouseY = clientY;
-    }
-
-    function endImgDrag() {
-      isDraggingImg = false;
-      initialPinchDistance = null;
-    }
-
-    function cancelEditor() {
-      document.getElementById("screenPhotoEditor").style.display = "none";
-      rawImageObj = null;
-      document.getElementById("hiddenGalleryInput").value = "";
-      document.getElementById("hiddenAvatarInput").value = "";
-      openPhotoGridScreen();
-    }
-
-    function confirmEditor() {
-      if(rawImageObj) {
-        let canvas = document.createElement("canvas");
-        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        let cropAspect = box.width / box.height;
-
-        let canvasW = 1080;
-        let canvasH = Math.round(1080 / cropAspect);
-        
-        canvas.width = canvasW;
-        canvas.height = canvasH;
-        let ctx = canvas.getContext("2d");
-
-        ctx.imageSmoothingEnabled = true;
-        ctx.imageSmoothingQuality = "high";
-
-        let preview = document.getElementById("editorImagePreview");
-        let renderedWidth = parseFloat(preview.style.width);
-        let renderedHeight = parseFloat(preview.style.height);
-        let previewRect = preview.getBoundingClientRect();
-
-        let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
-        let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
-        let sW = (box.width / renderedWidth) * rawImageObj.width;
-        let sH = (box.height / renderedHeight) * rawImageObj.height;
-
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvasW, canvasH);
-        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
-
-        document.getElementById("screenPhotoEditor").style.display = "none";
-        rawImageObj = null;
-
-        document.getElementById("hiddenGalleryInput").value = "";
-        document.getElementById("hiddenAvatarInput").value = "";
-
-        if (activeEditorMode === "cover") {
-          localStorage.setItem("unsaved_slot_" + activeSlotIndex, finalDataUrl);
-        } else {
-          currentAvatarTemp = finalDataUrl;
-        }
-
-        render9Grid();
-      }
-    }
+    function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
 
     function applyFrameClass(frameName) {
       currentFrame = frameName;
       customFrameUrl = "";
       localStorage.setItem("greedy_frame", frameName);
       localStorage.removeItem("greedy_custom_frame");
-
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
-      
       ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
-      
-      if(frameName !== 'none') {
-        frameEl.classList.add('frame-' + frameName);
-      } else {
-        frameEl.style.display = "none";
-      }
+      if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
+      else frameEl.style.display = "none";
       closeFrameModal();
     }
 
@@ -1121,9 +489,6 @@
         targetFrame.className = "avatar-frame";
         targetFrame.style.backgroundImage = `url('${frameUrl}')`;
         targetFrame.style.backgroundSize = "100% 100%";
-        targetFrame.style.backgroundPosition = "center";
-        targetFrame.style.backgroundRepeat = "no-repeat";
-        targetFrame.style.border = "none";
         targetFrame.style.borderRadius = "50%";
       }
     }
@@ -1131,25 +496,12 @@
     function removeFrame() {
       if (!isMyProfile) return;
       currentFrame = "none";
-      customFrameUrl = "";
       localStorage.setItem("greedy_frame", "none");
-      localStorage.removeItem("greedy_custom_frame");
       document.getElementById("profAvatarFrame").style.display = "none";
       closeFrameModal();
     }
 
-    function removeAvatarPhoto() {
-      if (!isMyProfile) return;
-      currentAvatarTemp = "";
-      render9Grid();
-      closeFrameModal();
-    }
-
-    openFrameModal = function() { 
-      if (isMyProfile) {
-        document.getElementById("modalFrame").style.display = "flex";
-      }
-    }
+    function openFrameModal() { if (isMyProfile) document.getElementById("modalFrame").style.display = "flex"; }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
@@ -1161,7 +513,6 @@
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
     }
-    
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
@@ -1170,11 +521,8 @@
 
     function handleLogout() {
       sessionStorage.removeItem("is_user_inside");
-      
       showCustomAlert("Logged out successfully!");
-      setTimeout(() => {
-        window.location.replace("index.html"); 
-      }, 800);
+      setTimeout(() => { window.location.replace("index.html"); }, 800);
     }
 
     function openAboutMeScreen() { document.getElementById("screenAboutMe").style.display = "flex"; }
@@ -1193,17 +541,16 @@
       if(isPrivate) {
         heart.innerText = "❤️";
         bioBox.style.background = "#ffe6e6";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active: This profile info is hidden from other users.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
       } else {
         heart.innerText = "🤍";
         bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
       }
     }
 
     function openGroupsScreen() { document.getElementById("screenGroups").style.display = "flex"; }
     function closeGroupsScreen() { document.getElementById("screenGroups").style.display = "none"; }
-
     function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
@@ -1211,20 +558,18 @@
       let targetId = document.getElementById("targetUserId").value.trim();
       let amt = parseInt(document.getElementById("sendCoinAmount").value);
       if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
-      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount or insufficient balance!"); return; }
+      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
       coins -= amt;
       localStorage.setItem("greedy_coins", coins);
       initProfile();
       closeCoinSendModal();
-      showCustomAlert(`Successfully sent ${amt} coins to ${targetId}!`);
+      showCustomAlert(`Successfully sent ${amt} coins!`);
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    window.onload = () => { 
-      initProfile(); 
-    };
+    window.onload = () => { initProfile(); };
   </script>
 </body>
 </html>
