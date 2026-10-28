@@ -701,13 +701,13 @@
       let reader = new FileReader();
       reader.onload = function(e) {
         rawImageObj = new Image();
-        rawImageObj.onload = function() {
-          // सबसे पहले एडिटर स्क्रीन को तुरंत दिखाएं ताकि ब्लैक स्क्रीन न आए
-          document.getElementById("screenPhotoEditor").style.display = "flex";
+        
+        // जैसे ही फाइल सिलेक्ट हो, तुरंत एडिटर स्क्रीन खोलें ताकि ब्लैक स्क्रीन न दिखे
+        document.getElementById("screenPhotoEditor").style.display = "flex";
+        let preview = document.getElementById("editorImagePreview");
+        preview.src = e.target.result;
 
-          let preview = document.getElementById("editorImagePreview");
-          preview.src = rawImageObj.src;
-          
+        rawImageObj.onload = function() {
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           
           let scaleX = box.width / rawImageObj.width;
