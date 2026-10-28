@@ -128,7 +128,7 @@
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
 
-    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) - बीच की लाइन (4,5,6) खाली और 7,8,9 नीचे */
+    /* 9 फोटो ग्रिड स्क्रीन (Profile Photo Page) */
     #screenPhotoGrid { display: none; position: absolute; inset: 0; background: #f4f5f7; z-index: 60; flex-direction: column; }
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; }
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
@@ -648,17 +648,16 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का 9-ग्रिड क्रम (नियम: 1,2,3 ऊपर, बीच की रो खाली, 4,5,6 नीचे और 7,8,9 केवल पिछली फोटो होने पर) ---
+    // --- Profile photo पेज का सटीक ग्रिड क्रम (Row 1 में 1,2,3 और Row 2 में 4,5,6 की लाइन, साथ ही 6 नंबर पर Upload बटन) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
       let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
       
-      // चेक करें कि कौन सा स्लॉट भरा है
-      let filledCount = 0;
+      // यह तय करें कि 4, 5, 6 (Row 2) कब दिखने चाहिए (यदि पिछला स्लॉट भरा हो)
+      let filledCount = 1;
       if (avatarPic && avatarPic.trim() !== "") {
-        filledCount = 1;
         for(let i = 1; i <= 8; i++) {
           let val = localStorage.getItem("greedy_slot_" + i) || "";
           if (val && val.trim() !== "") {
@@ -667,58 +666,55 @@
             break;
           }
         }
-      } else {
-        filledCount = 0; 
       }
-      let maxGrid = filledCount < 9 ? filledCount + 1 : 9;
-      if (maxGrid < 1) maxGrid = 1;
 
-      for(let i=1; i<=9; i++) {
+      for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        cell.onclick = () => handleGridCellClick(i);
-
-        let slotVal = "";
-        if (i === 1) {
-          slotVal = avatarPic;
-        } else {
-          slotVal = localStorage.getItem("greedy_slot_" + (i-1)) || "";
-        }
-
-        // --- नियम: 4, 5, 6 (इंडेक्स 4, 5, 6) को छिपाकर खाली रखना है, और 7, 8, 9 तभी दिखेंगे जब फोटो लगी हो ---
-        // जैसा आपकी तस्वीर में लाल बिंदुओं से दर्शाया गया है: बीच की लाइन खाली रहनी चाहिए और 4,5,6 नीचे होने चाहिए।
-        // इसके लिए हम 4, 5, 6 स्लॉट (i == 4, 5, 6) को अस्थायी रूप से खाली/हाइड रखते हैं और असली डेटा 7, 8, 9 या आगे शिफ्ट करते हैं।
         
-        let adjustedVal = slotVal;
-        let isMiddleEmptyRow = (i >= 4 && i <= 6); // बीच की रो (4, 5, 6) खाली रखने का नियम
+        // ग्रिड पोजीशन री-मैप: 
+        // i = 1,2,3 -> Row 1 (स्लॉट 1,2,3)
+        // i = 4,5,6 -> Row 2 (स्लॉट 4,5,6 - जैसा आपने लाल बिंदुओं में दिखाया)
+        // i = 7,8,9 -> Row 3 (खाली / बाद के लिए)
+        
+        if (i <= 6) {
+          let realSlot = i; // 1 से 6 तक सीधे स्लॉट
+          let slotVal = "";
+          if (realSlot === 1) slotVal = avatarPic;
+          else slotVal = localStorage.getItem("greedy_slot_" + (realSlot - 1)) || "";
 
-        if (isMiddleEmptyRow) {
-          // बीच की रो को पूरी तरह खाली (Plus sign या खाली बॉक्स) रखेंगे ताकि वहाँ बाद में कुछ सेट किया जा सके
-          cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
-          cell.style.display = "flex"; // बॉक्स दिखेगा पर खाली रहेगा
-        } else {
-          if(slotVal && slotVal.trim() !== "") {
-            if(i === 1) {
-              cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
+          cell.onclick = () => handleGridCellClick(realSlot);
+
+          if (slotVal && slotVal.trim() !== "") {
+            if (realSlot === 1) {
+              cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
             } else {
-              cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+              cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${realSlot}</div>`;
             }
-            cell.style.display = "flex";
           } else {
-            if (isMyProfile && i <= maxGrid) {
-              if(i === 1) {
-                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
+            // नियम: Upload बटन तभी दिखेगा जब उससे पिछला स्लॉट भरा हो (या 1 नंबर खाली हो)
+            let showUpload = false;
+            if (realSlot === 1) showUpload = true;
+            else if (realSlot === 2 && avatarPic) showUpload = true;
+            else if (realSlot > 2 && localStorage.getItem("greedy_slot_" + (realSlot - 2))) showUpload = true;
+
+            if (isMyProfile && showUpload) {
+              if (realSlot === 1) {
+                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="cell-badge-profile-left">👤</div><div class="badge-num">${realSlot}</div>`;
               } else {
-                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+                cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${realSlot}</div>`;
               }
-              cell.style.display = "flex";
             } else {
-              cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
-              // 7, 8, 9 तभी दिखेंगे जब उनके पिछले स्लॉट पर फोटो या अपलोड बटन आ चुका हो
-              cell.style.display = (i <= maxGrid) ? "flex" : "none"; 
+              cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${realSlot}</div>`;
             }
           }
+          cell.style.display = "flex";
+        } else {
+          // Row 3 (7, 8, 9 - खाली)
+          cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+          cell.style.display = "flex";
         }
+
         container.appendChild(cell);
       }
     }
