@@ -138,7 +138,7 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    /* Tips Unsaved Changes Modal (जैसा फोटो में है) */
+    /* Unsaved Changes Modal */
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
     .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
@@ -202,7 +202,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
+      <!-- कवर स्लाइडर (1 से 9 तक) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -287,7 +287,7 @@
       <div class="grid-9-container" id="grid9Container"></div>
     </div>
 
-    <!-- अनसेव्ड चेंज वाला टिप्स पॉपअप (जैसा फोटो में है) -->
+    <!-- Unsaved Changes Tips Modal -->
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
         <h3>Tips</h3>
@@ -522,7 +522,7 @@
       localStorage.setItem("greedy_privacy", "false");
       localStorage.setItem("greedy_frame", "none");
       localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=9; i++) {
+      for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
         localStorage.setItem("unsaved_slot_" + i, "");
       }
@@ -534,7 +534,7 @@
 
     let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
     let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") "#288630";
+    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
     let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
     let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
     let isPrivate = localStorage.getItem("greedy_privacy") === "true";
@@ -665,17 +665,17 @@
       document.getElementById("customAlertModal").style.display = "none";
     }
 
-    // --- Profile photo पेज का ग्रिड रेंडर ---
+    // --- Profile photo पेज का ग्रिड रेंडर (1 से 9 तक, जब 9 पूरे हों तो आगे ऑप्शन न आए) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
-      let avatarPic = currentAvatar || localStorage.getItem("greedy_avatar") || "";
+      let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
       let filledCount = 0;
       if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
       for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("greedy_slot_" + i) || "";
+        let val = localStorage.getItem("unsaved_slot_" + i) || "";
         if (val && val.trim() !== "") filledCount = i + 1;
         else break;
       }
@@ -693,7 +693,7 @@
         if (realSlot === 1) {
           slotVal = avatarPic;
         } else {
-          slotVal = localStorage.getItem("greedy_slot_" + (realSlot - 1)) || "";
+          slotVal = localStorage.getItem("unsaved_slot_" + (realSlot - 1)) || "";
         }
 
         cell.onclick = () => handleGridCellClick(realSlot);
@@ -709,7 +709,7 @@
           let showUpload = false;
           if (realSlot === 1) showUpload = true;
           else if (realSlot === 2 && avatarPic) showUpload = true;
-          else if (realSlot > 2 && localStorage.getItem("greedy_slot_" + (realSlot - 2))) showUpload = true;
+          else if (realSlot > 2 && localStorage.getItem("unsaved_slot_" + (realSlot - 2))) showUpload = true;
 
           if (isMyProfile && showUpload) {
             if (realSlot === 1) {
@@ -727,7 +727,6 @@
     }
 
     function openPhotoGridScreen() {
-      // जब ग्रिड खुले, तो अस्थायी स्टोरेज को मुख्य स्टोरेज से सिंक कर लें
       currentAvatarTemp = currentAvatar;
       for(let i=1; i<=8; i++) {
         localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
@@ -738,9 +737,7 @@
 
     let currentAvatarTemp = "";
 
-    // जब यूजर बिना सेव किए बाहर जाने की कोशिश करे (बैक या बैक एरो दबाए)
     function tryClosePhotoGridScreen() {
-      // चेक करें कि क्या कोई नया बदलाव (Unsaved changes) है
       let hasChanges = false;
       if (currentAvatarTemp !== currentAvatar) hasChanges = true;
       for(let i=1; i<=8; i++) {
@@ -751,7 +748,6 @@
       }
 
       if (hasChanges) {
-        // जैसा फोटो में है, वैसा टिप्स पॉपअप दिखाएं
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         document.getElementById("screenPhotoGrid").style.display = "none";
@@ -759,10 +755,8 @@
       }
     }
 
-    // "NO, THANKS" दबाने पर बिना सेव किए सीधा Profile.html पर जाएं
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
-      // बदलावों को खारिज करें
       for(let i=1; i<=8; i++) {
         localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
       }
@@ -771,7 +765,6 @@
       initProfile();
     }
 
-    // "SAVE" या ऊपर टिक (✓) दबाने पर फोटो सेव होगी और Profile.html पर जाएंगे
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
@@ -1210,7 +1203,7 @@
       } else {
         heart.innerText = "🤍";
         bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>This is your personal profile bio. Tap the heart icon to set privacy.</p>";
       }
     }
 
