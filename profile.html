@@ -280,14 +280,14 @@
     <!-- Profile photo पेज -->
     <div id="screenPhotoGrid" class="sub-screen">
       <div class="sub-header">
-        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="tryClosePhotoGridScreen()">❮</div>
+        <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="closePhotoGridWithoutSaving()">❮</div>
         <h2>Profile photo</h2>
         <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
       </div>
       <div class="grid-9-container" id="grid9Container"></div>
     </div>
 
-    <!-- Unsaved Changes Modal -->
+    <!-- अनसेव्ड चेंज वाला टिप्स पॉपअप (अब सिर्फ तभी आएगा जब यूजर चाहे तो, या हेटया जा सकता है) -->
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
         <h3>Tips</h3>
@@ -437,12 +437,11 @@
 
   <script>
     // ==========================================
-    // अल्टीमेट बैक बटन सुरक्षा गार्ड (लिंक से बाहर जाने पर शत-प्रतिशत रोक)
+    // अल्टीमेट बैक बटन सुरक्षा गार्ड (वेबसाइट से बाहर जाने पर शत-प्रतिशत रोक)
     // ==========================================
     history.pushState({page: "main_profile"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      // हमेशा हिस्ट्री को री-पुश करें ताकि ब्राउज़र बाहर न जा सके
       history.pushState({page: "main_profile"}, "", window.location.href);
 
       let customAlert = document.getElementById("customAlertModal");
@@ -474,14 +473,19 @@
         tipsModal.style.display = "none";
         return;
       }
+      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
+        unsavedTipsModal.style.display = "none";
+        return;
+      }
       if (photoEditor && photoEditor.style.display === "flex") {
         photoEditor.style.display = "none";
         return;
       }
 
-      // **मुख्य सुधार:** यदि यूजर फोटो ग्रिड पेज पर है और बैक बटन दबाता है, तो सीधे अनसेव्ड चेक ट्रिगर होगा
+      // **मुख्य सुधार:** यदि यूजर फोटो ग्रिड स्क्रीन पर है और उसने मोबाइल का बैक बटन दबाया, 
+      // तो बिना किसी पॉपअप के तुरंत फोटो सेव किए बिना सीधे प्रोफाइल पेज पर लौट आए[span_4](start_span)[span_4](end_span)।
       if (photoGrid && photoGrid.style.display === "flex") {
-        tryClosePhotoGridScreen();
+        closePhotoGridWithoutSaving();
         return;
       }
 
@@ -723,34 +727,14 @@
         localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
       }
       render9Grid();
-      // **महत्वपूर्ण:** जब फोटो ग्रिड खुले, तो हिस्ट्री में एक स्टेट जोड़ दें ताकि बैक बटन दबाने पर यह पेज कैच हो सके
       history.pushState({page: "photo_grid_open"}, "", window.location.href);
       document.getElementById("screenPhotoGrid").style.display = "flex";
     }
 
     let currentAvatarTemp = "";
 
-    function tryClosePhotoGridScreen() {
-      let hasChanges = false;
-      if (currentAvatarTemp !== currentAvatar) hasChanges = true;
-      for(let i=1; i<=8; i++) {
-        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-          hasChanges = true;
-          break;
-        }
-      }
-
-      if (hasChanges) {
-        // बदलाव होने पर 'Tips' पॉपअप दिखाएं (जब तक यूजर NO, THANKS या SAVE न दबाए, बाहर नहीं जाने देगा)
-        document.getElementById("unsavedTipsModal").style.display = "flex";
-      } else {
-        document.getElementById("screenPhotoGrid").style.display = "none";
-        initProfile();
-      }
-    }
-
-    // नियम 1: NO, THANKS दबाने पर फोटो सेव नहीं होगी और वह सीधे प्रोफाइल पेज पर जाएगा
-    function confirmNoThanks() {
+    // **नया नियम:** बिना सेव किए (या बैक बटन दबाने पर) सीधा प्रोफाइल पेज पर जाने का फंक्शन (फोटो सेव नहीं होगी)
+    function closePhotoGridWithoutSaving() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       for(let i=1; i<=8; i++) {
         localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
@@ -760,7 +744,11 @@
       initProfile();
     }
 
-    // नियम 2: SAVE बटन दबाने पर फोटो सेव होगी और वह प्रोफाइल पेज पर जाएगा
+    function confirmNoThanks() {
+      closePhotoGridWithoutSaving();
+    }
+
+    // SAVE बटन दबाने पर फोटो सेव होगी और प्रोफाइल पेज पर जाएगा[span_5](start_span)[span_5](end_span)
     function saveAndClosePhotoGridScreen() {
       currentAvatar = currentAvatarTemp;
       localStorage.setItem("greedy_avatar", currentAvatar);
