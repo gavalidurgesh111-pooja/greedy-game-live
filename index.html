@@ -25,19 +25,6 @@
       text-align: center; 
     }
 
-    .lang-select-normal {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 600;
-      background: #f9f9f9;
-      color: #333;
-      outline: none;
-      cursor: pointer;
-    }
-
     .phone-lang-select {
       background: rgba(255, 255, 255, 0.9);
       border: 2px solid #8a2be2;
@@ -50,14 +37,6 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(138, 43, 226, 0.2);
     }
-
-    .policy-page { display: none; position: fixed; inset: 0; z-index: 9999; background: #ffffff; flex-direction: column; padding: 20px; color: #222; overflow-y: auto; text-align: left; }
-    .policy-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-    .policy-header h2 { font-size: 22px; font-weight: 900; color: #1e3c72; }
-    .policy-content { font-size: 14px; line-height: 1.8; color: #444; padding-bottom: 40px; }
-    .policy-section { margin-bottom: 20px; }
-    .policy-section h3 { font-size: 16px; font-weight: bold; color: #000; margin-bottom: 8px; }
-    .policy-back-btn { font-size: 24px; cursor: pointer; color: #000; background: none; border: none; font-weight: bold; }
     
     .bottom-fixed-btn-container {
       position: fixed;
@@ -71,24 +50,12 @@
       z-index: 100;
     }
 
-    #submitBtn, #otpSubmitBtn {
+    #submitBtn {
       opacity: 0.4;
       pointer-events: none;
       transition: 0.3s;
     }
-    #submitBtn.active, #otpSubmitBtn.active {
-      opacity: 1;
-      pointer-events: auto;
-      background: #00cd00 !important;
-      box-shadow: 0 0 15px #00cd00;
-    }
-
-    #passSubmitBtn {
-      opacity: 0.4;
-      pointer-events: none;
-      transition: 0.3s;
-    }
-    #passSubmitBtn.active {
+    #submitBtn.active {
       opacity: 1;
       pointer-events: auto;
       background: #00cd00 !important;
@@ -130,7 +97,7 @@
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
         <!-- 195 देशों की भाषाएँ -->
-        <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
+        <select class="phone-lang-select" id="phoneLangSelector">
           <option value="en" selected>🌐 English (Global)</option>
           <option value="hi">🇮🇳 हिंदी (Hindi)</option>
           <option value="mr">🇮🇳 मराठी (Marathi)</option>
@@ -569,83 +536,19 @@
     <!-- Custom Popup Modal -->
     <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Enter Password</h3>
+        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
         <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
         <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
-      </div>
-    </div>
-
-    <!-- OTP Verification Screen -->
-    <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="showScreenPhoneFromOtp()" style="font-size:24px; cursor:pointer;">❮</div>
-      </div>
-      
-      <div style="margin-top: 20px;">
-        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter OTP Verification</div>
-        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">New user verification required. Demo OTP: 1234</div>
-
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-          <input type="text" id="otpInput" maxlength="4" oninput="checkOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
-        </div>
-      </div>
-
-      <div class="bottom-fixed-btn-container">
-        <button class="btn-round-next" id="otpSubmitBtn" onclick="verifyOtpAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
-      </div>
-    </div>
-
-    <!-- Password Screen -->
-    <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="showScreenPhoneFromPass()" style="font-size:24px; cursor:pointer;">❮</div>
-      </div>
-
-      <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;"><div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div></div>
-      
-      <div style="margin-top: 20px;">
-        <div class="step-title" id="passScreenTitle" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
-        <div id="passScreenSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
-
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
-          <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
-          <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </div>
-
-        <div style="margin-top:15px; text-align:center;">
-          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
-        </div>
-      </div>
-
-      <div class="bottom-fixed-btn-container">
-        <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLoginOrRegister()">➔</button>
       </div>
     </div>
   </div>
 
   <script>
-    let currentScreen = "main";
-
-    function updateScreenDisplay(screenName) {
-      currentScreen = screenName;
-      document.getElementById("screenMain").style.display = (screenName === "main") ? "flex" : "none";
-      document.getElementById("screenPhone").style.display = (screenName === "phone") ? "flex" : "none";
-      document.getElementById("screenOtp").style.display = (screenName === "otp") ? "flex" : "none";
-      document.getElementById("screenPass").style.display = (screenName === "pass") ? "flex" : "none";
-      
-      history.pushState({ screen: screenName }, "");
-    }
-
-    window.onload = function() {
-      history.replaceState({ screen: "main" }, "");
-    };
-
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      updateScreenDisplay("phone");
+      document.getElementById("screenMain").style.display = "none";
+      document.getElementById("screenPhone").style.display = "flex";
+      history.pushState({ screen: "phone" }, "");
     }
 
     function selectEmailOption() {
@@ -666,51 +569,24 @@
     }
 
     function showScreenMain() {
-      updateScreenDisplay("main");
+      document.getElementById("screenPhone").style.display = "none";
+      document.getElementById("screenMain").style.display = "flex";
     }
 
-    function showScreenPhone() {
-      updateScreenDisplay("phone");
-    }
-
-    function showScreenPhoneFromOtp() {
-      updateScreenDisplay("pass"); // OTP स्क्रीन से बैक जाने पर Enter Password पेज पर जाएगा
-    }
-
-    function showScreenPhoneFromPass() {
-      updateScreenDisplay("phone"); // Password स्क्रीन से बैक जाने पर Registration and Login (Phone) पेज पर जाएगा
-    }
-
-    let currentIdentifier = "";
-    let isForgotPasswordFlow = false;
     let popupCallback = null;
 
-    // **बैक बटन और पॉप-अप का बिल्कुल पक्का लॉजिक**
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
-      
-      // यदि पॉप-अप खुला है, तो बैक बटन दबाने पर केवल पॉप-अप हटेगा, यूज़र उसी पेज पर रहेगा
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
         return;
       }
 
-      // यदि यूज़र OTP स्क्रीन पर है, तो बैक बटन दबाने पर Enter Password स्क्रीन पर लौटेगा
-      if (currentScreen === "otp") {
-        updateScreenDisplay("pass");
-        return;
-      }
-
-      // यदि यूज़र Password स्क्रीन पर है, तो बैक बटन दबाने पर Registration and Login स्क्रीन पर लौटेगा
-      if (currentScreen === "pass") {
-        updateScreenDisplay("phone");
-        return;
-      }
-
-      // यदि यूज़र Phone/ID स्क्रीन पर है, तो बैक बटन दबाने पर Main स्क्रीन पर लौटेगा
-      if (currentScreen === "phone") {
-        updateScreenDisplay("main");
+      let phoneScreen = document.getElementById("screenPhone");
+      if (phoneScreen.style.display === "flex") {
+        phoneScreen.style.display = "none";
+        document.getElementById("screenMain").style.display = "flex";
         return;
       }
     });
@@ -755,148 +631,25 @@
       }
     }
 
+    // जब यूजर नंबर या आईडी डालकर आगे बढ़ेगा, तो वह सीधा password.html पर जाएगा
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
         showCustomAlert("Please enter phone number or User ID!");
         return;
       }
-      currentIdentifier = identifier;
       localStorage.setItem("greedy_login_identifier", identifier);
 
-      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
+      let isRegistered = localStorage.getItem("greedy_user_registered_" + identifier);
 
       if(!isRegistered) {
         showCustomConfirm("This number or ID is not registered! Do you want to register a new account with this number?", function(confirmed) {
           if (confirmed) {
-            proceedToNextScreen(false);
+            window.location.href = "password.html";
           }
         });
       } else {
-        proceedToNextScreen(true);
-      }
-    }
-
-    function proceedToNextScreen(isRegistered) {
-      if(!isRegistered) {
-        updateScreenDisplay("otp");
-      } else {
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        updateScreenDisplay("pass");
-      }
-    }
-
-    function checkOtpInput(input) {
-      let val = input.value;
-      let btn = document.getElementById("otpSubmitBtn");
-      if (val.length === 4) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
-
-    function verifyOtpAction() {
-      let otp = document.getElementById("otpInput").value.trim();
-      if(otp !== "1234") {
-        showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
-        return;
-      }
-
-      updateScreenDisplay("pass");
-
-      if(isForgotPasswordFlow) {
-        document.getElementById("passScreenTitle").innerText = "Reset Password";
-        document.getElementById("passScreenSub").innerText = "Enter your new 8-character password";
-      } else {
-        document.getElementById("passScreenTitle").innerText = "Create Password";
-        document.getElementById("passScreenSub").innerText = "Set an exact 8-character password for your new account";
-      }
-    }
-
-    function togglePasswordVisibility() {
-      let passInput = document.getElementById("passInput");
-      let eyeIcon = document.getElementById("eyeIcon");
-      if (passInput.type === "password") {
-        passInput.type = "text";
-        eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-      } else {
-        passInput.type = "password";
-        eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
-      }
-    }
-
-    function forgotPasswordAction() {
-      isForgotPasswordFlow = true;
-      // यहाँ जब यूज़र 'OK' दबाएगा, तभी वह OTP स्क्रीन पर जाएगा। अगर बैक बटन दबाया तो पॉप-अप हट जाएगा और यूज़र Enter Password पेज पर ही रहेगा।
-      showCustomAlert("OTP verification required to reset your password.", function() {
-        updateScreenDisplay("otp");
-      });
-    }
-
-    function doFinalLoginOrRegister() {
-      let passVal = document.getElementById("passInput").value;
-      if(passVal.length !== 8) {
-        showCustomAlert("Password must be exactly 8 characters!");
-        return;
-      }
-
-      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
-
-      if(!isRegistered || isForgotPasswordFlow) {
-        localStorage.setItem("greedy_user_registered_" + currentIdentifier, "true");
-        localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
-        localStorage.setItem("greedy_password", passVal);
-        
-        if(!isRegistered) {
-          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-          localStorage.setItem("greedy_unique_id", freshId);
-          localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
-          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-          localStorage.setItem("greedy_coins", "1000");
-          localStorage.setItem("greedy_won", "0");
-          localStorage.setItem("greedy_level", "1");
-          localStorage.setItem("greedy_avatar", "");
-        }
-        isForgotPasswordFlow = false;
-        showCustomAlert("Success! Logging in...", function() {
-          localStorage.setItem("greedy_initialized", "true");
-          document.getElementById("loadingOverlay").style.display = "flex";
-          setTimeout(() => {
-            window.location.replace("profile.html");
-          }, 1000);
-        });
-      } else {
-        let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
-        if(passVal !== savedPass) {
-          showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
-          return;
-        }
-        localStorage.setItem("greedy_initialized", "true");
-        document.getElementById("loadingOverlay").style.display = "flex";
-        setTimeout(() => {
-          window.location.replace("profile.html");
-        }, 1000);
-      }
-    }
-    
-    function checkPasswordInput(input) {
-      let val = input.value;
-      let btn = document.getElementById("passSubmitBtn");
-      
-      if(val.length > 0) {
-        input.style.color = "#00cd00";
-        input.style.fontWeight = "bold";
-      } else {
-        input.style.color = "#333";
-        input.style.fontWeight = "normal";
-      }
-
-      if (val.length === 8) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
+        window.location.href = "password.html";
       }
     }
   </script>
