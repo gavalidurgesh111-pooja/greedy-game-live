@@ -327,6 +327,7 @@
         
         <form onsubmit="handleIndexFormSubmit(event)">
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
+            <!-- यहाँ ID जोड़ी गई है ताकि जावास्क्रिप्ट देश के कोड को सही से पहचान सके -->
             <select id="countryCodeSelect" class="country-code-select" onchange="checkNumber()" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
               <option value="+93">🇦🇫 (+93) Afghanistan</option>
               <option value="+355">🇦🇱 (+355) Albania</option>
@@ -601,7 +602,8 @@
 
     function checkNumber() {
       let identifier = document.getElementById("phoneInput").value.trim();
-      let countryCode = document.getElementById("countryCodeSelect").value;
+      let countryCodeSelect = document.getElementById("countryCodeSelect");
+      let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let btn = document.getElementById("submitBtn");
       
       let isValid = false;
@@ -610,18 +612,15 @@
         // यूज़र आईडी के लिए कम से कम 5 अक्षर
         isValid = identifier.length >= 5;
       } else if (/^\d+$/.test(identifier)) {
-        // देश के हिसाब से अंकों की सख्त जांच (Validation)
+        // इजराइल (+972) के लिए नंबर आम तौर पर 9 अंकों का होता है, भारत (+91) के लिए 10 अंक
         if (countryCode === "+91") {
-          // भारत के लिए ठीक 10 अंक होने चाहिए
           isValid = (identifier.length === 10);
+        } else if (countryCode === "+972") {
+          isValid = (identifier.length === 9);
         } else if (countryCode === "+1") {
-          // USA/Canada के लिए ठीक 10 अंक होने चाहिए
-          isValid = (identifier.length === 10);
-        } else if (countryCode === "+44") {
-          // UK के लिए 10 अंक होने चाहिए
           isValid = (identifier.length === 10);
         } else {
-          // अन्य देशों के लिए सामान्यतः 7 से 12 अंक
+          // बाकी देशों के लिए 7 से 12 अंक
           isValid = (identifier.length >= 7 && identifier.length <= 12);
         }
       }
@@ -672,12 +671,25 @@
     }
 
     function handleNextStep() {
-      let countryCode = document.getElementById("countryCodeSelect").value;
+      let countryCodeSelect = document.getElementById("countryCodeSelect");
+      let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let identifier = document.getElementById("phoneInput").value.trim();
       
       if(!identifier) {
         showCustomAlert("Please enter phone number or User ID!");
         return;
+      }
+
+      // यदि इजराइल (+972) चुना है और 9 अंकों का नंबर नहीं है, या भारत (+91) चुना है और 10 अंकों का नहीं है
+      if (!identifier.startsWith("#")) {
+        if (countryCode === "+91" && identifier.length !== 10) {
+          showCustomAlert("Please enter a valid 10-digit Indian phone number!");
+          return;
+        }
+        if (countryCode === "+972" && identifier.length !== 9) {
+          showCustomAlert("Please enter a valid 9-digit Israeli phone number!");
+          return;
+        }
       }
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
