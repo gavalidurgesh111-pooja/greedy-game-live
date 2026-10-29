@@ -139,7 +139,7 @@
           <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
           <option value="te">🇮🇳 తెలుగు (Telugu)</option>
           <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-          <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
+          <option value="ml">🇮 മലയാളം (Malayalam)</option>
           <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
           <option value="ur">🇵🇰 اردو (Urdu)</option>
           <option value="zh">🇨🇳 中文 (Chinese)</option>
@@ -566,13 +566,13 @@
       </div>
     </div>
 
-    <!-- Custom Popup Modal (अब यह "Enter Password" शीर्षक के साथ सभी अलर्ट्स के लिए काम करेगा) -->
+    <!-- Custom Popup Modal (शीर्षक "Enter Password" के साथ) -->
     <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
         <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Enter Password</h3>
         <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
         <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;">
-          <!-- डायनेमिक बटन यहाँ जावास्क्रिप्ट से आएंगे -->
+          <!-- डायनेमिक बटन यहाँ आएंगे -->
         </div>
       </div>
     </div>
@@ -664,36 +664,55 @@
       }
     }
 
-    // **कस्टम पॉप-अप (Confirm टाइप)**
+    // **मोबाइल बैक बटन हैंडल करने के लिए हिस्ट्री मैनेजमेंट**
     function showCustomConfirm(message, callback) {
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="handlePopupResponse(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
-        <button onclick="handlePopupResponse(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
+
+      // ब्राउज़र हिस्ट्री में स्टेट जोड़ें ताकि मोबाइल बैक बटन दबाने पर पॉप-अप बंद हो
+      history.pushState({ popupOpen: true }, "");
     }
 
-    // **कस्टम पॉप-अप (Alert टाइप)**
     function showCustomAlert(message, callback) {
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="handlePopupResponse(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
+
+      history.pushState({ popupOpen: true }, "");
     }
 
-    function handlePopupResponse(result) {
+    function closeCustomPopup(result) {
       document.getElementById("customPopupModal").style.display = "none";
+      if (history.state && history.state.popupOpen) {
+        history.back(); // हिस्ट्री स्टेट वापस साफ करें
+      }
       if (popupCallback) {
         popupCallback(result);
         popupCallback = null;
       }
     }
+
+    // **जब यूजर मोबाइल का असली बैक बटन दबाएगा**
+    window.addEventListener("popstate", function(event) {
+      let modal = document.getElementById("customPopupModal");
+      if (modal.style.display === "flex") {
+        modal.style.display = "none";
+        if (popupCallback) {
+          popupCallback(false);
+          popupCallback = null;
+        }
+      }
+    });
 
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
@@ -770,7 +789,6 @@
       }
     }
 
-    // **यहाँ Forgot Password पर क्लिक करने पर नया कस्टम पॉप-अप खुलेगा**
     function forgotPasswordAction() {
       isForgotPasswordFlow = true;
       showCustomAlert("OTP verification required to reset your password.", function() {
@@ -814,6 +832,7 @@
       } else {
         let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
         if(passVal !== savedPass) {
+          // **गलत पासवर्ड डालने पर आने वाला कस्टम पॉप-अप (जैसा आपने फोटो में दिखाया है)**
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
