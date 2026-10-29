@@ -9,10 +9,13 @@
   <link rel="stylesheet" href="style.css">
   <style>
     body { 
+      /* बैकग्राउंड फोटो को पूरी स्क्रीन पर फिक्स रखने के लिए */
       background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #111 url('bg.webp') no-repeat center center fixed; 
       background-size: cover;
+      background-attachment: fixed;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
 
     .brand-title { 
@@ -25,6 +28,9 @@
       text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
       margin-top: 40px; 
       text-align: center; 
+      /* टेक्स्ट पर नीला बॉक्स या सिलेक्शन आने से रोकने के लिए[span_0](start_span)[span_0](end_span) */
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     .phone-lang-select {
@@ -70,7 +76,7 @@
   <div id="authFlowContainer">
     <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
-      <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
+      <div class="brand-title" id="txtBrandTitle">GOLD Coin</div>
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
@@ -94,9 +100,9 @@
     </div>
 
     <!-- Phone / ID Login Screen -->
-    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:transparent; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer; color:#fff;">❮</div>
         
         <select class="phone-lang-select" id="phoneLangSelector">
           <option value="en" selected>🌐 English (Global)</option>
@@ -107,7 +113,7 @@
           <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
           <option value="te">🇮🇳 తెలుగు (Telugu)</option>
           <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-          <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
+          <option value="ml">🇮 മലയാളം (Malayalam)</option>
           <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
           <option value="ur">🇵🇰 اردو (Urdu)</option>
           <option value="zh">🇨🇳 中文 (Chinese)</option>
@@ -663,7 +669,7 @@
       let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let identifier = document.getElementById("phoneInput").value.trim();
       
-      if(!identifier) {
+      .if(!identifier) {
         showCustomAlert("Please enter phone number or User ID!");
         return;
       }
