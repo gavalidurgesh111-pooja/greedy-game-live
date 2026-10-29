@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -117,7 +116,6 @@
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
-    let initialPinchDistance = null;
 
     history.pushState({page: "photo_grid"}, "", window.location.href);
 
@@ -194,7 +192,7 @@
     }
 
     function closePhotoGridWithoutSaving() {
-      window.location.replace("profile.html");
+      window.location.replace("Profile.html");
     }
 
     function handleGridBackAction() {
@@ -221,19 +219,11 @@
       for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
       }
-      window.location.replace("profile.html");
+      window.location.replace("Profile.html");
     }
 
     function confirmSaveAndExit() {
       saveAndClosePhotoGridScreen();
-    }
-
-    function showCustomAlert(text) {
-      document.getElementById("customAlertText").innerText = text;
-      document.getElementById("customAlertModal").style.display = "flex";
-    }
-    function closeCustomAlert() {
-      document.getElementById("customAlertModal").style.display = "none";
     }
 
     let selectedSlotForTips = 1;
@@ -262,6 +252,7 @@
     }
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
+    
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips > 0) {
@@ -272,6 +263,7 @@
         }
       }
     }
+
     function tipsChangePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -283,6 +275,7 @@
         document.getElementById("hiddenGalleryInput").click();
       }
     }
+
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
