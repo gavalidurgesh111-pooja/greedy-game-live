@@ -96,7 +96,6 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
-        <!-- भाषा चयन विकल्प -->
         <select class="phone-lang-select" id="phoneLangSelector">
           <option value="en" selected>🌐 English (Global)</option>
           <option value="hi">🇮🇳 हिंदी (Hindi)</option>
@@ -135,7 +134,7 @@
           <option value="it">🇮🇹 Italiano (Italian)</option>
           <option value="pt">🇧🇷 Português (Portuguese)</option>
           <option value="ru">🇷🇺 Русский (Russian)</option>
-          <option value="uk">🇺🇦 Українська (Ukrainian)</option>
+          <option value="uk">🇺 Українська (Ukrainian)</option>
           <option value="pl">🇵🇱 Polski (Polish)</option>
           <option value="nl">🇳🇱 Nederlands (Dutch)</option>
           <option value="el">🇬🇷 Ελληνικά (Greek)</option>
@@ -326,7 +325,6 @@
         <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
         <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
         
-        <!-- कीबोर्ड के OK/Enter/Arrow बटन के लिए फॉर्म जोड़ा गया है -->
         <form onsubmit="handleIndexFormSubmit(event)">
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
             <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
@@ -560,6 +558,8 @@
     }
 
     function openMoreOptionsSheet() {
+      // मोर ऑप्शंस खुलने पर हिस्ट्री में स्टेट जोड़ें ताकि बैक बटन से केवल शीट बंद हो
+      history.pushState({ modalOpen: true }, "");
       document.getElementById("moreOptionsModal").style.display = "flex";
     }
 
@@ -580,14 +580,21 @@
 
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
-      if (modal.style.display === "flex") {
+      if (modal && modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
         return;
       }
 
+      // यदि More Options वाला मॉडल खुला है, तो बैक बटन दबाने पर केवल मॉडल बंद हो
+      let moreOptionsModal = document.getElementById("moreOptionsModal");
+      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
+        moreOptionsModal.style.display = "none";
+        return;
+      }
+
       let phoneScreen = document.getElementById("screenPhone");
-      if (phoneScreen.style.display === "flex") {
+      if (phoneScreen && phoneScreen.style.display === "flex") {
         phoneScreen.style.display = "none";
         document.getElementById("screenMain").style.display = "flex";
         return;
@@ -604,7 +611,6 @@
       }
     }
 
-    // कीबोर्ड के Enter / OK / Arrow बटन को हैंडल करने के लिए फंक्शन
     function handleIndexFormSubmit(event) {
       event.preventDefault();
       let btn = document.getElementById("submitBtn");
