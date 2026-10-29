@@ -127,7 +127,7 @@
     <!-- Phone / ID Login Screen -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="goToMainScreen()" style="font-size:24px; cursor:pointer;">❮</div>
+        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
         <!-- 195 देशों की भाषाएँ -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
@@ -627,7 +627,6 @@
   </div>
 
   <script>
-    // यह वेरिएबल याद रखेगा कि यूज़र इस समय किस स्क्रीन पर है ("main", "phone", "otp", "pass")
     let currentScreen = "main";
 
     function updateScreenDisplay(screenName) {
@@ -637,7 +636,6 @@
       document.getElementById("screenOtp").style.display = (screenName === "otp") ? "flex" : "none";
       document.getElementById("screenPass").style.display = (screenName === "pass") ? "flex" : "none";
       
-      // ब्राउज़र हिस्ट्री को मेंटेन रखना ताकि बैक बटन काम करे
       history.pushState({ screen: screenName }, "");
     }
 
@@ -680,40 +678,38 @@
     }
 
     function showScreenPhoneFromPass() {
-      updateScreenDisplay("phone");
+      updateScreenDisplay("pass"); // पासवर्ड स्क्रीन पर वापस लौटने के लिए
     }
 
     let currentIdentifier = "";
     let isForgotPasswordFlow = false;
     let popupCallback = null;
 
-    // **मास्टर बैक बटन कंट्रोल (मोबाइल और वेबसाइट दोनों के लिए)**
+    // **बैक बटन और पॉप-अप का बिल्कुल पक्का लॉजिक**
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       
-      // 1. अगर कस्टम पॉप-अप खुला है, तो पहले सिर्फ पॉप-अप बंद हो
+      // यदि पॉप-अप खुला है, तो बैक बटन दबाने पर केवल पॉप-अप हटेगा, यूज़र उसी पेज पर रहेगा
       if (modal.style.display === "flex") {
         modal.style.display = "none";
-        if (popupCallback) {
-          popupCallback(false);
-          popupCallback = null;
-        }
+        popupCallback = null;
+        history.pushState({ screen: currentScreen }, ""); // स्टेट को सुरक्षित रखें
         return;
       }
 
-      // 2. अगर यूज़र पासवर्ड स्क्रीन पर है, तो फोन/आईडी स्क्रीन पर आए
+      // यदि यूज़र OTP स्क्रीन पर है, तो बैक बटन दबाने पर Enter Password स्क्रीन पर लौटेगा
+      if (currentScreen === "otp") {
+        updateScreenDisplay("pass");
+        return;
+      }
+
+      // यदि यूज़र Password स्क्रीन पर है, तो बैक बटन दबाने पर Phone/ID स्क्रीन पर लौटेगा
       if (currentScreen === "pass") {
         updateScreenDisplay("phone");
         return;
       }
 
-      // 3. अगर यूज़र OTP स्क्रीन पर है, तो फोन/आईडी स्क्रीन पर आए
-      if (currentScreen === "otp") {
-        updateScreenDisplay("phone");
-        return;
-      }
-
-      // 4. अगर यूज़र फोन/आईडी स्क्रीन पर है, तो मेन स्क्रीन पर जाए
+      // यदि यूज़र Phone/ID स्क्रीन पर है, तो बैक बटन दबाने पर Main स्क्रीन पर लौटेगा
       if (currentScreen === "phone") {
         updateScreenDisplay("main");
         return;
@@ -739,6 +735,7 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
+      history.pushState({ screen: currentScreen, popup: true }, "");
     }
 
     function showCustomAlert(message, callback) {
@@ -749,13 +746,15 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
+      history.pushState({ screen: currentScreen, popup: true }, "");
     }
 
     function closeCustomPopup(result) {
       document.getElementById("customPopupModal").style.display = "none";
-      if (popupCallback) {
-        popupCallback(result);
-        popupCallback = null;
+      let cb = popupCallback;
+      popupCallback = null;
+      if (result && cb) {
+        cb(true);
       }
     }
 
