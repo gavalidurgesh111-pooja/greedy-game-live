@@ -129,7 +129,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
-        <!-- 195 देशों की भाषाएँ (डिफ़ॉल्ट रूप से English) -->
+        <!-- 195 देशों की भाषाएँ -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="en" selected>🌐 English (Global)</option>
           <option value="hi">🇮🇳 हिंदी (Hindi)</option>
@@ -566,14 +566,13 @@
       </div>
     </div>
 
-    <!-- Custom Popup Modal (यहाँ शीर्षक "Registration and Login" दिखेगा) -->
+    <!-- Custom Popup Modal (अब यह "Enter Password" शीर्षक के साथ सभी अलर्ट्स के लिए काम करेगा) -->
     <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
-        <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;">This number or ID is not registered! Do you want to register a new account with this number? (Click Cancel to fix your number)</p>
-        <div style="display:flex; gap:12px; justify-content:center;">
-          <button id="popupCancelBtn" onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
-          <button id="popupOkBtn" onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Enter Password</h3>
+        <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+        <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;">
+          <!-- डायनेमिक बटन यहाँ जावास्क्रिप्ट से आएंगे -->
         </div>
       </div>
     </div>
@@ -640,7 +639,7 @@
       document.getElementById("moreOptionsModal").style.display = "none";
     }
     function socialLoginNotice(provider) {
-      alert(provider + " login selected. Please use More Options for phone/ID login.");
+      showCustomAlert(provider + " login selected. Please use More Options for phone/ID login.");
     }
     function showScreenMain() {
       document.getElementById("screenPhone").style.display = "none";
@@ -665,14 +664,30 @@
       }
     }
 
-    // **कस्टम पॉप-अप दिखाने का फंक्शन (जिसका शीर्षक "Registration and Login" है)**
-    function showCustomPopup(message, callback) {
+    // **कस्टम पॉप-अप (Confirm टाइप)**
+    function showCustomConfirm(message, callback) {
       document.getElementById("popupMessage").innerText = message;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="handlePopupResponse(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="handlePopupResponse(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+      `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
     }
 
-    function closeCustomPopup(result) {
+    // **कस्टम पॉप-अप (Alert टाइप)**
+    function showCustomAlert(message, callback) {
+      document.getElementById("popupMessage").innerText = message;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="handlePopupResponse(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = callback;
+    }
+
+    function handlePopupResponse(result) {
       document.getElementById("customPopupModal").style.display = "none";
       if (popupCallback) {
         popupCallback(result);
@@ -683,7 +698,7 @@
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
-        alert("Please enter phone number or User ID!");
+        showCustomAlert("Please enter phone number or User ID!");
         return;
       }
       currentIdentifier = identifier;
@@ -692,8 +707,7 @@
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
       if(!isRegistered) {
-        // यहाँ अब ब्राउज़र वाले अलर्ट के बजाय हमारा सुंदर कस्टम पॉप-अप खुलेगा जिस पर "Registration and Login" लिखा होगा
-        showCustomPopup("This number or ID is not registered!\nDo you want to register a new account with this number?", function(confirmed) {
+        showCustomConfirm("This number or ID is not registered! Do you want to register a new account with this number?", function(confirmed) {
           if (confirmed) {
             proceedToNextScreen(false);
           }
@@ -728,7 +742,7 @@
     function verifyOtpAction() {
       let otp = document.getElementById("otpInput").value.trim();
       if(otp !== "1234") {
-        alert("Invalid OTP! (Demo OTP is 1234)");
+        showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
         return;
       }
 
@@ -756,17 +770,19 @@
       }
     }
 
+    // **यहाँ Forgot Password पर क्लिक करने पर नया कस्टम पॉप-अप खुलेगा**
     function forgotPasswordAction() {
       isForgotPasswordFlow = true;
-      alert("OTP verification required to reset your password.");
-      document.getElementById("screenPass").style.display = "none";
-      document.getElementById("screenOtp").style.display = "flex";
+      showCustomAlert("OTP verification required to reset your password.", function() {
+        document.getElementById("screenPass").style.display = "none";
+        document.getElementById("screenOtp").style.display = "flex";
+      });
     }
 
     function doFinalLoginOrRegister() {
       let passVal = document.getElementById("passInput").value;
       if(passVal.length !== 8) {
-        alert("Password must be exactly 8 characters!");
+        showCustomAlert("Password must be exactly 8 characters!");
         return;
       }
 
@@ -788,20 +804,25 @@
           localStorage.setItem("greedy_avatar", "");
         }
         isForgotPasswordFlow = false;
-        alert("Success! Logging in...");
+        showCustomAlert("Success! Logging in...", function() {
+          localStorage.setItem("greedy_initialized", "true");
+          document.getElementById("loadingOverlay").style.display = "flex";
+          setTimeout(() => {
+            window.location.replace("profile.html");
+          }, 1000);
+        });
       } else {
         let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
         if(passVal !== savedPass) {
-          alert("Incorrect password! Please enter the correct 8-character password.");
+          showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
+        localStorage.setItem("greedy_initialized", "true");
+        document.getElementById("loadingOverlay").style.display = "flex";
+        setTimeout(() => {
+          window.location.replace("profile.html");
+        }, 1000);
       }
-
-      localStorage.setItem("greedy_initialized", "true");
-      document.getElementById("loadingOverlay").style.display = "flex";
-      setTimeout(() => {
-        window.location.replace("profile.html");
-      }, 1000);
     }
     
     function checkPasswordInput(input) {
