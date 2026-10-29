@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Registration & Login</title>
+  <title>Greedy Coin - Registration and Login</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body { 
@@ -129,10 +129,10 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
-        <!-- 195 देशों की भाषाएँ -->
+        <!-- 195 देशों की भाषाएँ (डिफ़ॉल्ट रूप से English सेट की गई हैं) -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
-          <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
-          <option value="en">🌐 English (Global)</option>
+          <option value="en" selected>🌐 English (Global)</option>
+          <option value="hi">🇮🇳 हिंदी (Hindi)</option>
           <option value="mr">🇮🇳 मराठी (Marathi)</option>
           <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
           <option value="bn">🇧🇩 বাংলা (Bengali)</option>
@@ -356,7 +356,8 @@
       </div>
 
       <div style="margin-top: 40px;">
-        <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Register / log in</div>
+        <!-- नाम बदलकर "Registration and Login" कर दिया गया है -->
+        <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
         <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
         
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
@@ -652,7 +653,7 @@
       }
     }
 
-    // **लॉजिक: पुराना और नया यूजर पहचानना + गलत नंबर होने पर सही करने का ऑप्शन**
+    // **लॉजिक: अंग्रेजी भाषा डिफ़ॉल्ट और अंग्रेजी में पॉप-अप संदेश**
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
@@ -664,22 +665,19 @@
 
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
-      // यदि कोई पुराना यूजर लॉगिन करते समय गलत नंबर डाल देता है (जो रजिस्टर्ड नहीं है)
+      // यदि नंबर रजिस्टर्ड नहीं है, तो पॉप-अप पूरी तरह से अंग्रेजी में आएगा
       if(!isRegistered) {
-        let wantToRegister = confirm("यह नंबर या ID रजिस्टर्ड नहीं है!\nक्या आप इस नंबर से नया रजिस्ट्रेशन करना चाहते हैं? (Cancel दबाकर आप नंबर ठीक कर सकते हैं)");
+        let wantToRegister = confirm("This number or ID is not registered!\nDo you want to register a new account with this number? (Click Cancel to fix your number)");
         if (!wantToRegister) {
-          // यूजर यहीं रुका रहेगा और अपना गलत नंबर ठीक कर सकेगा
-          return;
+          return; // यूजर यहीं रुककर नंबर ठीक कर सकेगा
         }
       }
 
       document.getElementById("screenPhone").style.display = "none";
 
       if(!isRegistered) {
-        // नया यूजर होने पर OTP पर भेजें
         document.getElementById("screenOtp").style.display = "flex";
       } else {
-        // पुराना यूजर होने पर सीधा पासवर्ड पर भेजें (बिना OTP के)
         document.getElementById("passScreenTitle").innerText = "Enter Password";
         document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
         document.getElementById("screenPass").style.display = "flex";
