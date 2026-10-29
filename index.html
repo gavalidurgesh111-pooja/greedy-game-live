@@ -127,7 +127,7 @@
     <!-- Phone / ID Login Screen -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        <div class="back-btn" onclick="goToMainScreen()" style="font-size:24px; cursor:pointer;">❮</div>
         
         <!-- 195 देशों की भाषाएँ -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
@@ -627,15 +627,27 @@
   </div>
 
   <script>
+    // यह वेरिएबल याद रखेगा कि यूज़र इस समय किस स्क्रीन पर है ("main", "phone", "otp", "pass")
+    let currentScreen = "main";
+
+    function updateScreenDisplay(screenName) {
+      currentScreen = screenName;
+      document.getElementById("screenMain").style.display = (screenName === "main") ? "flex" : "none";
+      document.getElementById("screenPhone").style.display = (screenName === "phone") ? "flex" : "none";
+      document.getElementById("screenOtp").style.display = (screenName === "otp") ? "flex" : "none";
+      document.getElementById("screenPass").style.display = (screenName === "pass") ? "flex" : "none";
+      
+      // ब्राउज़र हिस्ट्री को मेंटेन रखना ताकि बैक बटन काम करे
+      history.pushState({ screen: screenName }, "");
+    }
+
     window.onload = function() {
       history.replaceState({ screen: "main" }, "");
     };
 
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      document.getElementById("screenMain").style.display = "none";
-      document.getElementById("screenPhone").style.display = "flex";
-      history.pushState({ screen: "phone" }, "");
+      updateScreenDisplay("phone");
     }
 
     function selectEmailOption() {
@@ -656,32 +668,30 @@
     }
 
     function showScreenMain() {
-      document.getElementById("screenPhone").style.display = "none";
-      document.getElementById("screenMain").style.display = "flex";
+      updateScreenDisplay("main");
     }
 
     function showScreenPhone() {
-      document.getElementById("screenOtp").style.display = "none";
-      document.getElementById("screenPhone").style.display = "flex";
+      updateScreenDisplay("phone");
     }
 
     function showScreenPhoneFromOtp() {
-      document.getElementById("screenOtp").style.display = "none";
-      document.getElementById("screenPhone").style.display = "flex";
+      updateScreenDisplay("phone");
     }
 
     function showScreenPhoneFromPass() {
-      document.getElementById("screenPass").style.display = "none";
-      document.getElementById("screenPhone").style.display = "flex";
+      updateScreenDisplay("phone");
     }
 
     let currentIdentifier = "";
     let isForgotPasswordFlow = false;
     let popupCallback = null;
 
-    // **बैक बटन और पॉप-अप का परफेक्ट फ्लो**
+    // **मास्टर बैक बटन कंट्रोल (मोबाइल और वेबसाइट दोनों के लिए)**
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
+      
+      // 1. अगर कस्टम पॉप-अप खुला है, तो पहले सिर्फ पॉप-अप बंद हो
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         if (popupCallback) {
@@ -691,26 +701,21 @@
         return;
       }
 
-      let passScreen = document.getElementById("screenPass");
-      let otpScreen = document.getElementById("screenOtp");
-      let phoneScreen = document.getElementById("screenPhone");
-      let mainScreen = document.getElementById("screenMain");
-      
-      if (passScreen.style.display === "flex") {
-        passScreen.style.display = "none";
-        phoneScreen.style.display = "flex";
+      // 2. अगर यूज़र पासवर्ड स्क्रीन पर है, तो फोन/आईडी स्क्रीन पर आए
+      if (currentScreen === "pass") {
+        updateScreenDisplay("phone");
         return;
       }
 
-      if (otpScreen.style.display === "flex") {
-        otpScreen.style.display = "none";
-        phoneScreen.style.display = "flex";
+      // 3. अगर यूज़र OTP स्क्रीन पर है, तो फोन/आईडी स्क्रीन पर आए
+      if (currentScreen === "otp") {
+        updateScreenDisplay("phone");
         return;
       }
 
-      if (phoneScreen.style.display === "flex") {
-        phoneScreen.style.display = "none";
-        mainScreen.style.display = "flex";
+      // 4. अगर यूज़र फोन/आईडी स्क्रीन पर है, तो मेन स्क्रीन पर जाए
+      if (currentScreen === "phone") {
+        updateScreenDisplay("main");
         return;
       }
     });
@@ -777,16 +782,12 @@
     }
 
     function proceedToNextScreen(isRegistered) {
-      document.getElementById("screenPhone").style.display = "none";
-
       if(!isRegistered) {
-        document.getElementById("screenOtp").style.display = "flex";
-        history.pushState({ screen: "otp" }, "");
+        updateScreenDisplay("otp");
       } else {
         document.getElementById("passScreenTitle").innerText = "Enter Password";
         document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        document.getElementById("screenPass").style.display = "flex";
-        history.pushState({ screen: "pass" }, "");
+        updateScreenDisplay("pass");
       }
     }
 
@@ -807,9 +808,7 @@
         return;
       }
 
-      document.getElementById("screenOtp").style.display = "none";
-      document.getElementById("screenPass").style.display = "flex";
-      history.pushState({ screen: "pass" }, "");
+      updateScreenDisplay("pass");
 
       if(isForgotPasswordFlow) {
         document.getElementById("passScreenTitle").innerText = "Reset Password";
@@ -835,9 +834,7 @@
     function forgotPasswordAction() {
       isForgotPasswordFlow = true;
       showCustomAlert("OTP verification required to reset your password.", function() {
-        document.getElementById("screenPass").style.display = "none";
-        document.getElementById("screenOtp").style.display = "flex";
-        history.pushState({ screen: "otp" }, "");
+        updateScreenDisplay("otp");
       });
     }
 
