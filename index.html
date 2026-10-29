@@ -8,14 +8,24 @@
   <link rel="preload" as="image" href="bg.webp">
   <link rel="stylesheet" href="style.css">
   <style>
-    body { 
-      /* बैकग्राउंड फोटो को पूरी स्क्रीन पर फिक्स रखने के लिए */
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #111 url('bg.webp') no-repeat center center fixed; 
+    /* मोबाइल ब्राउज़र की सफेद स्क्रीन की समस्या को हमेशा के लिए दूर करने हेतु फिक्स बैकग्राउंड लेयर */
+    .page-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('bg.webp') no-repeat center center;
       background-size: cover;
-      background-attachment: fixed;
+      z-index: -1;
+    }
+
+    html, body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      background-color: #111;
+      overflow-x: hidden;
     }
 
     .brand-title { 
@@ -28,7 +38,7 @@
       text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
       margin-top: 40px; 
       text-align: center; 
-      /* टेक्स्ट पर नीला बॉक्स या सिलेक्शन आने से रोकने के लिए[span_0](start_span)[span_0](end_span) */
+      /* टेक्स्ट पर नीला बॉक्स आने से रोकने के लिए[span_0](start_span)[span_0](end_span) */
       -webkit-user-select: none;
       user-select: none;
     }
@@ -72,6 +82,9 @@
   </style>
 </head>
 <body>
+
+  <!-- यह बैकग्राउंड लेयर मोबाइल पर कभी सफेद नहीं होने देगी -->
+  <div class="page-bg"></div>
 
   <div id="authFlowContainer">
     <!-- मुख्य लॉगिन स्क्रीन -->
