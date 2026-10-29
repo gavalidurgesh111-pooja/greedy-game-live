@@ -1,9 +1,9 @@
-l<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Greedy Coin - Enter Password</title>
+  <title>Greedy Coin - Registration and Login</title>
   <link rel="stylesheet" href="style.css">
   <style>
     body { 
@@ -13,6 +13,31 @@ l<!DOCTYPE html>
       padding: 0;
     }
 
+    .brand-title { 
+      font-size: 48px; 
+      font-weight: 900; 
+      background: linear-gradient(45deg, #b8860b, #ffd700, #fff7ae, #ffae00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1.5px; 
+      text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
+      margin-top: 40px; 
+      text-align: center; 
+    }
+
+    .phone-lang-select {
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid #8a2be2;
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      outline: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(138, 43, 226, 0.2);
+    }
+    
     .bottom-fixed-btn-container {
       position: fixed;
       bottom: 25px;
@@ -25,12 +50,12 @@ l<!DOCTYPE html>
       z-index: 100;
     }
 
-    #passSubmitBtn, #otpSubmitBtn {
+    #submitBtn {
       opacity: 0.4;
       pointer-events: none;
       transition: 0.3s;
     }
-    #passSubmitBtn.active, #otpSubmitBtn.active {
+    #submitBtn.active {
       opacity: 1;
       pointer-events: auto;
       background: #00cd00 !important;
@@ -40,132 +65,553 @@ l<!DOCTYPE html>
 </head>
 <body>
 
-  <div id="screenPass" style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-    
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <div class="back-btn" onclick="goBackToPrevious()" style="font-size:24px; cursor:pointer;">❮</div>
+  <div id="authFlowContainer">
+    <!-- मुख्य लॉगिन स्क्रीन -->
+    <div id="screenMain">
+      <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
+
+      <div class="auth-bottom-panel">
+        <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
+          <span>Sign in with Facebook</span>
+        </button>
+        <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
+          <span>Sign in with Google</span>
+        </button>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
+        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
+      </div>
     </div>
 
-    <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
-      <div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div>
+    <!-- More Options Modal -->
+    <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120; align-items:flex-end; justify-content:center;">
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+      </div>
     </div>
-    
-    <div style="margin-top: 20px;">
-      <div class="step-title" id="passScreenTitle" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
-      <div id="passScreenSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Welcome back! Enter your exact 8-character password to login</div>
 
-      <!-- पासवर्ड सेक्शन -->
-      <div id="passwordSection">
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
-          <input type="password" class="pass-input" id="passInput" maxlength="8" oninput="checkPasswordInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
-          <svg id="eyeIcon" onclick="togglePasswordVisibility()" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="cursor:pointer; color:#666; flex-shrink:0; margin-left:10px;">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </div>
-
-        <div id="forgotPassContainer" style="margin-top:15px; text-align:center;">
-          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
-        </div>
+    <!-- Phone / ID Login Screen -->
+    <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        
+        <!-- 195 देशों की भाषाएँ -->
+        <select class="phone-lang-select" id="phoneLangSelector">
+          <option value="en" selected>🌐 English (Global)</option>
+          <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+          <option value="mr">🇮🇳 मराठी (Marathi)</option>
+          <option value="gu">🇮🇳 ગુજરાતી (Gujarati)</option>
+          <option value="bn">🇧🇩 বাংলা (Bengali)</option>
+          <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
+          <option value="te">🇮🇳 తెలుగు (Telugu)</option>
+          <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
+          <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
+          <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
+          <option value="ur">🇵🇰 اردو (Urdu)</option>
+          <option value="zh">🇨🇳 中文 (Chinese)</option>
+          <option value="ja">🇯🇵 日本語 (Japanese)</option>
+          <option value="ko">🇰🇷 한국어 (Korean)</option>
+          <option value="vi">🇻🇳 Tiếng Việt (Vietnamese)</option>
+          <option value="th">🇹🇭 ไทย (Thai)</option>
+          <option value="id">🇮🇩 Bahasa Indonesia (Indonesian)</option>
+          <option value="ms">🇲🇾 Bahasa Melayu (Malay)</option>
+          <option value="fil">🇵🇭 Filipino (Tagalog)</option>
+          <option value="my">🇲🇲 ဗမာစာ (Burmese)</option>
+          <option value="km">🇰🇭 ភាសាខ្មែរ (Khmer)</option>
+          <option value="lo">🇱🇦 ລາວ (Lao)</option>
+          <option value="ne">🇳🇵 नेपाली (Nepali)</option>
+          <option value="si">🇱🇰 සිංහල (Sinhala)</option>
+          <option value="mn">🇲🇳 Монгол (Mongolian)</option>
+          <option value="kk">🇰🇿 Қазақ тілі (Kazakh)</option>
+          <option value="uz">🇺🇿 O'zbekcha (Uzbek)</option>
+          <option value="ar">🇸🇦 العربية (Arabic)</option>
+          <option value="fa">🇮🇷 فارسی (Persian)</option>
+          <option value="tr">🇹🇷 Türkçe (Turkish)</option>
+          <option value="he">🇮🇱 עברית (Hebrew)</option>
+          <option value="es">🇪🇸 Español (Spanish)</option>
+          <option value="fr">🇫🇷 Français (French)</option>
+          <option value="de">🇩🇪 Deutsch (German)</option>
+          <option value="it">🇮🇹 Italiano (Italian)</option>
+          <option value="pt">🇧🇷 Português (Portuguese)</option>
+          <option value="ru">🇷🇺 Русский (Russian)</option>
+          <option value="uk">🇺🇦 Українська (Ukrainian)</option>
+          <option value="pl">🇵🇱 Polski (Polish)</option>
+          <option value="nl">🇳🇱 Nederlands (Dutch)</option>
+          <option value="el">🇬🇷 Ελληνικά (Greek)</option>
+          <option value="hu">🇭🇺 Magyar (Hungarian)</option>
+          <option value="cs">🇨🇿 Čeština (Czech)</option>
+          <option value="sv">🇸🇪 Svenska (Swedish)</option>
+          <option value="ro">🇷🇴 Română (Romanian)</option>
+          <option value="da">🇩🇰 Dansk (Danish)</option>
+          <option value="fi">🇫🇮 Suomi (Finnish)</option>
+          <option value="no">🇳🇴 Norsk (Norwegian)</option>
+          <option value="bg">🇧🇬 Български (Bulgarian)</option>
+          <option value="hr">🇭🇷 Hrvatski (Croatian)</option>
+          <option value="sr">🇷🇸 Српски (Serbian)</option>
+          <option value="sk">🇸🇰 Slovenčina (Slovak)</option>
+          <option value="sl">🇸🇮 Slovenščina (Slovenian)</option>
+          <option value="et">🇪🇪 Eesti (Estonian)</option>
+          <option value="lv">🇱🇻 Latviešu (Latvian)</option>
+          <option value="lt">🇱🇹 Lietuvių (Lithuanian)</option>
+          <option value="is">🇮🇸 Íslenska (Icelandic)</option>
+          <option value="sq">🇦🇱 Shqip (Albanian)</option>
+          <option value="sw">🇰🇪 Kiswahili (Swahili)</option>
+          <option value="am">🇪🇹 አማርኛ (Amharic)</option>
+          <option value="ha">🇳🇬 Hausa (Hausa)</option>
+          <option value="yo">🇳🇬 Yorùbá (Yoruba)</option>
+          <option value="zu">🇿🇦 IsiZulu (Zulu)</option>
+          <option value="af">🇿🇦 Afrikaans (South Africa)</option>
+          <option value="hy">🇦🇲 Հայերեն (Armenian)</option>
+          <option value="az">🇦🇿 Azərbaycan (Azerbaijani)</option>
+          <option value="eu">🇪🇸 Euskara (Basque)</option>
+          <option value="be">🇧🇾 Беларуская (Belarusian)</option>
+          <option value="bs">🇦🇦 Bosanski (Bosnian)</option>
+          <option value="ka">🇬🇪 ქართული (Georgian)</option>
+          <option value="la">🇻🇦 Latina (Latin)</option>
+          <option value="ga">🇮🇪 Gaeilge (Irish)</option>
+          <option value="mt">🇲🇹 Malti (Maltese)</option>
+          <option value="cy">🏴󠁧󠁢󠁷󠁬󠁳󠁿 Cymraeg (Welsh)</option>
+          <option value="eo">🌍 Esperanto (Esperanto)</option>
+          <option value="yi">🌍 ייִדיש (Yiddish)</option>
+          <option value="so">🇸🇴 Soomaaliga (Somali)</option>
+          <option value="sn">🇿🇼 Shona (Shona)</option>
+          <option value="xh">🇿🇦 isiXhosa (Xhosa)</option>
+          <option value="st">🇱🇸 Sesotho (Sesotho)</option>
+          <option value="ny">🇲🇼 Chichewa (Chichewa)</option>
+          <option value="mg">🇲🇬 Malagasy (Malagasy)</option>
+          <option value="rw">🇷🇼 Kinyarwanda (Kinyarwanda)</option>
+          <option value="lg">🇺🇬 Luganda (Luganda)</option>
+          <option value="ig">🇳🇬 Igbo (Igbo)</option>
+          <option value="ku">🇹🇷 Kurdî (Kurdish)</option>
+          <option value="ps">🇦🇫 پښتو (Pashto)</option>
+          <option value="sd">🇵🇰 سنڌي (Sindhi)</option>
+          <option value="tg">🇹🇯 Тоҷикӣ (Tajik)</option>
+          <option value="tk">🇹🇲 Türkmençe (Turkmen)</option>
+          <option value="ug">🇨🇳 ئۇيغۇرچە (Uyghur)</option>
+          <option value="uz">🇺🇿 O'zbek (Uzbek)</option>
+          <option value="sm">🇼🇸 Samoan (Samoa)</option>
+          <option value="to">🇹🇴 Tongan (Tonga)</option>
+          <option value="fj">🇫🇯 Fijian (Fiji)</option>
+          <option value="mi">🇳🇿 Maori (New Zealand)</option>
+          <option value="dv">🇲🇻 Divehi (Maldives)</option>
+          <option value="dz">🇧🇹 Dzongkha (Bhutan)</option>
+          <option value="bi">🇻🇺 Bislama (Vanuatu)</option>
+          <option value="ho">🇵🇬 Hiri Motu (Papua New Guinea)</option>
+          <option value="ty">🇵🇫 Tahitian (French Polynesia)</option>
+          <option value="ch">🇬🇺 Chamorro (Guam)</option>
+          <option value="mh">🇲🇭 Marshallese (Marshall Islands)</option>
+          <option value="na">🇳🇷 Nauruan (Nauru)</option>
+          <option value="tv">🇹🇻 Tuvaluan (Tuvalu)</option>
+          <option value="gil">🇰🇮 Gilbertese (Kiribati)</option>
+          <option value="niu">🇳🇺 Niuean (Niue)</option>
+          <option value="rar">🇨🇰 Cook Islands Maori (Cook Islands)</option>
+          <option value="tkl">🇹🇰 Tokelauan (Tokelau)</option>
+          <option value="cal">🇳🇨 Drehu (New Caledonia)</option>
+          <option value="pau">🇵🇼 Palauan (Palau)</option>
+          <option value="crs">🇸🇨 Seselwa Creole (Seychelles)</option>
+          <option value="mfe">🇲🇺 Mauritian Creole (Mauritius)</option>
+          <option value="com">🇰🇲 Comorian (Comoros)</option>
+          <option value="sg">🇨🇫 Sango (Central African Republic)</option>
+          <option value="ln">🇨🇩 Lingala (DR Congo)</option>
+          <option value="kg">🇨🇬 Kongo (Congo)</option>
+          <option value="rn">🇧🇮 Kirundi (Burundi)</option>
+          <option value="ss">🇸🇿 Swazi (Eswatini)</option>
+          <option value="tn">🇧🇼 Tswana (Botswana)</option>
+          <option value="ts">🇿🇦 Tsonga (South Africa)</option>
+          <option value="ve">🇿🇦 Venda (South Africa)</option>
+          <option value="nr">🇿🇦 Ndebele (South Africa)</option>
+          <option value="tum">🇲🇼 Tumbuka (Malawi)</option>
+          <option value="bem">🇿🇲 Bemba (Zambia)</option>
+          <option value="toi">🇿🇲 Tonga (Zambia)</option>
+          <option value="loz">🇿🇲 Lozi (Zambia)</option>
+          <option value="nya">🇿🇼 Ndebele (Zimbabwe)</option>
+          <option value="kj">🇳🇴 Kuanyama (Namibia)</option>
+          <option value="ndh">🇳🇦 Ndonga (Namibia)</option>
+          <option value="her">🇳🇦 Herero (Namibia)</option>
+          <option value="kua">🇦🇴 Kwanyama (Angola)</option>
+          <option value="umb">🇦🇴 Umbundu (Angola)</option>
+          <option value="kik">🇰🇪 Kikuyu (Kenya)</option>
+          <option value="luo">🇰🇪 Luo (Kenya)</option>
+          <option value="kam">🇰🇪 Kamba (Kenya)</option>
+          <option value="tir">🇪🇷 Tigrinya (Eritrea)</option>
+          <option value="tig">🇪🇷 Tigre (Eritrea)</option>
+          <option value="aar">🇩🇯 Afar (Djibouti)</option>
+          <option value="orm">🇪🇹 Oromo (Ethiopia)</option>
+          <option value="sid">🇪🇹 Sidamo (Ethiopia)</option>
+          <option value="kin">🇷🇼 Kinyarwanda (Rwanda)</option>
+          <option value="gand">🇺🇬 Luganda (Uganda)</option>
+          <option value="ach">🇺🇬 Acholi (Uganda)</option>
+          <option value="nyn">🇺🇬 Nyankole (Uganda)</option>
+          <option value="swh">🇹🇿 Swahili (Tanzania)</option>
+          <option value="suk">🇹🇿 Sukuma (Tanzania)</option>
+          <option value="mac">🇲🇿 Makhuwa (Mozambique)</option>
+          <option value="fao">🇫🇴 Faroese (Faroe Islands)</option>
+          <option value="kal">🇬🇱 Greenlandic (Greenland)</option>
+          <option value="gle">🇮🇪 Irish Gaelic (Ireland)</option>
+          <option value="gla">🇬🇧 Scottish Gaelic (United Kingdom)</option>
+          <option value="cym">🇬🇧 Welsh (United Kingdom)</option>
+          <option value="cor">🇬🇧 Cornish (United Kingdom)</option>
+          <option value="glv">🇮🇲 Manx (Isle of Man)</option>
+          <option value="nrf">🇬🇬 Jèrriais (Jersey)</option>
+          <option value="sme">🇳🇴 Sami (Norway)</option>
+          <option value="krl">🇫🇮 Karelian (Finland)</option>
+          <option value="liv">🇱🇻 Livonian (Latvia)</option>
+          <option value="sgs">🇱🇹 Samogitian (Lithuania)</option>
+          <option value="vro">🇪🇪 Võro (Estonia)</option>
+          <option value="ltg">🇱🇻 Latgalian (Latvia)</option>
+          <option value="bel">🇧🇾 Belarusian (Belarus)</option>
+          <option value="rus">🇺🇦 Russian (Ukraine)</option>
+          <option value="hun">🇷🇴 Hungarian (Romania)</option>
+          <option value="bul">🇷🇸 Bulgarian (Serbia)</option>
+          <option value="rom">🇷🇴 Romani (Romania)</option>
+          <option value="gag">🇲🇩 Gagauz (Moldova)</option>
+          <option value="abk">🇬🇪 Abkhazian (Georgia)</option>
+          <option value="oss">🇬🇪 Ossetian (Georgia)</option>
+          <option value="che">🇷🇺 Chechen (Russia)</option>
+          <option value="tat">🇷🇺 Tatar (Russia)</option>
+          <option value="bak">🇷🇺 Bashkir (Russia)</option>
+          <option value="chv">🇷🇺 Chuvash (Russia)</option>
+          <option value="sah">🇷🇺 Yakut (Russia)</option>
+          <option value="udm">🇷🇺 Udmurt (Russia)</option>
+          <option value="mhr">🇷🇺 Mari (Russia)</option>
+          <option value="myv">🇷🇺 Erzya (Russia)</option>
+          <option value="mdf">🇷🇺 Moksha (Russia)</option>
+          <option value="kom">🇷🇺 Komi (Russia)</option>
+          <option value="tuk">🇹🇲 Turkmen (Turkmenistan)</option>
+          <option value="uzb">🇺🇿 Uzbek (Uzbekistan)</option>
+          <option value="kaz">🇰🇿 Kazakh (Kazakhstan)</option>
+          <option value="kir">🇰🇬 Kyrgyz (Kyrgyzstan)</option>
+          <option value="tgk">🇹🇯 Tajik (Tajikistan)</option>
+          <option value="mon">🇲🇳 Mongolian (Mongolia)</option>
+          <option value="uig">🇨🇳 Uyghur (China)</option>
+          <option value="tib">🇨🇳 Tibetan (China)</option>
+          <option value="kor">🇰🇵 Korean (North Korea)</option>
+          <option value="lao">🇱🇦 Lao (Laos)</option>
+          <option value="khm">🇰🇭 Khmer (Cambodia)</option>
+          <option value="vie">🇻🇳 Vietnamese (Vietnam)</option>
+          <option value="tha">🇹🇭 Thai (Thailand)</option>
+          <option value="mya">🇲🇲 Burmese (Myanmar)</option>
+          <option value="msa">🇲🇾 Malay (Malaysia)</option>
+          <option value="ind">🇮🇩 Indonesian (Indonesia)</option>
+          <option value="tet">🇹🇱 Tetum (Timor-Leste)</option>
+          <option value="fil">🇵🇭 Tagalog (Philippines)</option>
+          <option value="ceb">🇵🇭 Cebuano (Philippines)</option>
+          <option value="ilo">🇵🇭 Ilocano (Philippines)</option>
+          <option value="hin">🇮🇳 Hindi (India)</option>
+          <option value="ben">🇮🇳 Bengali (India)</option>
+          <option value="tel">🇮🇳 Telugu (India)</option>
+          <option value="mar">🇮🇳 Marathi (India)</option>
+          <option value="tam">🇮🇳 Tamil (India)</option>
+          <option value="urd">🇮🇳 Urdu (India)</option>
+          <option value="guj">🇮🇳 Gujarati (India)</option>
+          <option value="kan">🇮🇳 Kannada (India)</option>
+          <option value="mal">🇮🇳 Malayalam (India)</option>
+          <option value="pun">🇮🇳 Punjabi (India)</option>
+          <option value="sin">🇱🇰 Sinhala (Sri Lanka)</option>
+          <option value="div">🇲🇻 Maldivian (Maldives)</option>
+          <option value="nep">🇳🇵 Nepali (Nepal)</option>
+          <option value="dzo">🇧🇹 Dzongkha (Bhutan)</option>
+          <option value="pus">🇵🇰 Pashto (Pakistan)</option>
+          <option value="snd">🇵🇰 Sindhi (Pakistan)</option>
+          <option value="per">🇮🇷 Persian (Iran)</option>
+          <option value="kur">🇮🇶 Kurdish (Iraq)</option>
+          <option value="ara">🇸🇾 Arabic (Syria)</option>
+          <option value="heb">🇮🇱 Hebrew (Israel)</option>
+          <option value="ara">🇸🇦 Arabic (Saudi Arabia)</option>
+        </select>
       </div>
 
-      <!-- OTP वेरिफिकेशन सेक्शन (डबल नाम की समस्या यहाँ ठीक कर दी गई है) -->
-      <div id="otpSection" style="display:none; margin-top: 20px;">
-        <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter OTP Verification</div>
-        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Verification required. Demo OTP: 1234</div>
-
+      <div style="margin-top: 40px;">
+        <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
+        <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
+        
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-          <input type="text" id="otpInput" maxlength="4" oninput="checkOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
+          <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
+            <!-- 195 देशों के फोन कोड -->
+            <option value="+93">🇦🇫 (+93) Afghanistan</option>
+            <option value="+355">🇦🇱 (+355) Albania</option>
+            <option value="+213">🇩🇿 (+213) Algeria</option>
+            <option value="+376">🇦🇩 (+376) Andorra</option>
+            <option value="+244">🇦🇴 (+244) Angola</option>
+            <option value="+1268">🇦🇬 (+1268) Antigua</option>
+            <option value="+54">🇦🇷 (+54) Argentina</option>
+            <option value="+374">🇦🇲 (+374) Armenia</option>
+            <option value="+61">🇦🇺 (+61) Australia</option>
+            <option value="+43">🇦🇹 (+43) Austria</option>
+            <option value="+994">🇦🇿 (+994) Azerbaijan</option>
+            <option value="+1242">🇧🇸 (+1242) Bahamas</option>
+            <option value="+973">🇧🇭 (+973) Bahrain</option>
+            <option value="+880">🇧🇩 (+880) Bangladesh</option>
+            <option value="+1246">🇧🇧 (+1246) Barbados</option>
+            <option value="+375">🇧🇾 (+375) Belarus</option>
+            <option value="+32">🇧🇪 (+32) Belgium</option>
+            <option value="+501">🇧🇿 (+501) Belize</option>
+            <option value="+229">🇧🇯 (+229) Benin</option>
+            <option value="+975">🇧🇹 (+975) Bhutan</option>
+            <option value="+591">🇧🇴 (+591) Bolivia</option>
+            <option value="+387">🇧🇦 (+387) Bosnia</option>
+            <option value="+267">🇧🇼 (+267) Botswana</option>
+            <option value="+55">🇧🇷 (+55) Brazil</option>
+            <option value="+673">🇧🇳 (+673) Brunei</option>
+            <option value="+359">🇧🇬 (+359) Bulgaria</option>
+            <option value="+226">🇧🇫 (+226) Burkina Faso</option>
+            <option value="+257">🇧🇮 (+257) Burundi</option>
+            <option value="+238">🇨🇻 (+238) Cabo Verde</option>
+            <option value="+855">🇰🇭 (+855) Cambodia</option>
+            <option value="+237">🇨🇲 (+237) Cameroon</option>
+            <option value="+1">🇨🇦 (+1) Canada</option>
+            <option value="+236">🇨🇫 (+236) Central African Rep</option>
+            <option value="+235">🇹🇩 (+235) Chad</option>
+            <option value="+56">🇨🇱 (+56) Chile</option>
+            <option value="+86">🇨🇳 (+86) China</option>
+            <option value="+57">🇨🇴 (+57) Colombia</option>
+            <option value="+269">🇰🇲 (+269) Comoros</option>
+            <option value="+242">🇨🇬 (+242) Congo</option>
+            <option value="+243">🇨🇩 (+243) DR Congo</option>
+            <option value="+506">🇨🇷 (+506) Costa Rica</option>
+            <option value="+225">🇨🇮 (+225) Cote d'Ivoire</option>
+            <option value="+385">🇭🇷 (+385) Croatia</option>
+            <option value="+53">🇨🇺 (+53) Cuba</option>
+            <option value="+357">🇨🇾 (+357) Cyprus</option>
+            <option value="+420">🇨🇿 (+420) Czechia</option>
+            <option value="+45">🇩🇰 (+45) Denmark</option>
+            <option value="+253">🇩🇯 (+253) Djibouti</option>
+            <option value="+1767">🇩🇲 (+1767) Dominica</option>
+            <option value="+1809">🇩🇴 (+1809) Dominican Rep</option>
+            <option value="+593">🇪🇨 (+593) Ecuador</option>
+            <option value="+20">🇪🇬 (+20) Egypt</option>
+            <option value="+503">🇸🇻 (+503) El Salvador</option>
+            <option value="+240">🇬🇶 (+240) Equatorial Guinea</option>
+            <option value="+291">🇪🇷 (+291) Eritrea</option>
+            <option value="+372">🇪🇪 (+372) Estonia</option>
+            <option value="+268">🇸🇿 (+268) Eswatini</option>
+            <option value="+251">🇪🇹 (+251) Ethiopia</option>
+            <option value="+679">🇫🇯 (+679) Fiji</option>
+            <option value="+358">🇫🇮 (+358) Finland</option>
+            <option value="+33">🇫🇷 (+33) France</option>
+            <option value="+241">🇬🇦 (+241) Gabon</option>
+            <option value="+220">🇬🇲 (+220) Gambia</option>
+            <option value="+995">🇬🇪 (+995) Georgia</option>
+            <option value="+49">🇩🇪 (+49) Germany</option>
+            <option value="+233">🇬🇭 (+233) Ghana</option>
+            <option value="+30">🇬🇷 (+30) Greece</option>
+            <option value="+1473">🇬🇩 (+1473) Grenada</option>
+            <option value="+502">🇬🇹 (+502) Guatemala</option>
+            <option value="+224">🇬🇳 (+224) Guinea</option>
+            <option value="+245">🇬🇼 (+245) Guinea-Bissau</option>
+            <option value="+592">🇬🇾 (+592) Guyana</option>
+            <option value="+509">🇭🇹 (+509) Haiti</option>
+            <option value="+504">🇭🇳 (+504) Honduras</option>
+            <option value="+36">🇭🇺 (+36) Hungary</option>
+            <option value="+354">🇮🇸 (+354) Iceland</option>
+            <option value="+91" selected>🇮🇳 (+91) India</option>
+            <option value="+62">🇮🇩 (+62) Indonesia</option>
+            <option value="+98">🇮🇷 (+98) Iran</option>
+            <option value="+964">🇮🇶 (+964) Iraq</option>
+            <option value="+353">🇮🇪 (+353) Ireland</option>
+            <option value="+972">🇮🇱 (+972) Israel</option>
+            <option value="+39">🇮🇹 (+39) Italy</option>
+            <option value="+1876">🇯🇲 (+1876) Jamaica</option>
+            <option value="+81">🇯🇵 (+81) Japan</option>
+            <option value="+962">🇯🇴 (+962) Jordan</option>
+            <option value="+7">🇰🇿 (+7) Kazakhstan</option>
+            <option value="+254">🇰🇪 (+254) Kenya</option>
+            <option value="+686">🇰🇮 (+686) Kiribati</option>
+            <option value="+850">🇰🇵 (+850) North Korea</option>
+            <option value="+82">🇰🇷 (+82) South Korea</option>
+            <option value="+965">🇰🇼 (+965) Kuwait</option>
+            <option value="+996">🇰🇬 (+996) Kyrgyzstan</option>
+            <option value="+856">🇱🇦 (+856) Laos</option>
+            <option value="+371">🇱🇻 (+371) Latvia</option>
+            <option value="+961">🇱🇧 (+961) Lebanon</option>
+            <option value="+266">🇱🇸 (+266) Lesotho</option>
+            <option value="+231">🇱🇷 (+231) Liberia</option>
+            <option value="+218">🇱🇾 (+218) Libya</option>
+            <option value="+423">🇱🇮 (+423) Liechtenstein</option>
+            <option value="+370">🇱🇹 (+370) Lithuania</option>
+            <option value="+352">🇱🇺 (+352) Luxembourg</option>
+            <option value="+261">🇲🇬 (+261) Madagascar</option>
+            <option value="+265">🇲🇼 (+265) Malawi</option>
+            <option value="+60">🇲🇾 (+60) Malaysia</option>
+            <option value="+960">🇲🇻 (+960) Maldives</option>
+            <option value="+223">🇲🇱 (+223) Mali</option>
+            <option value="+356">🇲🇹 (+356) Malta</option>
+            <option value="+692">🇲🇭 (+692) Marshall Islands</option>
+            <option value="+222">🇲🇷 (+222) Mauritania</option>
+            <option value="+230">🇲🇺 (+230) Mauritius</option>
+            <option value="+52">🇲🇽 (+52) Mexico</option>
+            <option value="+691">🇫🇲 (+691) Micronesia</option>
+            <option value="+373">🇲🇩 (+373) Moldova</option>
+            <option value="+377">🇲🇨 (+377) Monaco</option>
+            <option value="+976">🇲🇳 (+976) Mongolia</option>
+            <option value="+382">🇲🇪 (+382) Montenegro</option>
+            <option value="+212">🇲🇦 (+212) Morocco</option>
+            <option value="+258">🇲🇿 (+258) Mozambique</option>
+            <option value="+95">🇲🇲 (+95) Myanmar</option>
+            <option value="+264">🇳🇦 (+264) Namibia</option>
+            <option value="+674">🇳🇷 (+674) Nauru</option>
+            <option value="+977">🇳🇵 (+977) Nepal</option>
+            <option value="+31">🇳🇱 (+31) Netherlands</option>
+            <option value="+64">🇳🇿 (+64) New Zealand</option>
+            <option value="+505">🇳🇮 (+505) Nicaragua</option>
+            <option value="+227">🇳🇪 (+227) Niger</option>
+            <option value="+234">🇳🇬 (+234) Nigeria</option>
+            <option value="+47">🇳🇴 (+47) Norway</option>
+            <option value="+968">🇴🇲 (+968) Oman</option>
+            <option value="+92">🇵🇰 (+92) Pakistan</option>
+            <option value="+680">🇵🇼 (+680) Palau</option>
+            <option value="+507">🇵🇦 (+507) Panama</option>
+            <option value="+675">🇵🇬 (+675) Papua New Guinea</option>
+            <option value="+595">🇵🇾 (+595) Paraguay</option>
+            <option value="+51">🇵🇪 (+51) Peru</option>
+            <option value="+63">🇵🇭 (+63) Philippines</option>
+            <option value="+48">🇵🇱 (+48) Poland</option>
+            <option value="+351">🇵🇹 (+351) Portugal</option>
+            <option value="+974">🇶🇦 (+974) Qatar</option>
+            <option value="+40">🇷🇴 (+40) Romania</option>
+            <option value="+7">🇷🇺 (+7) Russia</option>
+            <option value="+250">🇷🇼 (+250) Rwanda</option>
+            <option value="+1869">🇰🇳 (+1869) St. Kitts</option>
+            <option value="+1758">🇱🇨 (+1758) St. Lucia</option>
+            <option value="+1784">🇻🇨 (+1784) St. Vincent</option>
+            <option value="+685">🇼🇸 (+685) Samoa</option>
+            <option value="+378">🇸🇲 (+378) San Marino</option>
+            <option value="+239">🇸🇹 (+239) Sao Tome</option>
+            <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
+            <option value="+221">🇸🇳 (+221) Senegal</option>
+            <option value="+381">🇷🇸 (+381) Serbia</option>
+            <option value="+248">🇸🇨 (+248) Seychelles</option>
+            <option value="+232">🇸🇱 (+232) Sierra Leone</option>
+            <option value="+65">🇸🇬 (+65) Singapore</option>
+            <option value="+421">🇸🇰 (+421) Slovakia</option>
+            <option value="+386">🇸🇮 (+386) Slovenia</option>
+            <option value="+677">🇸🇧 (+677) Solomon Islands</option>
+            <option value="+252">🇸🇴 (+252) Somalia</option>
+            <option value="+27">🇿🇦 (+27) South Africa</option>
+            <option value="+211">🇸🇸 (+211) South Sudan</option>
+            <option value="+34">🇪🇸 (+34) Spain</option>
+            <option value="+94">🇱🇰 (+94) Sri Lanka</option>
+            <option value="+249">🇸🇩 (+249) Sudan</option>
+            <option value="+597">🇸🇷 (+597) Suriname</option>
+            <option value="+46">🇸🇪 (+46) Sweden</option>
+            <option value="+41">🇨🇭 (+41) Switzerland</option>
+            <option value="+963">🇸🇾 (+963) Syria</option>
+            <option value="+886">🇹🇼 (+886) Taiwan</option>
+            <option value="+992">🇹🇯 (+992) Tajikistan</option>
+            <option value="+255">🇹🇿 (+255) Tanzania</option>
+            <option value="+66">🇹🇭 (+66) Thailand</option>
+            <option value="+670">🇹🇱 (+670) Timor-Leste</option>
+            <option value="+228">🇹🇬 (+228) Togo</option>
+            <option value="+676">🇹🇴 (+676) Tonga</option>
+            <option value="+1868">🇹🇹 (+1868) Trinidad and Tobago</option>
+            <option value="+216">🇹🇳 (+216) Tunisia</option>
+            <option value="+90">🇹🇷 (+90) Turkey</option>
+            <option value="+993">🇹🇲 (+993) Turkmenistan</option>
+            <option value="+688">🇹🇻 (+688) Tuvalu</option>
+            <option value="+256">🇺🇬 (+256) Uganda</option>
+            <option value="+380">🇺🇦 (+380) Ukraine</option>
+            <option value="+971">🇦🇪 (+971) UAE</option>
+            <option value="+44">🇬🇧 (+44) UK</option>
+            <option value="+1">🇺🇸 (+1) USA</option>
+            <option value="+598">🇺🇾 (+598) Uruguay</option>
+            <option value="+998">🇺🇿 (+998) Uzbekistan</option>
+            <option value="+678">🇻🇺 (+678) Vanuatu</option>
+            <option value="+379">🇻🇦 (+379) Vatican City</option>
+            <option value="+58">🇻🇪 (+58) Venezuela</option>
+            <option value="+84">🇻🇳 (+84) Vietnam</option>
+            <option value="+967">🇾🇪 (+967) Yemen</option>
+            <option value="+260">🇿🇲 (+260) Zambia</option>
+            <option value="+263">🇿🇼 (+263) Zimbabwe</option>
+          </select>
+          <input type="text" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number or #ID" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
       </div>
-
+      
+      <div class="bottom-fixed-btn-container">
+        <button class="btn-round-next" id="submitBtn" onclick="handleNextStep()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+      </div>
     </div>
 
-    <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="handleMainSubmit()">➔</button>
-    </div>
-  </div>
-
-  <!-- कस्टम पॉप-अप बॉक्स -->
-  <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Notice</h3>
-      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
-      <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
+    <!-- Custom Popup Modal -->
+    <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
+      <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
+        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
+        <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+        <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
+      </div>
     </div>
   </div>
 
   <script>
-    let currentMode = "password"; // "password", "otp", "reset_password"
-    let popupCallback = null;
-
-    window.onload = function() {
-      history.replaceState({ page: "password" }, "");
-    };
-
-    function goBackToPrevious() {
-      if (currentMode === "otp") {
-        currentMode = "password";
-        document.getElementById("otpSection").style.display = "none";
-        document.getElementById("passwordSection").style.display = "block";
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        document.getElementById("forgotPassContainer").style.display = "block";
-        document.getElementById("passInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-      } else if (currentMode === "reset_password") {
-        currentMode = "password";
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        document.getElementById("forgotPassContainer").style.display = "block";
-        document.getElementById("passInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-      } else {
-        window.location.replace("index.html");
-      }
+    function selectPhoneOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      document.getElementById("screenMain").style.display = "none";
+      document.getElementById("screenPhone").style.display = "flex";
+      history.pushState({ screen: "phone" }, "");
     }
 
-    // मोबाइल का असली बैक बटन और पॉप-अप का पक्का लॉजिक
+    function selectEmailOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      // यह सीधे email.html पेज पर रीडायरेक्ट करेगा
+      window.location.href = "email.html";
+    }
+
+    function openMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "flex";
+    }
+
+    function closeMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+    }
+
+    function socialLoginNotice(provider) {
+      showCustomAlert(provider + " login selected. Please use More Options for phone/ID login.");
+    }
+
+    function showScreenMain() {
+      document.getElementById("screenPhone").style.display = "none";
+      document.getElementById("screenMain").style.display = "flex";
+    }
+
+    let popupCallback = null;
+
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
-      
-      // 1. अगर पॉप-अप खुला है, तो बैक दबाने पर केवल पॉप-अप हटेगा
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
-        history.pushState({ page: "password" }, "");
         return;
       }
 
-      // 2. अगर OTP मोड में हैं, तो Enter Password पेज पर आएं
-      if (currentMode === "otp") {
-        currentMode = "password";
-        document.getElementById("otpSection").style.display = "none";
-        document.getElementById("passwordSection").style.display = "block";
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        document.getElementById("forgotPassContainer").style.display = "block";
-        document.getElementById("passInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-        history.pushState({ page: "password" }, "");
+      let phoneScreen = document.getElementById("screenPhone");
+      if (phoneScreen.style.display === "flex") {
+        phoneScreen.style.display = "none";
+        document.getElementById("screenMain").style.display = "flex";
         return;
       }
-
-      // 3. अगर Reset Password मोड में हैं, तो Enter Password पेज पर आएं
-      if (currentMode === "reset_password") {
-        currentMode = "password";
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
-        document.getElementById("forgotPassContainer").style.display = "block";
-        document.getElementById("passInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-        history.pushState({ page: "password" }, "");
-        return;
-      }
-
-      // 4. वरना पहली फोटो वाले पेज (index.html) पर चले जाएँ
-      window.location.replace("index.html");
     });
+
+    function checkNumber() {
+      let identifier = document.getElementById("phoneInput").value.trim();
+      let btn = document.getElementById("submitBtn");
+      if (identifier.length > 0) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
+    function showCustomConfirm(message, callback) {
+      document.getElementById("popupMessage").innerText = message;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = callback;
+    }
 
     function showCustomAlert(message, callback) {
       document.getElementById("popupMessage").innerText = message;
@@ -182,121 +628,28 @@ l<!DOCTYPE html>
       let cb = popupCallback;
       popupCallback = null;
       if (result && cb) {
-        cb();
+        cb(true);
       }
     }
 
-    function togglePasswordVisibility() {
-      let passInput = document.getElementById("passInput");
-      let eyeIcon = document.getElementById("eyeIcon");
-      if (passInput.type === "password") {
-        passInput.type = "text";
-        eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
-      } else {
-        passInput.type = "password";
-        eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
-      }
-    }
-
-    function forgotPasswordAction() {
-      showCustomAlert("OTP verification required to reset your password.", function() {
-        currentMode = "otp";
-        document.getElementById("passwordSection").style.display = "none";
-        document.getElementById("otpSection").style.display = "block";
-        document.getElementById("passScreenTitle").innerText = "Enter OTP Verification";
-        document.getElementById("passScreenSub").innerText = "Verification required. Demo OTP: 1234";
-        document.getElementById("otpInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-      });
-    }
-
-    function checkPasswordInput(input) {
-      let val = input.value;
-      let btn = document.getElementById("passSubmitBtn");
-      if (val.length === 8) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
-
-    function checkOtpInput(input) {
-      let val = input.value;
-      let btn = document.getElementById("passSubmitBtn");
-      if (val.length === 4) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
-
-    function handleMainSubmit() {
-      let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-
-      // यदि यूजर OTP स्क्रीन पर है
-      if (currentMode === "otp") {
-        let otpVal = document.getElementById("otpInput").value.trim();
-        if (otpVal !== "1234") {
-          showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
-          return;
-        }
-        currentMode = "reset_password";
-        document.getElementById("otpSection").style.display = "none";
-        document.getElementById("passwordSection").style.display = "block";
-        
-        // Reset Password पेज पर 'Forgot password' का विकल्प यहाँ पूरी तरह छिपा दिया गया है
-        document.getElementById("forgotPassContainer").style.display = "none";
-        
-        document.getElementById("passInput").value = "";
-        document.getElementById("passSubmitBtn").classList.remove("active");
-        document.getElementById("passScreenTitle").innerText = "Reset Password";
-        document.getElementById("passScreenSub").innerText = "Enter your new 8-character password";
+    function handleNextStep() {
+      let identifier = document.getElementById("phoneInput").value.trim();
+      if(!identifier) {
+        showCustomAlert("Please enter phone number or User ID!");
         return;
       }
+      localStorage.setItem("greedy_login_identifier", identifier);
 
-      // पासवर्ड चेकिंग या नया पासवर्ड सेव करने के लिए
-      let passVal = document.getElementById("passInput").value;
-      if (passVal.length !== 8) {
-        showCustomAlert("Password must be exactly 8 characters!");
-        return;
-      }
+      let isRegistered = localStorage.getItem("greedy_user_registered_" + identifier);
 
-      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
-
-      if (!isRegistered || currentMode === "reset_password") {
-        localStorage.setItem("greedy_user_registered_" + currentIdentifier, "true");
-        localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
-        localStorage.setItem("greedy_password", passVal);
-        
-        if (!isRegistered) {
-          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-          localStorage.setItem("greedy_unique_id", freshId);
-          localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
-          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-          localStorage.setItem("greedy_coins", "1000");
-          localStorage.setItem("greedy_won", "0");
-          localStorage.setItem("greedy_level", "1");
-        }
-        
-        // केवल पासवर्ड सेट/सेव होने के बाद ही profile.html पर जाएगा
-        showCustomAlert("Success! Logging in...", function() {
-          localStorage.setItem("greedy_initialized", "true");
-          document.getElementById("loadingOverlay").style.display = "flex";
-          setTimeout(() => {
-            window.location.replace("profile.html");
-          }, 1000);
+      if(!isRegistered) {
+        showCustomConfirm("This number or ID is not registered! Do you want to register a new account with this number?", function(confirmed) {
+          if (confirmed) {
+            window.location.href = "password.html";
+          }
         });
       } else {
-        let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
-        if (passVal !== savedPass) {
-          showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
-          return;
-        }
-        localStorage.setItem("greedy_initialized", "true");
-        document.getElementById("loadingOverlay").style.display = "flex";
-        setTimeout(() => {
-          window.location.replace("profile.html");
-        }, 1000);
+        window.location.href = "password.html";
       }
     }
   </script>
