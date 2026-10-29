@@ -124,12 +124,10 @@
       </div>
     </div>
 
-    <!-- Phone / ID Login Screen (यहाँ 195 देशों की भाषाएँ और 195 देशों के फोन कोड मौजूद हैं) -->
+    <!-- Phone / ID Login Screen (195 देशों की भाषाएँ और कोड) -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
-        
-        <!-- 195 देशों की भाषाओं का मुख्य ड्रॉपडाउन (अब फोन स्क्रीन पर ऊपर दिखेगा) -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
           <option value="en">🌐 English (Global)</option>
@@ -562,17 +560,17 @@
       </div>
       
       <div class="bottom-fixed-btn-container">
-        <button class="btn-round-next" id="submitBtn" onclick="sendOtpAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+        <button class="btn-round-next" id="submitBtn" onclick="handleNextStep()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
       </div>
     </div>
 
-    <!-- OTP Verification Screen -->
+    <!-- OTP Verification Screen (केवल नए यूजर के लिए) -->
     <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
       
       <div style="margin-top: 40px;">
         <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter OTP Verification</div>
-        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">We have sent a 4-digit code to your number (Demo OTP: 1234)</div>
+        <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">New user verification required. Demo OTP: 1234</div>
 
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <input type="text" id="otpInput" maxlength="4" oninput="checkOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
@@ -612,20 +610,20 @@
   </div>
 
   <script>
+    function selectPhoneOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      document.getElementById("screenMain").style.display = "none";
+      document.getElementById("screenPhone").style.display = "flex";
+    }
+    function selectEmailOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      alert("Email login option coming soon!");
+    }
     function openMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "flex";
     }
     function closeMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "none";
-    }
-    function selectPhoneOption() {
-      closeMoreOptionsSheet();
-      document.getElementById("screenMain").style.display = "none";
-      document.getElementById("screenPhone").style.display = "flex";
-    }
-    function selectEmailOption() {
-      closeMoreOptionsSheet();
-      alert("Email login option coming soon!");
     }
     function socialLoginNotice(provider) {
       alert(provider + " login selected. Please use More Options for phone/ID login.");
@@ -642,7 +640,18 @@
     let currentIdentifier = "";
     let isForgotPasswordFlow = false;
 
-    function sendOtpAction() {
+    function checkNumber() {
+      let identifier = document.getElementById("phoneInput").value.trim();
+      let btn = document.getElementById("submitBtn");
+      if (identifier.length > 0) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
+    // **लॉजिक: चेक करें कि यूजर नया है या पुराना**
+    function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
         alert("Please enter phone number or User ID!");
@@ -651,17 +660,18 @@
       currentIdentifier = identifier;
       localStorage.setItem("greedy_login_identifier", identifier);
 
-      document.getElementById("screenPhone").style.display = "none";
-      document.getElementById("screenOtp").style.display = "flex";
-    }
+      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
-    function checkNumber() {
-      let identifier = document.getElementById("phoneInput").value.trim();
-      let btn = document.getElementById("submitBtn");
-      if (identifier.length > 0) {
-        btn.classList.add("active");
+      document.getElementById("screenPhone").style.display = "none";
+
+      if(!isRegistered) {
+        // अगर यूजर नया है, तो पहले OTP वेरिफिकेशन स्क्रीन पर भेजेंगे
+        document.getElementById("screenOtp").style.display = "flex";
       } else {
-        btn.classList.remove("active");
+        // अगर यूजर पुराना है, तो सीधे पासवर्ड स्क्रीन पर भेजेंगे (बिना OTP के!)
+        document.getElementById("passScreenTitle").innerText = "Enter Password";
+        document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
+        document.getElementById("screenPass").style.display = "flex";
       }
     }
 
@@ -675,6 +685,7 @@
       }
     }
 
+    // नए यूजर के लिए OTP वेरीफाई होने के बाद पासवर्ड सेट करने भेजना
     function verifyOtpAction() {
       let otp = document.getElementById("otpInput").value.trim();
       if(otp !== "1234") {
@@ -682,21 +693,15 @@
         return;
       }
 
-      let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
-
       document.getElementById("screenOtp").style.display = "none";
       document.getElementById("screenPass").style.display = "flex";
 
-      if(!isRegistered) {
+      if(isForgotPasswordFlow) {
+        document.getElementById("passScreenTitle").innerText = "Reset Password";
+        document.getElementById("passScreenSub").innerText = "Enter your new 8-character password";
+      } else {
         document.getElementById("passScreenTitle").innerText = "Create Password";
         document.getElementById("passScreenSub").innerText = "Set an exact 8-character password for your new account";
-        isForgotPasswordFlow = false;
-      } else if(isForgotPasswordFlow) {
-        document.getElementById("passScreenTitle").innerText = "Reset Password";
-        document.getElementById("passScreenSub").innerText = "Enter your new 8-character password (Your old account & ID will be restored)";
-      } else {
-        document.getElementById("passScreenTitle").innerText = "Enter Password";
-        document.getElementById("passScreenSub").innerText = "Enter your exact 8-character password";
       }
     }
 
@@ -719,6 +724,7 @@
       document.getElementById("screenOtp").style.display = "flex";
     }
 
+    // फाइनल लॉगिन या नया रजिस्ट्रेशन
     function doFinalLoginOrRegister() {
       let passVal = document.getElementById("passInput").value;
       if(passVal.length !== 8) {
@@ -728,35 +734,26 @@
 
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
-      if(!isRegistered) {
-        // **1. नया यूज़र रजिस्ट्रेशन (बिल्कुल फ्रेश प्रोफाइल)**
+      if(!isRegistered || isForgotPasswordFlow) {
+        // **नया रजिस्ट्रेशन या पासवर्ड रीसेट**
         localStorage.setItem("greedy_user_registered_" + currentIdentifier, "true");
         localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
         localStorage.setItem("greedy_password", passVal);
         
-        let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("greedy_unique_id", freshId);
-        localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
-
-        localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-        localStorage.setItem("greedy_coins", "1000");
-        localStorage.setItem("greedy_won", "0");
-        localStorage.setItem("greedy_level", "1");
-        localStorage.setItem("greedy_avatar", "");
-        for(let i=1; i<=8; i++) {
-          localStorage.setItem("greedy_slot_" + i, "");
+        if(!isRegistered) {
+          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem("greedy_unique_id", freshId);
+          localStorage.setItem("greedy_id_mapping_" + freshId, currentIdentifier);
+          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+          localStorage.setItem("greedy_coins", "1000");
+          localStorage.setItem("greedy_won", "0");
+          localStorage.setItem("greedy_level", "1");
+          localStorage.setItem("greedy_avatar", "");
         }
-        alert("Account created successfully!");
-
-      } else if(isForgotPasswordFlow) {
-        // **2. पुराना यूज़र पासवर्ड भूल गया - OTP वेरीफाई करके नया पासवर्ड सेट किया (पुराना डेटा और ID सुरक्षित रहेगा)**
-        localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
-        localStorage.setItem("greedy_password", passVal);
         isForgotPasswordFlow = false;
-        alert("Password reset successfully! Restoring your existing account.");
-
+        alert("Success! Logging in...");
       } else {
-        // **3. सामान्य पुराना यूज़र लॉगिन**
+        // **पुराना यूजर डायरेक्ट लॉगिन (बिना OTP के)**
         let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
         if(passVal !== savedPass) {
           alert("Incorrect password! Please enter the correct 8-character password.");
