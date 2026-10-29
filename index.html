@@ -593,10 +593,9 @@
       </div>
     </div>
 
-    <!-- Password Screen (बैक बटन सपोर्ट के साथ) -->
+    <!-- Password Screen -->
     <div id="screenPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <!-- वेबसाइट का बैक बटन जो पासवर्ड स्क्रीन से सीधा फोन नंबर स्क्रीन पर ले जाएगा -->
         <div class="back-btn" onclick="showScreenPhoneFromPass()" style="font-size:24px; cursor:pointer;">❮</div>
       </div>
 
@@ -654,7 +653,6 @@
       document.getElementById("screenPhone").style.display = "flex";
     }
 
-    // पासवर्ड स्क्रीन से बैक जाने के लिए
     function showScreenPhoneFromPass() {
       document.getElementById("screenPass").style.display = "none";
       document.getElementById("screenPhone").style.display = "flex";
@@ -668,22 +666,19 @@
       history.pushState({ screen: screenName }, "");
     }
 
-    // मोबाइल का असली बैक बटन और कस्टम पॉप-अप बैक बटन हैंडलर
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       
-      // यदि कस्टम पॉप-अप खुला है, तो पहले सिर्फ पॉप-अप बंद हो
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         if (popupCallback) {
           popupCallback(false);
           popupCallback = null;
         }
-        pushScreenState("currentModal"); // स्टेट मेन्टेन रखें
+        pushScreenState("currentModal");
         return;
       }
 
-      // यदि यूजर पासवर्ड स्क्रीन पर है और उसने बैक बटन दबाया, तो वह फोन नंबर स्क्रीन पर आ जाए
       let passScreen = document.getElementById("screenPass");
       if (passScreen.style.display === "flex") {
         passScreen.style.display = "none";
@@ -858,7 +853,7 @@
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
-        localStorage.setItem("greedy_initialized, "true");
+        localStorage.setItem("greedy_initialized", "true");
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
           window.location.replace("profile.html");
