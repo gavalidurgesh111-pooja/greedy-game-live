@@ -160,8 +160,11 @@
       }
     }
 
+    // बैक बटन और पॉप-अप हैंडलर (डबल बैक-बटन लॉजिक के साथ)
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
+      
+      // यदि पॉप-अप खुला है, तो पहला बैक बटन दबाने पर केवल पॉप-अप हटेगा
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
@@ -278,7 +281,9 @@
     }
 
     function forgotEmailPassword() {
-      isForgotFlow = true;
+      // पॉप-अप खुलने पर हिस्ट्री में स्टेट जोड़ें ताकि बैक बटन से केवल पॉप-अप बंद हो
+      history.pushState({ modalOpen: true }, "");
+      
       showCustomAlert("OTP verification required to reset your password.", function() {
         document.getElementById("emailOtpInput").value = "";
         document.getElementById("emailOtpSubmitBtn").classList.remove("active");
