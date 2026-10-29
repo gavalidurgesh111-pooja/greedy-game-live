@@ -111,7 +111,6 @@
         <button type="submit" style="display:none;"></button>
       </form>
 
-      <!-- Forgot Password का विकल्प केवल लॉगिन के समय दिखेगा, Create Password के समय यह अपने आप छिप जाएगा -->
       <div id="forgotPassContainer" style="margin-top:15px; text-align:center; display:none;">
         <span onclick="forgotEmailPassword()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
       </div>
@@ -237,7 +236,6 @@
           }
         });
       } else {
-        // पुराने यूजर के लिए 'Enter Password' स्क्रीन और Forgot Password दिखाना
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
         document.getElementById("forgotPassContainer").style.display = "block";
@@ -262,7 +260,6 @@
         return;
       }
 
-      // नए यूजर के लिए 'Create Password' स्क्रीन और Forgot Password को छिपाना
       document.getElementById("emailPassTitle").innerText = "Create Password";
       document.getElementById("emailPassSub").innerText = "Set an exact 8-character password for your new account";
       document.getElementById("forgotPassContainer").style.display = "none";
@@ -325,8 +322,9 @@
       }
 
       let isRegistered = localStorage.getItem("greedy_email_registered_" + currentEmail);
+      let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
-      if (!isRegistered || isForgotFlow) {
+      if (!isRegistered || isForgotFlow || isCreateMode) {
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
