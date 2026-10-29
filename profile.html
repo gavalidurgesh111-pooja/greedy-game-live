@@ -294,13 +294,15 @@
       </div>
     </div>
 
-    <!-- COIN SEND MODAL -->
+    <!-- COIN SEND MODAL (कीबोर्ड के OK/Enter बटन के लिए फॉर्म जोड़ा गया है) -->
     <div id="modalCoinSend" class="modal-overlay">
       <div class="modal-box">
         <h3>Send Coins to User</h3>
-        <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
-        <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
-        <button onclick="processCoinSend()" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
+        <form onsubmit="handleCoinSendFormSubmit(event)">
+          <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
+          <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
+          <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
+        </form>
         <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
       </div>
     </div>
@@ -463,7 +465,6 @@
       }
       updatePrivacyHeart();
 
-      // स्लाइडर हमेशा 2 नंबर फोटो पर सेट रहेगा और 1 नंबर लेफ्ट में अंदर रहेगी
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if (slider) {
@@ -597,6 +598,12 @@
     function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
+    // कीबोर्ड के Enter / OK / Arrow बटन को कॉइन सेंड में हैंडल करने के लिए फंक्शन
+    function handleCoinSendFormSubmit(event) {
+      event.preventDefault();
+      processCoinSend();
+    }
+
     function processCoinSend() {
       let targetId = document.getElementById("targetUserId").value.trim();
       let amt = parseInt(document.getElementById("sendCoinAmount").value);
