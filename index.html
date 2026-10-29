@@ -674,11 +674,11 @@
     }
 
     function showScreenPhoneFromOtp() {
-      updateScreenDisplay("phone");
+      updateScreenDisplay("pass"); // OTP स्क्रीन से बैक जाने पर Enter Password पेज पर जाएगा
     }
 
     function showScreenPhoneFromPass() {
-      updateScreenDisplay("pass"); // पासवर्ड स्क्रीन पर वापस लौटने के लिए
+      updateScreenDisplay("phone"); // Password स्क्रीन से बैक जाने पर Registration and Login (Phone) पेज पर जाएगा
     }
 
     let currentIdentifier = "";
@@ -693,7 +693,6 @@
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
-        history.pushState({ screen: currentScreen }, ""); // स्टेट को सुरक्षित रखें
         return;
       }
 
@@ -703,7 +702,7 @@
         return;
       }
 
-      // यदि यूज़र Password स्क्रीन पर है, तो बैक बटन दबाने पर Phone/ID स्क्रीन पर लौटेगा
+      // यदि यूज़र Password स्क्रीन पर है, तो बैक बटन दबाने पर Registration and Login स्क्रीन पर लौटेगा
       if (currentScreen === "pass") {
         updateScreenDisplay("phone");
         return;
@@ -735,7 +734,6 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
-      history.pushState({ screen: currentScreen, popup: true }, "");
     }
 
     function showCustomAlert(message, callback) {
@@ -746,7 +744,6 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
-      history.pushState({ screen: currentScreen, popup: true }, "");
     }
 
     function closeCustomPopup(result) {
@@ -832,6 +829,7 @@
 
     function forgotPasswordAction() {
       isForgotPasswordFlow = true;
+      // यहाँ जब यूज़र 'OK' दबाएगा, तभी वह OTP स्क्रीन पर जाएगा। अगर बैक बटन दबाया तो पॉप-अप हट जाएगा और यूज़र Enter Password पेज पर ही रहेगा।
       showCustomAlert("OTP verification required to reset your password.", function() {
         updateScreenDisplay("otp");
       });
