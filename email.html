@@ -111,7 +111,8 @@
         <button type="submit" style="display:none;"></button>
       </form>
 
-      <div style="margin-top:15px; text-align:center;">
+      <!-- Forgot Password का विकल्प केवल लॉगिन के समय दिखेगा, Create Password के समय यह अपने आप छिप जाएगा -->
+      <div id="forgotPassContainer" style="margin-top:15px; text-align:center; display:none;">
         <span onclick="forgotEmailPassword()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
       </div>
     </div>
@@ -160,11 +161,9 @@
       }
     }
 
-    // बैक बटन और पॉप-अप हैंडलर (डबल बैक-बटन लॉजिक के साथ)
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       
-      // यदि पॉप-अप खुला है, तो पहला बैक बटन दबाने पर केवल पॉप-अप हटेगा
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
@@ -238,8 +237,10 @@
           }
         });
       } else {
+        // पुराने यूजर के लिए 'Enter Password' स्क्रीन और Forgot Password दिखाना
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
+        document.getElementById("forgotPassContainer").style.display = "block";
         updateEmailScreen("password");
       }
     }
@@ -261,8 +262,10 @@
         return;
       }
 
+      // नए यूजर के लिए 'Create Password' स्क्रीन और Forgot Password को छिपाना
       document.getElementById("emailPassTitle").innerText = "Create Password";
       document.getElementById("emailPassSub").innerText = "Set an exact 8-character password for your new account";
+      document.getElementById("forgotPassContainer").style.display = "none";
       document.getElementById("emailPassInput").value = "";
       document.getElementById("emailPassSubmitBtn").classList.remove("active");
       updateEmailScreen("password");
@@ -281,7 +284,6 @@
     }
 
     function forgotEmailPassword() {
-      // पॉप-अप खुलने पर हिस्ट्री में स्टेट जोड़ें ताकि बैक बटन से केवल पॉप-अप बंद हो
       history.pushState({ modalOpen: true }, "");
       
       showCustomAlert("OTP verification required to reset your password.", function() {
