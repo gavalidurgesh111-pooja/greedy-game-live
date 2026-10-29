@@ -124,10 +124,12 @@
       </div>
     </div>
 
-    <!-- Phone / ID Login Screen (195 देशों की भाषाएँ और कोड) -->
+    <!-- Phone / ID Login Screen -->
     <div id="screenPhone" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
+        
+        <!-- 195 देशों की भाषाएँ -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="hi" selected>🇮🇳 हिंदी (Hindi)</option>
           <option value="en">🌐 English (Global)</option>
@@ -359,7 +361,7 @@
         
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <select class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
-            <!-- दुनिया के सभी 195 देशों के कंट्री कोड -->
+            <!-- 195 देशों के फोन कोड -->
             <option value="+93">🇦🇫 (+93) Afghanistan</option>
             <option value="+355">🇦🇱 (+355) Albania</option>
             <option value="+213">🇩🇿 (+213) Algeria</option>
@@ -564,7 +566,7 @@
       </div>
     </div>
 
-    <!-- OTP Verification Screen (केवल नए यूजर के लिए) -->
+    <!-- OTP Verification Screen -->
     <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
       
@@ -650,7 +652,7 @@
       }
     }
 
-    // **लॉजिक: चेक करें कि यूजर नया है या पुराना**
+    // **लॉजिक: पुराना और नया यूजर पहचानना + गलत नंबर होने पर सही करने का ऑप्शन**
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
@@ -662,13 +664,22 @@
 
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
+      // यदि कोई पुराना यूजर लॉगिन करते समय गलत नंबर डाल देता है (जो रजिस्टर्ड नहीं है)
+      if(!isRegistered) {
+        let wantToRegister = confirm("यह नंबर या ID रजिस्टर्ड नहीं है!\nक्या आप इस नंबर से नया रजिस्ट्रेशन करना चाहते हैं? (Cancel दबाकर आप नंबर ठीक कर सकते हैं)");
+        if (!wantToRegister) {
+          // यूजर यहीं रुका रहेगा और अपना गलत नंबर ठीक कर सकेगा
+          return;
+        }
+      }
+
       document.getElementById("screenPhone").style.display = "none";
 
       if(!isRegistered) {
-        // अगर यूजर नया है, तो पहले OTP वेरिफिकेशन स्क्रीन पर भेजेंगे
+        // नया यूजर होने पर OTP पर भेजें
         document.getElementById("screenOtp").style.display = "flex";
       } else {
-        // अगर यूजर पुराना है, तो सीधे पासवर्ड स्क्रीन पर भेजेंगे (बिना OTP के!)
+        // पुराना यूजर होने पर सीधा पासवर्ड पर भेजें (बिना OTP के)
         document.getElementById("passScreenTitle").innerText = "Enter Password";
         document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
         document.getElementById("screenPass").style.display = "flex";
@@ -685,7 +696,6 @@
       }
     }
 
-    // नए यूजर के लिए OTP वेरीफाई होने के बाद पासवर्ड सेट करने भेजना
     function verifyOtpAction() {
       let otp = document.getElementById("otpInput").value.trim();
       if(otp !== "1234") {
@@ -724,7 +734,6 @@
       document.getElementById("screenOtp").style.display = "flex";
     }
 
-    // फाइनल लॉगिन या नया रजिस्ट्रेशन
     function doFinalLoginOrRegister() {
       let passVal = document.getElementById("passInput").value;
       if(passVal.length !== 8) {
@@ -735,7 +744,6 @@
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
       if(!isRegistered || isForgotPasswordFlow) {
-        // **नया रजिस्ट्रेशन या पासवर्ड रीसेट**
         localStorage.setItem("greedy_user_registered_" + currentIdentifier, "true");
         localStorage.setItem("greedy_saved_password_" + currentIdentifier, passVal);
         localStorage.setItem("greedy_password", passVal);
@@ -753,7 +761,6 @@
         isForgotPasswordFlow = false;
         alert("Success! Logging in...");
       } else {
-        // **पुराना यूजर डायरेक्ट लॉगिन (बिना OTP के)**
         let savedPass = localStorage.getItem("greedy_saved_password_" + currentIdentifier);
         if(passVal !== savedPass) {
           alert("Incorrect password! Please enter the correct 8-character password.");
