@@ -129,7 +129,7 @@
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <div class="back-btn" onclick="showScreenMain()" style="font-size:24px; cursor:pointer;">❮</div>
         
-        <!-- 195 देशों की भाषाएँ (डिफ़ॉल्ट रूप से English सेट की गई हैं) -->
+        <!-- 195 देशों की भाषाएँ (डिफ़ॉल्ट रूप से English) -->
         <select class="phone-lang-select" id="phoneLangSelector" onchange="changeLanguage(this.value)">
           <option value="en" selected>🌐 English (Global)</option>
           <option value="hi">🇮🇳 हिंदी (Hindi)</option>
@@ -356,7 +356,6 @@
       </div>
 
       <div style="margin-top: 40px;">
-        <!-- शीर्षक का नाम "Registration and Login" कर दिया गया है -->
         <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
         <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
         
@@ -567,6 +566,18 @@
       </div>
     </div>
 
+    <!-- Custom Popup Modal (यहाँ शीर्षक "Registration and Login" दिखेगा) -->
+    <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
+      <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
+        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
+        <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;">This number or ID is not registered! Do you want to register a new account with this number? (Click Cancel to fix your number)</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+          <button id="popupCancelBtn" onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+          <button id="popupOkBtn" onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        </div>
+      </div>
+    </div>
+
     <!-- OTP Verification Screen -->
     <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
       <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
@@ -606,7 +617,7 @@
         </div>
       </div>
 
-<div class="bottom-fixed-btn-container">
+      <div class="bottom-fixed-btn-container">
         <button class="btn-round-next" id="passSubmitBtn" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);" onclick="doFinalLoginOrRegister()">➔</button>
       </div>
     </div>
@@ -642,6 +653,7 @@
 
     let currentIdentifier = "";
     let isForgotPasswordFlow = false;
+    let popupCallback = null;
 
     function checkNumber() {
       let identifier = document.getElementById("phoneInput").value.trim();
@@ -653,7 +665,21 @@
       }
     }
 
-    // **लॉजिक: डिफ़ॉल्ट इंग्लिश और अंग्रेजी में पॉप-अप संदेश**
+    // **कस्टम पॉप-अप दिखाने का फंक्शन (जिसका शीर्षक "Registration and Login" है)**
+    function showCustomPopup(message, callback) {
+      document.getElementById("popupMessage").innerText = message;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = callback;
+    }
+
+    function closeCustomPopup(result) {
+      document.getElementById("customPopupModal").style.display = "none";
+      if (popupCallback) {
+        popupCallback(result);
+        popupCallback = null;
+      }
+    }
+
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
@@ -665,14 +691,19 @@
 
       let isRegistered = localStorage.getItem("greedy_user_registered_" + currentIdentifier);
 
-      // यदि नंबर रजिस्टर्ड नहीं है, तो पॉप-अप पूरी तरह से अंग्रेजी में आएगा
       if(!isRegistered) {
-        let wantToRegister = confirm("This number or ID is not registered!\nDo you want to register a new account with this number? (Click Cancel to fix your number)");
-        if (!wantToRegister) {
-          return; // यूजर यहीं रुककर नंबर ठीक कर सकेगा
-        }
+        // यहाँ अब ब्राउज़र वाले अलर्ट के बजाय हमारा सुंदर कस्टम पॉप-अप खुलेगा जिस पर "Registration and Login" लिखा होगा
+        showCustomPopup("This number or ID is not registered!\nDo you want to register a new account with this number?", function(confirmed) {
+          if (confirmed) {
+            proceedToNextScreen(false);
+          }
+        });
+      } else {
+        proceedToNextScreen(true);
       }
+    }
 
+    function proceedToNextScreen(isRegistered) {
       document.getElementById("screenPhone").style.display = "none";
 
       if(!isRegistered) {
