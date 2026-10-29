@@ -50,7 +50,6 @@
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Sign in with Email</div>
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter your email address to continue</div>
 
-      <!-- कीबोर्ड के OK/Enter बटन के लिए फॉर्म जोड़ा गया है -->
       <form onsubmit="handleEmailFormSubmit(event, 'emailInput')">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <input type="email" id="emailInput" oninput="checkEmailInput()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
@@ -74,7 +73,6 @@
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Email Verification</div>
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">New user verification required. Demo OTP: 1234</div>
 
-      <!-- OTP के लिए फॉर्म -->
       <form onsubmit="handleEmailFormSubmit(event, 'emailOtpInput')">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <input type="text" id="emailOtpInput" maxlength="4" oninput="checkEmailOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
@@ -102,7 +100,6 @@
       <div class="step-title" id="emailPassTitle" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
       <div id="emailPassSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
 
-      <!-- पासवर्ड के लिए फॉर्म -->
       <form onsubmit="handleEmailFormSubmit(event, 'emailPassInput')">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
           <input type="password" class="pass-input" id="emailPassInput" maxlength="8" oninput="checkEmailPassInput(this)" placeholder="Password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
@@ -134,7 +131,7 @@
   </div>
 
   <script>
-    let currentEmailState = "input"; // "input", "otp", "password"
+    let currentEmailState = "input"; 
     let currentEmail = "";
     let isForgotFlow = false;
     let popupCallback = null;
@@ -163,7 +160,6 @@
       }
     }
 
-    // बैक बटन और पॉप-अप हैंडलर
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       if (modal.style.display === "flex") {
@@ -235,13 +231,13 @@
       if (!isRegistered) {
         showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
           if (confirmed) {
-            updateEmailScreen("otp"); // नए यूजर के लिए OTP वेरिफिकेशन
+            updateEmailScreen("otp");
           }
         });
       } else {
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
-        updateEmailScreen("password"); // पुराने यूजर के लिए सीधा पासवर्ड
+        updateEmailScreen("password");
       }
     }
 
@@ -283,4 +279,80 @@
 
     function forgotEmailPassword() {
       isForgotFlow = true;
-      showCustomAlert("OTP verification required to reset your password.", function
+      showCustomAlert("OTP verification required to reset your password.", function() {
+        document.getElementById("emailOtpInput").value = "";
+        document.getElementById("emailOtpSubmitBtn").classList.remove("active");
+        updateEmailScreen("otp");
+      });
+    }
+
+    function checkEmailPassInput(input) {
+      let val = input.value;
+      let btn = document.getElementById("emailPassSubmitBtn");
+      if (val.length === 8) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
+      }
+    }
+
+    function handleEmailFormSubmit(event, inputId) {
+      event.preventDefault();
+      if (inputId === 'emailInput') {
+        let btn = document.getElementById("emailSubmitBtn");
+        if (btn.classList.contains("active")) handleEmailNext();
+      } else if (inputId === 'emailOtpInput') {
+        let btn = document.getElementById("emailOtpSubmitBtn");
+        if (btn.classList.contains("active")) verifyEmailOtp();
+      } else if (inputId === 'emailPassInput') {
+        let btn = document.getElementById("emailPassSubmitBtn");
+        if (btn.classList.contains("active")) handleEmailFinalSubmit();
+      }
+    }
+
+    function handleEmailFinalSubmit() {
+      let passVal = document.getElementById("emailPassInput").value;
+      if (passVal.length !== 8) {
+        showCustomAlert("Password must be exactly 8 characters!");
+        return;
+      }
+
+      let isRegistered = localStorage.getItem("greedy_email_registered_" + currentEmail);
+
+      if (!isRegistered || isForgotFlow) {
+        localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
+        localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
+        localStorage.setItem("greedy_password", passVal);
+
+        if (!isRegistered) {
+          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem("greedy_unique_id", freshId);
+          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+          localStorage.setItem("greedy_coins", "1000");
+          localStorage.setItem("greedy_won", "0");
+          localStorage.setItem("greedy_level", "1");
+        }
+        isForgotFlow = false;
+        showCustomAlert("Success! Logging in...", function() {
+          localStorage.setItem("greedy_initialized", "true");
+          document.getElementById("loadingOverlay").style.display = "flex";
+          setTimeout(() => {
+            window.location.replace("profile.html");
+          }, 1000);
+        });
+      } else {
+        let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
+        if (passVal !== savedPass) {
+          showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
+          return;
+        }
+        localStorage.setItem("greedy_initialized", "true");
+        document.getElementById("loadingOverlay").style.display = "flex";
+        setTimeout(() => {
+          window.location.replace("profile.html");
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
