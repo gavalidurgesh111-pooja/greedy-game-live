@@ -327,8 +327,7 @@
         
         <form onsubmit="handleIndexFormSubmit(event)">
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-            <select id="countryCodeSelect" class="country-code-select" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
-              <!-- 195 देशों के फोन कोड -->
+            <select id="countryCodeSelect" class="country-code-select" onchange="checkNumber()" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
               <option value="+93">🇦🇫 (+93) Afghanistan</option>
               <option value="+355">🇦🇱 (+355) Albania</option>
               <option value="+213">🇩🇿 (+213) Algeria</option>
@@ -602,11 +601,32 @@
 
     function checkNumber() {
       let identifier = document.getElementById("phoneInput").value.trim();
+      let countryCode = document.getElementById("countryCodeSelect").value;
       let btn = document.getElementById("submitBtn");
       
-      // वैलिडेटर: अगर यह आईडी है (# से शुरू) तो कम से कम 5-6 अक्षर होने चाहिए, 
-      // और अगर फोन नंबर है तो कम से कम 7 से 10 अंक होने चाहिए तभी बटन एक्टिव होगा।
-      if (identifier.startsWith("#") ? identifier.length >= 5 : identifier.length >= 7) {
+      let isValid = false;
+
+      if (identifier.startsWith("#")) {
+        // यूज़र आईडी के लिए कम से कम 5 अक्षर
+        isValid = identifier.length >= 5;
+      } else if (/^\d+$/.test(identifier)) {
+        // देश के हिसाब से अंकों की सख्त जांच (Validation)
+        if (countryCode === "+91") {
+          // भारत के लिए ठीक 10 अंक होने चाहिए
+          isValid = (identifier.length === 10);
+        } else if (countryCode === "+1") {
+          // USA/Canada के लिए ठीक 10 अंक होने चाहिए
+          isValid = (identifier.length === 10);
+        } else if (countryCode === "+44") {
+          // UK के लिए 10 अंक होने चाहिए
+          isValid = (identifier.length === 10);
+        } else {
+          // अन्य देशों के लिए सामान्यतः 7 से 12 अंक
+          isValid = (identifier.length >= 7 && identifier.length <= 12);
+        }
+      }
+
+      if (isValid) {
         btn.classList.add("active");
       } else {
         btn.classList.remove("active");
@@ -660,8 +680,6 @@
         return;
       }
 
-      // यदि यूजर ने फोन नंबर डाला है (जो # से शुरू नहीं होता), तो उसके साथ देश का कोड भी सेव होगा 
-      // ताकि हर देश का नंबर अलग पहचाना जा सके (जैसे +917507947675)
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
