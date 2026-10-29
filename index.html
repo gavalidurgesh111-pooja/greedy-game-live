@@ -76,7 +76,7 @@
   <div id="authFlowContainer">
     <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
-      <div class="brand-title" id="txtBrandTitle">GOLD Coin</div>
+      <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
@@ -113,7 +113,7 @@
           <option value="ta">🇮🇳 தமிழ் (Tamil)</option>
           <option value="te">🇮🇳 తెలుగు (Telugu)</option>
           <option value="kn">🇮🇳 ಕನ್ನಡ (Kannada)</option>
-          <option value="ml">🇮 മലയാളം (Malayalam)</option>
+          <option value="ml">🇮🇳 മലയാളം (Malayalam)</option>
           <option value="pa">🇮🇳 ਪੰਜਾਬੀ (Punjabi)</option>
           <option value="ur">🇵🇰 اردو (Urdu)</option>
           <option value="zh">🇨🇳 中文 (Chinese)</option>
@@ -669,7 +669,7 @@
       let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let identifier = document.getElementById("phoneInput").value.trim();
       
-      .if(!identifier) {
+      if(!identifier) {
         showCustomAlert("Please enter phone number or User ID!");
         return;
       }
