@@ -627,7 +627,6 @@
   </div>
 
   <script>
-    // पेज लोड होते ही शुरुआती स्टेट सेट करें
     window.onload = function() {
       history.replaceState({ screen: "main" }, "");
     };
@@ -680,7 +679,7 @@
     let isForgotPasswordFlow = false;
     let popupCallback = null;
 
-    // **मोबाइल बैक बटन और वेबसाइट बैक बटन का अचूक लॉजिक**
+    // **मोबाइल और वेबसाइट के बैक बटन का सटीक फ्लो**
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       if (modal.style.display === "flex") {
@@ -695,24 +694,23 @@
       let passScreen = document.getElementById("screenPass");
       let otpScreen = document.getElementById("screenOtp");
       let phoneScreen = document.getElementById("screenPhone");
+      let mainScreen = document.getElementById("screenMain");
       
       if (passScreen.style.display === "flex") {
         passScreen.style.display = "none";
         phoneScreen.style.display = "flex";
-        history.pushState({ screen: "phone" }, "");
         return;
       }
 
       if (otpScreen.style.display === "flex") {
         otpScreen.style.display = "none";
         phoneScreen.style.display = "flex";
-        history.pushState({ screen: "phone" }, "");
         return;
       }
 
       if (phoneScreen.style.display === "flex") {
         phoneScreen.style.display = "none";
-        document.getElementById("screenMain").style.display = "flex";
+        mainScreen.style.display = "flex";
         return;
       }
     });
