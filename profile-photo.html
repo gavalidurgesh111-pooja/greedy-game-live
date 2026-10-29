@@ -155,7 +155,6 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      // हमेशा 1 से 9 तक पूरे 9 बॉक्स रेंडर करने के लिए लूप को 9 तक सेट किया गया है[span_2](start_span)[span_2](end_span)
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -170,7 +169,6 @@
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          // हर खाली बॉक्स पर 'Upload' बटन दिखेगा[span_3](start_span)[span_3](end_span)
           cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
         }
         container.appendChild(cell);
@@ -307,32 +305,53 @@
       reader.readAsDataURL(file);
     }
 
-    function enforceBoundaries() {
-      if(!rawImageObj) return;
-      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-      let renderW = rawImageObj.width * imgScale;
-      let renderH = rawImageObj.height * imgScale;
-      if (imgX > box.left) imgX = box.left;
-      if (imgX + renderW < box.left + box.width) imgX = box.left + box.width - renderW;
-      if (imgY > box.top) imgY = box.top;
-      if (imgY + renderH < box.top + box.height) imgY = box.top + box.height - renderH;
-      let preview = document.getElementById("editorImagePreview");
+    // स्मूथ टच और माउस ड्रैग लॉजिक (फोटो वहीं रुकेगी जहाँ यूज़र छोड़ेगा और उतनी ही क्रॉप होगी)
+    const editorArea = document.getElementById("editorCanvasArea");
+    let preview = document.getElementById("editorImagePreview");
+
+    editorArea.addEventListener('mousedown', (e) => {
+      isDraggingImg = true;
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+      e.preventDefault();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDraggingImg) return;
+      imgX += e.clientX - startMouseX;
+      imgY += e.clientY - startMouseY;
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
       preview.style.left = imgX + "px";
       preview.style.top = imgY + "px";
-    }
+    });
 
-    const editorArea = document.getElementById("editorCanvasArea");
-    if(editorArea) {
-      editorArea.addEventListener('mousedown', (e) => { isDraggingImg=true; startMouseX=e.clientX; startMouseY=e.clientY; e.preventDefault(); });
-      window.addEventListener('mousemove', (e) => {
-        if(!isDraggingImg) return;
-        imgX += e.clientX - startMouseX;
-        imgY += e.clientY - startMouseY;
-        startMouseX = e.clientX; startMouseY = e.clientY;
-        enforceBoundaries();
-      });
-      window.addEventListener('mouseup', () => { isDraggingImg=false; });
-    }
+    window.addEventListener('mouseup', () => {
+      isDraggingImg = false;
+    });
+
+    editorArea.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) {
+        isDraggingImg = true;
+        startMouseX = e.touches[0].clientX;
+        startMouseY = e.touches[0].clientY;
+      }
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!isDraggingImg || e.touches.length !== 1) return;
+      imgX += e.touches[0].clientX - startMouseX;
+      imgY += e.touches[0].clientY - startMouseY;
+      startMouseX = e.touches[0].clientX;
+      startMouseY = e.touches[0].clientY;
+      preview.style.left = imgX + "px";
+      preview.style.top = imgY + "px";
+      e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      isDraggingImg = false;
+    });
 
     function cancelEditor() {
       document.getElementById("screenPhotoEditor").style.display = "none";
@@ -346,7 +365,6 @@
         canvas.width = 1080;
         canvas.height = Math.round(1080 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
-        let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
         let previewRect = preview.getBoundingClientRect();
