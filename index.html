@@ -553,7 +553,8 @@
 
     function selectEmailOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      alert("Email login option coming soon!");
+      // यह सीधे email.html पेज पर रीडायरेक्ट करेगा
+      window.location.href = "email.html";
     }
 
     function openMoreOptionsSheet() {
@@ -631,7 +632,6 @@
       }
     }
 
-    // जब यूजर नंबर या आईडी डालकर आगे बढ़ेगा, तो वह सीधा password.html पर जाएगा
     function handleNextStep() {
       let identifier = document.getElementById("phoneInput").value.trim();
       if(!identifier) {
