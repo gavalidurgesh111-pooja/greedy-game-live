@@ -577,9 +577,11 @@
 
     <!-- OTP Verification Screen -->
     <div id="screenOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-      <div class="back-btn" onclick="showScreenPhone()" style="font-size:24px; cursor:pointer; margin-bottom:20px;">❮</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <div class="back-btn" onclick="showScreenPhoneFromOtp()" style="font-size:24px; cursor:pointer;">❮</div>
+      </div>
       
-      <div style="margin-top: 40px;">
+      <div style="margin-top: 20px;">
         <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Enter OTP Verification</div>
         <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">New user verification required. Demo OTP: 1234</div>
 
@@ -625,30 +627,46 @@
   </div>
 
   <script>
+    // पेज लोड होते ही शुरुआती स्टेट सेट करें
+    window.onload = function() {
+      history.replaceState({ screen: "main" }, "");
+    };
+
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
       document.getElementById("screenMain").style.display = "none";
       document.getElementById("screenPhone").style.display = "flex";
-      pushScreenState("phone");
+      history.pushState({ screen: "phone" }, "");
     }
+
     function selectEmailOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
       alert("Email login option coming soon!");
     }
+
     function openMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "flex";
     }
+
     function closeMoreOptionsSheet() {
       document.getElementById("moreOptionsModal").style.display = "none";
     }
+
     function socialLoginNotice(provider) {
       showCustomAlert(provider + " login selected. Please use More Options for phone/ID login.");
     }
+
     function showScreenMain() {
       document.getElementById("screenPhone").style.display = "none";
       document.getElementById("screenMain").style.display = "flex";
     }
+
     function showScreenPhone() {
+      document.getElementById("screenOtp").style.display = "none";
+      document.getElementById("screenPhone").style.display = "flex";
+    }
+
+    function showScreenPhoneFromOtp() {
       document.getElementById("screenOtp").style.display = "none";
       document.getElementById("screenPhone").style.display = "flex";
     }
@@ -662,27 +680,39 @@
     let isForgotPasswordFlow = false;
     let popupCallback = null;
 
-    function pushScreenState(screenName) {
-      history.pushState({ screen: screenName }, "");
-    }
-
+    // **मोबाइल बैक बटन और वेबसाइट बैक बटन का अचूक लॉजिक**
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
-      
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         if (popupCallback) {
           popupCallback(false);
           popupCallback = null;
         }
-        pushScreenState("currentModal");
         return;
       }
 
       let passScreen = document.getElementById("screenPass");
+      let otpScreen = document.getElementById("screenOtp");
+      let phoneScreen = document.getElementById("screenPhone");
+      
       if (passScreen.style.display === "flex") {
         passScreen.style.display = "none";
-        document.getElementById("screenPhone").style.display = "flex";
+        phoneScreen.style.display = "flex";
+        history.pushState({ screen: "phone" }, "");
+        return;
+      }
+
+      if (otpScreen.style.display === "flex") {
+        otpScreen.style.display = "none";
+        phoneScreen.style.display = "flex";
+        history.pushState({ screen: "phone" }, "");
+        return;
+      }
+
+      if (phoneScreen.style.display === "flex") {
+        phoneScreen.style.display = "none";
+        document.getElementById("screenMain").style.display = "flex";
         return;
       }
     });
@@ -706,7 +736,6 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
-      pushScreenState("popup");
     }
 
     function showCustomAlert(message, callback) {
@@ -717,7 +746,6 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
-      pushScreenState("popup");
     }
 
     function closeCustomPopup(result) {
@@ -755,12 +783,12 @@
 
       if(!isRegistered) {
         document.getElementById("screenOtp").style.display = "flex";
-        pushScreenState("otp");
+        history.pushState({ screen: "otp" }, "");
       } else {
         document.getElementById("passScreenTitle").innerText = "Enter Password";
         document.getElementById("passScreenSub").innerText = "Welcome back! Enter your exact 8-character password to login";
         document.getElementById("screenPass").style.display = "flex";
-        pushScreenState("pass");
+        history.pushState({ screen: "pass" }, "");
       }
     }
 
@@ -783,7 +811,7 @@
 
       document.getElementById("screenOtp").style.display = "none";
       document.getElementById("screenPass").style.display = "flex";
-      pushScreenState("pass");
+      history.pushState({ screen: "pass" }, "");
 
       if(isForgotPasswordFlow) {
         document.getElementById("passScreenTitle").innerText = "Reset Password";
@@ -811,7 +839,7 @@
       showCustomAlert("OTP verification required to reset your password.", function() {
         document.getElementById("screenPass").style.display = "none";
         document.getElementById("screenOtp").style.display = "flex";
-        pushScreenState("otp");
+        history.pushState({ screen: "otp" }, "");
       });
     }
 
