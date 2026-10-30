@@ -51,7 +51,7 @@
       max-height: none !important; 
       will-change: transform;
       transform: translate3d(0, 0, 0);
-      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
@@ -249,6 +249,8 @@
       }
     }
 
+    function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
+    
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips > 0) {
@@ -318,7 +320,7 @@
           preview.style.top = baseTop + "px";
           posX = 0;
           posY = 0;
-          preview.style.transform = `translate3d(0px, 0px, 0px) scale(${imgScale / minScale})`;
+          preview.style.transform = `translate3d(0px, 0px, 0px)`;
         }
         rawImageObj.src = e.target.result;
       }
@@ -346,7 +348,7 @@
       let clampedTop = Math.max(minY, Math.min(maxY, currentTop));
 
       if (clampedLeft !== currentLeft || clampedTop !== currentTop) {
-        preview.style.transition = 'transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        preview.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         posX = clampedLeft - baseLeft;
         posY = clampedTop - baseTop;
       } else {
@@ -356,7 +358,7 @@
     }
 
     if(editorArea) {
-      // 1. माउस इवेंट्स (2x स्पीड बूस्ट के साथ)
+      // 1. माउस इवेंट्स (सुपर-फास्ट स्पीड बूस्ट 1.8x)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -367,9 +369,8 @@
 
       window.addEventListener('mousemove', (e) => {
         if(!isDraggingImg) return;
-        // स्पीड को 1.5x गुना तेज किया गया है ताकि मक्खन की तरह भागे
-        posX += (e.clientX - startMouseX) * 1.4;
-        posY += (e.clientY - startMouseY) * 1.4;
+        posX += (e.clientX - startMouseX) * 1.8;
+        posY += (e.clientY - startMouseY) * 1.8;
         startMouseX = e.clientX; 
         startMouseY = e.clientY;
         
@@ -398,7 +399,7 @@
         }
       }, { passive: false });
 
-      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए सुपर-फास्ट 2x स्पीड)
+      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए सुपर-फास्ट 1.8x स्पीड)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -417,9 +418,8 @@
 
       window.addEventListener('touchmove', (e) => {
         if(e.touches.length === 1 && isDraggingImg) {
-          // मोबाइल पर भी उंगली की मूवमेंट को सुपर-स्मूथ और फास्ट (1.4x) किया गया है
-          posX += (e.touches[0].clientX - startMouseX) * 1.4;
-          posY += (e.touches[0].clientY - startMouseY) * 1.4;
+          posX += (e.touches[0].clientX - startMouseX) * 1.8;
+          posY += (e.touches[0].clientY - startMouseY) * 1.8;
           startMouseX = e.touches[0].clientX;
           startMouseY = e.touches[0].clientY;
           
@@ -478,7 +478,6 @@
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
-        document.getElementById("screenPhotoEditor").style.display, "none";
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
         if (activeEditorMode === "cover") {
