@@ -159,12 +159,16 @@
       if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
       for(let i = 1; i <= 8; i++) {
         let val = localStorage.getItem("unsaved_slot_" + i) || "";
-        if (val && val.trim() !== "") filledCount = i + 1;
-        else break;
+        if (val && val.trim() !== "") {
+          filledCount = i + 1;
+        } else {
+          break;
+        }
       }
+
       let maxGridSlots = filledCount + 1;
       if (maxGridSlots > 9) maxGridSlots = 9;
-      if (maxGridSlots < 6) maxGridSlots = 6;
+      if (maxGridSlots < 1) maxGridSlots = 1;
 
       for(let i = 1; i <= maxGridSlots; i++) {
         let cell = document.createElement("div");
@@ -180,8 +184,9 @@
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          let showUpload = (i === 1) || (i === 2 && avatarPic) || (i > 2 && localStorage.getItem("unsaved_slot_" + (i - 2)));
-          if (showUpload) {
+          if (i === filledCount + 1 && filledCount < 9) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          } else if (filledCount === 0 && i === 1) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
           } else {
             cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
