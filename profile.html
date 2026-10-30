@@ -142,7 +142,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (1 से 9 तक के सभी पेजेस बिल्कुल सही से लोड होंगे) -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -294,7 +294,7 @@
       </div>
     </div>
 
-    <!-- COIN SEND MODAL -->
+    <!-- COIN SEND MODAL (कीबोर्ड के OK/Enter बटन के लिए फॉर्म जोड़ा गया है) -->
     <div id="modalCoinSend" class="modal-overlay">
       <div class="modal-box">
         <h3>Send Coins to User</h3>
@@ -408,7 +408,7 @@
         if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
       }
 
-      // कवर पेजेस सेटअप (1 से 9 तक बिल्कुल सही तालमेल)
+      // कवर पेजेस सेटअप
       let avatarPic = currentAvatar || "";
       let filledCount = 0;
       if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
@@ -417,6 +417,8 @@
         let val = localStorage.getItem("greedy_slot_" + i) || "";
         if (val && val.trim() !== "") {
           filledCount = i + 1;
+        } else {
+          break;
         }
       }
       
@@ -462,6 +464,13 @@
         }
       }
       updatePrivacyHeart();
+
+      setTimeout(() => {
+        let slider = document.getElementById("coverSlider");
+        if (slider) {
+          slider.scrollLeft = slider.clientWidth;
+        }
+      }, 50);
     }
 
     function openPhotoGridScreen() {
@@ -544,4 +553,73 @@
     function handleLogout() {
       sessionStorage.removeItem("is_user_inside");
       showCustomAlert("Logged out successfully!");
-      setTimeout(() => {
+      setTimeout(() => { window.location.replace("index.html"); }, 800);
+    }
+
+    function openAboutMeScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenAboutMe").style.display = "flex"; 
+    }
+    function closeAboutMeScreen() { 
+      document.getElementById("screenAboutMe").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
+    
+    function togglePrivacy() {
+      if (!isMyProfile) return;
+      isPrivate = !isPrivate;
+      localStorage.setItem("greedy_privacy", isPrivate);
+      updatePrivacyHeart();
+    }
+    
+    function updatePrivacyHeart() {
+      const heart = document.getElementById("privacyHeart");
+      const bioBox = document.getElementById("aboutMeContentBox");
+      if(isPrivate) {
+        heart.innerText = "❤️";
+        bioBox.style.background = "#ffe6e6";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
+      } else {
+        heart.innerText = "🤍";
+        bioBox.style.background = "#fff";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
+      }
+    }
+
+    function openGroupsScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenGroups").style.display = "flex"; 
+    }
+    function closeGroupsScreen() { 
+      document.getElementById("screenGroups").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
+
+    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
+    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
+    
+    // कीबोर्ड के Enter / OK / Arrow बटन को कॉइन सेंड में हैंडल करने के लिए फंक्शन
+    function handleCoinSendFormSubmit(event) {
+      event.preventDefault();
+      processCoinSend();
+    }
+
+    function processCoinSend() {
+      let targetId = document.getElementById("targetUserId").value.trim();
+      let amt = parseInt(document.getElementById("sendCoinAmount").value);
+      if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
+      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
+      coins -= amt;
+      localStorage.setItem("greedy_coins", coins);
+      initProfile();
+      closeCoinSendModal();
+      showCustomAlert(`Successfully sent ${amt} coins!`);
+    }
+
+    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
+    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
+
+    window.onload = () => { initProfile(); };
+  </script>
+</body>
+</html>
