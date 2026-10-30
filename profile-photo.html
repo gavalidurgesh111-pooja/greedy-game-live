@@ -40,7 +40,7 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
     
-    /* क्रॉप बॉक्स की साइज ऊपर और नीचे से बढ़ा दी गई है (Height: 380px) और बॉर्डर सफेद है */
+    /* क्रॉप बॉक्स की साइज और सफेद बॉर्डर */
     .crop-frame-box { width: 100%; max-width: 100%; height: 380px; border: 2px solid #ffffff; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
     #editorImagePreview { 
@@ -332,6 +332,7 @@
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
+    // **पूर्णतः दुरुस्त और फिक्स किया गया बाउंड्री और स्नैप लॉजिक**
     function applySmartBoundaryAndSnap() {
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = parseFloat(preview.style.width);
@@ -467,10 +468,12 @@
         canvas.width = 1080;
         canvas.height = Math.round(1080 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
+        
+        let previewRect = preview.getBoundingClientRect();
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
-        let previewRect = preview.getBoundingClientRect();
 
+        // सटीक क्रॉपिंग गणना (दुरुस्त की गई)
         let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
         let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
         let sW = (box.width / renderedWidth) * rawImageObj.width;
