@@ -156,8 +156,8 @@
       }
     });
 
-        function initGridPage() {
-      // यहाँ 1 से लेकर 8 तक के स्लॉट्स (क्योंकि slot 1 से 8 यानी कुल 9 बॉक्स कवर के) सही से इनिशियलाइज होने चाहिए
+    function initGridPage() {
+      // 1 से 8 तक के सभी स्लॉट (कवर फोटो के लिए) सही से लोड किए जा रहे हैं
       for(let i=1; i<=8; i++) {
         if (!localStorage.getItem("unsaved_slot_" + i)) {
           localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
@@ -166,9 +166,9 @@
       render9Grid();
     }
 
+    // सिंगल मेन सेव फंक्शन (✓ और SAVE दोनों के लिए)
     function saveAndClosePhotoGridScreen() {
       localStorage.setItem("greedy_avatar", currentAvatarTemp);
-      // यहाँ भी लूप 1 से 8 तक पूरा चलना चाहिए ताकि 7 और 8 (जो 8वें स्लॉट तक होते हैं) परमानेंट सेव हो जाएं
       for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
       }
@@ -180,7 +180,7 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      // 1 से 9 तक के सभी बॉक्स के लिए लूप (अब 7, 8, 9 भी पूरी तरह काम करेंगे)
+      // 1 से 9 तक के सभी बॉक्स के लिए लूप
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -220,19 +220,13 @@
       }
     }
 
+    // NO, THANKS बटन: कोई बदलाव सेव नहीं होगा, सीधे बाहर आ जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
-    function saveAndClosePhotoGridScreen() {
-      localStorage.setItem("greedy_avatar", currentAvatarTemp);
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
-      }
-      window.location.replace("Profile.html");
-    }
-
+    // SAVE बटन: बदलाव परमानेंट सेव होंगे
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       saveAndClosePhotoGridScreen();
