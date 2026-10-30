@@ -367,21 +367,25 @@
       }
     }
 
-    let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
-    let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
-    let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
-    let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
-    let isPrivate = localStorage.getItem("greedy_privacy") === "true";
-    let currentFrame = localStorage.getItem("greedy_frame") || "none";
-    let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const viewedId = urlParams.get("id");
-    let isMyProfile = !viewedId || viewedId === userId;
+    let coins = 0, userName = "", userId = "", userLevel = 0, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "", customFrameUrl = "";
+    let isMyProfile = true;
 
     function initProfile() {
+      // लोकल स्टोरेज से ताज़ा डेटा हमेशा लोड करें
+      coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
+      userName = localStorage.getItem("greedy_name") || "User_368282";
+      userId = localStorage.getItem("greedy_unique_id") || "#288630";
+      userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
+      totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
+      isPrivate = localStorage.getItem("greedy_privacy") === "true";
+      currentFrame = localStorage.getItem("greedy_frame") || "none";
+      currentAvatar = localStorage.getItem("greedy_avatar") || "";
+      customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const viewedId = urlParams.get("id");
+      isMyProfile = !viewedId || viewedId === userId;
+
       document.getElementById("profNameDisplay").innerText = userName;
       document.getElementById("profBalance").innerText = coins;
       document.getElementById("profWon").innerText = totalWon;
@@ -623,6 +627,11 @@
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
     let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
+
+    // जब भी दूसरे पेज से लौटकर आएं, यह तुरंत ताज़ा डेटा लोड करेगा
+    window.onpageshow = function(event) {
+      initProfile();
+    };
 
     window.onload = () => { initProfile(); };
   </script>
