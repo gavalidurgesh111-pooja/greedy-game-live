@@ -20,7 +20,6 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    /* Unsaved Changes Modal (Tips) - सबसे ऊपर पक्का लेयर */
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999999; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.4); text-align: left; position: relative; z-index: 10000000; }
     .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
@@ -29,14 +28,12 @@
     .btn-no-thanks { color: #666; cursor: pointer; padding: 8px; }
     .btn-save-changes { color: #5e229e; cursor: pointer; padding: 8px; }
 
-    /* टिप्स (Tips) पॉपअप मेनू */
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
     .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1000000; }
     .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
     .tips-item { padding: 12px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* फोटो एडिटर स्क्रीन */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 999999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
@@ -55,7 +52,6 @@
     <div class="sub-header">
       <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="handleGridBackAction()">❮</div>
       <h2>Profile photo</h2>
-      <!-- ✓ बटन पर फिक्स क्लिक इनेबल किया गया है -->
       <div id="saveCheckBtn" style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px; z-index: 100; position: relative;" onclick="saveAndClosePhotoGridScreen()">✓</div>
     </div>
 
@@ -64,7 +60,6 @@
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
     <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
 
-    <!-- Unsaved Changes Modal (Tips) -->
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
         <h3>Tips</h3>
@@ -76,7 +71,6 @@
       </div>
     </div>
 
-    <!-- Tips Modal -->
     <div id="tipsModal">
       <div class="tips-box" style="text-align:left;">
         <h3>Tips</h3>
@@ -87,7 +81,6 @@
       </div>
     </div>
 
-    <!-- फोटो एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
@@ -99,7 +92,6 @@
       </div>
     </div>
 
-    <!-- Custom Alert -->
     <div id="customAlertModal" class="modal-overlay">
       <div class="modal-box">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
@@ -156,17 +148,21 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
+      // सही तरीके से कुल भरी हुई फोटो की गिनती (अवतार + 8 स्लॉट = कुल 9)
       let filledCount = 0;
-      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
+      if (avatarPic && avatarPic.trim() !== "") {
+        filledCount = 1;
+      }
       for(let i = 1; i <= 8; i++) {
         let val = localStorage.getItem("unsaved_slot_" + i) || "";
         if (val && val.trim() !== "") {
-          filledCount = i + 1;
+          filledCount = i + 1; // स्लॉट 1 का मतलब कुल दूसरी फोटो है
         } else {
           break;
         }
       }
 
+      // कुल दिखने वाले बॉक्स (अगर 9 से कम हैं तो एक और अपलोड बॉक्स दिखेगा, max 9 तक)
       let maxGridSlots = filledCount + 1;
       if (maxGridSlots > 9) maxGridSlots = 9;
       if (maxGridSlots < 1) maxGridSlots = 1;
