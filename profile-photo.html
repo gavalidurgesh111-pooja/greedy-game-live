@@ -41,7 +41,6 @@
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
-    /* ग्रेविटी और कस्टम सेंटर का मिला-जुला ट्रांजिशन */
     #editorImagePreview { 
       position: absolute; 
       cursor: grab; 
@@ -51,7 +50,7 @@
       max-width: none !important; 
       max-height: none !important; 
       transform-origin: center center;
-      transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
@@ -127,7 +126,6 @@
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
-    let defaultOriginalX = 0, defaultOriginalY = 0;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
@@ -313,11 +311,9 @@
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
+          // एकदम सटीक केंद्र (Center) पोजीशन सेट करना
           imgX = box.left + (box.width - renderW) / 2;
           imgY = box.top + (box.height - renderH) / 2;
-          
-          defaultOriginalX = imgX;
-          defaultOriginalY = imgY;
 
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
@@ -330,8 +326,34 @@
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
+    // **स्मार्ट बाउंड्री क्लैंपिंग फंक्शन (Smart Clamping Logic):**
+    // यह सुनिश्चित करता है कि यूज़र फोटो को बाहर ले जा सके, लेकिन उंगली छोड़ने पर वह कभी भी खाली स्क्रीन या बाहर के हिस्से को केंद्र बिंदु न माने—फोटो हमेशा फ्रेम के अंदर ही एडजस्ट होकर रुके!
+    function applySmartBoundaryAndSnap() {
+      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+      let renderW = parseFloat(preview.style.width);
+      let renderH = parseFloat(preview.style.height);
+
+      let minX = box.right - renderW;
+      let maxX = box.left;
+      let minY = box.bottom - renderH;
+      let maxY = box.top;
+
+      let isOutOfBounds = (imgX < minX || imgX > maxX || imgY < minY || imgY > maxY);
+
+      if (isOutOfBounds) {
+        preview.style.transition = 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        
+        // फोटो को सुरक्षित रूप से फ्रेम के अंदर खींचकर लाना ताकि बाहर का हिस्सा सेंटर न बने
+        imgX = Math.max(minX, Math.min(maxX, imgX));
+        imgY = Math.max(minY, Math.min(maxY, imgY));
+
+        preview.style.left = imgX + "px";
+        preview.style.top = imgY + "px";
+      }
+    }
+
     if(editorArea) {
-      // 1. माउस ड्रैग इवेंट्स
+      // 1. माउस इवेंट्स
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -354,25 +376,7 @@
       window.addEventListener('mouseup', () => { 
         if(isDraggingImg) {
           isDraggingImg = false; 
-          
-          // **स्नैप-बैक और कस्टम सेंटर का संगम (Smart Gravity & Custom Focal Point):**
-          // यदि यूज़र फोटो को बहुत ज्यादा बाहर या दूर खींचकर छोड़ता है, तो ग्रेविटी उसे सुरक्षित रूप से वापस खींच लेती है;
-          // और अगर वह थोड़ा सा खींचकर अपनी पसंद का नया सेंटर सेट करता है, तो फोटो वहीं टिक जाती है!
-          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-          let previewRect = preview.getBoundingClientRect();
-          
-          // अगर फोटो क्रॉप बॉक्स से बहुत ज्यादा दूर चली गई है, तो स्नैप-बैक एक्टिव होगा:
-          if (Math.abs(imgX - defaultOriginalX) > 200 || Math.abs(imgY - defaultOriginalY) > 200) {
-            preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            imgX = defaultOriginalX;
-            imgY = defaultOriginalY;
-            preview.style.left = imgX + "px";
-            preview.style.top = imgY + "px";
-          } else {
-            // वरना यूज़र द्वारा सेट किया गया नया पोज़िशन ही उसका नया कस्टम सेंटर पॉइंट बन जाएगा!
-            defaultOriginalX = imgX;
-            defaultOriginalY = imgY;
-          }
+          applySmartBoundaryAndSnap(); // उंगली छोड़ते ही स्मार्ट बाउंड्री चेक होगी
         }
       });
 
@@ -387,6 +391,7 @@
           let renderH = rawImageObj.height * imgScale;
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
+          applySmartBoundaryAndSnap();
         }
       }, { passive: false });
 
@@ -441,18 +446,7 @@
         if(e.touches.length < 2) initialPinchDistance = null;
         if(e.touches.length === 0 && isDraggingImg) {
           isDraggingImg = false;
-          
-          // मोबाइल पर भी स्मार्ट ग्रेविटी और कस्टम सेंटर का तालमेल
-          if (Math.abs(imgX - defaultOriginalX) > 200 || Math.abs(imgY - defaultOriginalY) > 200) {
-            preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            imgX = defaultOriginalX;
-            imgY = defaultOriginalY;
-            preview.style.left = imgX + "px";
-            preview.style.top = imgY + "px";
-          } else {
-            defaultOriginalX = imgX;
-            defaultOriginalY = imgY;
-          }
+          applySmartBoundaryAndSnap(); // मोबाइल पर उंगली उठाते ही स्मार्ट बाउंड्री लागू होगी
         }
       });
     }
