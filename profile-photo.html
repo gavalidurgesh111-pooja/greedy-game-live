@@ -40,7 +40,18 @@
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
-    #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; display: block; max-width: none !important; max-height: none !important; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), left 0.3s ease, top 0.3s ease; }
+    
+    /* ग्रेविटी स्नैप-बैक स्मूथ स्प्रिंग ट्रांजिशन */
+    #editorImagePreview { 
+      position: absolute; 
+      cursor: grab; 
+      user-select: none; 
+      z-index: 5; 
+      display: block; 
+      max-width: none !important; 
+      max-height: none !important; 
+      transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
     .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; }
@@ -115,6 +126,7 @@
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
+    let defaultOriginalX = 0, defaultOriginalY = 0; // ग्रेविटी के लिए ओरिजिनल पोजीशन याद रखने हेतु
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
     history.pushState({page: "photo_grid"}, "", window.location.href);
@@ -286,7 +298,7 @@
         rawImageObj = new Image();
         document.getElementById("screenPhotoEditor").style.display = "flex";
         let preview = document.getElementById("editorImagePreview");
-        preview.style.transition = 'none'; // लोड होते समय ट्रांजिशन बंद रखें
+        preview.style.transition = 'none'; // लोड होते समय एनिमेशन बंद रखें
         preview.src = e.target.result;
         rawImageObj.onload = function() {
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
@@ -296,8 +308,15 @@
           let renderH = rawImageObj.height * imgScale;
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
+          
+          // एकदम सटीक केंद्र (Center) पोजीशन सेट करना
           imgX = box.left + (box.width - renderW) / 2;
           imgY = box.top + (box.height - renderH) / 2;
+          
+          // ओरिजिनल ग्रेविटी पॉइंट सेव करना जहाँ से फोटो वापस लौटेगी
+          defaultOriginalX = imgX;
+          defaultOriginalY = imgY;
+
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
         }
@@ -306,37 +325,16 @@
       reader.readAsDataURL(file);
     }
 
-    function enforceBoundaries(isReleased = false) {
-      if(!rawImageObj) return;
-      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-      let renderW = rawImageObj.width * imgScale;
-      let renderH = rawImageObj.height * imgScale;
-      let preview = document.getElementById("editorImagePreview");
-
-      if (isReleased) {
-        // ग्रेविटी स्नैप-बैक: जब उंगली छोड़ेंगे तो बाउंड्री के बाहर होने पर यह तुरंत स्प्रिंग इफ़ेक्ट से अंदर खींच लेगा
-        preview.style.transition = 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      } else {
-        preview.style.transition = 'none';
-      }
-
-      if (imgX > box.left) imgX = box.left;
-      if (imgX + renderW < box.left + box.width) imgX = box.left + box.width - renderW;
-      if (imgY > box.top) imgY = box.top;
-      if (imgY + renderH < box.top + box.height) imgY = box.top + box.height - renderH;
-
-      preview.style.left = imgX + "px";
-      preview.style.top = imgY + "px";
-    }
-
+    // अब फोटो स्क्रीन पर कहीं भी, क्रॉप बॉक्स के आर-पार जा सकती है (कोई बाउंड्री रोक-टोक नहीं)
     const editorArea = document.getElementById("editorCanvasArea");
+    let preview = document.getElementById("editorImagePreview");
+
     if(editorArea) {
       editorArea.addEventListener('mousedown', (e) => { 
-        isDraggingImg=true; 
-        startMouseX=e.clientX; 
-        startMouseY=e.clientY; 
-        let preview = document.getElementById("editorImagePreview");
-        preview.style.transition = 'none';
+        isDraggingImg = true; 
+        startMouseX = e.clientX; 
+        startMouseY = e.clientY; 
+        preview.style.transition = 'none'; // खींचते समय कोई रुकावट या डिले न हो
         e.preventDefault(); 
       });
 
@@ -346,23 +344,30 @@
         imgY += e.clientY - startMouseY;
         startMouseX = e.clientX; 
         startMouseY = e.clientY;
-        enforceBoundaries(false);
+        
+        preview.style.left = imgX + "px";
+        preview.style.top = imgY + "px";
       });
 
       window.addEventListener('mouseup', () => { 
         if(isDraggingImg) {
-          isDraggingImg=false; 
-          enforceBoundaries(true); // उंगली छोड़ते ही ग्रेविटी/स्नैप बैक ट्रिगर होगा
+          isDraggingImg = false; 
+          
+          // ग्रेविटी और स्नैप-बैक (Snap-Back) इफ़ेक्ट: उंगली छोड़ते ही फोटो स्प्रिंग की तरह वापस अपनी जगह लौटेगी
+          preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          imgX = defaultOriginalX;
+          imgY = defaultOriginalY;
+          preview.style.left = imgX + "px";
+          preview.style.top = imgY + "px";
         }
       });
 
-      // टच इवेंट्स के लिए भी यही ग्रेविटी स्नैप-बैक लॉजिक
+      // टच डिवाइसेस (मोबाइल/विवो फोन) के लिए भी फ्री मूवमेंट और ग्रेविटी स्नैप-बैक
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
           startMouseX = e.touches[0].clientX;
           startMouseY = e.touches[0].clientY;
-          let preview = document.getElementById("editorImagePreview");
           preview.style.transition = 'none';
         }
       });
@@ -373,14 +378,22 @@
         imgY += e.touches[0].clientY - startMouseY;
         startMouseX = e.touches[0].clientX;
         startMouseY = e.touches[0].clientY;
-        enforceBoundaries(false);
+        
+        preview.style.left = imgX + "px";
+        preview.style.top = imgY + "px";
         e.preventDefault();
       }, { passive: false });
 
       window.addEventListener('touchend', () => {
         if(isDraggingImg) {
           isDraggingImg = false;
-          enforceBoundaries(true); // टच हटाने पर ग्रेविटी स्नैप बैक काम करेगा
+          
+          // मोबाइल पर उंगली उठाते ही ग्रेविटी स्नैप-बैक काम करेगा
+          preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+          imgX = defaultOriginalX;
+          imgY = defaultOriginalY;
+          preview.style.left = imgX + "px";
+          preview.style.top = imgY + "px";
         }
       });
     }
@@ -397,7 +410,6 @@
         canvas.width = 1080;
         canvas.height = Math.round(1080 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
-        let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
         let previewRect = preview.getBoundingClientRect();
