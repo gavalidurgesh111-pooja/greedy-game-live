@@ -116,7 +116,6 @@
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
-    let initialPinchDistance = null;
 
     history.pushState({page: "photo_grid"}, "", window.location.href);
 
@@ -225,14 +224,6 @@
 
     function confirmSaveAndExit() {
       saveAndClosePhotoGridScreen();
-    }
-
-    function showCustomAlert(text) {
-      document.getElementById("customAlertText").innerText = text;
-      document.getElementById("customAlertModal").style.display = "flex";
-    }
-    function closeCustomAlert() {
-      document.getElementById("customAlertModal").style.display = "none";
     }
 
     let selectedSlotForTips = 1;
