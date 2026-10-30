@@ -173,6 +173,7 @@
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
+        // अब 1 से लेकर 8 तक के सभी कवर स्लॉट (slot 1 से 8) सही से लोड होंगे
         let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("unsaved_slot_" + (i - 1)) || "");
 
         cell.onclick = () => handleGridCellClick(i);
@@ -210,6 +211,7 @@
     }
 
     function confirmNoThanks() {
+      document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
@@ -222,6 +224,7 @@
     }
 
     function confirmSaveAndExit() {
+      document.getElementById("unsavedTipsModal").style.display = "none";
       saveAndClosePhotoGridScreen();
     }
 
@@ -237,7 +240,7 @@
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let slotNum = index - 1;
+        let slotNum = index - 1; // 2 से 9 के क्लिक पर slotNum 1 से 8 बनेगा
         let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
         if(val && val.trim() !== "") {
           selectedSlotForTips = slotNum;
@@ -479,7 +482,6 @@
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
-        // **सटीक सेविंग लॉजिक (अब फोटो तुरंत ग्रिड और कवर पर जाएगी)**
         if (activeEditorMode === "cover") {
           localStorage.setItem("unsaved_slot_" + activeSlotIndex, finalDataUrl);
         } else {
