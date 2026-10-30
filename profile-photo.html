@@ -157,7 +157,7 @@
     });
 
     function initGridPage() {
-      // 1 से 8 तक के सभी स्लॉट अनसेव्ड मेमोरी में लोड किए जा रहे हैं
+      // 1 से 8 तक के सभी स्लॉट्स (जिਨ੍ਹਾਂ में 7, 8 भी शामिल हैं) को सही से इनिशियलाइज किया गया है
       for(let i=1; i<=8; i++) {
         if (!localStorage.getItem("unsaved_slot_" + i)) {
           localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
@@ -171,7 +171,7 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      // 1 से 9 तक के सभी बॉक्स के लिए लूप (बिल्कुल एक जैसा नियम)
+      // 1 से 9 तक के सभी बॉक्स के लिए लूप (अब 7, 8, 9 भी पूरी तरह काम करेंगे)
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -211,7 +211,6 @@
       }
     }
 
-    // NO, THANKS बटन: कोई बदलाव सेव नहीं होगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
@@ -225,7 +224,6 @@
       window.location.replace("Profile.html");
     }
 
-    // SAVE बटन: सभी बदलाव परमानेंट सेव होकर कवर और ग्रिड पर सेट हो जाएंगे
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       saveAndClosePhotoGridScreen();
@@ -243,7 +241,7 @@
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let slotNum = index - 1; // 2 से 9 के क्लिक पर 1 से 8 स्लॉट कवर के लिए सेट होंगे
+        let slotNum = index - 1; // बॉक्स 2 से 9 के लिए स्लॉट 1 से 8 तय किए गए हैं
         let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
         if(val && val.trim() !== "") {
           selectedSlotForTips = slotNum;
@@ -485,6 +483,7 @@
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
 
+        // फोटो को सही स्लॉट में सुरक्षित करना
         if (activeEditorMode === "cover") {
           localStorage.setItem("unsaved_slot_" + activeSlotIndex, finalDataUrl);
         } else {
