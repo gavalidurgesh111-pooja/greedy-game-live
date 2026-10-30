@@ -42,7 +42,6 @@
       border: 2px solid #fff;
       z-index: 5;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      letter-spacing: 0.5px;
       cursor: pointer;
     }
     .cover-center-plus:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.2); }
@@ -51,7 +50,6 @@
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 20; }
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
 
-    /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: visible !important; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -62,11 +60,6 @@
       pointer-events: none !important; box-sizing: border-box !important; background-size: 100% 100% !important;
       background-repeat: no-repeat !important; background-position: center !important; z-index: 25 !important; display: none;
     }
-
-    .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
-    .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
-    .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
-    .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -95,25 +88,16 @@
     .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
     .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
     .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
-
-    .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
-    .sub-header h2 { font-size: 18px; font-weight: 900; }
-    
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
-    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; }
-    .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
-    .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
   </style>
 </head>
 <body>
 
   <div class="page-container">
     <div id="screenProfile">
-      <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
+      <div class="profile-back-btn" onclick="alert('Back')">❮</div>
       <div class="profile-top-icons">
-        <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
-        <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
+        <div class="icon-circle" onclick="alert('Coins')">💸</div>
+        <div class="icon-circle" onclick="alert('Settings')">⚙️</div>
       </div>
 
       <!-- कवर स्लाइडर (1 से 9 तक) -->
@@ -130,7 +114,7 @@
       </div>
 
       <div class="profile-header-area">
-        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+        <div class="avatar-wrapper" onclick="openPhotoGridScreen()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
           <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
@@ -138,52 +122,14 @@
         
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User_368282</div>
-            <div id="editNameBtn" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
+            <div class="user-name" id="profNameDisplay">User_368282</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
         <div class="tags-row">
-          <div class="tag-lv">👑 Lv.<span id="profLevel">0</span></div>
-          <div class="tag-id" onclick="copyMyId()">🆔 <span id="profId">#288630</span> 📋</div>
-        </div>
-      </div>
-
-      <div class="follow-stats-row">
-        <div class="follow-counts">
-          <div class="f-count-item"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
-          <div class="f-count-item"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
-        </div>
-        <div class="profile-action-btns">
-          <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
-        </div>
-      </div>
-
-      <div class="stats-container">
-        <div class="stat-item-balance" onclick="openCoinSendModal()">
-          <div class="stat-val">🪙 <span id="profBalance">0</span></div>
-          <div class="stat-label">Wallet Balance</div>
-        </div>
-        <div class="stat-item-won">
-          <div class="stat-val">🏆 <span id="profWon">0</span></div>
-          <div class="stat-label">Total Won Coins</div>
-        </div>
-      </div>
-
-      <div class="cards-wrapper">
-        <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
-          <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
-          <div style="font-size:32px;">🎰</div>
-        </div>
-        <div class="action-card card-about" onclick="openAboutMeScreen()">
-          <div><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
-          <div style="font-size:32px;">👤</div>
-        </div>
-        <div class="action-card card-group" onclick="openGroupsScreen()">
-          <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
-          <div style="font-size:32px;">🌐</div>
+          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
+          <div class="tag-id">🆔 <span id="profId">#288630</span></div>
         </div>
       </div>
     </div>
@@ -192,31 +138,14 @@
   <script>
     if (!localStorage.getItem("greedy_initialized")) {
       localStorage.setItem("greedy_initialized", "true");
-      localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "0");
-      localStorage.setItem("greedy_level", "1");
-      localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-      localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
       localStorage.setItem("greedy_avatar", ""); 
       for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, "");
       }
     }
 
-    let coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
-    let userName = localStorage.getItem("greedy_name") || "User_368282";
-    let userId = localStorage.getItem("greedy_unique_id") || "#288630";
-    let userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
-    let totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
-    let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-
     function initProfile() {
-      document.getElementById("profNameDisplay").innerText = userName;
-      document.getElementById("profBalance").innerText = coins;
-      document.getElementById("profWon").innerText = totalWon;
-      document.getElementById("profLevel").innerText = userLevel;
-      document.getElementById("profId").innerText = userId;
-      
+      let currentAvatar = localStorage.getItem("greedy_avatar") || "";
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
 
@@ -229,43 +158,25 @@
         if(plusIcon) plusIcon.style.display = "block";
       }
 
-      // कवर पेजेस रेंडरिंग (1 से 9 तक बिल्कुल साफ़ और क्रमबद्ध)
-      let avatarPic = currentAvatar || "";
-      let filledCount = 0;
-      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
-      
-      for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("greedy_slot_" + i) || "";
-        if (val && val.trim() !== "") {
-          filledCount = i + 1;
-        }
-      }
-      
-      let totalVisible = filledCount + 1;
-      if (totalVisible > 9) totalVisible = 9;
-
+      // कवर पेजेस रेंडरिंग (1 से 9 तक बिल्कुल सटीक लूप)
       for(let i = 1; i <= 9; i++) {
         let pageEl = document.getElementById("coverPage" + i);
         let plusEl = document.getElementById("plusCover" + i);
         if(!pageEl) continue;
 
-        let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("greedy_slot_" + (i - 1)) || "");
+        // slot 1 मुख्य अवतार है, और slot 2 से 9 के लिए greedy_slot_1 से greedy_slot_8 तक देखेंगे
+        let slotVal = (i === 1) ? currentAvatar : (localStorage.getItem("greedy_slot_" + (i - 1)) || "");
 
         if(slotVal && slotVal.trim() !== "") {
           pageEl.style.backgroundImage = `url('${slotVal}')`;
           if(plusEl) plusEl.style.display = "none"; 
           pageEl.style.display = "flex";
         } else {
-          if (i <= totalVisible) {
-            pageEl.style.backgroundImage = "none";
-            pageEl.style.display = "flex";
-            if(plusEl) {
-              plusEl.style.display = "flex";
-              plusEl.innerText = "Upload";
-            }
-          } else {
-            pageEl.style.backgroundImage = "none";
-            pageEl.style.display = "none"; 
+          pageEl.style.backgroundImage = "none";
+          pageEl.style.display = "flex";
+          if(plusEl) {
+            plusEl.style.display = "flex";
+            plusEl.innerText = "Upload";
           }
         }
       }
@@ -275,7 +186,6 @@
       window.location.href = "profile-photo.html";
     }
 
-    function showCustomAlert(text) { alert(text); }
     window.onload = () => { initProfile(); };
   </script>
 </body>
