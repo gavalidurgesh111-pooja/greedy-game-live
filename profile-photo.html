@@ -36,11 +36,12 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* फोटो एडिटर स्क्रीन */
+    /* फोटो एडिटर स्क्रीन - सफेद बैकग्राउंड */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
     
-    .crop-frame-box { width: 100%; max-width: 100%; height: 380px; border: 2px solid #ffffff; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    /* क्रॉप बॉक्स की बॉर्डर अब पूरी तरह सफेद (#ffffff) है */
+    .crop-frame-box { width: 100%; max-width: 100%; height: 320px; border: 2px solid #ffffff; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
     #editorImagePreview { 
       position: absolute; 
@@ -209,9 +210,7 @@
       }
     }
 
-    // NO, THANKS बटन: बदलाव सेव नहीं होंगे और सीधे बाहर आ जाएगा
     function confirmNoThanks() {
-      document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
@@ -223,9 +222,7 @@
       window.location.replace("Profile.html");
     }
 
-    // SAVE बटन: बदलाव परमानेंट सेव होकर प्रोफाइल पर सेट हो जाएंगे
     function confirmSaveAndExit() {
-      document.getElementById("unsavedTipsModal").style.display = "none";
       saveAndClosePhotoGridScreen();
     }
 
@@ -362,6 +359,7 @@
     }
 
     if(editorArea) {
+      // 1. माउस इवेंट्स (संतुलित 1.25x स्पीड)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -387,6 +385,7 @@
         }
       });
 
+      // माउस व्हील ज़ूम
       editorArea.addEventListener('wheel', (e) => {
         e.preventDefault();
         let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
@@ -401,6 +400,7 @@
         }
       }, { passive: false });
 
+      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए संतुलित 1.25x स्पीड)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -467,10 +467,9 @@
         canvas.width = 1080;
         canvas.height = Math.round(1080 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
-        
-        let previewRect = preview.getBoundingClientRect();
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
+        let previewRect = preview.getBoundingClientRect();
 
         let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
         let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
@@ -482,12 +481,10 @@
 
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
-
         if (activeEditorMode === "cover") {
           localStorage.setItem("unsaved_slot_" + activeSlotIndex, finalDataUrl);
         } else {
           currentAvatarTemp = finalDataUrl;
-          localStorage.setItem("greedy_avatar", currentAvatarTemp);
         }
         render9Grid();
       }
