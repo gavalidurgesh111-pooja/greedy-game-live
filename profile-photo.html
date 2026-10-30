@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
     
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; position: relative; z-index: 50; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
@@ -20,24 +20,24 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    /* Unsaved Changes Modal (Tips) - z-index बढ़ाया गया है ताकि आसानी से क्लिक हो सके */
-    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
-    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; position: relative; z-index: 1000000; }
+    /* Unsaved Changes Modal (Tips) - सबसे ऊपर पक्का लेयर */
+    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999999; align-items: center; justify-content: center; }
+    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.4); text-align: left; position: relative; z-index: 10000000; }
     .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
     .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
-    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 20px; font-size: 14px; font-weight: bold; }
-    .btn-no-thanks { color: #666; cursor: pointer; padding: 5px; }
-    .btn-save-changes { color: #5e229e; cursor: pointer; padding: 5px; }
+    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 25px; font-size: 15px; font-weight: bold; }
+    .btn-no-thanks { color: #666; cursor: pointer; padding: 8px; }
+    .btn-save-changes { color: #5e229e; cursor: pointer; padding: 8px; }
 
     /* टिप्स (Tips) पॉपअप मेनू */
-    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
-    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
+    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1000000; }
     .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
-    .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
+    .tips-item { padding: 12px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
     /* फोटो एडिटर स्क्रीन */
-    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
+    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 999999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; display: block; max-width: none !important; max-height: none !important; }
@@ -53,10 +53,10 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:22px; font-weight:bold; padding: 5px;" onclick="handleGridBackAction()">❮</div>
+      <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="handleGridBackAction()">❮</div>
       <h2>Profile photo</h2>
-      <!-- ✓ बटन पर स्टाइल और क्लिक पक्का किया गया है -->
-      <div style="cursor:pointer; font-size:24px; color:#1e3c72; font-weight:bold; padding: 5px; z-index: 50;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
+      <!-- ✓ बटन पर फिक्स क्लिक इनेबल किया गया है -->
+      <div id="saveCheckBtn" style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px; z-index: 100; position: relative;" onclick="saveAndClosePhotoGridScreen()">✓</div>
     </div>
 
     <div class="grid-9-container" id="grid9Container"></div>
@@ -77,7 +77,7 @@
     </div>
 
     <!-- Tips Modal -->
-    <div id="tipsModal" class="modal-overlay">
+    <div id="tipsModal">
       <div class="tips-box" style="text-align:left;">
         <h3>Tips</h3>
         <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
@@ -340,7 +340,7 @@
       preview.style.top = imgY + "px";
     }
 
-    const editorArea = document.getElementById("editorCanvasAudio") || document.getElementById("editorCanvasArea");
+    const editorArea = document.getElementById("editorCanvasArea");
     if(editorArea) {
       editorArea.addEventListener('mousedown', (e) => { isDraggingImg=true; startMouseX=e.clientX; startMouseY=e.clientY; e.preventDefault(); });
       window.addEventListener('mousemove', (e) => {
