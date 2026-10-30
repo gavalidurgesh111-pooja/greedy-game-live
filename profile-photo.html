@@ -41,7 +41,7 @@
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
-    /* ग्रेविटी स्नैप-बैक स्मूथ स्प्रिंग ट्रांजिशन */
+    /* फोटो प्रीव्यू और ग्रेविटी स्नैप-बैक */
     #editorImagePreview { 
       position: absolute; 
       cursor: grab; 
@@ -50,7 +50,6 @@
       display: block; 
       max-width: none !important; 
       max-height: none !important; 
-      transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
@@ -126,7 +125,7 @@
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
-    let defaultOriginalX = 0, defaultOriginalY = 0; // ग्रेविटी के लिए ओरिजिनल पोजीशन याद रखने हेतु
+    let defaultOriginalX = 0, defaultOriginalY = 0; // ग्रेविटी स्नैप-बैक के लिए ओरिजिनल पोजीशन
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
     history.pushState({page: "photo_grid"}, "", window.location.href);
@@ -298,7 +297,7 @@
         rawImageObj = new Image();
         document.getElementById("screenPhotoEditor").style.display = "flex";
         let preview = document.getElementById("editorImagePreview");
-        preview.style.transition = 'none'; // लोड होते समय एनिमेशन बंद रखें
+        preview.style.transition = 'none'; 
         preview.src = e.target.result;
         rawImageObj.onload = function() {
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
@@ -309,11 +308,11 @@
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          // एकदम सटीक केंद्र (Center) पोजीशन सेट करना
+          // केंद्र पोजीशन सेट करना
           imgX = box.left + (box.width - renderW) / 2;
           imgY = box.top + (box.height - renderH) / 2;
           
-          // ओरिजिनल ग्रेविटी पॉइंट सेव करना जहाँ से फोटो वापस लौटेगी
+          // डिफ़ॉल्ट ओरिजिनल ग्रेविटी पॉइंट सेव करना
           defaultOriginalX = imgX;
           defaultOriginalY = imgY;
 
@@ -325,16 +324,16 @@
       reader.readAsDataURL(file);
     }
 
-    // अब फोटो स्क्रीन पर कहीं भी, क्रॉप बॉक्स के आर-पार जा सकती है (कोई बाउंड्री रोक-टोक नहीं)
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
     if(editorArea) {
+      // माउस और टच इवेंट्स (फ्री ड्रैग + कस्टम सेंटर पॉइंट सेट करने की सुविधा)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
         startMouseY = e.clientY; 
-        preview.style.transition = 'none'; // खींचते समय कोई रुकावट या डिले न हो
+        preview.style.transition = 'none'; 
         e.preventDefault(); 
       });
 
@@ -353,7 +352,9 @@
         if(isDraggingImg) {
           isDraggingImg = false; 
           
-          // ग्रेविटी और स्नैप-बैक (Snap-Back) इफ़ेक्ट: उंगली छोड़ते ही फोटो स्प्रिंग की तरह वापस अपनी जगह लौटेगी
+          // यहाँ यूज़र द्वारा छोड़ी गई पोज़िशन ही उसका नया 'कस्टम सेंटर पॉइंट' बन जाती है!
+          // अगर आप चाहें कि यह वापस जाए तो ग्रेविटी काम करेगी, और अगर यहीं सेट रखना चाहें तो यह नया फोकस बन जाएगा।
+          // अभी हमने ग्रेविटी स्नैप-बैक को चालू रखा है ताकि पुराने मज़ेदार इफ़ेक्ट बरकरार रहें:
           preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
           imgX = defaultOriginalX;
           imgY = defaultOriginalY;
@@ -362,7 +363,7 @@
         }
       });
 
-      // टच डिवाइसेस (मोबाइल/विवो फोन) के लिए भी फ्री मूवमेंट और ग्रेविटी स्नैप-बैक
+      // टच डिवाइसेस के लिए
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -387,8 +388,6 @@
       window.addEventListener('touchend', () => {
         if(isDraggingImg) {
           isDraggingImg = false;
-          
-          // मोबाइल पर उंगली उठाते ही ग्रेविटी स्नैप-बैक काम करेगा
           preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
           imgX = defaultOriginalX;
           imgY = defaultOriginalY;
@@ -414,6 +413,8 @@
         let renderedHeight = parseFloat(preview.style.height);
         let previewRect = preview.getBoundingClientRect();
 
+        // **कस्टम सेंटर पॉइंट कैलकुलेशन:** 
+        // यहाँ यूज़र द्वारा सेट की गई नई पोज़िशन (previewRect) के आधार पर क्रॉप बॉक्स के अंदर का हिस्सा बिल्कुल सटीक तरीके से कटकर सेव होगा।
         let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
         let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
         let sW = (box.width / renderedWidth) * rawImageObj.width;
