@@ -156,14 +156,23 @@
       }
     });
 
-    function initGridPage() {
-      // 1 से 8 तक के सभी स्लॉट्स (जिਨ੍ਹਾਂ में 7, 8 भी शामिल हैं) को सही से इनिशियलाइज किया गया है
+        function initGridPage() {
+      // यहाँ 1 से लेकर 8 तक के स्लॉट्स (क्योंकि slot 1 से 8 यानी कुल 9 बॉक्स कवर के) सही से इनिशियलाइज होने चाहिए
       for(let i=1; i<=8; i++) {
         if (!localStorage.getItem("unsaved_slot_" + i)) {
           localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
         }
       }
       render9Grid();
+    }
+
+    function saveAndClosePhotoGridScreen() {
+      localStorage.setItem("greedy_avatar", currentAvatarTemp);
+      // यहाँ भी लूप 1 से 8 तक पूरा चलना चाहिए ताकि 7 और 8 (जो 8वें स्लॉट तक होते हैं) परमानेंट सेव हो जाएं
+      for(let i=1; i<=8; i++) {
+        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
+      }
+      window.location.replace("Profile.html");
     }
 
     function render9Grid() {
