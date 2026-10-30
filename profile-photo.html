@@ -36,10 +36,10 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* फोटो एडिटर स्क्रीन - Mika ऐप जैसी सटीक बनावट */
-    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
-    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
-    .crop-frame-box { width: 100%; max-width: 100%; height: 320px; border: 2px solid rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.88); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    /* फोटो एडिटर स्क्रीन - बैकग्राउंड पूरी तरह सफेद (#ffffff) */
+    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
+    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
+    .crop-frame-box { width: 100%; max-width: 100%; height: 320px; border: 2px solid rgba(0, 0, 0, 0.85); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
     #editorImagePreview { 
       position: absolute; 
@@ -54,8 +54,8 @@
       transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
-    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
-    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; }
+    .editor-bottom-bar { width: 100%; height: 65px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #ddd; }
+    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #333; }
     
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; text-align: center; }
@@ -330,7 +330,6 @@
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
-    // **स्मार्ट बाउंड्री क्लैंपिंग और संतुलित स्पीड (1.25x Speed Control):**
     function applySmartBoundaryAndSnap() {
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = parseFloat(preview.style.width);
@@ -358,7 +357,7 @@
     }
 
     if(editorArea) {
-      // 1. माउस इवेंट्स (संतुलित और स्मूथ 1.25x स्पीड)
+      // 1. माउस इवेंट्स (संतुलित 1.25x स्पीड)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -399,7 +398,7 @@
         }
       }, { passive: false });
 
-      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए नियंत्रित और स्मूथ 1.25x स्पीड)
+      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए संतुलित 1.25x स्पीड)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
