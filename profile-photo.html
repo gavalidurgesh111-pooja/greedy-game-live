@@ -36,10 +36,10 @@
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    /* फोटो एडिटर स्क्रीन */
+    /* फोटो एडिटर स्क्रीन - Mika ऐप जैसी सटीक बनावट */
     #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
-    .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
+    .crop-frame-box { width: 100%; max-width: 100%; height: 320px; border: 2px solid rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.88); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
     #editorImagePreview { 
       position: absolute; 
@@ -330,7 +330,7 @@
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
-    // **सुपर-फास्ट और स्मार्ट बाउंड्री क्लैंपिंग (2x Speed & Clamping):**
+    // **स्मार्ट बाउंड्री क्लैंपिंग और संतुलित स्पीड (1.25x Speed Control):**
     function applySmartBoundaryAndSnap() {
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = parseFloat(preview.style.width);
@@ -348,7 +348,7 @@
       let clampedTop = Math.max(minY, Math.min(maxY, currentTop));
 
       if (clampedLeft !== currentLeft || clampedTop !== currentTop) {
-        preview.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        preview.style.transition = 'transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
         posX = clampedLeft - baseLeft;
         posY = clampedTop - baseTop;
       } else {
@@ -358,7 +358,7 @@
     }
 
     if(editorArea) {
-      // 1. माउस इवेंट्स (सुपर-फास्ट स्पीड बूस्ट 1.8x)
+      // 1. माउस इवेंट्स (संतुलित और स्मूथ 1.25x स्पीड)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -369,8 +369,8 @@
 
       window.addEventListener('mousemove', (e) => {
         if(!isDraggingImg) return;
-        posX += (e.clientX - startMouseX) * 1.8;
-        posY += (e.clientY - startMouseY) * 1.8;
+        posX += (e.clientX - startMouseX) * 1.25;
+        posY += (e.clientY - startMouseY) * 1.25;
         startMouseX = e.clientX; 
         startMouseY = e.clientY;
         
@@ -399,7 +399,7 @@
         }
       }, { passive: false });
 
-      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए सुपर-फास्ट 1.8x स्पीड)
+      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए नियंत्रित और स्मूथ 1.25x स्पीड)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -418,8 +418,8 @@
 
       window.addEventListener('touchmove', (e) => {
         if(e.touches.length === 1 && isDraggingImg) {
-          posX += (e.touches[0].clientX - startMouseX) * 1.8;
-          posY += (e.touches[0].clientY - startMouseY) * 1.8;
+          posX += (e.touches[0].clientX - startMouseX) * 1.25;
+          posY += (e.touches[0].clientY - startMouseY) * 1.25;
           startMouseX = e.touches[0].clientX;
           startMouseY = e.touches[0].clientY;
           
