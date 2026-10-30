@@ -116,6 +116,7 @@
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
+    let initialPinchDistance = null;
 
     history.pushState({page: "photo_grid"}, "", window.location.href);
 
@@ -155,8 +156,18 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      // हमेशा 1 से 9 तक पूरे 9 बॉक्स रेंडर करने के लिए लूप को 9 तक सेट किया गया है[span_2](start_span)[span_2](end_span)
-      for(let i = 1; i <= 9; i++) {
+      let filledCount = 0;
+      if (avatarPic && avatarPic.trim() !== "") filledCount = 1;
+      for(let i = 1; i <= 8; i++) {
+        let val = localStorage.getItem("unsaved_slot_" + i) || "";
+        if (val && val.trim() !== "") filledCount = i + 1;
+        else break;
+      }
+      let maxGridSlots = filledCount + 1;
+      if (maxGridSlots > 9) maxGridSlots = 9;
+      if (maxGridSlots < 6) maxGridSlots = 6;
+
+      for(let i = 1; i <= maxGridSlots; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
         let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("unsaved_slot_" + (i - 1)) || "");
@@ -170,15 +181,19 @@
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          // हर खाली बॉक्स पर 'Upload' बटन दिखेगा[span_3](start_span)[span_3](end_span)
-          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          let showUpload = (i === 1) || (i === 2 && avatarPic) || (i > 2 && localStorage.getItem("unsaved_slot_" + (i - 2)));
+          if (showUpload) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          } else {
+            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
+          }
         }
         container.appendChild(cell);
       }
     }
 
     function closePhotoGridWithoutSaving() {
-      window.location.replace("Profile.html");
+      window.location.replace("profile.html");
     }
 
     function handleGridBackAction() {
@@ -205,11 +220,19 @@
       for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
       }
-      window.location.replace("Profile.html");
+      window.location.replace("profile.html");
     }
 
     function confirmSaveAndExit() {
       saveAndClosePhotoGridScreen();
+    }
+
+    function showCustomAlert(text) {
+      document.getElementById("customAlertText").innerText = text;
+      document.getElementById("customAlertModal").style.display = "flex";
+    }
+    function closeCustomAlert() {
+      document.getElementById("customAlertModal").style.display = "none";
     }
 
     let selectedSlotForTips = 1;
@@ -238,7 +261,6 @@
     }
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
-    
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips > 0) {
@@ -249,7 +271,6 @@
         }
       }
     }
-
     function tipsChangePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -261,7 +282,6 @@
         document.getElementById("hiddenGalleryInput").click();
       }
     }
-
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
