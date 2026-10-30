@@ -40,3 +40,6 @@ http.listen(PORT, () => {
 app.get('/profile.html', (req, res) => {
   res.sendFile(__dirname + '/profile.html');
 });
+app.get('/profile-photo.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'profile-photo.html'));
+});
