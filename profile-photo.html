@@ -41,6 +41,7 @@
     .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
     .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
+    /* ग्रेविटी और कस्टम सेंटर का मिला-जुला ट्रांजिशन */
     #editorImagePreview { 
       position: absolute; 
       cursor: grab; 
@@ -50,6 +51,7 @@
       max-width: none !important; 
       max-height: none !important; 
       transform-origin: center center;
+      transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
@@ -125,6 +127,7 @@
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
+    let defaultOriginalX = 0, defaultOriginalY = 0;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
@@ -302,7 +305,7 @@
         rawImageObj.onload = function() {
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
-          maxScale = minScale * 2.5; // सीमित ज़ूम (ज़्यादा नहीं, कुछ हद तक)
+          maxScale = minScale * 2.5;
           imgScale = minScale;
           
           let renderW = rawImageObj.width * imgScale;
@@ -310,9 +313,11 @@
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          // केंद्र पोजीशन सेट करना
           imgX = box.left + (box.width - renderW) / 2;
           imgY = box.top + (box.height - renderH) / 2;
+          
+          defaultOriginalX = imgX;
+          defaultOriginalY = imgY;
 
           preview.style.left = imgX + "px";
           preview.style.top = imgY + "px";
@@ -326,7 +331,7 @@
     let preview = document.getElementById("editorImagePreview");
 
     if(editorArea) {
-      // 1. माउस ड्रैग इवेंट्स (कस्टम सेंटर पॉइंट सेट करने के लिए)
+      // 1. माउस ड्रैग इवेंट्स
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -349,7 +354,25 @@
       window.addEventListener('mouseup', () => { 
         if(isDraggingImg) {
           isDraggingImg = false; 
-          // यूज़र ने जहाँ उंगली/माउस छोड़ा, वही पोज़िशन उसका नया केंद्र बिंदु (Custom Focal Point) बन गई!
+          
+          // **स्नैप-बैक और कस्टम सेंटर का संगम (Smart Gravity & Custom Focal Point):**
+          // यदि यूज़र फोटो को बहुत ज्यादा बाहर या दूर खींचकर छोड़ता है, तो ग्रेविटी उसे सुरक्षित रूप से वापस खींच लेती है;
+          // और अगर वह थोड़ा सा खींचकर अपनी पसंद का नया सेंटर सेट करता है, तो फोटो वहीं टिक जाती है!
+          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
+          let previewRect = preview.getBoundingClientRect();
+          
+          // अगर फोटो क्रॉप बॉक्स से बहुत ज्यादा दूर चली गई है, तो स्नैप-बैक एक्टिव होगा:
+          if (Math.abs(imgX - defaultOriginalX) > 200 || Math.abs(imgY - defaultOriginalY) > 200) {
+            preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            imgX = defaultOriginalX;
+            imgY = defaultOriginalY;
+            preview.style.left = imgX + "px";
+            preview.style.top = imgY + "px";
+          } else {
+            // वरना यूज़र द्वारा सेट किया गया नया पोज़िशन ही उसका नया कस्टम सेंटर पॉइंट बन जाएगा!
+            defaultOriginalX = imgX;
+            defaultOriginalY = imgY;
+          }
         }
       });
 
@@ -367,7 +390,7 @@
         }
       }, { passive: false });
 
-      // 2. टच इवेंट्स (मोबाइल / विवो फोन के लिए - ड्रैग और पिंच ज़ूम)
+      // 2. टच इवेंट्स (मोबाइल / विवो फोन के लिए)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -416,7 +439,21 @@
 
       window.addEventListener('touchend', (e) => {
         if(e.touches.length < 2) initialPinchDistance = null;
-        if(e.touches.length === 0) isDraggingImg = false;
+        if(e.touches.length === 0 && isDraggingImg) {
+          isDraggingImg = false;
+          
+          // मोबाइल पर भी स्मार्ट ग्रेविटी और कस्टम सेंटर का तालमेल
+          if (Math.abs(imgX - defaultOriginalX) > 200 || Math.abs(imgY - defaultOriginalY) > 200) {
+            preview.style.transition = 'left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            imgX = defaultOriginalX;
+            imgY = defaultOriginalY;
+            preview.style.left = imgX + "px";
+            preview.style.top = imgY + "px";
+          } else {
+            defaultOriginalX = imgX;
+            defaultOriginalY = imgY;
+          }
+        }
       });
     }
 
@@ -436,7 +473,6 @@
         let renderedHeight = parseFloat(preview.style.height);
         let previewRect = preview.getBoundingClientRect();
 
-        // **कस्टम सेंटर पॉइंट और ज़ूम के हिसाब से सटीक क्रॉपिंग:**
         let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
         let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
         let sW = (box.width / renderedWidth) * rawImageObj.width;
