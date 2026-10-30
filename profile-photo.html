@@ -49,8 +49,9 @@
       display: block; 
       max-width: none !important; 
       max-height: none !important; 
-      transform-origin: center center;
-      transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
@@ -125,7 +126,8 @@
     let activeSlotIndex = 1;
     let activeEditorMode = "cover";
     let rawImageObj = null;
-    let imgX = 0, imgY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
+    let posX = 0, posY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
+    let baseLeft = 0, baseTop = 0;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
@@ -247,8 +249,6 @@
       }
     }
 
-    function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
-    
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips > 0) {
@@ -311,12 +311,14 @@
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
           
-          // एकदम सटीक केंद्र (Center) पोजीशन सेट करना
-          imgX = box.left + (box.width - renderW) / 2;
-          imgY = box.top + (box.height - renderH) / 2;
+          baseLeft = box.left + (box.width - renderW) / 2;
+          baseTop = box.top + (box.height - renderH) / 2;
 
-          preview.style.left = imgX + "px";
-          preview.style.top = imgY + "px";
+          preview.style.left = baseLeft + "px";
+          preview.style.top = baseTop + "px";
+          posX = 0;
+          posY = 0;
+          preview.style.transform = `translate3d(0px, 0px, 0px) scale(${imgScale / minScale})`;
         }
         rawImageObj.src = e.target.result;
       }
@@ -326,34 +328,35 @@
     const editorArea = document.getElementById("editorCanvasArea");
     let preview = document.getElementById("editorImagePreview");
 
-    // **स्मार्ट बाउंड्री क्लैंपिंग फंक्शन (Smart Clamping Logic):**
-    // यह सुनिश्चित करता है कि यूज़र फोटो को बाहर ले जा सके, लेकिन उंगली छोड़ने पर वह कभी भी खाली स्क्रीन या बाहर के हिस्से को केंद्र बिंदु न माने—फोटो हमेशा फ्रेम के अंदर ही एडजस्ट होकर रुके!
+    // **सुपर-फास्ट और स्मार्ट बाउंड्री क्लैंपिंग (2x Speed & Clamping):**
     function applySmartBoundaryAndSnap() {
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
       let renderW = parseFloat(preview.style.width);
       let renderH = parseFloat(preview.style.height);
+
+      let currentLeft = baseLeft + posX;
+      let currentTop = baseTop + posY;
 
       let minX = box.right - renderW;
       let maxX = box.left;
       let minY = box.bottom - renderH;
       let maxY = box.top;
 
-      let isOutOfBounds = (imgX < minX || imgX > maxX || imgY < minY || imgY > maxY);
+      let clampedLeft = Math.max(minX, Math.min(maxX, currentLeft));
+      let clampedTop = Math.max(minY, Math.min(maxY, currentTop));
 
-      if (isOutOfBounds) {
-        preview.style.transition = 'left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        
-        // फोटो को सुरक्षित रूप से फ्रेम के अंदर खींचकर लाना ताकि बाहर का हिस्सा सेंटर न बने
-        imgX = Math.max(minX, Math.min(maxX, imgX));
-        imgY = Math.max(minY, Math.min(maxY, imgY));
-
-        preview.style.left = imgX + "px";
-        preview.style.top = imgY + "px";
+      if (clampedLeft !== currentLeft || clampedTop !== currentTop) {
+        preview.style.transition = 'transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        posX = clampedLeft - baseLeft;
+        posY = clampedTop - baseTop;
+      } else {
+        preview.style.transition = 'none';
       }
+      preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
     }
 
     if(editorArea) {
-      // 1. माउस इवेंट्स
+      // 1. माउस इवेंट्स (2x स्पीड बूस्ट के साथ)
       editorArea.addEventListener('mousedown', (e) => { 
         isDraggingImg = true; 
         startMouseX = e.clientX; 
@@ -364,26 +367,26 @@
 
       window.addEventListener('mousemove', (e) => {
         if(!isDraggingImg) return;
-        imgX += e.clientX - startMouseX;
-        imgY += e.clientY - startMouseY;
+        // स्पीड को 1.5x गुना तेज किया गया है ताकि मक्खन की तरह भागे
+        posX += (e.clientX - startMouseX) * 1.4;
+        posY += (e.clientY - startMouseY) * 1.4;
         startMouseX = e.clientX; 
         startMouseY = e.clientY;
         
-        preview.style.left = imgX + "px";
-        preview.style.top = imgY + "px";
+        preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
       });
 
       window.addEventListener('mouseup', () => { 
         if(isDraggingImg) {
           isDraggingImg = false; 
-          applySmartBoundaryAndSnap(); // उंगली छोड़ते ही स्मार्ट बाउंड्री चेक होगी
+          applySmartBoundaryAndSnap(); 
         }
       });
 
-      // माउस व्हील से लिमिटेड ज़ूम
+      // माउस व्हील ज़ूम
       editorArea.addEventListener('wheel', (e) => {
         e.preventDefault();
-        let zoomFactor = e.deltaY < 0 ? 1.05 : 0.95;
+        let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
         let newScale = imgScale * zoomFactor;
         if(newScale >= minScale && newScale <= maxScale) {
           imgScale = newScale;
@@ -395,7 +398,7 @@
         }
       }, { passive: false });
 
-      // 2. टच इवेंट्स (मोबाइल / विवो फोन के लिए)
+      // 2. टच इवेंट्स (विवो मोबाइल फोन के लिए सुपर-फास्ट 2x स्पीड)
       editorArea.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
@@ -414,13 +417,13 @@
 
       window.addEventListener('touchmove', (e) => {
         if(e.touches.length === 1 && isDraggingImg) {
-          imgX += e.touches[0].clientX - startMouseX;
-          imgY += e.touches[0].clientY - startMouseY;
+          // मोबाइल पर भी उंगली की मूवमेंट को सुपर-स्मूथ और फास्ट (1.4x) किया गया है
+          posX += (e.touches[0].clientX - startMouseX) * 1.4;
+          posY += (e.touches[0].clientY - startMouseY) * 1.4;
           startMouseX = e.touches[0].clientX;
           startMouseY = e.touches[0].clientY;
           
-          preview.style.left = imgX + "px";
-          preview.style.top = imgY + "px";
+          preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
           e.preventDefault();
         } else if(e.touches.length === 2 && initialPinchDistance !== null) {
           let currentPinchDistance = Math.hypot(
@@ -446,7 +449,7 @@
         if(e.touches.length < 2) initialPinchDistance = null;
         if(e.touches.length === 0 && isDraggingImg) {
           isDraggingImg = false;
-          applySmartBoundaryAndSnap(); // मोबाइल पर उंगली उठाते ही स्मार्ट बाउंड्री लागू होगी
+          applySmartBoundaryAndSnap(); 
         }
       });
     }
@@ -475,6 +478,7 @@
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
         let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
 
+        document.getElementById("screenPhotoEditor").style.display, "none";
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
         if (activeEditorMode === "cover") {
