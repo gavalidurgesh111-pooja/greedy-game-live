@@ -9,11 +9,12 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area */
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    /* Cover Slider Area - सही ग्रिड और स्क्रॉल लेआउट */
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
     .cover-page {
+      flex: 0 0 100%;
       min-width: 100%;
       height: 100%;
       scroll-snap-align: start;
@@ -415,13 +416,12 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (1 से 9 फोटो दिखाने, अवतार सिंक करने और 9 पूरी होने पर Upload बटन छुपाने का सटीक लॉजिक)
+        // कवर पेजेस सेटअप (1 से 9 फोटो दिखाने, अवतार सिंक करने और स्क्रॉलिंग फिक्स के साथ)
         let slotsData = [];
         if (dbPhotos && dbPhotos.length > 0) {
           slotsData = [...dbPhotos];
         }
         
-        // यदि कवर लिस्ट खाली है पर अवतार फोटो मौजूद है, तो उसे पहले स्लॉट पर सेट करें
         if (slotsData.length === 0 && currentAvatar && currentAvatar.trim() !== "") {
           slotsData.push(currentAvatar);
         }
@@ -473,7 +473,7 @@
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से शुरू होगा
+            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से शुरू होगा और पहली फोटो बाईं तरफ रहेगी
           }
         }, 50);
       }).catch((error) => {
