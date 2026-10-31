@@ -20,6 +20,15 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
+    /* Unsaved Changes Modal (NO, THANKS और SAVE ऑप्शन) */
+    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
+    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
+    .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
+    .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
+    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    .btn-no-thanks { color: #666; }
+    .btn-save-changes { color: #5e229e; }
+
     /* टिप्स (Tips) पॉपअप मेनू */
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
     .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
@@ -57,7 +66,7 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()">❮</div>
+      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
       <h2>Profile photo</h2>
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
@@ -66,6 +75,18 @@
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
     <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
+
+    <!-- Unsaved Changes Modal (NO, THANKS और SAVE ऑप्शन) -->
+    <div id="unsavedTipsModal">
+      <div class="unsaved-tips-box">
+        <h3>Tips</h3>
+        <p>You have unsaved changes, do you want to save it?</p>
+        <div class="unsaved-tips-actions">
+          <span class="btn-no-thanks" onclick="confirmNoThanks()">NO, THANKS</span>
+          <span class="btn-save-changes" onclick="confirmSaveAndExit()">SAVE</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Tips Modal -->
     <div id="tipsModal" class="modal-overlay">
@@ -135,6 +156,18 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
+    history.pushState({page: "photo_grid"}, "", window.location.href);
+
+    window.addEventListener('popstate', function (event) {
+      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
+      if (hasChanges) {
+        history.pushState({page: "photo_grid"}, "", window.location.href);
+        document.getElementById("unsavedTipsModal").style.display = "flex";
+      } else {
+        closePhotoGridWithoutSaving();
+      }
+    });
+
     // Firebase से डेटा लोड करें
     function initGridPage() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
@@ -180,6 +213,23 @@
       }
     }
 
+    function closePhotoGridWithoutSaving() {
+      window.location.replace("profile.html");
+    }
+
+    function handleGridBackAction() {
+      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
+      if (hasChanges) {
+        document.getElementById("unsavedTipsModal").style.display = "flex";
+      } else {
+        closePhotoGridWithoutSaving();
+      }
+    }
+
+    function confirmNoThanks() {
+      closePhotoGridWithoutSaving();
+    }
+
     // डेटा को सीधे Firebase पर सेव करें और प्रोफाइल पेज पर जाएं
     function saveAndClosePhotoGridScreen() {
       db.collection("users").doc(currentIdentifier).set({
@@ -190,6 +240,10 @@
       }).catch((err) => {
         alert("Error saving to database: " + err.message);
       });
+    }
+
+    function confirmSaveAndExit() {
+      saveAndClosePhotoGridScreen();
     }
 
     let selectedSlotForTips = 1;
