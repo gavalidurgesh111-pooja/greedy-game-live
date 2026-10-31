@@ -130,13 +130,33 @@
     </div>
   </div>
 
-  <script>
-    // Cloudinary कॉन्फिगरेशन
-    const CLOUDINARY_CLOUD_NAME = "wolpzhms";
-    const CLOUDINARY_UPLOAD_PRESET = "greedy_preset"; // आपका नया अनसाइन्ड प्रेसेट[span_3](start_span)[span_3](end_span)
+  <!-- Firebase SDK Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-    let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let currentAvatarTemp = currentAvatar;
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    const CLOUDINARY_CLOUD_NAME = "wolpzhms";
+    const CLOUDINARY_UPLOAD_PRESET = "greedy_preset";
+
+    let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+    let cloudAvatar = "";
+    let cloudPhotos = [];
+    let tempAvatar = "";
+    let tempPhotos = [];
+    
     let activeSlotIndex = 1;
     let activeEditorMode = "cover";
     let rawImageObj = null;
@@ -145,48 +165,35 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
-    history.pushState({page: "photo_grid"}, "", window.location.href);
-
-    window.addEventListener('popstate', function (event) {
-      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
-      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
-        closePhotoGridWithoutSaving();
-      } else {
-        let hasChanges = (currentAvatarTemp !== currentAvatar);
-        for(let i=1; i<=8; i++) {
-          if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-            hasChanges = true;
-            break;
-          }
-        }
-        if (hasChanges) {
-          history.pushState({page: "photo_grid"}, "", window.location.href);
-          unsavedTipsModal.style.display = "flex";
-        } else {
-          closePhotoGridWithoutSaving();
-        }
-      }
-    });
-
+    // Firebase से डेटा लोड करें
     function initGridPage() {
-      for(let i=1; i<=8; i++) {
-        if (!localStorage.getItem("unsaved_slot_" + i)) {
-          localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
+      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+        if (doc.exists) {
+          let data = doc.data();
+          cloudAvatar = data.avatar || "";
+          cloudPhotos = data.photos || [];
+        } else {
+          cloudAvatar = "";
+          cloudPhotos = [];
         }
-      }
-      render9Grid();
+        tempAvatar = cloudAvatar;
+        tempPhotos = [...cloudPhotos];
+        render9Grid();
+      }).catch((err) => {
+        console.error("Error loading photos:", err);
+        render9Grid();
+      });
     }
 
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
-      let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
+      let avatarPic = tempAvatar;
       
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("unsaved_slot_" + (i - 1)) || "");
+        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
 
         cell.onclick = () => handleGridCellClick(i);
 
@@ -204,17 +211,11 @@
     }
 
     function closePhotoGridWithoutSaving() {
-      window.location.replace("Profile.html");
+      window.location.replace("profile.html");
     }
 
     function handleGridBackAction() {
-      let hasChanges = (currentAvatarTemp !== currentAvatar);
-      for(let i=1; i<=8; i++) {
-        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-          hasChanges = true;
-          break;
-        }
-      }
+      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
       if (hasChanges) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
@@ -226,12 +227,16 @@
       closePhotoGridWithoutSaving();
     }
 
+    // डेटा को सीधे Firebase पर सेव करें और प्रोफाइल पर जाएं
     function saveAndClosePhotoGridScreen() {
-      localStorage.setItem("greedy_avatar", currentAvatarTemp);
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
-      }
-      window.location.replace("Profile.html");
+      db.collection("users").doc(currentIdentifier).set({
+        avatar: tempAvatar,
+        photos: tempPhotos
+      }, { merge: true }).then(() => {
+        window.location.replace("profile.html");
+      }).catch((err) => {
+        alert("Error saving to database: " + err.message);
+      });
     }
 
     function confirmSaveAndExit() {
@@ -241,7 +246,7 @@
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
       if(index === 1) {
-        let profPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
+        let profPic = tempAvatar;
         if (profPic && profPic.trim() !== "") {
           selectedSlotForTips = 0;
           document.getElementById("tipsModal").style.display = "flex";
@@ -251,7 +256,7 @@
         }
       } else {
         let slotNum = index - 1;
-        let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
+        let val = tempPhotos[slotNum - 1] || "";
         if(val && val.trim() !== "") {
           selectedSlotForTips = slotNum;
           document.getElementById("tipsModal").style.display = "flex";
@@ -268,9 +273,9 @@
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips > 0) {
-        let val = localStorage.getItem("unsaved_slot_" + selectedSlotForTips);
+        let val = tempPhotos[selectedSlotForTips - 1];
         if(val) {
-          currentAvatarTemp = val;
+          tempAvatar = val;
           render9Grid();
         }
       }
@@ -291,16 +296,9 @@
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
-        currentAvatarTemp = "";
+        tempAvatar = "";
       } else {
-        localStorage.setItem("unsaved_slot_" + selectedSlotForTips, "");
-        let activePhotos = [];
-        for(let i = 1; i <= 8; i++) {
-          let p = localStorage.getItem("unsaved_slot_" + i);
-          if(p && p.trim() !== "") activePhotos.push(p);
-        }
-        for(let i = 1; i <= 8; i++) { localStorage.setItem("unsaved_slot_" + i, ""); }
-        for(let i = 0; i < activePhotos.length; i++) { localStorage.setItem("unsaved_slot_" + (i + 1), activePhotos[i]); }
+        tempPhotos.splice(selectedSlotForTips - 1, 1);
       }
       render9Grid();
     }
@@ -469,7 +467,6 @@
       rawImageObj = null;
     }
 
-    // यहाँ से कॉपीड फोटो सीधे Cloudinary पर जाएगी और उसका URL मिलेगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
@@ -496,7 +493,7 @@
       }
     }
 
-    // Cloudinary अपलोड फंक्शन
+    // Cloudinary डायरेक्ट अपलोड
     function uploadFileToCloudinary(fileBlob) {
       document.getElementById("uploadLoader").style.display = "flex";
       
@@ -512,12 +509,12 @@
       .then(data => {
         document.getElementById("uploadLoader").style.display = "none";
         if (data.secure_url) {
-          let cloudinaryUrl = data.secure_url; // यह रहा Cloudinary का परमानेंट URL लिंक
+          let cloudinaryUrl = data.secure_url;
           
           if (activeEditorMode === "cover") {
-            localStorage.setItem("unsaved_slot_" + activeSlotIndex, cloudinaryUrl);
+            tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
           } else {
-            currentAvatarTemp = cloudinaryUrl;
+            tempAvatar = cloudinaryUrl;
           }
           render9Grid();
         } else {
