@@ -415,7 +415,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (9 फोटो पूरी होने पर Upload बटन छुपाने का फिक्स लॉजिक)
+        // कवर पेजेस सेटअप (1 से 9 फोटो दिखाने और 9 पूरी होने पर Upload बटन छुपाने का सटीक लॉजिक)
         let slotsData = [];
         if (dbPhotos && dbPhotos.length > 0) {
           slotsData = [...dbPhotos];
@@ -435,6 +435,7 @@
             if(plusEl) plusEl.style.display = "none"; 
             pageEl.style.display = "flex";
           } else {
+            // अगर फोटो 9 से कम हैं, तभी अगला खाली स्लॉट अपलोड बटन के साथ दिखेगा
             if ((i === filledCount + 1) && filledCount < 9) {
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "flex";
@@ -450,7 +451,7 @@
                 plusEl.innerText = "Upload";
               }
             } else {
-              // 9 फोटो पूरी होने पर 10वें स्लॉट या फालतू अपलोड बटन को पूरी तरह छुपा दें
+              // 9 फोटो पूरी होने पर या अतिरिक्त स्लॉट पर कोई अपलोड बटन नहीं दिखेगा (पूरी तरह से скрыт/hidden)
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "none"; 
             }
