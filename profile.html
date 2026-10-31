@@ -347,7 +347,7 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
-    let dbPhotos = []; // सीधे Firebase और Cloudinary से आने वाले लिंक्स
+    let dbPhotos = []; 
 
     history.pushState({page: "profile_main"}, "", window.location.href);
 
@@ -415,16 +415,10 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (Cloudinary लिंक्स के आधार पर)
+        // कवर पेजेस सेटअप (Firebase की photos लिस्ट के आधार पर - पुरानी फोटो हटने और नई जुड़ने की समस्या का समाधान)
         let slotsData = [];
-        if (currentAvatar && currentAvatar.trim() !== "") {
-          slotsData.push(currentAvatar);
-        }
-        
-        for(let i = 0; i < dbPhotos.length; i++) {
-          if (dbPhotos[i] && dbPhotos[i].trim() !== "") {
-            slotsData.push(dbPhotos[i]);
-          }
+        if (dbPhotos && dbPhotos.length > 0) {
+          slotsData = [...dbPhotos];
         }
 
         let filledCount = slotsData.length;
