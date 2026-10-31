@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Profile Photo - Greedy Coin</title>
-  <!-- Cloudinary से बैकग्राउंड या एसेट्स प्रीलोड करना -->
   <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
@@ -22,14 +21,6 @@
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
     .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999999; align-items: center; justify-content: center; }
-    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.4); text-align: left; position: relative; z-index: 10000000; }
-    .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
-    .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
-    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 25px; font-size: 15px; font-weight: bold; }
-    .btn-no-thanks { color: #666; cursor: pointer; padding: 8px; }
-    .btn-save-changes { color: #5e229e; cursor: pointer; padding: 8px; }
-
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
     .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1000000; }
     .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
@@ -43,35 +34,21 @@
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
     .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; }
-    
-    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
-    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; text-align: center; }
   </style>
 </head>
 <body>
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="handleGridBackAction()">❮</div>
+      <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="window.location.replace('profile.html')">❮</div>
       <h2>Profile photo</h2>
-      <div id="saveCheckBtn" style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px; z-index: 100; position: relative;" onclick="saveAndClosePhotoGridScreen()">✓</div>
+      <div style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px;" onclick="savePhotosDirectToFirebase()">✓</div>
     </div>
 
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
     <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
-
-    <div id="unsavedTipsModal">
-      <div class="unsaved-tips-box">
-        <h3>Tips</h3>
-        <p>You have unsaved changes, do you want to save it?</p>
-        <div class="unsaved-tips-actions">
-          <span class="btn-no-thanks" onclick="confirmNoThanks()">NO, THANKS</span>
-          <span class="btn-save-changes" onclick="confirmSaveAndExit()">SAVE</span>
-        </div>
-      </div>
-    </div>
 
     <div id="tipsModal">
       <div class="tips-box" style="text-align:left;">
@@ -89,16 +66,8 @@
         <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
-        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
-        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
-      </div>
-    </div>
-
-    <div id="customAlertModal" class="modal-overlay">
-      <div class="modal-box">
-        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
-        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
-        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
+        <button class="editor-bottom-btn" onclick="cancelEditor()">✕</button>
+        <button class="editor-bottom-btn" onclick="confirmEditor()">✓</button>
       </div>
     </div>
   </div>
@@ -108,7 +77,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Firebase Config चाबी
     const firebaseConfig = {
       apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
       authDomain: "greedy--coin-game.firebaseapp.com",
@@ -123,60 +91,26 @@
     const db = firebase.firestore();
     const currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
 
-    let currentAvatar = localStorage.getItem("greedy_avatar") || "";
-    let currentAvatarTemp = currentAvatar;
-    let activeSlotIndex = 1;
+    // सारा डेटा सीधे ऑनलाइन वेरिएबल में रहेगा (लोकल स्टोरेज खत्म)
+    let dbAvatar = "";
+    let dbPhotos = []; // यहाँ 9 से ज्यादा या कितनी भी फोटो सीधे स्टोर होंगी
+    let activeSlotIndex = 0;
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
-    history.pushState({page: "photo_grid"}, "", window.location.href);
-
-    window.addEventListener('popstate', function (event) {
-      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
-      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
-        closePhotoGridWithoutSaving();
-      } else {
-        let hasChanges = (currentAvatarTemp !== currentAvatar);
-        for(let i=1; i<=8; i++) {
-          if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-            hasChanges = true;
-            break;
-          }
-        }
-        if (hasChanges) {
-          history.pushState({page: "photo_grid"}, "", window.location.href);
-          unsavedTipsModal.style.display = "flex";
-        } else {
-          closePhotoGridWithoutSaving();
-        }
-      }
-    });
-
+    // सीधे Firebase से डेटा लोड करना
     function initGridPage() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if(doc.exists) {
           let data = doc.data();
-          if(data.avatar) {
-            currentAvatar = data.avatar;
-            currentAvatarTemp = data.avatar;
-            localStorage.setItem("greedy_avatar", data.avatar);
-          }
-        }
-        for(let i=1; i<=8; i++) {
-          if (!localStorage.getItem("unsaved_slot_" + i)) {
-            localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
-          }
+          dbAvatar = data.avatar || "";
+          dbPhotos = data.photos || []; // Firebase से एरे लोड होगा
         }
         render9Grid();
-      }).catch(() => {
-        for(let i=1; i<=8; i++) {
-          if (!localStorage.getItem("unsaved_slot_" + i)) {
-            localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
-          }
-        }
+      }).catch((err) => {
+        console.error("Error loading from Firebase:", err);
         render9Grid();
       });
     }
@@ -184,42 +118,26 @@
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
-      let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      let filledCount = 0;
-      if (avatarPic && avatarPic.trim() !== "") {
-        filledCount = 1;
-      }
-      for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("unsaved_slot_" + i) || "";
-        if (val && val.trim() !== "") {
-          filledCount = i + 1;
-        } else {
-          break;
-        }
-      }
+      let totalSlots = Math.max(dbPhotos.length + 1, 1);
+      if(totalSlots > 9) totalSlots = 9;
 
-      let maxGridSlots = filledCount + 1;
-      if (maxGridSlots > 9) maxGridSlots = 9;
-      if (maxGridSlots < 1) maxGridSlots = 1;
-
-      for(let i = 1; i <= maxGridSlots; i++) {
+      for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("unsaved_slot_" + (i - 1)) || "");
+        
+        let photoVal = (i === 1) ? dbAvatar : (dbPhotos[i - 2] || "");
 
         cell.onclick = () => handleGridCellClick(i);
 
-        if (slotVal && slotVal.trim() !== "") {
+        if (photoVal && photoVal.trim() !== "") {
           if (i === 1) {
-            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
+            cell.innerHTML = `<img src="${photoVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
           } else {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+            cell.innerHTML = `<img src="${photoVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          if (i === filledCount + 1 && filledCount < 9) {
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-          } else if (filledCount === 0 && i === 1) {
+          if (i === totalSlots || (i === 1 && !dbAvatar && dbPhotos.length === 0)) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
           } else {
             cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
@@ -229,57 +147,10 @@
       }
     }
 
-    function closePhotoGridWithoutSaving() {
-      window.location.replace("profile.html");
-    }
-
-    function handleGridBackAction() {
-      let hasChanges = (currentAvatarTemp !== currentAvatar);
-      for(let i=1; i<=8; i++) {
-        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
-          hasChanges = true;
-          break;
-        }
-      }
-      if (hasChanges) {
-        document.getElementById("unsavedTipsModal").style.display = "flex";
-      } else {
-        closePhotoGridWithoutSaving();
-      }
-    }
-
-    function confirmNoThanks() {
-      document.getElementById("unsavedTipsModal").style.display = "none";
-      closePhotoGridWithoutSaving();
-    }
-
-    function saveAndClosePhotoGridScreen() {
-      localStorage.setItem("greedy_avatar", currentAvatarTemp);
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
-      }
-
-      // Firebase में डेटा अपडेट करना
-      db.collection("users").doc(currentIdentifier).update({
-        avatar: currentAvatarTemp
-      }).then(() => {
-        window.location.replace("profile.html");
-      }).catch((error) => {
-        console.error("Error saving avatar to Firebase: ", error);
-        window.location.replace("profile.html");
-      });
-    }
-
-    function confirmSaveAndExit() {
-      document.getElementById("unsavedTipsModal").style.display = "none";
-      saveAndClosePhotoGridScreen();
-    }
-
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
       if(index === 1) {
-        let profPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
-        if (profPic && profPic.trim() !== "") {
+        if (dbAvatar && dbAvatar.trim() !== "") {
           selectedSlotForTips = 0;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
@@ -287,30 +158,28 @@
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let slotNum = index - 1;
-        let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
-        if(val && val.trim() !== "") {
-          selectedSlotForTips = slotNum;
+        let photoIndex = index - 2;
+        if(dbPhotos[photoIndex] && dbPhotos[photoIndex].trim() !== "") {
+          selectedSlotForTips = photoIndex;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
           activeEditorMode = "cover";
-          activeSlotIndex = slotNum;
+          activeSlotIndex = photoIndex;
           document.getElementById("hiddenGalleryInput").click();
         }
       }
     }
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
+    
     function tipsUseAsProfile() {
       closeTipsModal();
-      if(selectedSlotForTips > 0) {
-        let val = localStorage.getItem("unsaved_slot_" + selectedSlotForTips);
-        if(val) {
-          currentAvatarTemp = val;
-          render9Grid();
-        }
+      if(selectedSlotForTips >= 0 && dbPhotos[selectedSlotForTips]) {
+        dbAvatar = dbPhotos[selectedSlotForTips];
+        render9Grid();
       }
     }
+
     function tipsChangePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -322,19 +191,13 @@
         document.getElementById("hiddenGalleryInput").click();
       }
     }
+
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
-        currentAvatarTemp = "";
+        dbAvatar = "";
       } else {
-        localStorage.setItem("unsaved_slot_" + selectedSlotForTips, "");
-        let activePhotos = [];
-        for(let i = 1; i <= 8; i++) {
-          let p = localStorage.getItem("unsaved_slot_" + i);
-          if(p && p.trim() !== "") activePhotos.push(p);
-        }
-        for(let i = 1; i <= 8; i++) { localStorage.setItem("unsaved_slot_" + i, ""); }
-        for(let i = 0; i < activePhotos.length; i++) { localStorage.setItem("unsaved_slot_" + (i + 1), activePhotos[i]); }
+        dbPhotos.splice(selectedSlotForTips, 1);
       }
       render9Grid();
     }
@@ -403,8 +266,8 @@
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        canvas.width = 1080;
-        canvas.height = Math.round(1080 / (box.width / box.height));
+        canvas.width = 800; // साइज को हल्का ऑप्टिमाइज़ किया ताकि ऑनलाइन तुरंत सेव हो
+        canvas.height = Math.round(800 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
         let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
@@ -417,17 +280,36 @@
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
-        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.95);
+        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.85);
 
         document.getElementById("screenPhotoEditor").style.display = "none";
         rawImageObj = null;
+
         if (activeEditorMode === "cover") {
-          localStorage.setItem("unsaved_slot_" + activeSlotIndex, finalDataUrl);
+          if (activeSlotIndex >= dbPhotos.length) {
+            dbPhotos.push(finalDataUrl);
+          } else {
+            dbPhotos[activeSlotIndex] = finalDataUrl;
+          }
         } else {
-          currentAvatarTemp = finalDataUrl;
+          dbAvatar = finalDataUrl;
         }
         render9Grid();
       }
+    }
+
+    // सीधे Firebase में सेव करने का फंक्शन (बिना LocalStorage के)
+    function savePhotosDirectToFirebase() {
+      db.collection("users").doc(currentIdentifier).set({
+        avatar: dbAvatar,
+        photos: dbPhotos
+      }, { merge: true }).then(() => {
+        alert("photos saved successfully!");
+        window.location.replace("profile.html");
+      }).catch((error) => {
+        console.error("Error saving to Firebase: ", error);
+        alert("Failed to save photos.");
+      });
     }
 
     window.onload = () => { initGridPage(); };
