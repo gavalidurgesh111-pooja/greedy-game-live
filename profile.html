@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area - सही ग्रिड और स्क्रॉल लेआउट */
+    /* Cover Slider Area */
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     
@@ -416,14 +416,10 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (1 से 9 फोटो दिखाने, अवतार सिंक करने और स्क्रॉलिंग फिक्स के साथ)
+        // कवर पेजेस सेटअप - पहली फोटो से लेकर 9वीं फोटो तक को सही क्रम में दिखाने और पहली फोटो कभी न गायब होने देने का सटीक लॉजिक
         let slotsData = [];
         if (dbPhotos && dbPhotos.length > 0) {
           slotsData = [...dbPhotos];
-        }
-        
-        if (slotsData.length === 0 && currentAvatar && currentAvatar.trim() !== "") {
-          slotsData.push(currentAvatar);
         }
 
         let filledCount = slotsData.length;
@@ -437,8 +433,8 @@
 
           if(slotVal && slotVal.trim() !== "") {
             pageEl.style.backgroundImage = `url('${slotVal}')`;
-            if(plusEl) plusEl.style.display = "none"; 
             pageEl.style.display = "flex";
+            if(plusEl) plusEl.style.display = "none"; 
           } else {
             if ((i === filledCount + 1) && filledCount < 9) {
               pageEl.style.backgroundImage = "none";
@@ -473,7 +469,7 @@
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से शुरू होगा और पहली फोटो बाईं तरफ रहेगी
+            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से शुरू होगा और पहली फोटो बाईं तरफ स्क्रॉल करने पर मिलेगी
           }
         }, 50);
       }).catch((error) => {
