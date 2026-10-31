@@ -85,11 +85,6 @@
     .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
-    
-    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -164,14 +159,14 @@
         
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User_368282</div>
+            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
             <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
         <div class="tags-row">
-          <div class="tag-lv">👑 Lv.<span id="profLevel">0</span></div>
+          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
           <div class="tag-id" onclick="copyMyId()">🆔 <span id="profId">#288630</span> 📋</div>
         </div>
       </div>
@@ -189,7 +184,7 @@
 
       <div class="stats-container">
         <div class="stat-item-balance" onclick="openCoinSendModal()">
-          <div class="stat-val">🪙 <span id="profBalance">0</span></div>
+          <div class="stat-val">🪙 <span id="profBalance">1000</span></div>
           <div class="stat-label">Wallet Balance</div>
         </div>
         <div class="stat-item-won">
@@ -279,10 +274,6 @@
           <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
           <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
           <div class="grid-item" onclick="applyFrameClass('sun')" style="background:#fce4ec; color:#c2185b; font-weight:bold;">Sun Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
-          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
         </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
@@ -327,7 +318,29 @@
 
   </div>
 
+  <!-- Firebase SDK Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script>
+    // Firebase Config चाबी
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+    let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
+    let isMyProfile = true;
+
     history.pushState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -351,136 +364,107 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    if (!localStorage.getItem("greedy_initialized")) {
-      localStorage.setItem("greedy_initialized", "true");
-      localStorage.setItem("greedy_coins", "1000");
-      localStorage.setItem("greedy_won", "0");
-      localStorage.setItem("greedy_level", "1");
-      localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-      localStorage.setItem("greedy_unique_id", "#" + Math.floor(100000 + Math.random() * 900000));
-      localStorage.setItem("greedy_privacy", "false");
-      localStorage.setItem("greedy_frame", "none");
-      localStorage.setItem("greedy_avatar", ""); 
-      for(let i=1; i<=8; i++) {
-        localStorage.setItem("greedy_slot_" + i, "");
-        localStorage.setItem("unsaved_slot_" + i, "");
-      }
-    }
-
-    let coins = 0, userName = "", userId = "", userLevel = 0, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "", customFrameUrl = "";
-    let isMyProfile = true;
-
+    // Firebase से डेटा लोड करना
     function initProfile() {
-      // लोकल स्टोरेज से ताज़ा डेटा हमेशा लोड करें
-      coins = parseInt(localStorage.getItem("greedy_coins")) || 0;
-      userName = localStorage.getItem("greedy_name") || "User_368282";
-      userId = localStorage.getItem("greedy_unique_id") || "#288630";
-      userLevel = parseInt(localStorage.getItem("greedy_level")) || 0;
-      totalWon = parseInt(localStorage.getItem("greedy_won")) || 0;
-      isPrivate = localStorage.getItem("greedy_privacy") === "true";
-      currentFrame = localStorage.getItem("greedy_frame") || "none";
-      currentAvatar = localStorage.getItem("greedy_avatar") || "";
-      customFrameUrl = localStorage.getItem("greedy_custom_frame") || "";
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const viewedId = urlParams.get("id");
-      isMyProfile = !viewedId || viewedId === userId;
-
-      document.getElementById("profNameDisplay").innerText = userName;
-      document.getElementById("profBalance").innerText = coins;
-      document.getElementById("profWon").innerText = totalWon;
-      document.getElementById("profLevel").innerText = userLevel;
-      document.getElementById("profId").innerText = userId;
-      document.getElementById("aboutUserId").innerText = userId;
-      
-      const avatarImg = document.getElementById("profAvatarImg");
-      const plusIcon = document.getElementById("avatarPlusIcon");
-      const editNameBtn = document.getElementById("editNameBtn");
-
-      if (currentAvatar && currentAvatar.trim() !== "") {
-        avatarImg.src = currentAvatar;
-        avatarImg.style.display = "block";
-        if(plusIcon) plusIcon.style.display = "none";
-      } else {
-        avatarImg.style.display = "none";
-        if(plusIcon) plusIcon.style.display = isMyProfile ? "block" : "none";
-      }
-
-      if(userName && !userName.startsWith("User_")) {
-        if(editNameBtn) editNameBtn.style.display = "none";
-      } else {
-        if(editNameBtn) editNameBtn.style.display = isMyProfile ? "block" : "none";
-      }
-
-      // कवर पेजेस सेटअप (1 अवतार + 8 स्लॉट = कुल 9 फोटो क्रम अनुसार)
-      let avatarPic = currentAvatar || "";
-      let slotsData = [];
-      
-      if (avatarPic && avatarPic.trim() !== "") {
-        slotsData.push(avatarPic);
-      }
-      
-      for(let i = 1; i <= 8; i++) {
-        let val = localStorage.getItem("greedy_slot_" + i) || "";
-        if (val && val.trim() !== "") {
-          slotsData.push(val);
-        }
-      }
-
-      let filledCount = slotsData.length;
-
-      for(let i = 1; i <= 9; i++) {
-        let pageEl = document.getElementById("coverPage" + i);
-        let plusEl = document.getElementById("plusCover" + i);
-        if(!pageEl) continue;
-
-        let slotVal = slotsData[i - 1] || "";
-
-        if(slotVal && slotVal.trim() !== "") {
-          pageEl.style.backgroundImage = `url('${slotVal}')`;
-          if(plusEl) plusEl.style.display = "none"; 
-          pageEl.style.display = "flex";
+      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+        if (doc.exists) {
+          let data = doc.data();
+          coins = data.coins || 1000;
+          userName = data.name || "User";
+          userId = data.uniqueId || "#288630";
+          userLevel = data.level || 1;
+          totalWon = data.won || 0;
+          isPrivate = data.privacy || false;
+          currentFrame = data.frame || "none";
+          currentAvatar = data.avatar || "";
         } else {
-          if (isMyProfile && (i === filledCount + 1) && filledCount < 9) {
-            pageEl.style.backgroundImage = "none";
-            pageEl.style.display = "flex";
-            if(plusEl) {
-              plusEl.style.display = "flex";
-              plusEl.innerText = "Upload";
-            }
-          } else if (isMyProfile && filledCount === 0 && i === 1) {
-            pageEl.style.backgroundImage = "none";
-            pageEl.style.display = "flex";
-            if(plusEl) {
-              plusEl.style.display = "flex";
-              plusEl.innerText = "Upload";
-            }
-          } else {
-            pageEl.style.backgroundImage = "none";
-            pageEl.style.display = "none"; 
+          coins = 1000;
+          userName = "User";
+          userId = "#288630";
+          userLevel = 1;
+          totalWon = 0;
+        }
+
+        document.getElementById("profNameDisplay").innerText = userName;
+        document.getElementById("profBalance").innerText = coins;
+        document.getElementById("profWon").innerText = totalWon;
+        document.getElementById("profLevel").innerText = userLevel;
+        document.getElementById("profId").innerText = userId;
+        document.getElementById("aboutUserId").innerText = userId;
+        
+        const avatarImg = document.getElementById("profAvatarImg");
+        const plusIcon = document.getElementById("avatarPlusIcon");
+        const editNameBtn = document.getElementById("editNameBtn");
+
+        if (currentAvatar && currentAvatar.trim() !== "") {
+          avatarImg.src = currentAvatar;
+          avatarImg.style.display = "block";
+          if(plusIcon) plusIcon.style.display = "none";
+        } else {
+          avatarImg.style.display = "none";
+          if(plusIcon) plusIcon.style.display = "block";
+        }
+
+        // कवर पेजेस सेटअप (1 अवतार + स्लॉट्स)
+        let slotsData = [];
+        if (currentAvatar && currentAvatar.trim() !== "") {
+          slotsData.push(currentAvatar);
+        }
+        
+        // लोकल स्टोरेज से स्लॉट्स चेक करना
+        for(let i = 1; i <= 8; i++) {
+          let val = localStorage.getItem("greedy_slot_" + i) || "";
+          if (val && val.trim() !== "") {
+            slotsData.push(val);
           }
         }
-      }
 
-      const frameEl = document.getElementById("profAvatarFrame");
-      if (currentFrame === "none" && !customFrameUrl) {
-        frameEl.style.display = "none";
-      } else {
-        frameEl.style.display = "block";
-        if (customFrameUrl) {
-          applyCustomFrame(customFrameUrl);
+        let filledCount = slotsData.length;
+
+        for(let i = 1; i <= 9; i++) {
+          let pageEl = document.getElementById("coverPage" + i);
+          let plusEl = document.getElementById("plusCover" + i);
+          if(!pageEl) continue;
+
+          let slotVal = slotsData[i - 1] || "";
+
+          if(slotVal && slotVal.trim() !== "") {
+            pageEl.style.backgroundImage = `url('${slotVal}')`;
+            if(plusEl) plusEl.style.display = "none"; 
+            pageEl.style.display = "flex";
+          } else {
+            if ((i === filledCount + 1) && filledCount < 9) {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "flex";
+              if(plusEl) {
+                plusEl.style.display = "flex";
+                plusEl.innerText = "Upload";
+              }
+            } else if (filledCount === 0 && i === 1) {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "flex";
+              if(plusEl) {
+                plusEl.style.display = "flex";
+                plusEl.innerText = "Upload";
+              }
+            } else {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "none"; 
+            }
+          }
+        }
+
+        const frameEl = document.getElementById("profAvatarFrame");
+        if (currentFrame === "none") {
+          frameEl.style.display = "none";
         } else {
+          frameEl.style.display = "block";
           applyFrameClass(currentFrame);
         }
-      }
-      updatePrivacyHeart();
-
-      setTimeout(() => {
-        let slider = document.getElementById("coverSlider");
-        if (slider) {
-          slider.scrollLeft = slider.clientWidth;
-        }
-      }, 50);
+        updatePrivacyHeart();
+      }).catch((error) => {
+        console.error("Error loading profile from Firebase: ", error);
+      });
     }
 
     function openPhotoGridScreen() {
@@ -493,12 +477,11 @@
     }
 
     function promptEditName() {
-      if(!isMyProfile) return;
       let newName = prompt("Enter your name:", userName);
       if(newName && newName.trim() !== "") {
         userName = newName.trim();
-        localStorage.setItem("greedy_name", userName);
-        initProfile();
+        document.getElementById("profNameDisplay").innerText = userName;
+        db.collection("users").doc(currentIdentifier).update({ name: userName }).catch((err) => console.error(err));
       }
     }
 
@@ -510,39 +493,25 @@
 
     function applyFrameClass(frameName) {
       currentFrame = frameName;
-      customFrameUrl = "";
-      localStorage.setItem("greedy_frame", frameName);
-      localStorage.removeItem("greedy_custom_frame");
+      db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
+      
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
-      frameEl.style.backgroundImage = "";
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun'].forEach(cls => frameEl.classList.remove(cls));
       if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
       else frameEl.style.display = "none";
       closeFrameModal();
     }
 
-    function applyCustomFrame(frameUrl) {
-      const targetFrame = document.getElementById("profAvatarFrame");
-      if (targetFrame) {
-        targetFrame.style.display = "block";
-        targetFrame.className = "avatar-frame";
-        targetFrame.style.backgroundImage = `url('${frameUrl}')`;
-        targetFrame.style.backgroundSize = "100% 100%";
-        targetFrame.style.borderRadius = "50%";
-      }
-    }
-
     function removeFrame() {
-      if (!isMyProfile) return;
       currentFrame = "none";
-      localStorage.setItem("greedy_frame", "none");
+      db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
       document.getElementById("profAvatarFrame").style.display = "none";
       closeFrameModal();
     }
 
-    function openFrameModal() { if (isMyProfile) document.getElementById("modalFrame").style.display = "flex"; }
+    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
@@ -561,7 +530,7 @@
     }
 
     function handleLogout() {
-      sessionStorage.removeItem("is_user_inside");
+      localStorage.removeItem("greedy_login_identifier");
       showCustomAlert("Logged out successfully!");
       setTimeout(() => { window.location.replace("index.html"); }, 800);
     }
@@ -576,9 +545,8 @@
     }
     
     function togglePrivacy() {
-      if (!isMyProfile) return;
       isPrivate = !isPrivate;
-      localStorage.setItem("greedy_privacy", isPrivate);
+      db.collection("users").doc(currentIdentifier).update({ privacy: isPrivate }).catch((err) => console.error(err));
       updatePrivacyHeart();
     }
     
@@ -618,17 +586,20 @@
       let amt = parseInt(document.getElementById("sendCoinAmount").value);
       if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
       if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
+      
       coins -= amt;
-      localStorage.setItem("greedy_coins", coins);
-      initProfile();
-      closeCoinSendModal();
-      showCustomAlert(`Successfully sent ${amt} coins!`);
+      db.collection("users").doc(currentIdentifier).update({ coins: coins }).then(() => {
+        initProfile();
+        closeCoinSendModal();
+        showCustomAlert(`Successfully sent ${amt} coins!`);
+      }).catch((err) => {
+        showCustomAlert("Error updating coins: " + err.message);
+      });
     }
 
     function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    let closeSettingsModal = function() { document.getElementById("modalSettings").style.display = "none"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    // जब भी दूसरे पेज से लौटकर आएं, यह तुरंत ताज़ा डेटा लोड करेगा
     window.onpageshow = function(event) {
       initProfile();
     };
