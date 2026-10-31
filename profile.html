@@ -323,7 +323,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Firebase Config चाबी
     const firebaseConfig = {
       apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
       authDomain: "greedy--coin-game.firebaseapp.com",
@@ -339,7 +338,7 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
-    let isMyProfile = true;
+    let dbPhotos = []; // ऑनलाइन डेटाबेस से आने वाली तस्वीरें
 
     history.pushState({page: "profile_main"}, "", window.location.href);
 
@@ -364,7 +363,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // Firebase से डेटा लोड करना
+    // सीधे Firebase से डेटा लोड करना (बिना लोकल स्टोरेज के)
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -377,12 +376,14 @@
           isPrivate = data.privacy || false;
           currentFrame = data.frame || "none";
           currentAvatar = data.avatar || "";
+          dbPhotos = data.photos || []; // सीधे फायरबेस से एरे लोड होगा
         } else {
           coins = 1000;
           userName = "User";
           userId = "#288630";
           userLevel = 1;
           totalWon = 0;
+          dbPhotos = [];
         }
 
         document.getElementById("profNameDisplay").innerText = userName;
@@ -394,7 +395,6 @@
         
         const avatarImg = document.getElementById("profAvatarImg");
         const plusIcon = document.getElementById("avatarPlusIcon");
-        const editNameBtn = document.getElementById("editNameBtn");
 
         if (currentAvatar && currentAvatar.trim() !== "") {
           avatarImg.src = currentAvatar;
@@ -405,17 +405,16 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (1 अवतार + स्लॉट्स)
+        // कवर पेजेस सेटअप (Firebase के डेटा के आधार पर)
         let slotsData = [];
         if (currentAvatar && currentAvatar.trim() !== "") {
           slotsData.push(currentAvatar);
         }
         
-        // लोकल स्टोरेज से स्लॉट्स चेक करना
-        for(let i = 1; i <= 8; i++) {
-          let val = localStorage.getItem("greedy_slot_" + i) || "";
-          if (val && val.trim() !== "") {
-            slotsData.push(val);
+        // dbPhotos से सभी तस्वीरें जोड़ना
+        for(let i = 0; i < dbPhotos.length; i++) {
+          if (dbPhotos[i] && dbPhotos[i].trim() !== "") {
+            slotsData.push(dbPhotos[i]);
           }
         }
 
