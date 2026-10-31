@@ -18,6 +18,7 @@
     
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
+    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
@@ -48,6 +49,7 @@
       max-height: none !important; 
       will-change: transform;
       transform: translate3d(0, 0, 0);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .editor-bottom-bar { width: 100%; height: 65px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #ddd; }
@@ -185,14 +187,7 @@
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        
-        // सुधार: i=1 के लिए avatar दिखाएं, और बाकी के लिए tempPhotos[i-2] सही क्रम में लें
-        let slotVal = "";
-        if (i === 1) {
-          slotVal = avatarPic;
-        } else {
-          slotVal = tempPhotos[i - 2] || "";
-        }
+        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
 
         cell.onclick = () => handleGridCellClick(i);
 
@@ -246,21 +241,21 @@
       if(index === 1) {
         let profPic = tempAvatar;
         if (profPic && profPic.trim() !== "") {
-          selectedSlotForTips = 1;
+          selectedSlotForTips = 0;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
           activeEditorMode = "avatar";
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let slotNum = index - 1; // 2 नंबर बॉक्स के लिए index 2 है, तो slotNum = 1 (यानी photos[0])
+        let slotNum = index - 1;
         let val = tempPhotos[slotNum - 1] || "";
         if(val && val.trim() !== "") {
-          selectedSlotForTips = index;
+          selectedSlotForTips = slotNum;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
           activeEditorMode = "cover";
-          activeSlotIndex = slotNum; // यह photos एरे का सही इंडेक्स तय करेगा
+          activeSlotIndex = slotNum;
           document.getElementById("hiddenGalleryInput").click();
         }
       }
@@ -270,8 +265,8 @@
     
     function tipsUseAsProfile() {
       closeTipsModal();
-      if(selectedSlotForTips > 1) {
-        let val = tempPhotos[selectedSlotForTips - 2];
+      if(selectedSlotForTips > 0) {
+        let val = tempPhotos[selectedSlotForTips - 1];
         if(val) {
           tempAvatar = val;
           render9Grid();
@@ -281,22 +276,22 @@
 
     function tipsChangePicture() {
       closeTipsModal();
-      if(selectedSlotForTips === 1) {
+      if(selectedSlotForTips === 0) {
         activeEditorMode = "avatar";
         document.getElementById("hiddenAvatarInput").click();
       } else {
         activeEditorMode = "cover";
-        activeSlotIndex = selectedSlotForTips - 1;
+        activeSlotIndex = selectedSlotForTips;
         document.getElementById("hiddenGalleryInput").click();
       }
     }
 
     function tipsDeletePicture() {
       closeTipsModal();
-      if(selectedSlotForTips === 1) {
+      if(selectedSlotForTips === 0) {
         tempAvatar = "";
       } else {
-        tempPhotos.splice(selectedSlotForTips - 2, 1);
+        tempPhotos.splice(selectedSlotForTips - 1, 1);
       }
       render9Grid();
     }
@@ -381,12 +376,80 @@
         posY += (e.clientY - startMouseY) * 1.25;
         startMouseX = e.clientX; 
         startMouseY = e.clientY;
+        
         preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
       });
 
       window.addEventListener('mouseup', () => { 
         if(isDraggingImg) {
           isDraggingImg = false; 
+          applySmartBoundaryAndSnap(); 
+        }
+      });
+
+      editorArea.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+        let newScale = imgScale * zoomFactor;
+        if(newScale >= minScale && newScale <= maxScale) {
+          imgScale = newScale;
+          let renderW = rawImageObj.width * imgScale;
+          let renderH = rawImageObj.height * imgScale;
+          preview.style.width = renderW + "px";
+          preview.style.height = renderH + "px";
+          applySmartBoundaryAndSnap();
+        }
+      }, { passive: false });
+
+      editorArea.addEventListener('touchstart', (e) => {
+        if(e.touches.length === 1) {
+          isDraggingImg = true;
+          startMouseX = e.touches[0].clientX;
+          startMouseY = e.touches[0].clientY;
+          initialPinchDistance = null;
+          preview.style.transition = 'none';
+        } else if(e.touches.length === 2) {
+          isDraggingImg = false;
+          initialPinchDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+        }
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if(e.touches.length === 1 && isDraggingImg) {
+          posX += (e.touches[0].clientX - startMouseX) * 1.25;
+          posY += (e.touches[0].clientY - startMouseY) * 1.25;
+          startMouseX = e.touches[0].clientX;
+          startMouseY = e.touches[0].clientY;
+          
+          preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
+          e.preventDefault();
+        } else if(e.touches.length === 2 && initialPinchDistance !== null) {
+          let currentPinchDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          let zoomFactor = currentPinchDistance / initialPinchDistance;
+          let newScale = imgScale * zoomFactor;
+          
+          if(newScale >= minScale && newScale <= maxScale) {
+            imgScale = newScale;
+            let renderW = rawImageObj.width * imgScale;
+            let renderH = rawImageObj.height * imgScale;
+            preview.style.width = renderW + "px";
+            preview.style.height = renderH + "px";
+          }
+          initialPinchDistance = currentPinchDistance;
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchend', (e) => {
+        if(e.touches.length < 2) initialPinchDistance = null;
+        if(e.touches.length === 0 && isDraggingImg) {
+          isDraggingImg = false;
           applySmartBoundaryAndSnap(); 
         }
       });
@@ -437,7 +500,6 @@
         if (data.secure_url) {
           let cloudinaryUrl = data.secure_url;
           if (activeEditorMode === "cover") {
-            // सुधार: एरे में सही इंडेक्स पर फोटो सेट करना
             tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
           } else {
             tempAvatar = cloudinaryUrl;
