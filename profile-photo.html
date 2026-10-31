@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Profile Photo - Greedy Coin</title>
-  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
@@ -19,7 +18,6 @@
     
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
     .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1000000; }
@@ -34,6 +32,9 @@
     
     .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
     .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; }
+    
+    /* Loading Overlay */
+    #uploadLoader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999999; align-items: center; justify-content: center; color: #fff; flex-direction: column; font-size: 16px; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -41,14 +42,20 @@
   <div class="page-container">
     <div class="sub-header">
       <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="window.location.replace('profile.html')">❮</div>
-      <h2>Profile photo</h2>
-      <div style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px;" onclick="savePhotosDirectToFirebase()">✓</div>
+      <h2>Profile photo (Cloudinary)</h2>
+      <div style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px;" onclick="saveToFirebaseUrlOnly()">✓</div>
     </div>
 
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
     <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
+
+    <!-- Uploading Loader -->
+    <div id="uploadLoader">
+      <div style="margin-bottom: 10px; font-size: 24px;">⏳</div>
+      <div>Uploading directly to Cloudinary...</div>
+    </div>
 
     <div id="tipsModal">
       <div class="tips-box" style="text-align:left;">
@@ -72,7 +79,7 @@
     </div>
   </div>
 
-  <!-- Firebase SDK Scripts -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -91,28 +98,28 @@
     const db = firebase.firestore();
     const currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
 
-    // सारा डेटा सीधे ऑनलाइन वेरिएबल में रहेगा (लोकल स्टोरेज खत्म)
+    // Cloudinary कॉन्फिगरेशन (आपका क्लाउड नेम: wolpzhms)
+    const CLOUDINARY_CLOUD_NAME = "wolpzhms";
+    // नोट: अपनी क्लाउडिनरी सेटिंग से एक Unsigned Upload Preset बनाकर उसका नाम यहाँ डाल दें (जैसे "greedy_preset")
+    const CLOUDINARY_UPLOAD_PRESET = "ml_default"; 
+
     let dbAvatar = "";
-    let dbPhotos = []; // यहाँ 9 से ज्यादा या कितनी भी फोटो सीधे स्टोर होंगी
+    let dbPhotos = []; 
     let activeSlotIndex = 0;
     let activeEditorMode = "cover";
     let rawImageObj = null;
     let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
 
-    // सीधे Firebase से डेटा लोड करना
     function initGridPage() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if(doc.exists) {
           let data = doc.data();
           dbAvatar = data.avatar || "";
-          dbPhotos = data.photos || []; // Firebase से एरे लोड होगा
+          dbPhotos = data.photos || [];
         }
         render9Grid();
-      }).catch((err) => {
-        console.error("Error loading from Firebase:", err);
-        render9Grid();
-      });
+      }).catch(() => { render9Grid(); });
     }
 
     function render9Grid() {
@@ -125,7 +132,6 @@
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        
         let photoVal = (i === 1) ? dbAvatar : (dbPhotos[i - 2] || "");
 
         cell.onclick = () => handleGridCellClick(i);
@@ -171,7 +177,6 @@
     }
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
-    
     function tipsUseAsProfile() {
       closeTipsModal();
       if(selectedSlotForTips >= 0 && dbPhotos[selectedSlotForTips]) {
@@ -179,7 +184,6 @@
         render9Grid();
       }
     }
-
     function tipsChangePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -191,7 +195,6 @@
         document.getElementById("hiddenGalleryInput").click();
       }
     }
-
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -262,12 +265,13 @@
       rawImageObj = null;
     }
 
+    // यहाँ से फोटो सीधे Cloudinary पर अपलोड होगी और उसका URL मिलेगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        canvas.width = 800; // साइज को हल्का ऑप्टिमाइज़ किया ताकि ऑनलाइन तुरंत सेव हो
-        canvas.height = Math.round(800 / (box.width / box.height));
+        canvas.width = 1000;
+        canvas.height = Math.round(1000 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
         let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
@@ -280,35 +284,64 @@
         let sH = (box.height / renderedHeight) * rawImageObj.height;
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
-        let finalDataUrl = canvas.toDataURL("image/jpeg", 0.85);
-
-        document.getElementById("screenPhotoEditor").style.display = "none";
-        rawImageObj = null;
-
-        if (activeEditorMode === "cover") {
-          if (activeSlotIndex >= dbPhotos.length) {
-            dbPhotos.push(finalDataUrl);
-          } else {
-            dbPhotos[activeSlotIndex] = finalDataUrl;
-          }
-        } else {
-          dbAvatar = finalDataUrl;
-        }
-        render9Grid();
+        
+        // कॉपीड इमेज को Blob में बदलना ताकि Cloudinary पर भेजा जा सके
+        canvas.toBlob(function(blob) {
+          document.getElementById("screenPhotoEditor").style.display = "none";
+          rawImageObj = null;
+          uploadFileToCloudinary(blob);
+        }, "image/jpeg", 0.90);
       }
     }
 
-    // सीधे Firebase में सेव करने का फंक्शन (बिना LocalStorage के)
-    function savePhotosDirectToFirebase() {
+    function uploadFileToCloudinary(fileBlob) {
+      document.getElementById("uploadLoader").style.display = "flex";
+      
+      let formData = new FormData();
+      formData.append("file", fileBlob);
+      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: "POST",
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("uploadLoader").style.display = "none";
+        if (data.secure_url) {
+          let cloudinaryUrl = data.secure_url; // यह रहा Cloudinary का पक्का लिंक!
+          
+          if (activeEditorMode === "cover") {
+            if (activeSlotIndex >= dbPhotos.length) {
+              dbPhotos.push(cloudinaryUrl);
+            } else {
+              dbPhotos[activeSlotIndex] = cloudinaryUrl;
+            }
+          } else {
+            dbAvatar = cloudinaryUrl;
+          }
+          render9Grid();
+        } else {
+          alert("Cloudinary Upload Failed: " + (data.error ? data.error.message : "Unknown error"));
+        }
+      })
+      .catch(error => {
+        document.getElementById("uploadLoader").style.display = "none";
+        console.error("Cloudinary Error:", error);
+        alert("Upload error. Please check internet.");
+      });
+    }
+
+    // डेटाबेस में केवल Cloudinary के छोटे URL सेव होंगे
+    function saveToFirebaseUrlOnly() {
       db.collection("users").doc(currentIdentifier).set({
         avatar: dbAvatar,
         photos: dbPhotos
       }, { merge: true }).then(() => {
-        alert("photos saved successfully!");
+        alert("Photos saved successfully via Cloudinary!");
         window.location.replace("profile.html");
       }).catch((error) => {
-        console.error("Error saving to Firebase: ", error);
-        alert("Failed to save photos.");
+        alert("Error saving: " + error.message);
       });
     }
 
