@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Profile Photo - Greedy Coin</title>
+  <!-- Cloudinary से बैकग्राउंड या एसेट्स प्रीलोड करना -->
+  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
@@ -101,7 +103,26 @@
     </div>
   </div>
 
+  <!-- Firebase SDK Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script>
+    // Firebase Config चाबी
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+
     let currentAvatar = localStorage.getItem("greedy_avatar") || "";
     let currentAvatarTemp = currentAvatar;
     let activeSlotIndex = 1;
@@ -135,12 +156,29 @@
     });
 
     function initGridPage() {
-      for(let i=1; i<=8; i++) {
-        if (!localStorage.getItem("unsaved_slot_" + i)) {
-          localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
+      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+        if(doc.exists) {
+          let data = doc.data();
+          if(data.avatar) {
+            currentAvatar = data.avatar;
+            currentAvatarTemp = data.avatar;
+            localStorage.setItem("greedy_avatar", data.avatar);
+          }
         }
-      }
-      render9Grid();
+        for(let i=1; i<=8; i++) {
+          if (!localStorage.getItem("unsaved_slot_" + i)) {
+            localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
+          }
+        }
+        render9Grid();
+      }).catch(() => {
+        for(let i=1; i<=8; i++) {
+          if (!localStorage.getItem("unsaved_slot_" + i)) {
+            localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
+          }
+        }
+        render9Grid();
+      });
     }
 
     function render9Grid() {
@@ -148,7 +186,6 @@
       container.innerHTML = "";
       let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      // सही तरीके से कुल भरी हुई फोटो की गिनती (अवतार + 8 स्लॉट = कुल 9)
       let filledCount = 0;
       if (avatarPic && avatarPic.trim() !== "") {
         filledCount = 1;
@@ -156,13 +193,12 @@
       for(let i = 1; i <= 8; i++) {
         let val = localStorage.getItem("unsaved_slot_" + i) || "";
         if (val && val.trim() !== "") {
-          filledCount = i + 1; // स्लॉट 1 का मतलब कुल दूसरी फोटो है
+          filledCount = i + 1;
         } else {
           break;
         }
       }
 
-      // कुल दिखने वाले बॉक्स (अगर 9 से कम हैं तो एक और अपलोड बॉक्स दिखेगा, max 9 तक)
       let maxGridSlots = filledCount + 1;
       if (maxGridSlots > 9) maxGridSlots = 9;
       if (maxGridSlots < 1) maxGridSlots = 1;
@@ -222,7 +258,16 @@
       for(let i=1; i<=8; i++) {
         localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
       }
-      window.location.replace("profile.html");
+
+      // Firebase में डेटा अपडेट करना
+      db.collection("users").doc(currentIdentifier).update({
+        avatar: currentAvatarTemp
+      }).then(() => {
+        window.location.replace("profile.html");
+      }).catch((error) => {
+        console.error("Error saving avatar to Firebase: ", error);
+        window.location.replace("profile.html");
+      });
     }
 
     function confirmSaveAndExit() {
