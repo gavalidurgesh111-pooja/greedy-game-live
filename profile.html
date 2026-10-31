@@ -373,7 +373,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // सीधे Firebase से डेटा लोड करना
+    // Firebase से डेटा लोड करने और कवर स्लाइडर को सही से दिखाने का फंक्शन
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -416,7 +416,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप - पहली फोटो से लेकर 9वीं फोटो तक को सही क्रम में दिखाने और पहली फोटो कभी न गायब होने देने का सटीक लॉजिक
+        // कवर पेजेस सेटअप - Cloudinary के लिंक्स को सही क्रम में 1 से 9 खानों में सेट करना
         let slotsData = [];
         if (dbPhotos && dbPhotos.length > 0) {
           slotsData = [...dbPhotos];
@@ -469,7 +469,7 @@
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से शुरू होगा और पहली फोटो बाईं तरफ स्क्रॉल करने पर मिलेगी
+            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से खुलेगा और पहली फोटो बाईं तरफ स्क्रॉल करने पर मिलेगी
           }
         }, 50);
       }).catch((error) => {
