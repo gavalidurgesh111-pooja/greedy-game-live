@@ -85,6 +85,11 @@
     .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
+    
+    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -137,7 +142,7 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (कुल 9 कवर पेज) -->
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
         <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
         <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
@@ -274,6 +279,10 @@
           <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
           <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
           <div class="grid-item" onclick="applyFrameClass('sun')" style="background:#fce4ec; color:#c2185b; font-weight:bold;">Sun Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
+          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
         </div>
 
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
@@ -338,7 +347,7 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
-    let dbPhotos = []; // ऑनलाइन डेटाबेस से आने वाली तस्वीरें
+    let dbPhotos = []; // सीधे Firebase और Cloudinary से आने वाले लिंक्स
 
     history.pushState({page: "profile_main"}, "", window.location.href);
 
@@ -363,7 +372,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // सीधे Firebase से डेटा लोड करना (बिना लोकल स्टोरेज के)
+    // सीधे Firebase से डेटा लोड करना
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -376,7 +385,7 @@
           isPrivate = data.privacy || false;
           currentFrame = data.frame || "none";
           currentAvatar = data.avatar || "";
-          dbPhotos = data.photos || []; // सीधे फायरबेस से एरे लोड होगा
+          dbPhotos = data.photos || []; 
         } else {
           coins = 1000;
           userName = "User";
@@ -395,6 +404,7 @@
         
         const avatarImg = document.getElementById("profAvatarImg");
         const plusIcon = document.getElementById("avatarPlusIcon");
+        const editNameBtn = document.getElementById("editNameBtn");
 
         if (currentAvatar && currentAvatar.trim() !== "") {
           avatarImg.src = currentAvatar;
@@ -405,13 +415,12 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (Firebase के डेटा के आधार पर)
+        // कवर पेजेस सेटअप (Cloudinary लिंक्स के आधार पर)
         let slotsData = [];
         if (currentAvatar && currentAvatar.trim() !== "") {
           slotsData.push(currentAvatar);
         }
         
-        // dbPhotos से सभी तस्वीरें जोड़ना
         for(let i = 0; i < dbPhotos.length; i++) {
           if (dbPhotos[i] && dbPhotos[i].trim() !== "") {
             slotsData.push(dbPhotos[i]);
@@ -461,6 +470,13 @@
           applyFrameClass(currentFrame);
         }
         updatePrivacyHeart();
+
+        setTimeout(() => {
+          let slider = document.getElementById("coverSlider");
+          if (slider) {
+            slider.scrollLeft = slider.clientWidth;
+          }
+        }, 50);
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
       });
@@ -497,7 +513,8 @@
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun'].forEach(cls => frameEl.classList.remove(cls));
+      frameEl.style.backgroundImage = "";
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
       if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
       else frameEl.style.display = "none";
       closeFrameModal();
