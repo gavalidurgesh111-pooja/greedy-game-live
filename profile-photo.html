@@ -9,7 +9,7 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
     
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; position: relative; z-index: 50; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
@@ -18,22 +18,50 @@
     
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
+    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
-    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 999999; align-items: center; justify-content: center; }
-    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); position: relative; z-index: 1000000; }
+    /* Unsaved Changes Modal (Tips) */
+    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
+    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
+    .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
+    .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
+    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
+    .btn-no-thanks { color: #666; }
+    .btn-save-changes { color: #5e229e; }
+
+    /* टिप्स (Tips) पॉपअप मेनू */
+    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
+    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
     .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
-    .tips-item { padding: 12px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
+    .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
 
-    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #000; z-index: 999999; flex-direction: column; justify-content: space-between; align-items: center; }
-    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #000; }
-    .crop-frame-box { width: 100%; max-width: 100%; height: 360px; border: 2px solid rgba(255, 255, 255, 0.9); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.85); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
-    #editorImagePreview { position: absolute; cursor: grab; user-select: none; z-index: 5; display: block; max-width: none !important; max-height: none !important; }
+    /* फोटो एडिटर स्क्रीन - सफेद बैकग्राउंड */
+    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
+    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
     
-    .editor-bottom-bar { width: 100%; height: 65px; background: rgba(20, 20, 20, 0.95); display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #222; }
-    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #aaa; }
+    .crop-frame-box { width: 100%; max-width: 100%; height: 380px; border: 2px solid #ffffff; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
     
-    /* Loading Overlay */
+    #editorImagePreview { 
+      position: absolute; 
+      cursor: grab; 
+      user-select: none; 
+      z-index: 5; 
+      display: block; 
+      max-width: none !important; 
+      max-height: none !important; 
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .editor-bottom-bar { width: 100%; height: 65px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #ddd; }
+    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #333; }
+    
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; text-align: center; }
+
+    /* Uploading Loader */
     #uploadLoader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 9999999; align-items: center; justify-content: center; color: #fff; flex-direction: column; font-size: 16px; font-weight: bold; }
   </style>
 </head>
@@ -41,9 +69,9 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:24px; font-weight:bold; padding: 5px;" onclick="window.location.replace('profile.html')">❮</div>
-      <h2>Profile photo (Cloudinary)</h2>
-      <div style="cursor:pointer; font-size:26px; color:#1e3c72; font-weight:bold; padding: 8px 12px;" onclick="saveToFirebaseUrlOnly()">✓</div>
+      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
+      <h2>Profile photo</h2>
+      <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
     <div class="grid-9-container" id="grid9Container"></div>
@@ -57,7 +85,20 @@
       <div>Uploading directly to Cloudinary...</div>
     </div>
 
-    <div id="tipsModal">
+    <!-- Unsaved Changes Modal (Tips) -->
+    <div id="unsavedTipsModal">
+      <div class="unsaved-tips-box">
+        <h3>Tips</h3>
+        <p>You have unsaved changes, do you want to save it?</p>
+        <div class="unsaved-tips-actions">
+          <span class="btn-no-thanks" onclick="confirmNoThanks()">NO, THANKS</span>
+          <span class="btn-save-changes" onclick="confirmSaveAndExit()">SAVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips Modal -->
+    <div id="tipsModal" class="modal-overlay">
       <div class="tips-box" style="text-align:left;">
         <h3>Tips</h3>
         <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
@@ -67,96 +108,141 @@
       </div>
     </div>
 
+    <!-- फोटो एडिटर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
         <div class="crop-frame-box" id="cropFrameBox"></div>
       </div>
       <div class="editor-bottom-bar">
-        <button class="editor-bottom-btn" onclick="cancelEditor()">✕</button>
-        <button class="editor-bottom-btn" onclick="confirmEditor()">✓</button>
+        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
+        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
+      </div>
+    </div>
+
+    <!-- Custom Alert -->
+    <div id="customAlertModal" class="modal-overlay">
+      <div class="modal-box">
+        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
+        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
+        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
-      authDomain: "greedy--coin-game.firebaseapp.com",
-      projectId: "greedy--coin-game",
-      storageBucket: "greedy--coin-game.firebasestorage.app",
-      messagingSenderId: "735941940431",
-      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
-      measurementId: "G-8LFKW4W3CP"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-
-    // Cloudinary कॉन्फिगरेशन (आपका क्लाउड नेम: wolpzhms)
+    // Cloudinary कॉन्फिगरेशन
     const CLOUDINARY_CLOUD_NAME = "wolpzhms";
-    // नोट: अपनी क्लाउडिनरी सेटिंग से एक Unsigned Upload Preset बनाकर उसका नाम यहाँ डाल दें (जैसे "greedy_preset")
-    const CLOUDINARY_UPLOAD_PRESET = "greedy_preset"; 
+    const CLOUDINARY_UPLOAD_PRESET = "greedy_preset"; // आपका नया अनसाइन्ड प्रेसेट[span_3](start_span)[span_3](end_span)
 
-    let dbAvatar = "";
-    let dbPhotos = []; 
-    let activeSlotIndex = 0;
+    let currentAvatar = localStorage.getItem("greedy_avatar") || "";
+    let currentAvatarTemp = currentAvatar;
+    let activeSlotIndex = 1;
     let activeEditorMode = "cover";
     let rawImageObj = null;
-    let imgX = 0, imgY = 0, imgScale = 1, minScale = 1;
+    let posX = 0, posY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
+    let baseLeft = 0, baseTop = 0;
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
+    let initialPinchDistance = null;
+
+    history.pushState({page: "photo_grid"}, "", window.location.href);
+
+    window.addEventListener('popstate', function (event) {
+      let unsavedTipsModal = document.getElementById("unsavedTipsModal");
+      if (unsavedTipsModal && unsavedTipsModal.style.display === "flex") {
+        history.pushState({page: "photo_grid"}, "", window.location.href);
+        closePhotoGridWithoutSaving();
+      } else {
+        let hasChanges = (currentAvatarTemp !== currentAvatar);
+        for(let i=1; i<=8; i++) {
+          if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
+            hasChanges = true;
+            break;
+          }
+        }
+        if (hasChanges) {
+          history.pushState({page: "photo_grid"}, "", window.location.href);
+          unsavedTipsModal.style.display = "flex";
+        } else {
+          closePhotoGridWithoutSaving();
+        }
+      }
+    });
 
     function initGridPage() {
-      db.collection("users").doc(currentIdentifier).get().then((doc) => {
-        if(doc.exists) {
-          let data = doc.data();
-          dbAvatar = data.avatar || "";
-          dbPhotos = data.photos || [];
+      for(let i=1; i<=8; i++) {
+        if (!localStorage.getItem("unsaved_slot_" + i)) {
+          localStorage.setItem("unsaved_slot_" + i, localStorage.getItem("greedy_slot_" + i) || "");
         }
-        render9Grid();
-      }).catch(() => { render9Grid(); });
+      }
+      render9Grid();
     }
 
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
+      let avatarPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
       
-      let totalSlots = Math.max(dbPhotos.length + 1, 1);
-      if(totalSlots > 9) totalSlots = 9;
-
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        let photoVal = (i === 1) ? dbAvatar : (dbPhotos[i - 2] || "");
+        let slotVal = (i === 1) ? avatarPic : (localStorage.getItem("unsaved_slot_" + (i - 1)) || "");
 
         cell.onclick = () => handleGridCellClick(i);
 
-        if (photoVal && photoVal.trim() !== "") {
+        if (slotVal && slotVal.trim() !== "") {
           if (i === 1) {
-            cell.innerHTML = `<img src="${photoVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
+            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
           } else {
-            cell.innerHTML = `<img src="${photoVal}"><div class="badge-num">${i}</div>`;
+            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          if (i === totalSlots || (i === 1 && !dbAvatar && dbPhotos.length === 0)) {
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-          } else {
-            cell.innerHTML = `<div class="plus-sign">+</div><div class="badge-num">${i}</div>`;
-          }
+          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
         }
         container.appendChild(cell);
       }
     }
 
+    function closePhotoGridWithoutSaving() {
+      window.location.replace("Profile.html");
+    }
+
+    function handleGridBackAction() {
+      let hasChanges = (currentAvatarTemp !== currentAvatar);
+      for(let i=1; i<=8; i++) {
+        if ((localStorage.getItem("unsaved_slot_" + i) || "") !== (localStorage.getItem("greedy_slot_" + i) || "")) {
+          hasChanges = true;
+          break;
+        }
+      }
+      if (hasChanges) {
+        document.getElementById("unsavedTipsModal").style.display = "flex";
+      } else {
+        closePhotoGridWithoutSaving();
+      }
+    }
+
+    function confirmNoThanks() {
+      closePhotoGridWithoutSaving();
+    }
+
+    function saveAndClosePhotoGridScreen() {
+      localStorage.setItem("greedy_avatar", currentAvatarTemp);
+      for(let i=1; i<=8; i++) {
+        localStorage.setItem("greedy_slot_" + i, localStorage.getItem("unsaved_slot_" + i) || "");
+      }
+      window.location.replace("Profile.html");
+    }
+
+    function confirmSaveAndExit() {
+      saveAndClosePhotoGridScreen();
+    }
+
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
       if(index === 1) {
-        if (dbAvatar && dbAvatar.trim() !== "") {
+        let profPic = currentAvatarTemp || localStorage.getItem("greedy_avatar") || "";
+        if (profPic && profPic.trim() !== "") {
           selectedSlotForTips = 0;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
@@ -164,26 +250,32 @@
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let photoIndex = index - 2;
-        if(dbPhotos[photoIndex] && dbPhotos[photoIndex].trim() !== "") {
-          selectedSlotForTips = photoIndex;
+        let slotNum = index - 1;
+        let val = localStorage.getItem("unsaved_slot_" + slotNum) || "";
+        if(val && val.trim() !== "") {
+          selectedSlotForTips = slotNum;
           document.getElementById("tipsModal").style.display = "flex";
         } else {
           activeEditorMode = "cover";
-          activeSlotIndex = photoIndex;
+          activeSlotIndex = slotNum;
           document.getElementById("hiddenGalleryInput").click();
         }
       }
     }
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
+    
     function tipsUseAsProfile() {
       closeTipsModal();
-      if(selectedSlotForTips >= 0 && dbPhotos[selectedSlotForTips]) {
-        dbAvatar = dbPhotos[selectedSlotForTips];
-        render9Grid();
+      if(selectedSlotForTips > 0) {
+        let val = localStorage.getItem("unsaved_slot_" + selectedSlotForTips);
+        if(val) {
+          currentAvatarTemp = val;
+          render9Grid();
+        }
       }
     }
+
     function tipsChangePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
@@ -195,12 +287,20 @@
         document.getElementById("hiddenGalleryInput").click();
       }
     }
+
     function tipsDeletePicture() {
       closeTipsModal();
       if(selectedSlotForTips === 0) {
-        dbAvatar = "";
+        currentAvatarTemp = "";
       } else {
-        dbPhotos.splice(selectedSlotForTips, 1);
+        localStorage.setItem("unsaved_slot_" + selectedSlotForTips, "");
+        let activePhotos = [];
+        for(let i = 1; i <= 8; i++) {
+          let p = localStorage.getItem("unsaved_slot_" + i);
+          if(p && p.trim() !== "") activePhotos.push(p);
+        }
+        for(let i = 1; i <= 8; i++) { localStorage.setItem("unsaved_slot_" + i, ""); }
+        for(let i = 0; i < activePhotos.length; i++) { localStorage.setItem("unsaved_slot_" + (i + 1), activePhotos[i]); }
       }
       render9Grid();
     }
@@ -214,50 +314,154 @@
         rawImageObj = new Image();
         document.getElementById("screenPhotoEditor").style.display = "flex";
         let preview = document.getElementById("editorImagePreview");
+        preview.style.transition = 'none'; 
         preview.src = e.target.result;
         rawImageObj.onload = function() {
           let box = document.getElementById("cropFrameBox").getBoundingClientRect();
           minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
+          maxScale = minScale * 2.5;
           imgScale = minScale;
+          
           let renderW = rawImageObj.width * imgScale;
           let renderH = rawImageObj.height * imgScale;
           preview.style.width = renderW + "px";
           preview.style.height = renderH + "px";
-          imgX = box.left + (box.width - renderW) / 2;
-          imgY = box.top + (box.height - renderH) / 2;
-          preview.style.left = imgX + "px";
-          preview.style.top = imgY + "px";
+          
+          baseLeft = box.left + (box.width - renderW) / 2;
+          baseTop = box.top + (box.height - renderH) / 2;
+
+          preview.style.left = baseLeft + "px";
+          preview.style.top = baseTop + "px";
+          posX = 0;
+          posY = 0;
+          preview.style.transform = `translate3d(0px, 0px, 0px)`;
         }
         rawImageObj.src = e.target.result;
       }
       reader.readAsDataURL(file);
     }
 
-    function enforceBoundaries() {
-      if(!rawImageObj) return;
+    const editorArea = document.getElementById("editorCanvasArea");
+    let preview = document.getElementById("editorImagePreview");
+
+    function applySmartBoundaryAndSnap() {
       let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-      let renderW = rawImageObj.width * imgScale;
-      let renderH = rawImageObj.height * imgScale;
-      if (imgX > box.left) imgX = box.left;
-      if (imgX + renderW < box.left + box.width) imgX = box.left + box.width - renderW;
-      if (imgY > box.top) imgY = box.top;
-      if (imgY + renderH < box.top + box.height) imgY = box.top + box.height - renderH;
-      let preview = document.getElementById("editorImagePreview");
-      preview.style.left = imgX + "px";
-      preview.style.top = imgY + "px";
+      let renderW = parseFloat(preview.style.width);
+      let renderH = parseFloat(preview.style.height);
+
+      let currentLeft = baseLeft + posX;
+      let currentTop = baseTop + posY;
+
+      let minX = box.right - renderW;
+      let maxX = box.left;
+      let minY = box.bottom - renderH;
+      let maxY = box.top;
+
+      let clampedLeft = Math.max(minX, Math.min(maxX, currentLeft));
+      let clampedTop = Math.max(minY, Math.min(maxY, currentTop));
+
+      if (clampedLeft !== currentLeft || clampedTop !== currentTop) {
+        preview.style.transition = 'transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        posX = clampedLeft - baseLeft;
+        posY = clampedTop - baseTop;
+      } else {
+        preview.style.transition = 'none';
+      }
+      preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
     }
 
-    const editorArea = document.getElementById("editorCanvasArea");
     if(editorArea) {
-      editorArea.addEventListener('mousedown', (e) => { isDraggingImg=true; startMouseX=e.clientX; startMouseY=e.clientY; e.preventDefault(); });
+      editorArea.addEventListener('mousedown', (e) => { 
+        isDraggingImg = true; 
+        startMouseX = e.clientX; 
+        startMouseY = e.clientY; 
+        preview.style.transition = 'none'; 
+        e.preventDefault(); 
+      });
+
       window.addEventListener('mousemove', (e) => {
         if(!isDraggingImg) return;
-        imgX += e.clientX - startMouseX;
-        imgY += e.clientY - startMouseY;
-        startMouseX = e.clientX; startMouseY = e.clientY;
-        enforceBoundaries();
+        posX += (e.clientX - startMouseX) * 1.25;
+        posY += (e.clientY - startMouseY) * 1.25;
+        startMouseX = e.clientX; 
+        startMouseY = e.clientY;
+        
+        preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
       });
-      window.addEventListener('mouseup', () => { isDraggingImg=false; });
+
+      window.addEventListener('mouseup', () => { 
+        if(isDraggingImg) {
+          isDraggingImg = false; 
+          applySmartBoundaryAndSnap(); 
+        }
+      });
+
+      editorArea.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+        let newScale = imgScale * zoomFactor;
+        if(newScale >= minScale && newScale <= maxScale) {
+          imgScale = newScale;
+          let renderW = rawImageObj.width * imgScale;
+          let renderH = rawImageObj.height * imgScale;
+          preview.style.width = renderW + "px";
+          preview.style.height = renderH + "px";
+          applySmartBoundaryAndSnap();
+        }
+      }, { passive: false });
+
+      editorArea.addEventListener('touchstart', (e) => {
+        if(e.touches.length === 1) {
+          isDraggingImg = true;
+          startMouseX = e.touches[0].clientX;
+          startMouseY = e.touches[0].clientY;
+          initialPinchDistance = null;
+          preview.style.transition = 'none';
+        } else if(e.touches.length === 2) {
+          isDraggingImg = false;
+          initialPinchDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+        }
+      });
+
+      window.addEventListener('touchmove', (e) => {
+        if(e.touches.length === 1 && isDraggingImg) {
+          posX += (e.touches[0].clientX - startMouseX) * 1.25;
+          posY += (e.touches[0].clientY - startMouseY) * 1.25;
+          startMouseX = e.touches[0].clientX;
+          startMouseY = e.touches[0].clientY;
+          
+          preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
+          e.preventDefault();
+        } else if(e.touches.length === 2 && initialPinchDistance !== null) {
+          let currentPinchDistance = Math.hypot(
+            e.touches[0].clientX - e.touches[1].clientX,
+            e.touches[0].clientY - e.touches[1].clientY
+          );
+          let zoomFactor = currentPinchDistance / initialPinchDistance;
+          let newScale = imgScale * zoomFactor;
+          
+          if(newScale >= minScale && newScale <= maxScale) {
+            imgScale = newScale;
+            let renderW = rawImageObj.width * imgScale;
+            let renderH = rawImageObj.height * imgScale;
+            preview.style.width = renderW + "px";
+            preview.style.height = renderH + "px";
+          }
+          initialPinchDistance = currentPinchDistance;
+          e.preventDefault();
+        }
+      }, { passive: false });
+
+      window.addEventListener('touchend', (e) => {
+        if(e.touches.length < 2) initialPinchDistance = null;
+        if(e.touches.length === 0 && isDraggingImg) {
+          isDraggingImg = false;
+          applySmartBoundaryAndSnap(); 
+        }
+      });
     }
 
     function cancelEditor() {
@@ -265,15 +469,14 @@
       rawImageObj = null;
     }
 
-    // यहाँ से फोटो सीधे Cloudinary पर अपलोड होगी और उसका URL मिलेगा
+    // यहाँ से कॉपीड फोटो सीधे Cloudinary पर जाएगी और उसका URL मिलेगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
         let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        canvas.width = 1000;
-        canvas.height = Math.round(1000 / (box.width / box.height));
+        canvas.width = 1080;
+        canvas.height = Math.round(1080 / (box.width / box.height));
         let ctx = canvas.getContext("2d");
-        let preview = document.getElementById("editorImagePreview");
         let renderedWidth = parseFloat(preview.style.width);
         let renderedHeight = parseFloat(preview.style.height);
         let previewRect = preview.getBoundingClientRect();
@@ -285,15 +488,15 @@
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
         
-        // कॉपीड इमेज को Blob में बदलना ताकि Cloudinary पर भेजा जा सके
         canvas.toBlob(function(blob) {
           document.getElementById("screenPhotoEditor").style.display = "none";
           rawImageObj = null;
           uploadFileToCloudinary(blob);
-        }, "image/jpeg", 0.90);
+        }, "image/jpeg", 0.95);
       }
     }
 
+    // Cloudinary अपलोड फंक्शन
     function uploadFileToCloudinary(fileBlob) {
       document.getElementById("uploadLoader").style.display = "flex";
       
@@ -309,16 +512,12 @@
       .then(data => {
         document.getElementById("uploadLoader").style.display = "none";
         if (data.secure_url) {
-          let cloudinaryUrl = data.secure_url; // यह रहा Cloudinary का पक्का लिंक!
+          let cloudinaryUrl = data.secure_url; // यह रहा Cloudinary का परमानेंट URL लिंक
           
           if (activeEditorMode === "cover") {
-            if (activeSlotIndex >= dbPhotos.length) {
-              dbPhotos.push(cloudinaryUrl);
-            } else {
-              dbPhotos[activeSlotIndex] = cloudinaryUrl;
-            }
+            localStorage.setItem("unsaved_slot_" + activeSlotIndex, cloudinaryUrl);
           } else {
-            dbAvatar = cloudinaryUrl;
+            currentAvatarTemp = cloudinaryUrl;
           }
           render9Grid();
         } else {
@@ -328,20 +527,7 @@
       .catch(error => {
         document.getElementById("uploadLoader").style.display = "none";
         console.error("Cloudinary Error:", error);
-        alert("Upload error. Please check internet.");
-      });
-    }
-
-    // डेटाबेस में केवल Cloudinary के छोटे URL सेव होंगे
-    function saveToFirebaseUrlOnly() {
-      db.collection("users").doc(currentIdentifier).set({
-        avatar: dbAvatar,
-        photos: dbPhotos
-      }, { merge: true }).then(() => {
-        alert("Photos saved successfully via Cloudinary!");
-        window.location.replace("profile.html");
-      }).catch((error) => {
-        alert("Error saving: " + error.message);
+        alert("Upload error. Please check internet connection.");
       });
     }
 
