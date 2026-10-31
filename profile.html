@@ -19,9 +19,9 @@
       height: 100%;
       scroll-snap-align: start;
       position: relative;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
       background-color: #9b51e0;
       display: flex;
       align-items: center;
@@ -433,6 +433,8 @@
 
           if(slotVal && slotVal.trim() !== "") {
             pageEl.style.backgroundImage = `url('${slotVal}')`;
+            pageEl.style.backgroundSize = "cover";
+            pageEl.style.backgroundPosition = "center";
             pageEl.style.display = "flex";
             if(plusEl) plusEl.style.display = "none"; 
           } else {
@@ -469,7 +471,7 @@
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = slider.clientWidth; // हमेशा दूसरे नंबर की फोटो से खुलेगा और पहली फोटो बाईं तरफ स्क्रॉल करने पर मिलेगी
+            slider.scrollLeft = 0; // पहली फोटो से शुरुआत करने के लिए
           }
         }, 50);
       }).catch((error) => {
