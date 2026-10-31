@@ -415,7 +415,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप (Firebase की photos लिस्ट के आधार पर - पुरानी फोटो हटने और नई जुड़ने की समस्या का समाधान)
+        // कवर पेजेस सेटअप (9 फोटो पूरी होने पर Upload बटन छुपाने का फिक्स लॉजिक)
         let slotsData = [];
         if (dbPhotos && dbPhotos.length > 0) {
           slotsData = [...dbPhotos];
@@ -450,6 +450,7 @@
                 plusEl.innerText = "Upload";
               }
             } else {
+              // 9 फोटो पूरी होने पर 10वें स्लॉट या फालतू अपलोड बटन को पूरी तरह छुपा दें
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "none"; 
             }
