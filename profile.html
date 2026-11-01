@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>User Profile - Greedy Coin</title>
   <style>
-    /* -webkit-touch-callout और user-select से लॉन्ग प्रेस करने पर नीला बॉक्स या मेनू नहीं आएगा */
+    /* -webkit-user-select और user-select से लॉन्ग प्रेस करने पर नीला रंग या सिलेक्शन नहीं आएगा */
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
@@ -330,11 +330,6 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
-
-    // --- लॉन्ग प्रेस और राइट क्लिक मेनू को पूरी तरह से ब्लॉक करने के लिए ---
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    }, false);
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
