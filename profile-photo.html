@@ -163,7 +163,7 @@
       });
     }
 
-    // --- 1 से 9 तक ग्रिड रेंडरिंग (पहلا स्लॉट हमेशा दिखेगा, और 2 नंबर आदि के लिए क्रमिक नियम) ---
+    // --- यहाँ सही क्रमिक नियम सेट किया गया है ताकि पहली फोटो के बाद दूसरा Upload बटन तुरंत दिखे ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -181,7 +181,7 @@
           cell.onclick = () => handleGridCellClick(i);
           container.appendChild(cell);
         } else {
-          // नियम: पहला स्लॉट हमेशा खुला रहेगा, और अगले डिब्बों के लिए क्रमिक (sequential) नियम लागू रहेगा
+          // नियम: पहला स्लॉट हमेशा खुला रहेगा, और अगली खाली जगह (filledCount + 1) पर Upload बटन दिखेगा
           if (i === 1 || i === filledCount + 1) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
             cell.onclick = () => handleGridCellClick(i);
@@ -212,7 +212,6 @@
     }
 
     function saveAndClosePhotoGridScreen() {
-      // मुख्य नियम: पहली फोटो (Slot 1) को ही मुख्य avatar मानकर डेटाबेस में भी अपडेट करेंगे
       let firstPhoto = tempPhotos[0] || "";
 
       db.collection("users").doc(currentIdentifier).set({
