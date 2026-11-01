@@ -153,6 +153,7 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
+    // --- हिस्ट्री को रिप्लेस करें ताकि कचरा या पुराने पेज स्टोर न हों ---
     history.replaceState({page: "photo_grid"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -164,15 +165,6 @@
         closePhotoGridWithoutSaving();
       }
     });
-
-    // --- क्लाउडिनاري इमेज को सुपर फास्ट लोड करने के लिए ऑप्टिमाइज़ेशन फंक्शन ---
-    function getOptimizedImageUrl(url) {
-      if (!url || !url.includes("cloudinary.com")) return url;
-      if (url.includes("/upload/") && !url.includes("/w_600")) {
-        return url.replace("/upload/", "/upload/w_600,c_scale,q_auto,f_auto/");
-      }
-      return url;
-    }
 
     function initGridPage() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
@@ -190,7 +182,7 @@
       });
     }
 
-    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, ऑप्टिमाइज़्ड इमेज और प्रीलोडिंग के साथ ---
+    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, बैकग्राउंड इमेज सेफ रहेंगे, और हर खाली डिब्बे पर Upload + 👤/🖼️ आइकन दिखेगा ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -202,13 +194,8 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
-          let optUrl = getOptimizedImageUrl(slotVal);
-
-          // इमेज को बैकग्राउंड में प्रीलोड करें ताकि बिना किसी देरी के तुरंत दिखे
-          let imgPreload = new Image();
-          imgPreload.src = optUrl;
-
-          cell.style.backgroundImage = `url('${optUrl}')`;
+          // फोटो क्रोम सुरक्षा के साथ बैकग्राउंड इमेज के रूप में सेट होगी
+          cell.style.backgroundImage = `url('${slotVal}')`;
           cell.innerHTML = `<div class="badge-num">${i}</div>`;
           cell.onclick = () => handleFilledCellClick(i);
         } else {
@@ -257,6 +244,7 @@
     }
 
     function closePhotoGridWithoutSaving() {
+      // सीधे रिप्लेस करें ताकि हिस्ट्री साफ रहे
       window.location.replace("profile.html");
     }
 
@@ -270,11 +258,13 @@
     }
 
     function confirmNoThanks() {
+      // NO, THANKS पर क्लिक करने पर सीधे profile.html पर जाएं (बिना पुरानी हिस्ट्री के)
       document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
     function saveAndClosePhotoGridScreen() {
+      // यह ऊपर वाले सही (✓) निशान के लिए है (यह सेव करके profile.html पर जाता है)
       let firstPhoto = tempPhotos[0] || "";
 
       db.collection("users").doc(currentIdentifier).set({
@@ -288,6 +278,7 @@
     }
 
     function confirmSaveAndExit() {
+      // SAVE पर क्लिक करने पर फोटो सेव हो जाए, लेकिन यूजर इसी पेज पर रुका रहे
       document.getElementById("unsavedTipsModal").style.display = "none";
       
       let firstPhoto = tempPhotos[0] || "";
