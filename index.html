@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Greedy Coin - Registration and Login</title>
-  <!-- इंटरनेट स्लो होने पर भी Cloudinary से bg.webp फोटो सबसे पहले लोड होगी -->
-  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp">
+  <!-- इंटरनेट स्लो होने पर भी Cloudinary से bg.webp फोटो सबसे पहले और सुपर-फास्ट लोड होगी -->
+  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
     body { 
@@ -25,7 +25,6 @@
       text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
       margin-top: 40px; 
       text-align: center; 
-      /* टेक्स्ट पर नीला बॉक्स या सिलेक्शन आने से रोकने के लिए */
       -webkit-user-select: none;
       user-select: none;
     }
@@ -669,9 +668,8 @@
       popupCallback = callback;
     }
 
-    // नया डेमो OTP इनपुट पॉपअप दिखाने के लिए फंक्शन
     function showDemoOtpPrompt(onSuccessCallback) {
-      let demoCode = "123456"; // ट्रायल के लिए फिक्स डेमो ओटीपी
+      let demoCode = "123456";
       document.getElementById("popupMessage").innerHTML = `
         New account registration.<br><b>Demo OTP: ${demoCode}</b><br><br>
         <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
@@ -717,17 +715,14 @@
 
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
 
-      // Firestore डेटाबेस से चेक करना
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         if (!doc.exists) {
-          // अगर नंबर रजिस्टर्ड नहीं है, तो पहले डेमो OTP मांगेंगे (बिल्कुल Forgot Password की तरह)
           showDemoOtpPrompt(function(verified) {
             if (verified) {
               window.location.href = "password.html";
             }
           });
         } else {
-          // अगर नंबर पहले से रजिस्टर्ड है, तो सीधा पासवर्ड पेज पर जाने देंगे
           window.location.href = "password.html";
         }
       }).catch((error) => {
