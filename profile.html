@@ -9,24 +9,9 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
-    /* Cover Slider Area */
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
-    .cover-slider-container::-webkit-scrollbar { display: none; }
-    
-    .cover-page {
-      flex: 0 0 100%;
-      min-width: 100%;
-      height: 100%;
-      scroll-snap-align: start;
-      position: relative;
-      background-size: cover !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      background-color: #9b51e0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    /* Cover Area */
+    .cover-slider-container { width: 100%; height: 320px; position: relative; background: #9b51e0; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .cover-page { width: 100%; height: 100%; background-size: cover !important; background-repeat: no-repeat !important; background-position: center !important; display: flex; align-items: center; justify-content: center; }
 
     .cover-center-plus {
       width: 85%;
@@ -43,16 +28,7 @@
       border: 2px solid #fff;
       z-index: 5;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      letter-spacing: 0.5px;
       cursor: pointer;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-      transition: transform 0.1s ease, background 0.1s ease;
-    }
-    .cover-center-plus:active {
-      transform: scale(0.95);
-      background: rgba(255, 255, 255, 0.2);
     }
 
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
@@ -66,31 +42,17 @@
     
     .avatar-frame {
       position: absolute !important;
-      top: -14px !important;
-      left: -14px !important;
-      right: -14px !important;
-      bottom: -14px !important;
-      width: calc(100% + 28px) !important;
-      height: calc(100% + 28px) !important;
-      border-radius: 50% !important;
-      pointer-events: none !important;
-      box-sizing: border-box !important;
-      background-size: 100% 100% !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      z-index: 25 !important;
-      display: none;
+      top: -14px !important; left: -14px !important; right: -14px !important; bottom: -14px !important;
+      width: calc(100% + 28px) !important; height: calc(100% + 28px) !important;
+      border-radius: 50% !important; pointer-events: none !important; box-sizing: border-box !important;
+      background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important;
+      z-index: 25 !important; display: none;
     }
 
     .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
     .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
-    
-    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -109,8 +71,6 @@
     .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
 
     .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
-    .stat-item-balance { text-align: center; cursor: pointer; }
-    .stat-item-won { text-align: center; }
     .stat-val { font-size: 16px; font-weight: 900; color: #222; }
     .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
 
@@ -120,10 +80,6 @@
     .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
     .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
 
-    .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
-    .sub-header h2 { font-size: 18px; font-weight: 900; }
-    
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
@@ -133,32 +89,30 @@
 <body>
 
   <div class="page-container">
-    
-    <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
-      
       <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (केवल अपलोड की गई तस्वीरें दिखाने और स्क्रॉल करने के लिए) -->
-      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <!-- यहाँ डायनेमिकली केवल भरी हुई तस्वीरें रेंडर होंगी -->
+      <!-- कवर फोटो डिस्प्ले एरिया -->
+      <div class="cover-slider-container" id="coverContainer" onclick="openPhotoGridScreen()">
+        <div class="cover-page" id="coverPage">
+          <div class="cover-center-plus owner-only-elem" id="plusCover" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>
+        </div>
       </div>
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
-          <div id="avatarPlusIcon" class="owner-only-elem" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
-            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
+            <div class="user-name" id="profNameDisplay">User</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
@@ -171,21 +125,20 @@
 
       <div class="follow-stats-row">
         <div class="follow-counts">
-          <div class="f-count-item" onclick="showCustomAlert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
-          <div class="f-count-item" onclick="showCustomAlert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
+          <div class="f-count-item"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
+          <div class="f-count-item"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
         </div>
       </div>
 
       <div class="stats-container">
-        <div class="stat-item-balance" onclick="openCoinSendModal()">
+        <div style="text-align:center;">
           <div class="stat-val">🪙 <span id="profBalance">1000</span></div>
           <div class="stat-label">Wallet Balance</div>
         </div>
-        <div class="stat-item-won">
+        <div style="text-align:center;">
           <div class="stat-val">🏆 <span id="profWon">0</span></div>
           <div class="stat-label">Total Won Coins</div>
         </div>
@@ -193,123 +146,24 @@
 
       <div class="cards-wrapper">
         <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
-          <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
+          <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena</p></div>
           <div style="font-size:32px;">🎰</div>
         </div>
-        <div class="action-card card-about" onclick="openAboutMeScreen()">
-          <div><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
-          <div style="font-size:32px;">👤</div>
-        </div>
-        <div class="action-card card-group" onclick="openGroupsScreen()">
-          <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
-          <div style="font-size:32px;">🌐</div>
-        </div>
       </div>
     </div>
 
-    <!-- SETTINGS PAGE -->
-    <div id="screenSettingsPage" class="sub-screen">
-      <div class="sub-header">
-        <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
-        <h2>Settings</h2>
-        <div style="width:20px;"></div>
-      </div>
-      <div style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; flex:1;">
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Account Preferences</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
-        </div>
-        <div style="margin-bottom: 90px;">
-          <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ABOUT ME SCREEN -->
-    <div id="screenAboutMe" class="sub-screen">
-      <div class="sub-header">
-        <div style="cursor:pointer; font-size:20px;" onclick="closeAboutMeScreen()">❮</div>
-        <h2>About Me</h2>
-        <div id="privacyHeart" style="cursor:pointer; font-size:22px;" onclick="togglePrivacy()">🤍</div>
-      </div>
-      <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
-        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <h4 style="margin-bottom:8px;">My Unique ID</h4>
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
-            <span id="aboutUserId" style="font-weight:bold;">#288630</span>
-            <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
-          </div>
-        </div>
-        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <h4 style="margin-bottom:8px;">Bio & Details</h4>
-          <p style="font-size:13px; color:#555;">This is your personal profile bio. Tap the heart icon to set privacy.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- GROUPS SCREEN -->
-    <div id="screenGroups" class="sub-screen">
-      <div class="sub-header">
-        <div style="cursor:pointer; font-size:20px;" onclick="closeGroupsScreen()">❮</div>
-        <h2>Groups</h2>
-        <div style="width:20px;"></div>
-      </div>
-      <div style="padding:20px; text-align:center;">
-        <h3 style="margin-bottom:10px;">Community Groups</h3>
-        <p style="font-size:13px; color:#666;">Group creation tools will be configured here soon.</p>
-      </div>
-    </div>
-
-    <!-- FRAME & AVATAR MODAL -->
+    <!-- MODALS -->
     <div id="modalFrame" class="modal-overlay">
       <div class="modal-box">
-        <h3>🎨 Select Avatar & Frame</h3>
-        <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
-         
-       <div class="grid-options" id="frameOptionsGrid">
-          <div class="grid-item" onclick="applyFrameClass('peacock')" style="background:#e0f2f1; color:#00695c; font-weight:bold;">Peacock Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('sun')" style="background:#fce4ec; color:#c2185b; font-weight:bold;">Sun Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
-          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
-          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
+        <h3>🎨 Select Frame</h3>
+         <div class="grid-options">
+          <div class="grid-item" onclick="applyFrameClass('peacock')" style="background:#e0f2f1; color:#00695c; font-weight:bold;">Peacock</div>
+          <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion</div>
         </div>
-
-        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
-
-        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo:</p>
-        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Open Photo Manager</button>
-        
         <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
       </div>
     </div>
 
-    <!-- COIN SEND MODAL -->
-    <div id="modalCoinSend" class="modal-overlay">
-      <div class="modal-box">
-        <h3>Send Coins to User</h3>
-        <form onsubmit="handleCoinSendFormSubmit(event)">
-          <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
-          <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
-          <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
-        </form>
-        <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
-      </div>
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div id="modalSettings" class="modal-overlay">
-      <div class="modal-box" style="text-align:center;">
-        <h3>Website Settings</h3>
-        <p style="font-size:13px; color:#666; margin:15px 0;">All global settings configurations.</p>
-        <button onclick="closeSettingsModal()" style="padding:8px 20px; background:#333; color:#fff; border:none; border-radius:8px; cursor:pointer;">Close</button>
-      </div>
-    </div>
-
-    <!-- CUSTOM ALERT MODAL -->
     <div id="customAlertModal" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
@@ -317,12 +171,10 @@
         <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
-
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
@@ -333,264 +185,49 @@
       appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
       measurementId: "G-8LFKW4W3CP"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
-    let dbPhotos = []; 
-
-    history.pushState({page: "profile_main"}, "", window.location.href);
-
-    window.addEventListener('popstate', function (event) {
-      history.pushState({page: "profile_main"}, "", window.location.href);
-
-      let customAlert = document.getElementById("customAlertModal");
-      let modalFrame = document.getElementById("modalFrame");
-      let modalCoinSend = document.getElementById("modalCoinSend");
-      let modalSettings = document.getElementById("modalSettings");
-      let settingsPage = document.getElementById("screenSettingsPage");
-      let aboutScreen = document.getElementById("screenAboutMe");
-      let groupsScreen = document.getElementById("screenGroups");
-
-      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
-      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
-      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
-
-      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
-      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
-      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
-    });
 
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          coins = data.coins || 1000;
-          userName = data.name || "User";
-          userId = data.uniqueId || "#288630";
-          userLevel = data.level || 1;
-          totalWon = data.won || 0;
-          isPrivate = data.privacy || false;
-          currentFrame = data.frame || "none";
-          currentAvatar = data.avatar || "";
-          dbPhotos = data.photos || []; 
-        } else {
-          coins = 1000;
-          userName = "User";
-          userId = "#288630";
-          userLevel = 1;
-          totalWon = 0;
-          dbPhotos = [];
-        }
+          document.getElementById("profNameDisplay").innerText = data.name || "User";
+          document.getElementById("profBalance").innerText = data.coins || 1000;
+          document.getElementById("profWon").innerText = data.won || 0;
+          document.getElementById("profLevel").innerText = data.level || 1;
+          document.getElementById("profId").innerText = data.uniqueId || "#288630";
+          
+          let photos = data.photos || [];
+          let validPhotos = photos.filter(p => p && p.trim() !== "");
+          let coverPage = document.getElementById("coverPage");
+          let plusCover = document.getElementById("plusCover");
 
-        document.getElementById("profNameDisplay").innerText = userName;
-        document.getElementById("profBalance").innerText = coins;
-        document.getElementById("profWon").innerText = totalWon;
-        document.getElementById("profLevel").innerText = userLevel;
-        document.getElementById("profId").innerText = userId;
-        document.getElementById("aboutUserId").innerText = userId;
-        
-        const avatarImg = document.getElementById("profAvatarImg");
-        const plusIcon = document.getElementById("avatarPlusIcon");
-
-        if (currentAvatar && currentAvatar.trim() !== "") {
-          avatarImg.src = currentAvatar;
-          avatarImg.style.display = "block";
-          if(plusIcon) plusIcon.style.display = "none";
-        } else {
-          avatarImg.style.display = "none";
-          if(plusIcon) plusIcon.style.display = "block";
-        }
-
-        // --- कवर स्लाइडर में केवल अपलोड की गई तस्वीरें दिखाना (यदि खाली हो तो एक Upload बटन) ---
-        let sliderContainer = document.getElementById("coverSlider");
-        sliderContainer.innerHTML = "";
-
-        let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
-
-        if (validPhotos.length > 0) {
-          validPhotos.forEach((photoUrl) => {
-            let pageDiv = document.createElement("div");
-            pageDiv.className = "cover-page";
-            pageDiv.style.backgroundImage = `url('${photoUrl}')`;
-            pageDiv.style.backgroundSize = "cover";
-            pageDiv.style.backgroundPosition = "center";
-            sliderContainer.appendChild(pageDiv);
-          });
-        } else {
-          let pageDiv = document.createElement("div");
-          pageDiv.className = "cover-page";
-          pageDiv.innerHTML = `<div class="cover-center-plus owner-only-elem" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
-          sliderContainer.appendChild(pageDiv);
-        }
-
-        const frameEl = document.getElementById("profAvatarFrame");
-        if (currentFrame === "none") {
-          frameEl.style.display = "none";
-        } else {
-          frameEl.style.display = "block";
-          applyFrameClass(currentFrame);
-        }
-        updatePrivacyHeart();
-
-        // --- डिस्प्ले नियम: 1 फोटो होने पर सामने, 2+ होने पर दूसरी फोटो सामने और पहली बाईं तरफ स्क्रॉल में ---
-        setTimeout(() => {
-          let slider = document.getElementById("coverSlider");
-          if (slider) {
-            let singlePageWidth = slider.clientWidth || 480;
-            if (validPhotos.length > 1) {
-              slider.scrollLeft = singlePageWidth; 
-            } else {
-              slider.scrollLeft = 0; 
-            }
+          if (validPhotos.length > 0) {
+            coverPage.style.backgroundImage = `url('${validPhotos[0]}')`;
+            plusCover.style.display = "none";
+          } else {
+            coverPage.style.backgroundImage = "none";
+            plusCover.style.display = "flex";
           }
-        }, 150);
-
-      }).catch((error) => {
-        console.error("Error loading profile from Firebase: ", error);
+        }
       });
     }
 
-    function openPhotoGridScreen() {
-      window.location.href = "profile-photo.html";
-    }
-
-    function triggerAvatarUpload() {
-      closeFrameModal();
-      openPhotoGridScreen();
-    }
-
-    function promptEditName() {
-      let newName = prompt("Enter your name:", userName);
-      if(newName && newName.trim() !== "") {
-        userName = newName.trim();
-        document.getElementById("profNameDisplay").innerText = userName;
-        db.collection("users").doc(currentIdentifier).update({ name: userName }).catch((err) => console.error(err));
-      }
-    }
-
+    function openPhotoGridScreen() { window.location.href = "profile-photo.html"; }
+    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
     function showCustomAlert(text) {
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
     }
     function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
-
-    function applyFrameClass(frameName) {
-      currentFrame = frameName;
-      db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
-      
-      const frameEl = document.getElementById("profAvatarFrame");
-      frameEl.className = "avatar-frame";
-      frameEl.style.display = "block";
-      frameEl.style.backgroundImage = "";
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
-      if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
-      else frameEl.style.display = "none";
-      closeFrameModal();
-    }
-
-    function removeFrame() {
-      currentFrame = "none";
-      db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
-      document.getElementById("profAvatarFrame").style.display = "none";
-      closeFrameModal();
-    }
-
-    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
-    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
-
     function copyMyId() {
-      navigator.clipboard.writeText(userId);
-      showCustomAlert("ID Copied: " + userId);
+      navigator.clipboard.writeText(document.getElementById("profId").innerText);
+      showCustomAlert("ID Copied!");
     }
-
-    function openSettingsPage() { 
-      document.getElementById("screenProfile").style.display = "none";
-      document.getElementById("screenSettingsPage").style.display = "flex";
-    }
-    function closeSettingsPage() {
-      document.getElementById("screenSettingsPage").style.display = "none";
-      document.getElementById("screenProfile").style.display = "block";
-      initProfile();
-    }
-
-    function handleLogout() {
-      localStorage.removeItem("greedy_login_identifier");
-      showCustomAlert("Logged out successfully!");
-      setTimeout(() => { window.location.replace("index.html"); }, 800);
-    }
-
-    function openAboutMeScreen() { 
-      document.getElementById("screenProfile").style.display = "none";
-      document.getElementById("screenAboutMe").style.display = "flex"; 
-    }
-    function closeAboutMeScreen() { 
-      document.getElementById("screenAboutMe").style.display = "none"; 
-      document.getElementById("screenProfile").style.display = "block";
-    }
-    
-    function togglePrivacy() {
-      isPrivate = !isPrivate;
-      db.collection("users").doc(currentIdentifier).update({ privacy: isPrivate }).catch((err) => console.error(err));
-      updatePrivacyHeart();
-    }
-    
-    function updatePrivacyHeart() {
-      const heart = document.getElementById("privacyHeart");
-      const bioBox = document.getElementById("aboutMeContentBox");
-      if(isPrivate) {
-        heart.innerText = "❤️";
-        bioBox.style.background = "#ffe6e6";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
-      } else {
-        heart.innerText = "🤍";
-        bioBox.style.background = "#fff";
-        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
-      }
-    }
-
-    function openGroupsScreen() { 
-      document.getElementById("screenProfile").style.display = "none";
-      document.getElementById("screenGroups").style.display = "flex"; 
-    }
-    function closeGroupsScreen() { 
-      document.getElementById("screenGroups").style.display = "none"; 
-      document.getElementById("screenProfile").style.display = "block";
-    }
-
-    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
-    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
-    
-    function handleCoinSendFormSubmit(event) {
-      event.preventDefault();
-      processCoinSend();
-    }
-
-    function processCoinSend() {
-      let targetId = document.getElementById("targetUserId").value.trim();
-      let amt = parseInt(document.getElementById("sendCoinAmount").value);
-      if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
-      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
-      
-      coins -= amt;
-      db.collection("users").doc(currentIdentifier).update({ coins: coins }).then(() => {
-        initProfile();
-        closeCoinSendModal();
-        showCustomAlert(`Successfully sent ${amt} coins!`);
-      }).catch((err) => {
-        showCustomAlert("Error updating coins: " + err.message);
-      });
-    }
-
-    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
-    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
-
-    window.onpageshow = function(event) {
-      initProfile();
-    };
 
     window.onload = () => { initProfile(); };
   </script>
