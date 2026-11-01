@@ -2,10 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Greedy Coin - Sign in with Email</title>
   <link rel="stylesheet" href="style.css">
   <style>
+    /* लॉन्ग प्रेस, सिलेक्शन और टच हाईलाइट को रोकने के लिए */
+    * {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body { 
       background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #111 url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed; 
       background-size: cover;
@@ -135,6 +146,11 @@
     let currentEmail = "";
     let isForgotFlow = false;
     let popupCallback = null;
+
+    // --- लॉन्ग प्रेस और राइट क्लिक मेनू को ब्लॉक करने के लिए ---
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    }, false);
 
     window.onload = function() {
       history.replaceState({ page: "email_input" }, "");
@@ -324,14 +340,12 @@
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
-        // --- नया यूज़र: पुराना डेटा साफ़ करें ताकि पुराने यूज़र का कचरा न आए ---
         localStorage.removeItem("greedy_coins");
         localStorage.removeItem("greedy_unique_id");
         localStorage.removeItem("greedy_name");
         localStorage.removeItem("greedy_won");
         localStorage.removeItem("greedy_level");
 
-        // --- नया डेटा सेट करें ---
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
@@ -354,7 +368,6 @@
           }, 1000);
         });
       } else {
-        // --- पुराना यूज़र लॉगिन कर रहा है ---
         let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
         if (passVal !== savedPass) {
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
