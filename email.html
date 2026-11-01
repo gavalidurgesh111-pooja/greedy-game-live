@@ -324,19 +324,19 @@
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
-        // --- नया यूज़र: सिर्फ लॉगिन और प्रोफाइल से जुड़े पुराने वेरिएबल्स साफ़ करें, पूरा लोकल स्टोरेज नहीं ---
+        // --- नया यूज़र: पुराना डेटा साफ़ करें ताकि पुराने यूज़र का कचरा न आए ---
         localStorage.removeItem("greedy_coins");
         localStorage.removeItem("greedy_unique_id");
         localStorage.removeItem("greedy_name");
         localStorage.removeItem("greedy_won");
         localStorage.removeItem("greedy_level");
 
-        // --- अब इस नए ईमेल के लिए फ्रेश डेटा सेट करें ---
+        // --- नया डेटा सेट करें ---
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
         localStorage.setItem("greedy_email_identifier", currentEmail);
-        localStorage.setItem("greedy_login_identifier", currentEmail); // फोन और ईमेल दोनों के लिए एक समान चाबी
+        localStorage.setItem("greedy_login_identifier", currentEmail);
 
         let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
         localStorage.setItem("greedy_unique_id", freshId);
@@ -363,7 +363,7 @@
 
         localStorage.setItem("greedy_email_identifier", currentEmail);
         localStorage.setItem("greedy_login_identifier", currentEmail);
-        localStorage.setItem("greedy_initialized", "true";
+        localStorage.setItem("greedy_initialized", "true");
         
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
