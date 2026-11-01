@@ -363,7 +363,7 @@
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // --- बैक बटन (popstate) का सही लॉजिक (अब सब-स्क्रीन बंद होगी, रजिस्ट्रेशन पेज पर नहीं जाएगा) ---
+    // --- बैक बटन (popstate) का बिल्कुल सही और सुरक्षित लॉजिक ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -373,14 +373,14 @@
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
 
-      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
-      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
-      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
+      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
 
-      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
-      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
-      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
+      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
     });
 
     function initProfile() {
@@ -487,8 +487,11 @@
     function showCustomAlert(text) {
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
+      history.pushState({modal: "alert"}, "", window.location.href);
     }
-    function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
+    function closeCustomAlert() { 
+      document.getElementById("customAlertModal").style.display = "none"; 
+    }
 
     function applyFrameClass(frameName) {
       currentFrame = frameName;
@@ -511,7 +514,10 @@
       closeFrameModal();
     }
 
-    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
+    function openFrameModal() { 
+      document.getElementById("modalFrame").style.display = "flex"; 
+      history.pushState({modal: "frame"}, "", window.location.href);
+    }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
@@ -522,7 +528,7 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
-      history.pushState({ screen: "settings" }, "");
+      history.pushState({screen: "settings"}, "", window.location.href);
     }
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
@@ -539,7 +545,7 @@
     function openAboutMeScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenAboutMe").style.display = "flex"; 
-      history.pushState({ screen: "about" }, "");
+      history.pushState({screen: "about"}, "", window.location.href);
     }
     function closeAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "none"; 
@@ -569,14 +575,17 @@
     function openGroupsScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenGroups").style.display = "flex"; 
-      history.pushState({ screen: "groups" }, "");
+      history.pushState({screen: "groups"}, "", window.location.href);
     }
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
     }
 
-    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
+    function openCoinSendModal() { 
+      document.getElementById("modalCoinSend").style.display = "flex"; 
+      history.pushState({modal: "coinsend"}, "", window.location.href);
+    }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
     function handleCoinSendFormSubmit(event) {
@@ -600,7 +609,10 @@
       });
     }
 
-    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
+    function openSettingsModal() { 
+      document.getElementById("modalSettings").style.display = "flex"; 
+      history.pushState({modal: "settings_modal"}, "", window.location.href);
+    }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
     window.onpageshow = function(event) {
