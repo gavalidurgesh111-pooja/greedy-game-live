@@ -7,7 +7,6 @@
   <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* लॉन्ग प्रेस, ज़ूम और नीले बॉक्स को पूरी तरह रोकने के लिए */
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -18,6 +17,7 @@
       padding: 0;
     }
 
+    /* 🌟 बैकग्राउंड फोटो और लेआउट को ठीक करने के लिए */
     body {
       background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #111 url('https://res.cloudinary.com/wolpzhms/image/upload/bg.webp') no-repeat center center fixed !important;
       background-size: cover !important;
@@ -40,7 +40,7 @@
       text-align: center; 
     }
 
-    /* 🌟 सपोर्ट लोगो को बिल्कुल फिक्स और स्थिर रखने के लिए */
+    /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
     .support-top-btn {
       position: fixed !important;
       top: 20px !important;
@@ -98,24 +98,21 @@
       </div>
     </div>
 
-    <!-- 🌟 Customer Service Center Modal (कस्टमर सर्विस पॉपअप) -->
+    <!-- 🌟 Customer Service Center Modal -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         
         <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
         
-        <!-- समस्या लिखने वाला बॉक्स -->
         <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:15px; position:relative;">
           <textarea id="csIssueInput" rows="4" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;"></textarea>
           <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:4px;">0/300</div>
         </div>
 
-        <!-- ईमेल इनपुट बॉक्स -->
         <div style="background:#f4f5f7; border-radius:16px; padding:12px 16px; margin-bottom:25px;">
           <input type="email" id="csEmailInput" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;">
         </div>
 
-        <!-- Cancel और Confirm बटन -->
         <div style="display:flex; gap:12px; justify-content:center;">
           <button onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
           <button onclick="submitCustomerService()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#e4e6eb; font-weight:700; cursor:pointer; color:#888; font-size:15px;" id="csConfirmBtn">Confirm</button>
@@ -163,7 +160,6 @@
       showCustomAlert(provider + " login selected. Please use More Options for phone/ID login.");
     }
 
-    /* 🌟 कस्टमर सर्विस मॉडल खोलने और बंद करने के फंक्शन्स */
     function openCustomerServiceModal() {
       history.pushState({ modalOpen: true }, "");
       document.getElementById("csIssueInput").value = "";
