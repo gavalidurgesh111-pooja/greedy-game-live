@@ -18,7 +18,6 @@
     
     .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
@@ -68,6 +67,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
+    <!-- 9 खानों की ग्रिड (क्रमिक अपलोड नियम के साथ) -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -179,28 +179,40 @@
       });
     }
 
+    // --- 1 से 9 तक क्रमिक (Sequential) Upload बटन और स्लॉट दिखाने का नियम ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
-      let avatarPic = tempAvatar;
       
+      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
+
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
-
-        cell.onclick = () => handleGridCellClick(i);
+        
+        let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
-          if (i === 1) {
-            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
-          } else {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-          }
+          // अगर इस स्लॉट पर फोटो है, तो उसे दिखाएं
+          cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+          cell.onclick = () => handleGridCellClick(i);
+          container.appendChild(cell);
         } else {
-          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          // नियम: केवल अगली खाली जगह पर ही 'Upload' बटन दिखेगा (1 से 9 तक)
+          if (i === filledCount + 1 && filledCount < 9) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+            cell.onclick = () => handleGridCellClick(i);
+            container.appendChild(cell);
+          } else if (filledCount === 0 && i === 1) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+            cell.onclick = () => handleGridCellClick(i);
+            container.appendChild(cell);
+          } else {
+            // आगे के खाली डिब्बे छिपे रहेंगे
+            cell.style.display = "none";
+            container.appendChild(cell);
+          }
         }
-        container.appendChild(cell);
       }
     }
 
@@ -238,26 +250,14 @@
 
     let selectedSlotForTips = 1;
     function handleGridCellClick(index) {
-      if(index === 1) {
-        let profPic = tempAvatar;
-        if (profPic && profPic.trim() !== "") {
-          selectedSlotForTips = 0;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "avatar";
-          document.getElementById("hiddenAvatarInput").click();
-        }
+      let val = tempPhotos[index - 1] || "";
+      if(val && val.trim() !== "") {
+        selectedSlotForTips = index;
+        document.getElementById("tipsModal").style.display = "flex";
       } else {
-        let slotNum = index - 1;
-        let val = tempPhotos[slotNum - 1] || "";
-        if(val && val.trim() !== "") {
-          selectedSlotForTips = slotNum;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "cover";
-          activeSlotIndex = slotNum;
-          document.getElementById("hiddenGalleryInput").click();
-        }
+        activeEditorMode = "cover";
+        activeSlotIndex = index;
+        document.getElementById("hiddenGalleryInput").click();
       }
     }
 
@@ -276,23 +276,14 @@
 
     function tipsChangePicture() {
       closeTipsModal();
-      if(selectedSlotForTips === 0) {
-        activeEditorMode = "avatar";
-        document.getElementById("hiddenAvatarInput").click();
-      } else {
-        activeEditorMode = "cover";
-        activeSlotIndex = selectedSlotForTips;
-        document.getElementById("hiddenGalleryInput").click();
-      }
+      activeEditorMode = "cover";
+      activeSlotIndex = selectedSlotForTips;
+      document.getElementById("hiddenGalleryInput").click();
     }
 
     function tipsDeletePicture() {
       closeTipsModal();
-      if(selectedSlotForTips === 0) {
-        tempAvatar = "";
-      } else {
-        tempPhotos.splice(selectedSlotForTips - 1, 1);
-      }
+      tempPhotos.splice(selectedSlotForTips - 1, 1);
       render9Grid();
     }
 
@@ -499,11 +490,7 @@
       .then(data => {
         if (data.secure_url) {
           let cloudinaryUrl = data.secure_url;
-          if (activeEditorMode === "cover") {
-            tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
-          } else {
-            tempAvatar = cloudinaryUrl;
-          }
+          tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
           render9Grid();
         } else {
           alert("Cloudinary Upload Failed: " + (data.error ? data.error.message : "Unknown error"));
