@@ -16,7 +16,8 @@
     .grid-cell { aspect-ratio: 1; background: #fff; border-radius: 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
     
-    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 12px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 12px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); margin-bottom: 4px; }
+    .cell-sub-info { font-size: 11px; color: #666; font-weight: bold; z-index: 2; display: flex; align-items: center; gap: 3px; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 3; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
@@ -67,7 +68,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के सभी 9 डिब्बे जिन पर हमेशा Upload लिखा होगा -->
+    <!-- 1 से 9 तक के ग्रिड डिब्बे -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -83,7 +84,7 @@
       </div>
     </div>
 
-    <!-- फोटो मैनेज करने का मॉडल (बदलाव या हटाने के लिए) -->
+    <!-- फोटो मैनेज करने का मॉडल -->
     <div id="tipsModal" class="modal-overlay">
       <div class="tips-box" style="text-align:left;">
         <h3>Manage Photo</h3>
@@ -164,7 +165,7 @@
       });
     }
 
-    // --- नियम: सभी 9 डिब्बे दिखेंगे, खाली डिब्बों पर 'Upload' लिखा होगा, और फोटो हमेशा क्रम से लगेंगी ---
+    // --- नियम: पहले बॉक्स (या किसी भी खाली बॉक्स) पर Upload बटन के नीचे 👤 और नंबर दिखेगा ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -176,12 +177,12 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
-          // अगर इस स्लॉट में फोटो है तो फोटो और नंबर दिखेगा
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleFilledCellClick(i);
         } else {
-          // अगर स्लॉट खाली है तो हर बॉक्स पर स्पष्ट रूप से 'Upload' लिखा होगा
-          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="badge-num">${i}</div>`;
+          // पहले या अन्य खाली बॉक्स के लिए Upload बटन के नीचे 👤 और स्लॉट नंबर जोड़ा गया है
+          let subIcon = (i === 1) ? "👤" : "🖼️";
+          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="cell-sub-info"><span>${subIcon}</span> <span>${i}</span></div><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleEmptyCellClick();
         }
         
@@ -189,14 +190,12 @@
       }
     }
 
-    // जब यूजर किसी भरे हुए डिब्बे पर क्लिक करे (मैनेज करने के लिए)
     let selectedSlotForTips = 1;
     function handleFilledCellClick(index) {
       selectedSlotForTips = index;
       document.getElementById("tipsModal").style.display = "flex";
     }
 
-    // जब यूजर किसी भी खाली डिब्बे पर क्लिक करे, तो फोटो हमेशा अगले क्रम (Next Available Slot) में ही जाएगी
     function handleEmptyCellClick() {
       let nextEmptyIndex = tempPhotos.findIndex(p => !p || p.trim() === "");
       if (nextEmptyIndex === -1) {
@@ -221,7 +220,6 @@
 
     function tipsDeletePicture() {
       closeTipsModal();
-      // फोटो हटाने पर एरे से स्लाइस करके बाकी तस्वीरों को क्रम में व्यवस्थित करना
       tempPhotos.splice(selectedSlotForTips - 1, 1);
       render9Grid();
     }
