@@ -9,16 +9,16 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
     
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; z-index: 10; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
-    .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 2; }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
     
-    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
+    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 5; pointer-events: none; }
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 5; pointer-events: none; }
+    .grid-cell .plus-sign { font-size: 14px; background: #9b51e0; color: #fff; padding: 6px 14px; border-radius: 15px; font-weight: 600; pointer-events: none; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
@@ -179,17 +179,24 @@
       });
     }
 
+    // --- ग्रिड रेंडर करने का नियम: 1 के बाद 2, ऐसे 9 तक sequential upload बटन दिखाना ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
-      let avatarPic = tempAvatar;
       
+      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
+
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
+        
+        let slotVal = (i === 1) ? tempAvatar : (tempPhotos[i - 2] || "");
 
-        cell.onclick = () => handleGridCellClick(i);
+        cell.onclick = (function(index) {
+          return function() {
+            handleGridCellClick(index);
+          };
+        })(i);
 
         if (slotVal && slotVal.trim() !== "") {
           if (i === 1) {
@@ -198,7 +205,16 @@
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          let targetCellNum = (i === 1) ? 1 : (i - 1);
+          
+          if ((i === 1 && (!tempAvatar || tempAvatar.trim() === "")) || 
+              (i > 1 && targetCellNum === filledCount + 1)) {
+            cell.innerHTML = `<div class="plus-sign">Upload</div><div class="badge-num">${i}</div>`;
+            cell.style.display = "flex";
+          } else {
+            cell.innerHTML = `<div class="badge-num">${i}</div>`;
+            cell.style.display = "none"; 
+          }
         }
         container.appendChild(cell);
       }
@@ -221,15 +237,16 @@
       closePhotoGridWithoutSaving();
     }
 
-    // --- यहाँ किया है असली सुधार: डेटाबेस में सेव करते वक्त पहली और दूसरी फोटो का क्रम आपस में बदला जा रहा है ---
+    // --- सबसे खास नियम: डेटाबेस में सेव करते वक्त आर्डर सेट करना ---
+    // यदि फोटो सिर्फ 1 है तो वैसे ही सेव हो; यदि 2 या अधिक हैं तो दूसरी फोटो पहले स्थान पर और पहली फोटो दूसरे स्थान पर सेव हो ताकि कवर पर दूसरी फोटो सामने और पहली फोटो left में स्क्रॉल पर मिले।
     function saveAndClosePhotoGridScreen() {
       let finalPhotosToSave = [...tempPhotos];
+      
       if (finalPhotosToSave.length >= 2) {
-        // दूसरी फोटो को पहले स्थान पर और पहली फोटो को दूसरे स्थान पर सेट कर रहे हैं
-        let firstPhoto = finalPhotosToSave[0];
-        let secondPhoto = finalPhotosToSave[1];
-        finalPhotosToSave[0] = secondPhoto;
-        finalPhotosToSave[1] = firstPhoto;
+        let first = finalPhotosToSave[0];
+        let second = finalPhotosToSave[1];
+        finalPhotosToSave[0] = second;
+        finalPhotosToSave[1] = first;
       }
 
       db.collection("users").doc(currentIdentifier).set({
@@ -501,6 +518,8 @@
       formData.append("file", fileBlob);
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
+      fetch(`https://api.jsonbin.io/...` /* placeholder if needed */, { ... }); // Standard Cloudinary upload endpoint below:
+      
       fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
         method: "POST",
         body: formData
