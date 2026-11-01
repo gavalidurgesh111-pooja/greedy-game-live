@@ -45,14 +45,6 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       letter-spacing: 0.5px;
       cursor: pointer;
-      -webkit-user-select: none;
-      user-select: none;
-      -webkit-touch-callout: none;
-      transition: transform 0.1s ease, background 0.1s ease;
-    }
-    .cover-center-plus:active {
-      transform: scale(0.95);
-      background: rgba(255, 255, 255, 0.2);
     }
 
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
@@ -87,10 +79,10 @@
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
     
-    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
-    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; }
+    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; }
+    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; }
 
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
@@ -134,7 +126,6 @@
 
   <div class="page-container">
     
-    <!-- MAIN PROFILE DASHBOARD -->
     <div id="screenProfile">
       
       <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
@@ -143,22 +134,20 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर (केवल अपलोड की गई तस्वीरें दिखाने और स्क्रॉल करने के लिए) -->
-      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <!-- यहाँ डायनेमिकली केवल भरी हुई तस्वीरें रेंडर होंगी -->
-      </div>
+      <!-- कवर स्लाइडर -->
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
 
       <div class="profile-header-area">
         <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
-          <div id="avatarPlusIcon" class="owner-only-elem" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
         <div class="user-name-row">
           <div style="display:flex; align-items:center; gap:8px;">
             <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
-            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
+            <div id="editNameBtn" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
           </div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
@@ -216,12 +205,12 @@
       </div>
       <div style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; flex:1;">
         <div style="display:flex; flex-direction:column; gap:12px;">
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Account Preferences</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
-          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Account Preferences</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Notifications</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Privacy & Security</div>
         </div>
         <div style="margin-bottom: 90px;">
-          <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
+          <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer;">Log Out</button>
         </div>
       </div>
     </div>
@@ -234,16 +223,16 @@
         <div id="privacyHeart" style="cursor:pointer; font-size:22px;" onclick="togglePrivacy()">🤍</div>
       </div>
       <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
-        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div style="background:#fff; padding:15px; border-radius:12px;">
           <h4 style="margin-bottom:8px;">My Unique ID</h4>
           <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
             <span id="aboutUserId" style="font-weight:bold;">#288630</span>
             <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
           </div>
         </div>
-        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px;">
           <h4 style="margin-bottom:8px;">Bio & Details</h4>
-          <p style="font-size:13px; color:#555;">This is your personal profile bio. Tap the heart icon to set privacy.</p>
+          <p style="font-size:13px; color:#555;">This is your personal profile bio.</p>
         </div>
       </div>
     </div>
@@ -292,7 +281,7 @@
       <div class="modal-box">
         <h3>Send Coins to User</h3>
         <form onsubmit="handleCoinSendFormSubmit(event)">
-          <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
+          <input type="text" id="targetUserId" placeholder="Enter Receiver ID" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
           <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
           <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
         </form>
@@ -375,8 +364,9 @@
           totalWon = data.won || 0;
           isPrivate = data.privacy || false;
           currentFrame = data.frame || "none";
-          currentAvatar = data.avatar || "";
           dbPhotos = data.photos || []; 
+          // मुख्य अवतार: यदि डेटाबेस में 'avatar' है या फोटो एरे का पहला एलिमेंट है, उसे उठाएंगे
+          currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
         } else {
           coins = 1000;
           userName = "User";
@@ -384,6 +374,7 @@
           userLevel = 1;
           totalWon = 0;
           dbPhotos = [];
+          currentAvatar = "";
         }
 
         document.getElementById("profNameDisplay").innerText = userName;
@@ -405,7 +396,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर में केवल अपलोड की गई तस्वीरें दिखाना (यदि खाली हो तो एक Upload बटन) ---
+        // कवर स्लाइडर रेंडरिंग
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
@@ -416,14 +407,12 @@
             let pageDiv = document.createElement("div");
             pageDiv.className = "cover-page";
             pageDiv.style.backgroundImage = `url('${photoUrl}')`;
-            pageDiv.style.backgroundSize = "cover";
-            pageDiv.style.backgroundPosition = "center";
             sliderContainer.appendChild(pageDiv);
           });
         } else {
           let pageDiv = document.createElement("div");
           pageDiv.className = "cover-page";
-          pageDiv.innerHTML = `<div class="cover-center-plus owner-only-elem" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+          pageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
           sliderContainer.appendChild(pageDiv);
         }
 
@@ -436,7 +425,6 @@
         }
         updatePrivacyHeart();
 
-        // --- डिस्प्ले नियम: 1 फोटो होने पर सामने, 2+ होने पर दूसरी फोटो सामने और पहली बाईं तरफ स्क्रॉल में ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
