@@ -143,17 +143,9 @@
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
+      <!-- कवर स्लाइडर (केवल अपलोड की गई तस्वीरें दिखाने और स्क्रॉल करने के लिए) -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage7"><div class="cover-center-plus owner-only-elem" id="plusCover7" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
-        <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <!-- यहाँ डायनेमिकली केवल भरी हुई तस्वीरें रेंडर होंगी -->
       </div>
 
       <div class="profile-header-area">
@@ -328,7 +320,6 @@
 
   </div>
 
-  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -373,7 +364,6 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // Firebase से डेटा लोड करने और आपके नियमों के अनुसार कवर स्लाइडर सेट करने का फंक्शन
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -415,43 +405,26 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर सेटअप ---
-        let filledCount = dbPhotos.length;
+        // --- कवर स्लाइडर में केवल अपलोड की गई तस्वीरें दिखाना (यदि खाली हो तो एक Upload बटन) ---
+        let sliderContainer = document.getElementById("coverSlider");
+        sliderContainer.innerHTML = "";
 
-        for(let i = 1; i <= 9; i++) {
-          let pageEl = document.getElementById("coverPage" + i);
-          let plusEl = document.getElementById("plusCover" + i);
-          if(!pageEl) continue;
+        let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
-          let slotVal = dbPhotos[i - 1] || "";
-
-          if(slotVal && slotVal.trim() !== "") {
-            pageEl.style.backgroundImage = `url('${slotVal}')`;
-            pageEl.style.backgroundSize = "cover";
-            pageEl.style.backgroundPosition = "center";
-            pageEl.style.display = "flex";
-            if(plusEl) plusEl.style.display = "none"; 
-          } else {
-            // नियम: अगर सिर्फ 1 ही फोटो है, तो बाकी खाली बॉक्स (Upload) दिखेंगे
-            if ((i === filledCount + 1) && filledCount < 9) {
-              pageEl.style.backgroundImage = "none";
-              pageEl.style.display = "flex";
-              if(plusEl) {
-                plusEl.style.display = "flex";
-                plusEl.innerText = "Upload";
-              }
-            } else if (filledCount === 0 && i === 1) {
-              pageEl.style.backgroundImage = "none";
-              pageEl.style.display = "flex";
-              if(plusEl) {
-                plusEl.style.display = "flex";
-                plusEl.innerText = "Upload";
-              }
-            } else {
-              pageEl.style.backgroundImage = "none";
-              pageEl.style.display = "none"; 
-            }
-          }
+        if (validPhotos.length > 0) {
+          validPhotos.forEach((photoUrl) => {
+            let pageDiv = document.createElement("div");
+            pageDiv.className = "cover-page";
+            pageDiv.style.backgroundImage = `url('${photoUrl}')`;
+            pageDiv.style.backgroundSize = "cover";
+            pageDiv.style.backgroundPosition = "center";
+            sliderContainer.appendChild(pageDiv);
+          });
+        } else {
+          let pageDiv = document.createElement("div");
+          pageDiv.className = "cover-page";
+          pageDiv.innerHTML = `<div class="cover-center-plus owner-only-elem" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+          sliderContainer.appendChild(pageDiv);
         }
 
         const frameEl = document.getElementById("profAvatarFrame");
@@ -463,20 +436,14 @@
         }
         updatePrivacyHeart();
 
-        // --- आपका असली नियम: ---
-        // 1. अगर सिर्फ 1 फोटो है, तो हमेशा पहली फोटो (scrollLeft = 0) सामने दिखेगी।
-        // 2. अगर 2 या उससे ज्यादा फोटो हैं, तो दूसरी फोटो सामने दिखेगी (scrollLeft = width) और पहली फोटो बाईं तरफ होगी।
+        // --- डिस्प्ले नियम: 1 फोटो होने पर सामने, 2+ होने पर दूसरी फोटो सामने और पहली बाईं तरफ स्क्रॉल में ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
             let singlePageWidth = slider.clientWidth || 480;
-            let actualPhotosCount = dbPhotos.filter(p => p && p.trim() !== "").length;
-
-            if (actualPhotosCount > 1) {
-              // 2 या उससे ज्यादा फोटो होने पर दूसरी फोटो सामने दिखेगी
+            if (validPhotos.length > 1) {
               slider.scrollLeft = singlePageWidth; 
             } else {
-              // सिर्फ 1 फोटो होने पर पहली फोटो ही सामने दिखेगी
               slider.scrollLeft = 0; 
             }
           }
