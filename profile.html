@@ -395,13 +395,12 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर रेंडरिंग: भरी हुई फोटो के साथ-साथ हमेशा अगला Upload बटन भी स्लाइडर में दिखेगा ---
+        // --- कवर स्लाइडर रेंडरिंग (Background Image के साथ ताकि क्रोम से डाउनलोड न हो सके) ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
         let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
-        // पहले सभी भरी हुई तस्वीरें रेंडर करें
         validPhotos.forEach((photoUrl) => {
           let pageDiv = document.createElement("div");
           pageDiv.className = "cover-page";
@@ -409,7 +408,6 @@
           sliderContainer.appendChild(pageDiv);
         });
 
-        // उसके तुरंत बाद हमेशा अगली फोटो जोड़ने के लिए Upload बटन वाला पेज जोड़ें (यदि 9 से कम तस्वीरें हैं)
         if (validPhotos.length < 9) {
           let uploadPageDiv = document.createElement("div");
           uploadPageDiv.className = "cover-page";
@@ -429,13 +427,7 @@
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            let singlePageWidth = slider.clientWidth || 480;
-            // यदि एक से अधिक आइटम हैं और यूजर ने शुरुआत में सेट किया है, तो सही स्क्रॉल पोजीशन सेट करें
-            if (validPhotos.length > 1) {
-              slider.scrollLeft = 0; 
-            } else {
-              slider.scrollLeft = 0; 
-            }
+            slider.scrollLeft = 0; 
           }
         }, 150);
 
