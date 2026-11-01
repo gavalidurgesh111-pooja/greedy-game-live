@@ -66,7 +66,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के सभी 9 डिब्बे एक साथ दिखाने के लिए ग्रिड कंटेनर -->
+    <!-- 1 से 9 तक के ग्रिड डिब्बे -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -163,11 +163,13 @@
       });
     }
 
-    // --- यहाँ सुधार किया गया है: 1 से 9 तक के सभी 9 डिब्बे हमेशा एक साथ दिखेंगे ---
+    // --- 1 से 9 तक ग्रिड रेंडरिंग (पहلا स्लॉट हमेशा दिखेगा, और 2 नंबर आदि के लिए क्रमिक नियम) ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
+      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
+
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -176,12 +178,19 @@
 
         if (slotVal && slotVal.trim() !== "") {
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
+          cell.onclick = () => handleGridCellClick(i);
+          container.appendChild(cell);
         } else {
-          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+          // नियम: पहला स्लॉट हमेशा खुला रहेगा, और अगले डिब्बों के लिए क्रमिक (sequential) नियम लागू रहेगा
+          if (i === 1 || i === filledCount + 1) {
+            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
+            cell.onclick = () => handleGridCellClick(i);
+            container.appendChild(cell);
+          } else {
+            cell.style.display = "none";
+            container.appendChild(cell);
+          }
         }
-        
-        cell.onclick = () => handleGridCellClick(i);
-        container.appendChild(cell);
       }
     }
 
@@ -203,8 +212,12 @@
     }
 
     function saveAndClosePhotoGridScreen() {
+      // मुख्य नियम: पहली फोटो (Slot 1) को ही मुख्य avatar मानकर डेटाबेस में भी अपडेट करेंगे
+      let firstPhoto = tempPhotos[0] || "";
+
       db.collection("users").doc(currentIdentifier).set({
-        photos: tempPhotos
+        photos: tempPhotos,
+        avatar: firstPhoto
       }, { merge: true }).then(() => {
         window.location.replace("profile.html");
       }).catch((err) => {
@@ -238,7 +251,7 @@
 
     function tipsDeletePicture() {
       closeTipsModal();
-      tempPhotos[selectedSlotForTips - 1] = "";
+      tempPhotos.splice(selectedSlotForTips - 1, 1);
       render9Grid();
     }
 
