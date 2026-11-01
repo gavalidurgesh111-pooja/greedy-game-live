@@ -366,7 +366,7 @@
           currentFrame = data.frame || "none";
           dbPhotos = data.photos || []; 
           
-          // नियम: avatar या photos[0] से मुख्य अवतार सेट होगा
+          // मुख्य अवतार: डेटाबेस के avatar से या photos के पहले इंडेक्स से सेट होगा
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
         } else {
           coins = 1000;
@@ -397,7 +397,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर स्लाइडर रेंडरिंग (यदि फोटो है तो कवर में दिखेंगी, नहीं तो Upload बटन दिखेगा)
+        // कवर स्लाइडर रेंडरिंग
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
