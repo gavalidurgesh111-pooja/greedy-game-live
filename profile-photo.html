@@ -66,7 +66,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के ग्रिड डिब्बे -->
+    <!-- 1 से 9 तक के सभी 9 डिब्बे हमेशा दिखने के लिए ग्रिड कंटेनर -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -163,13 +163,11 @@
       });
     }
 
-    // --- यहाँ सही क्रमिक नियम सेट किया गया है ताकि पहली फोटो के बाद दूसरा Upload बटन तुरंत दिखे ---
+    // --- पक्का नियम: 1 से 9 तक के सभी 9 डिब्बे हमेशा दिखेंगे, और अगली खाली जगह पर Upload बटन आएगा ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
-      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
-
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -179,18 +177,23 @@
         if (slotVal && slotVal.trim() !== "") {
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleGridCellClick(i);
-          container.appendChild(cell);
         } else {
-          // नियम: पहला स्लॉट हमेशा खुला रहेगा, और अगली खाली जगह (filledCount + 1) पर Upload बटन दिखेगा
-          if (i === 1 || i === filledCount + 1) {
+          // नियम: पहला स्लॉट हमेशा चालू रहेगा, या जो अगला खाली स्लॉट होगा उसपर Upload बटन दिखेगा
+          let firstEmptyIndex = tempPhotos.findIndex(p => !p || p.trim() === "") + 1;
+          if (firstEmptyIndex === 0) firstEmptyIndex = tempPhotos.length + 1;
+
+          if (i === 1 || i <= firstEmptyIndex) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
             cell.onclick = () => handleGridCellClick(i);
-            container.appendChild(cell);
           } else {
-            cell.style.display = "none";
-            container.appendChild(cell);
+            // जो स्लॉट अभी क्रम में नहीं आए हैं, उन्हें खाली ग्रे डिब्बे के रूप में दिखाएँगे ताकि 9 के 9 डिब्बे हमेशा दिखें
+            cell.innerHTML = `<div class="badge-num">${i}</div>`;
+            cell.style.opacity = "0.4";
+            cell.onclick = () => alert("कृपया पहले पिछले स्लॉट में फोटो भरें!");
           }
         }
+        
+        container.appendChild(cell);
       }
     }
 
