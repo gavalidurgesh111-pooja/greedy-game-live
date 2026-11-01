@@ -3,117 +3,332 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Profile Photo - Greedy Coin</title>
+  <title>User Profile - Greedy Coin</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
-    body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
-    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
+    body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
+    /* Cover Slider Area */
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    .cover-slider-container::-webkit-scrollbar { display: none; }
+    
+    .cover-page {
+      flex: 0 0 100%;
+      min-width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      background-color: #9b51e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-center-plus {
+      width: 85%;
+      max-width: 260px;
+      height: 52px;
+      border-radius: 26px;
+      background: transparent;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      border: 2px solid #fff;
+      z-index: 5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      transition: transform 0.1s ease, background 0.1s ease;
+    }
+    .cover-center-plus:active {
+      transform: scale(0.95);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
+    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 20; }
+    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
+
+    /* Header & Avatar */
+    .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
+    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: visible !important; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
+    
+    .avatar-frame {
+      position: absolute !important;
+      top: -14px !important;
+      left: -14px !important;
+      right: -14px !important;
+      bottom: -14px !important;
+      width: calc(100% + 28px) !important;
+      height: calc(100% + 28px) !important;
+      border-radius: 50% !important;
+      pointer-events: none !important;
+      box-sizing: border-box !important;
+      background-size: 100% 100% !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      z-index: 25 !important;
+      display: none;
+    }
+
+    .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
+    .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
+    .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
+    .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
+    
+    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important; border: none !important; box-shadow: none !important; }
+
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
+    .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+    .tags-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+    .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 3px 10px; border-radius: 12px; }
+    .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
+
+    .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
+    .follow-counts { display: flex; gap: 20px; }
+    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
+    .f-num { font-size: 16px; font-weight: 900; color: #111; }
+    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
+    .profile-action-btns { display: flex; gap: 8px; }
+    .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
+    .stat-item-balance { text-align: center; cursor: pointer; }
+    .stat-item-won { text-align: center; }
+    .stat-val { font-size: 16px; font-weight: 900; color: #222; }
+    .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
+
+    .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 35px; }
+    .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
+    .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+    .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
+    .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+
+    .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
     .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
-    .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
-    
-    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
-    .grid-cell .plus-sign { font-size: 26px; color: #777; font-weight: bold; }
-
-    #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
-    .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
-    .unsaved-tips-box h3 { font-size: 18px; color: #111; margin-bottom: 10px; font-weight: bold; }
-    .unsaved-tips-box p { font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 25px; }
-    .unsaved-tips-actions { display: flex; justify-content: flex-end; gap: 20px; font-size: 14px; font-weight: bold; cursor: pointer; }
-    .btn-no-thanks { color: #666; }
-    .btn-save-changes { color: #5e229e; }
-
-    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
-    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-    .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
-    .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
-    .tips-item:last-child { border-bottom: none; color: #d9534f; }
-
-    #screenPhotoEditor { display: none; position: fixed; inset: 0; background: #ffffff; z-index: 99999; flex-direction: column; justify-content: space-between; align-items: center; }
-    .editor-canvas-area { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; touch-action: none; background: #ffffff; }
-    
-    .crop-frame-box { width: 100%; max-width: 100%; height: 380px; border: 2px solid #ffffff; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.45); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 10; }
-    
-    #editorImagePreview { 
-      position: absolute; 
-      cursor: grab; 
-      user-select: none; 
-      z-index: 5; 
-      display: block; 
-      max-width: none !important; 
-      max-height: none !important; 
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .editor-bottom-bar { width: 100%; height: 65px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; padding: 0 35px; z-index: 25; border-top: 1px solid #ddd; }
-    .editor-bottom-btn { background: none; border: none; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; color: #333; }
-    
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
-    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; text-align: center; }
+    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
+    .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
+    .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
   </style>
 </head>
 <body>
 
   <div class="page-container">
-    <div class="sub-header">
-      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
-      <h2>Profile photo</h2>
-      <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
-    </div>
+    
+    <!-- MAIN PROFILE DASHBOARD -->
+    <div id="screenProfile">
+      
+      <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
+      <div class="profile-top-icons">
+        <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
+        <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
+      </div>
 
-    <div class="grid-9-container" id="grid9Container"></div>
+      <!-- कवर स्लाइडर -->
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
+        <div class="cover-page" id="coverPage1"><div class="cover-center-plus owner-only-elem" id="plusCover1" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage2"><div class="cover-center-plus owner-only-elem" id="plusCover2" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage3"><div class="cover-center-plus owner-only-elem" id="plusCover3" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage4"><div class="cover-center-plus owner-only-elem" id="plusCover4" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage5"><div class="cover-center-plus owner-only-elem" id="plusCover5" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage6"><div class="cover-center-plus owner-only-elem" id="plusCover6" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage7"><div class="cover-center-plus owner-only-elem" id="plusCover7" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage8"><div class="cover-center-plus owner-only-elem" id="plusCover8" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+        <div class="cover-page" id="coverPage9"><div class="cover-center-plus owner-only-elem" id="plusCover9" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div></div>
+      </div>
 
-    <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
-    <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
+      <div class="profile-header-area">
+        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+          <img src="" class="avatar-img" id="profAvatarImg">
+          <div id="avatarPlusIcon" class="owner-only-elem" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div class="avatar-frame" id="profAvatarFrame"></div>
+        </div>
+        
+        <div class="user-name-row">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
+            <div id="editNameBtn" class="owner-only-elem" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
+          </div>
+          <div class="accompany-badge">Active: 1 Days ✨</div>
+        </div>
 
-    <div id="unsavedTipsModal">
-      <div class="unsaved-tips-box">
-        <h3>Tips</h3>
-        <p>You have unsaved changes, do you want to save it?</p>
-        <div class="unsaved-tips-actions">
-          <span class="btn-no-thanks" onclick="confirmNoThanks()">NO, THANKS</span>
-          <span class="btn-save-changes" onclick="confirmSaveAndExit()">SAVE</span>
+        <div class="tags-row">
+          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
+          <div class="tag-id" onclick="copyMyId()">🆔 <span id="profId">#288630</span> 📋</div>
+        </div>
+      </div>
+
+      <div class="follow-stats-row">
+        <div class="follow-counts">
+          <div class="f-count-item" onclick="showCustomAlert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
+          <div class="f-count-item" onclick="showCustomAlert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
+        </div>
+        <div class="profile-action-btns">
+          <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
+          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-item-balance" onclick="openCoinSendModal()">
+          <div class="stat-val">🪙 <span id="profBalance">1000</span></div>
+          <div class="stat-label">Wallet Balance</div>
+        </div>
+        <div class="stat-item-won">
+          <div class="stat-val">🏆 <span id="profWon">0</span></div>
+          <div class="stat-label">Total Won Coins</div>
+        </div>
+      </div>
+
+      <div class="cards-wrapper">
+        <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
+          <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
+          <div style="font-size:32px;">🎰</div>
+        </div>
+        <div class="action-card card-about" onclick="openAboutMeScreen()">
+          <div><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
+          <div style="font-size:32px;">👤</div>
+        </div>
+        <div class="action-card card-group" onclick="openGroupsScreen()">
+          <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
+          <div style="font-size:32px;">🌐</div>
         </div>
       </div>
     </div>
 
-    <div id="tipsModal" class="modal-overlay">
-      <div class="tips-box" style="text-align:left;">
-        <h3>Tips</h3>
-        <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
-        <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
-        <div class="tips-item" onclick="tipsDeletePicture()">Delete</div>
-        <div style="margin-top:15px; text-align:right;"><button onclick="closeTipsModal()" style="padding:6px 14px; background:#ddd; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cancel</button></div>
+    <!-- SETTINGS PAGE -->
+    <div id="screenSettingsPage" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
+        <h2>Settings</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; flex:1;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Account Preferences</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Notifications</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05); font-weight:bold;">Privacy & Security</div>
+        </div>
+        <div style="margin-bottom: 90px;">
+          <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(217,83,79,0.3);">Log Out</button>
+        </div>
       </div>
     </div>
 
-    <div id="screenPhotoEditor">
-      <div class="editor-canvas-area" id="editorCanvasArea">
-        <img id="editorImagePreview" src="" alt="Preview">
-        <div class="crop-frame-box" id="cropFrameBox"></div>
+    <!-- ABOUT ME SCREEN -->
+    <div id="screenAboutMe" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeAboutMeScreen()">❮</div>
+        <h2>About Me</h2>
+        <div id="privacyHeart" style="cursor:pointer; font-size:22px;" onclick="togglePrivacy()">🤍</div>
       </div>
-      <div class="editor-bottom-bar">
-        <button class="editor-bottom-btn" onclick="cancelEditor()" title="Cancel">✕</button>
-        <button class="editor-bottom-btn" onclick="confirmEditor()" title="Save">✓</button>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
+        <div style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <h4 style="margin-bottom:8px;">My Unique ID</h4>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
+            <span id="aboutUserId" style="font-weight:bold;">#288630</span>
+            <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
+          </div>
+        </div>
+        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <h4 style="margin-bottom:8px;">Bio & Details</h4>
+          <p style="font-size:13px; color:#555;">This is your personal profile bio. Tap the heart icon to set privacy.</p>
+        </div>
       </div>
     </div>
 
-    <div id="customAlertModal" class="modal-overlay">
+    <!-- GROUPS SCREEN -->
+    <div id="screenGroups" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeGroupsScreen()">❮</div>
+        <h2>Groups</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:20px; text-align:center;">
+        <h3 style="margin-bottom:10px;">Community Groups</h3>
+        <p style="font-size:13px; color:#666;">Group creation tools will be configured here soon.</p>
+      </div>
+    </div>
+
+    <!-- FRAME & AVATAR MODAL -->
+    <div id="modalFrame" class="modal-overlay">
       <div class="modal-box">
+        <h3>🎨 Select Avatar & Frame</h3>
+        <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
+         
+       <div class="grid-options" id="frameOptionsGrid">
+          <div class="grid-item" onclick="applyFrameClass('peacock')" style="background:#e0f2f1; color:#00695c; font-weight:bold;">Peacock Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('sun')" style="background:#fce4ec; color:#c2185b; font-weight:bold;">Sun Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
+          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
+        </div>
+
+        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
+
+        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo:</p>
+        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Open Photo Manager</button>
+        
+        <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+    <!-- COIN SEND MODAL -->
+    <div id="modalCoinSend" class="modal-overlay">
+      <div class="modal-box">
+        <h3>Send Coins to User</h3>
+        <form onsubmit="handleCoinSendFormSubmit(event)">
+          <input type="text" id="targetUserId" placeholder="Enter Receiver ID (e.g. #123456)" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
+          <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
+          <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
+        </form>
+        <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="modalSettings" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
+        <h3>Website Settings</h3>
+        <p style="font-size:13px; color:#666; margin:15px 0;">All global settings configurations.</p>
+        <button onclick="closeSettingsModal()" style="padding:8px 20px; background:#333; color:#fff; border:none; border-radius:8px; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="customAlertModal" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
         <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
         <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
+
   </div>
 
+  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -131,400 +346,286 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    const CLOUDINARY_CLOUD_NAME = "wolpzhms";
-    const CLOUDINARY_UPLOAD_PRESET = "greedy_preset";
-
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let cloudAvatar = "";
-    let cloudPhotos = [];
-    let tempAvatar = "";
-    let tempPhotos = [];
-    
-    let activeSlotIndex = 1;
-    let activeEditorMode = "cover";
-    let rawImageObj = null;
-    let posX = 0, posY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
-    let baseLeft = 0, baseTop = 0;
-    let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
-    let initialPinchDistance = null;
+    let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
+    let dbPhotos = []; 
 
-    history.pushState({page: "photo_grid"}, "", window.location.href);
+    history.pushState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
-        document.getElementById("unsavedTipsModal").style.display = "flex";
-      } else {
-        closePhotoGridWithoutSaving();
-      }
+      history.pushState({page: "profile_main"}, "", window.location.href);
+
+      let customAlert = document.getElementById("customAlertModal");
+      let modalFrame = document.getElementById("modalFrame");
+      let modalCoinSend = document.getElementById("modalCoinSend");
+      let modalSettings = document.getElementById("modalSettings");
+      let settingsPage = document.getElementById("screenSettingsPage");
+      let aboutScreen = document.getElementById("screenAboutMe");
+      let groupsScreen = document.getElementById("screenGroups");
+
+      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
+      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
+
+      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
+      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
+      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    function initGridPage() {
+    // Firebase से डेटा लोड करने और आपके नियमों के अनुसार कवर स्लाइडर सेट करने का फंक्शन
+    function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          cloudAvatar = data.avatar || "";
-          cloudPhotos = data.photos || [];
+          coins = data.coins || 1000;
+          userName = data.name || "User";
+          userId = data.uniqueId || "#288630";
+          userLevel = data.level || 1;
+          totalWon = data.won || 0;
+          isPrivate = data.privacy || false;
+          currentFrame = data.frame || "none";
+          currentAvatar = data.avatar || "";
+          dbPhotos = data.photos || []; 
         } else {
-          cloudAvatar = "";
-          cloudPhotos = [];
+          coins = 1000;
+          userName = "User";
+          userId = "#288630";
+          userLevel = 1;
+          totalWon = 0;
+          dbPhotos = [];
         }
-        tempAvatar = cloudAvatar;
-        tempPhotos = [...cloudPhotos];
-        render9Grid();
-      }).catch((err) => {
-        console.error("Error loading photos:", err);
-        render9Grid();
+
+        document.getElementById("profNameDisplay").innerText = userName;
+        document.getElementById("profBalance").innerText = coins;
+        document.getElementById("profWon").innerText = totalWon;
+        document.getElementById("profLevel").innerText = userLevel;
+        document.getElementById("profId").innerText = userId;
+        document.getElementById("aboutUserId").innerText = userId;
+        
+        const avatarImg = document.getElementById("profAvatarImg");
+        const plusIcon = document.getElementById("avatarPlusIcon");
+
+        if (currentAvatar && currentAvatar.trim() !== "") {
+          avatarImg.src = currentAvatar;
+          avatarImg.style.display = "block";
+          if(plusIcon) plusIcon.style.display = "none";
+        } else {
+          avatarImg.style.display = "none";
+          if(plusIcon) plusIcon.style.display = "block";
+        }
+
+        // --- कवर स्लाइडर सेटअप ---
+        let filledCount = dbPhotos.length;
+
+        for(let i = 1; i <= 9; i++) {
+          let pageEl = document.getElementById("coverPage" + i);
+          let plusEl = document.getElementById("plusCover" + i);
+          if(!pageEl) continue;
+
+          let slotVal = dbPhotos[i - 1] || "";
+
+          if(slotVal && slotVal.trim() !== "") {
+            pageEl.style.backgroundImage = `url('${slotVal}')`;
+            pageEl.style.backgroundSize = "cover";
+            pageEl.style.backgroundPosition = "center";
+            pageEl.style.display = "flex";
+            if(plusEl) plusEl.style.display = "none"; 
+          } else {
+            // नियम: अगर सिर्फ 1 ही फोटो है, तो बाकी खाली बॉक्स (Upload) दिखेंगे
+            if ((i === filledCount + 1) && filledCount < 9) {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "flex";
+              if(plusEl) {
+                plusEl.style.display = "flex";
+                plusEl.innerText = "Upload";
+              }
+            } else if (filledCount === 0 && i === 1) {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "flex";
+              if(plusEl) {
+                plusEl.style.display = "flex";
+                plusEl.innerText = "Upload";
+              }
+            } else {
+              pageEl.style.backgroundImage = "none";
+              pageEl.style.display = "none"; 
+            }
+          }
+        }
+
+        const frameEl = document.getElementById("profAvatarFrame");
+        if (currentFrame === "none") {
+          frameEl.style.display = "none";
+        } else {
+          frameEl.style.display = "block";
+          applyFrameClass(currentFrame);
+        }
+        updatePrivacyHeart();
+
+        // --- आपका असली नियम: ---
+        // 1. अगर सिर्फ 1 फोटो है, तो हमेशा पहली फोटो (scrollLeft = 0) सामने दिखेगी।
+        // 2. अगर 2 या उससे ज्यादा फोटो हैं, तो दूसरी फोटो सामने दिखेगी (scrollLeft = width) और पहली फोटो बाईं तरफ होगी।
+        setTimeout(() => {
+          let slider = document.getElementById("coverSlider");
+          if (slider) {
+            let singlePageWidth = slider.clientWidth || 480;
+            let actualPhotosCount = dbPhotos.filter(p => p && p.trim() !== "").length;
+
+            if (actualPhotosCount > 1) {
+              // 2 या उससे ज्यादा फोटो होने पर दूसरी फोटो सामने दिखेगी
+              slider.scrollLeft = singlePageWidth; 
+            } else {
+              // सिर्फ 1 फोटो होने पर पहली फोटो ही सामने दिखेगी
+              slider.scrollLeft = 0; 
+            }
+          }
+        }, 150);
+
+      }).catch((error) => {
+        console.error("Error loading profile from Firebase: ", error);
       });
     }
 
-    function render9Grid() {
-      let container = document.getElementById("grid9Container");
-      container.innerHTML = "";
-      let avatarPic = tempAvatar;
+    function openPhotoGridScreen() {
+      window.location.href = "profile-photo.html";
+    }
+
+    function triggerAvatarUpload() {
+      closeFrameModal();
+      openPhotoGridScreen();
+    }
+
+    function promptEditName() {
+      let newName = prompt("Enter your name:", userName);
+      if(newName && newName.trim() !== "") {
+        userName = newName.trim();
+        document.getElementById("profNameDisplay").innerText = userName;
+        db.collection("users").doc(currentIdentifier).update({ name: userName }).catch((err) => console.error(err));
+      }
+    }
+
+    function showCustomAlert(text) {
+      document.getElementById("customAlertText").innerText = text;
+      document.getElementById("customAlertModal").style.display = "flex";
+    }
+    function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
+
+    function applyFrameClass(frameName) {
+      currentFrame = frameName;
+      db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
       
-      for(let i = 1; i <= 9; i++) {
-        let cell = document.createElement("div");
-        cell.className = "grid-cell";
-        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
-
-        cell.onclick = () => handleGridCellClick(i);
-
-        if (slotVal && slotVal.trim() !== "") {
-          if (i === 1) {
-            cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
-          } else {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-          }
-        } else {
-          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-        }
-        container.appendChild(cell);
-      }
+      const frameEl = document.getElementById("profAvatarFrame");
+      frameEl.className = "avatar-frame";
+      frameEl.style.display = "block";
+      frameEl.style.backgroundImage = "";
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
+      if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
+      else frameEl.style.display = "none";
+      closeFrameModal();
     }
 
-    function closePhotoGridWithoutSaving() {
-      window.location.replace("profile.html");
+    function removeFrame() {
+      currentFrame = "none";
+      db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
+      document.getElementById("profAvatarFrame").style.display = "none";
+      closeFrameModal();
     }
 
-    function handleGridBackAction() {
-      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
-        document.getElementById("unsavedTipsModal").style.display = "flex";
-      } else {
-        closePhotoGridWithoutSaving();
-      }
+    function openFrameModal() { document.getElementById("modalFrame").style.display = "flex"; }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
+
+    function copyMyId() {
+      navigator.clipboard.writeText(userId);
+      showCustomAlert("ID Copied: " + userId);
     }
 
-    function confirmNoThanks() {
-      closePhotoGridWithoutSaving();
+    function openSettingsPage() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenSettingsPage").style.display = "flex";
+    }
+    function closeSettingsPage() {
+      document.getElementById("screenSettingsPage").style.display = "none";
+      document.getElementById("screenProfile").style.display = "block";
+      initProfile();
     }
 
-    // --- यहाँ किया है असली सुधार: डेटाबेस में सेव करते वक्त पहली और दूसरी फोटो का क्रम आपस में बदला जा रहा है ---
-    function saveAndClosePhotoGridScreen() {
-      let finalPhotosToSave = [...tempPhotos];
-      if (finalPhotosToSave.length >= 2) {
-        // दूसरी फोटो को पहले स्थान पर और पहली फोटो को दूसरे स्थान पर सेट कर रहे हैं
-        let firstPhoto = finalPhotosToSave[0];
-        let secondPhoto = finalPhotosToSave[1];
-        finalPhotosToSave[0] = secondPhoto;
-        finalPhotosToSave[1] = firstPhoto;
-      }
-
-      db.collection("users").doc(currentIdentifier).set({
-        avatar: tempAvatar,
-        photos: finalPhotosToSave
-      }, { merge: true }).then(() => {
-        window.location.replace("profile.html");
-      }).catch((err) => {
-        alert("Error saving to database: " + err.message);
-      });
+    function handleLogout() {
+      localStorage.removeItem("greedy_login_identifier");
+      showCustomAlert("Logged out successfully!");
+      setTimeout(() => { window.location.replace("index.html"); }, 800);
     }
 
-    function confirmSaveAndExit() {
-      saveAndClosePhotoGridScreen();
+    function openAboutMeScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenAboutMe").style.display = "flex"; 
     }
-
-    let selectedSlotForTips = 1;
-    function handleGridCellClick(index) {
-      if(index === 1) {
-        let profPic = tempAvatar;
-        if (profPic && profPic.trim() !== "") {
-          selectedSlotForTips = 0;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "avatar";
-          document.getElementById("hiddenAvatarInput").click();
-        }
-      } else {
-        let slotNum = index - 1;
-        let val = tempPhotos[slotNum - 1] || "";
-        if(val && val.trim() !== "") {
-          selectedSlotForTips = slotNum;
-          document.getElementById("tipsModal").style.display = "flex";
-        } else {
-          activeEditorMode = "cover";
-          activeSlotIndex = slotNum;
-          document.getElementById("hiddenGalleryInput").click();
-        }
-      }
+    function closeAboutMeScreen() { 
+      document.getElementById("screenAboutMe").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
     }
-
-    function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
     
-    function tipsUseAsProfile() {
-      closeTipsModal();
-      if(selectedSlotForTips > 0) {
-        let val = tempPhotos[selectedSlotForTips - 1];
-        if(val) {
-          tempAvatar = val;
-          render9Grid();
-        }
-      }
+    function togglePrivacy() {
+      isPrivate = !isPrivate;
+      db.collection("users").doc(currentIdentifier).update({ privacy: isPrivate }).catch((err) => console.error(err));
+      updatePrivacyHeart();
     }
-
-    function tipsChangePicture() {
-      closeTipsModal();
-      if(selectedSlotForTips === 0) {
-        activeEditorMode = "avatar";
-        document.getElementById("hiddenAvatarInput").click();
+    
+    function updatePrivacyHeart() {
+      const heart = document.getElementById("privacyHeart");
+      const bioBox = document.getElementById("aboutMeContentBox");
+      if(isPrivate) {
+        heart.innerText = "❤️";
+        bioBox.style.background = "#ffe6e6";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
       } else {
-        activeEditorMode = "cover";
-        activeSlotIndex = selectedSlotForTips;
-        document.getElementById("hiddenGalleryInput").click();
+        heart.innerText = "🤍";
+        bioBox.style.background = "#fff";
+        bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
       }
     }
 
-    function tipsDeletePicture() {
-      closeTipsModal();
-      if(selectedSlotForTips === 0) {
-        tempAvatar = "";
-      } else {
-        tempPhotos.splice(selectedSlotForTips - 1, 1);
-      }
-      render9Grid();
+    function openGroupsScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenGroups").style.display = "flex"; 
+    }
+    function closeGroupsScreen() { 
+      document.getElementById("screenGroups").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
     }
 
-    function handleGalleryFileSelect(e) { if(e.target.files && e.target.files[0]) loadEditorImage(e.target.files[0]); }
-    function handleAvatarFileSelect(e) { if(e.target.files && e.target.files[0]) loadEditorImage(e.target.files[0]); }
-
-    function loadEditorImage(file) {
-      let reader = new FileReader();
-      reader.onload = function(e) {
-        rawImageObj = new Image();
-        document.getElementById("screenPhotoEditor").style.display = "flex";
-        let preview = document.getElementById("editorImagePreview");
-        preview.style.transition = 'none'; 
-        preview.src = e.target.result;
-        rawImageObj.onload = function() {
-          let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-          minScale = Math.max(box.width / rawImageObj.width, box.height / rawImageObj.height);
-          maxScale = minScale * 2.5;
-          imgScale = minScale;
-          
-          let renderW = rawImageObj.width * imgScale;
-          let renderH = rawImageObj.height * imgScale;
-          preview.style.width = renderW + "px";
-          preview.style.height = renderH + "px";
-          
-          baseLeft = box.left + (box.width - renderW) / 2;
-          baseTop = box.top + (box.height - renderH) / 2;
-
-          preview.style.left = baseLeft + "px";
-          preview.style.top = baseTop + "px";
-          posX = 0;
-          posY = 0;
-          preview.style.transform = `translate3d(0px, 0px, 0px)`;
-        }
-        rawImageObj.src = e.target.result;
-      }
-      reader.readAsDataURL(file);
+    function openCoinSendModal() { document.getElementById("modalCoinSend").style.display = "flex"; }
+    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
+    
+    function handleCoinSendFormSubmit(event) {
+      event.preventDefault();
+      processCoinSend();
     }
 
-    const editorArea = document.getElementById("editorCanvasArea");
-    let preview = document.getElementById("editorImagePreview");
-
-    function applySmartBoundaryAndSnap() {
-      let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-      let renderW = parseFloat(preview.style.width);
-      let renderH = parseFloat(preview.style.height);
-
-      let currentLeft = baseLeft + posX;
-      let currentTop = baseTop + posY;
-
-      let minX = box.right - renderW;
-      let maxX = box.left;
-      let minY = box.bottom - renderH;
-      let maxY = box.top;
-
-      let clampedLeft = Math.max(minX, Math.min(maxX, currentLeft));
-      let clampedTop = Math.max(minY, Math.min(maxY, currentTop));
-
-      if (clampedLeft !== currentLeft || clampedTop !== currentTop) {
-        preview.style.transition = 'transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-        posX = clampedLeft - baseLeft;
-        posY = clampedTop - baseTop;
-      } else {
-        preview.style.transition = 'none';
-      }
-      preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
-    }
-
-    if(editorArea) {
-      editorArea.addEventListener('mousedown', (e) => { 
-        isDraggingImg = true; 
-        startMouseX = e.clientX; 
-        startMouseY = e.clientY; 
-        preview.style.transition = 'none'; 
-        e.preventDefault(); 
-      });
-
-      window.addEventListener('mousemove', (e) => {
-        if(!isDraggingImg) return;
-        posX += (e.clientX - startMouseX) * 1.25;
-        posY += (e.clientY - startMouseY) * 1.25;
-        startMouseX = e.clientX; 
-        startMouseY = e.clientY;
-        
-        preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
-      });
-
-      window.addEventListener('mouseup', () => { 
-        if(isDraggingImg) {
-          isDraggingImg = false; 
-          applySmartBoundaryAndSnap(); 
-        }
-      });
-
-      editorArea.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
-        let newScale = imgScale * zoomFactor;
-        if(newScale >= minScale && newScale <= maxScale) {
-          imgScale = newScale;
-          let renderW = rawImageObj.width * imgScale;
-          let renderH = rawImageObj.height * imgScale;
-          preview.style.width = renderW + "px";
-          preview.style.height = renderH + "px";
-          applySmartBoundaryAndSnap();
-        }
-      }, { passive: false });
-
-      editorArea.addEventListener('touchstart', (e) => {
-        if(e.touches.length === 1) {
-          isDraggingImg = true;
-          startMouseX = e.touches[0].clientX;
-          startMouseY = e.touches[0].clientY;
-          initialPinchDistance = null;
-          preview.style.transition = 'none';
-        } else if(e.touches.length === 2) {
-          isDraggingImg = false;
-          initialPinchDistance = Math.hypot(
-            e.touches[0].clientX - e.touches[1].clientX,
-            e.touches[0].clientY - e.touches[1].clientY
-          );
-        }
-      });
-
-      window.addEventListener('touchmove', (e) => {
-        if(e.touches.length === 1 && isDraggingImg) {
-          posX += (e.touches[0].clientX - startMouseX) * 1.25;
-          posY += (e.touches[0].clientY - startMouseY) * 1.25;
-          startMouseX = e.touches[0].clientX;
-          startMouseY = e.touches[0].clientY;
-          
-          preview.style.transform = `translate3d(${posX}px, ${posY}px, 0px)`;
-          e.preventDefault();
-        } else if(e.touches.length === 2 && initialPinchDistance !== null) {
-          let currentPinchDistance = Math.hypot(
-            e.touches[0].clientX - e.touches[1].clientX,
-            e.touches[0].clientY - e.touches[1].clientY
-          );
-          let zoomFactor = currentPinchDistance / initialPinchDistance;
-          let newScale = imgScale * zoomFactor;
-          
-          if(newScale >= minScale && newScale <= maxScale) {
-            imgScale = newScale;
-            let renderW = rawImageObj.width * imgScale;
-            let renderH = rawImageObj.height * imgScale;
-            preview.style.width = renderW + "px";
-            preview.style.height = renderH + "px";
-          }
-          initialPinchDistance = currentPinchDistance;
-          e.preventDefault();
-        }
-      }, { passive: false });
-
-      window.addEventListener('touchend', (e) => {
-        if(e.touches.length < 2) initialPinchDistance = null;
-        if(e.touches.length === 0 && isDraggingImg) {
-          isDraggingImg = false;
-          applySmartBoundaryAndSnap(); 
-        }
+    function processCoinSend() {
+      let targetId = document.getElementById("targetUserId").value.trim();
+      let amt = parseInt(document.getElementById("sendCoinAmount").value);
+      if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
+      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
+      
+      coins -= amt;
+      db.collection("users").doc(currentIdentifier).update({ coins: coins }).then(() => {
+        initProfile();
+        closeCoinSendModal();
+        showCustomAlert(`Successfully sent ${amt} coins!`);
+      }).catch((err) => {
+        showCustomAlert("Error updating coins: " + err.message);
       });
     }
 
-    function cancelEditor() {
-      document.getElementById("screenPhotoEditor").style.display = "none";
-      rawImageObj = null;
-    }
+    function openSettingsModal() { document.getElementById("modalSettings").style.display = "flex"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    function confirmEditor() {
-      if(rawImageObj) {
-        let canvas = document.createElement("canvas");
-        let box = document.getElementById("cropFrameBox").getBoundingClientRect();
-        canvas.width = 1080;
-        canvas.height = Math.round(1080 / (box.width / box.height));
-        let ctx = canvas.getContext("2d");
-        let renderedWidth = parseFloat(preview.style.width);
-        let renderedHeight = parseFloat(preview.style.height);
-        let previewRect = preview.getBoundingClientRect();
+    window.onpageshow = function(event) {
+      initProfile();
+    };
 
-        let sX = ((box.left - previewRect.left) / renderedWidth) * rawImageObj.width;
-        let sY = ((box.top - previewRect.top) / renderedHeight) * rawImageObj.height;
-        let sW = (box.width / renderedWidth) * rawImageObj.width;
-        let sH = (box.height / renderedHeight) * rawImageObj.height;
-
-        ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
-        
-        canvas.toBlob(function(blob) {
-          document.getElementById("screenPhotoEditor").style.display = "none";
-          rawImageObj = null;
-          uploadFileToCloudinary(blob);
-        }, "image/jpeg", 0.95);
-      }
-    }
-
-    function uploadFileToCloudinary(fileBlob) {
-      let formData = new FormData();
-      formData.append("file", fileBlob);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-
-      fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-        method: "POST",
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.secure_url) {
-          let cloudinaryUrl = data.secure_url;
-          if (activeEditorMode === "cover") {
-            tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
-          } else {
-            tempAvatar = cloudinaryUrl;
-          }
-          render9Grid();
-        } else {
-          alert("Cloudinary Upload Failed: " + (data.error ? data.error.message : "Unknown error"));
-        }
-      })
-      .catch(error => {
-        console.error("Cloudinary Error:", error);
-      });
-    }
-
-    window.onload = () => { initGridPage(); };
+    window.onload = () => { initProfile(); };
   </script>
 </body>
 </html>
