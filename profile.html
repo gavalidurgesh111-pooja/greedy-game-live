@@ -330,11 +330,10 @@
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    history.pushState({page: "profile_main"}, "", window.location.href);
+    // --- प्रोफाइल पेज के लिए भी हिस्ट्री को रिप्लेस करें ---
+    history.replaceState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      history.pushState({page: "profile_main"}, "", window.location.href);
-
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
       let modalCoinSend = document.getElementById("modalCoinSend");
