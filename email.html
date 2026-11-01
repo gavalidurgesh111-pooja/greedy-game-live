@@ -48,7 +48,6 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 नए सोशल और मोबाइल लॉगिन विकल्पों के लिए स्टाइल्स */
     .social-login-section {
       margin-top: 40px;
       display: flex;
@@ -128,7 +127,7 @@
       </form>
     </div>
 
-    <!-- 🌟 यहाँ आपके फोटो के अनुसार Facebook और Mobile Login का विकल्प जोड़ दिया गया है -->
+    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -221,7 +220,6 @@
     let isForgotFlow = false;
     let popupCallback = null;
 
-    // --- लॉन्ग प्रेस और राइट क्लिक मेनू को ब्लॉक करने के लिए ---
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
@@ -459,13 +457,15 @@
       }
     }
 
-    // 🌟 Facebook और Mobile Login के लिए क्लिक फंक्शन्स (आप चाहें तो इन्हें आगे अपने हिसाब से डायरेक्ट कर सकते हैं)
-    function handleFacebookLogin() {
-      showCustomAlert("Facebook Login feature will be configured soon!");
+    // 🌟 यहाँ पर आपके निर्देश के अनुसार लिंक सेट कर दिए गए हैं:
+    // 1. Mobile Number Login चुनने पर सीधा होम पेज के फोन/आईडी लॉगिन स्क्रीन पर भेजेगा
+    function handleMobileLogin() {
+      window.location.replace("index.html");
     }
 
-    function handleMobileLogin() {
-      showCustomAlert("Mobile Number Login feature will be configured soon!");
+    // 2. Facebook Login चुनने पर होम पेज के फेसबुक लॉगिन प्रोसेस से जुड़ा रहेगा
+    function handleFacebookLogin() {
+      window.location.replace("index.html");
     }
   </script>
 </body>
