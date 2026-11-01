@@ -330,7 +330,6 @@
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // --- प्रोफाइल पेज के लिए भी हिस्ट्री को रिप्लेस करें ---
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -351,6 +350,16 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
+
+    // --- क्लाउडिनاري इमेज को सुपर फास्ट लोड करने के लिए ऑप्टिमाइज़ेशन फंक्शन ---
+    function getOptimizedImageUrl(url) {
+      if (!url || !url.includes("cloudinary.com")) return url;
+      // अगर URL में पहले से upload/ है तो उसके तुरंत बाद ऑटो-कम्प्रेशन और रिसाइज़ पैरामीटर जोड़ दें
+      if (url.includes("/upload/") && !url.includes("/w_600")) {
+        return url.replace("/upload/", "/upload/w_600,c_scale,q_auto,f_auto/");
+      }
+      return url;
+    }
 
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
@@ -386,7 +395,12 @@
         const plusIcon = document.getElementById("avatarPlusIcon");
 
         if (currentAvatar && currentAvatar.trim() !== "") {
-          avatarImg.src = currentAvatar;
+          let optimizedAvatarUrl = getOptimizedImageUrl(currentAvatar);
+          // अवतार इमेज को भी पहले से प्रीलोड करें ताकि तुरंत दिखे
+          let preAvatar = new Image();
+          preAvatar.src = optimizedAvatarUrl;
+
+          avatarImg.src = optimizedAvatarUrl;
           avatarImg.style.display = "block";
           if(plusIcon) plusIcon.style.display = "none";
         } else {
@@ -394,16 +408,22 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर रेंडरिंग (Background Image के साथ ताकि क्रोम से डाउनलोड न हो सके) ---
+        // --- कवर स्लाइडर रेंडरिंग (ऑप्टिमाइज़्ड URL और प्रीलोडिंग के साथ) ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
         let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
         validPhotos.forEach((photoUrl) => {
+          let optUrl = getOptimizedImageUrl(photoUrl);
+
+          // बैकग्राउंड में इमेज प्रीलोड करें ताकि लोडिंग टाइम न लगे
+          let imgPreload = new Image();
+          imgPreload.src = optUrl;
+
           let pageDiv = document.createElement("div");
           pageDiv.className = "cover-page";
-          pageDiv.style.backgroundImage = `url('${photoUrl}')`;
+          pageDiv.style.backgroundImage = `url('${optUrl}')`;
           sliderContainer.appendChild(pageDiv);
         });
 
