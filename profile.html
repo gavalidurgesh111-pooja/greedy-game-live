@@ -363,7 +363,7 @@
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // --- बैक बटन (popstate) का बिल्कुल सही और सुरक्षित लॉजिक ---
+    // --- बैक बटन (popstate) का बिल्कुल साफ़ और स्टेबल लॉजिक ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -373,14 +373,14 @@
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
 
-      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
-      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
-      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
+      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
+      if (modalSettings && modalSettings.style.display === "flex") { modalSettings.style.display = "none"; return; }
 
-      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
-      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
-      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); history.pushState({page: "profile_main"}, "", window.location.href); return; }
+      if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
+      if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
+      if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
     function initProfile() {
@@ -425,7 +425,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर रेंडरिंग (ओरिजिनल फुल एचडी फोटो क्वालिटी के साथ) ---
+        // --- कवर स्लाइडर रेंडरिंग (हमेशा पहली फोटो पर लेफ्ट साइड से शुरू होगा) ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
@@ -454,12 +454,13 @@
         }
         updatePrivacyHeart();
 
+        // 🌟 यह सुनिश्चित करता है कि किसी भी पेज से आने पर कवर स्लाइडर हमेशा बिल्कुल बाएं (Left / पहली फोटो) से शुरू हो
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
             slider.scrollLeft = 0; 
           }
-        }, 150);
+        }, 100);
 
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
@@ -487,7 +488,6 @@
     function showCustomAlert(text) {
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
-      history.pushState({modal: "alert"}, "", window.location.href);
     }
     function closeCustomAlert() { 
       document.getElementById("customAlertModal").style.display = "none"; 
@@ -516,7 +516,6 @@
 
     function openFrameModal() { 
       document.getElementById("modalFrame").style.display = "flex"; 
-      history.pushState({modal: "frame"}, "", window.location.href);
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
@@ -533,6 +532,7 @@
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
+      history.replaceState({page: "profile_main"}, "", window.location.href);
       initProfile();
     }
 
@@ -550,6 +550,7 @@
     function closeAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
+      history.replaceState({page: "profile_main"}, "", window.location.href);
     }
     
     function togglePrivacy() {
@@ -580,11 +581,11 @@
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
+      history.replaceState({page: "profile_main"}, "", window.location.href);
     }
 
     function openCoinSendModal() { 
       document.getElementById("modalCoinSend").style.display = "flex"; 
-      history.pushState({modal: "coinsend"}, "", window.location.href);
     }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
@@ -611,7 +612,6 @@
 
     function openSettingsModal() { 
       document.getElementById("modalSettings").style.display = "flex"; 
-      history.pushState({modal: "settings_modal"}, "", window.location.href);
     }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
