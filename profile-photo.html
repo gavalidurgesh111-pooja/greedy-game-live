@@ -221,12 +221,20 @@
       closePhotoGridWithoutSaving();
     }
 
-    // --- सबसे खास सुधार: जब डेटा सेव हो, तो हम आर्डर को इस तरह सेट कर रहे हैं ---
-    // ताकि कवर खुलते ही दूसरी फोटो (index 0) सामने दिखे और पहली फोटो (index 1) बाईं तरफ छिपी रहे।
+    // --- यहाँ किया है असली सुधार: डेटाबेस में सेव करते वक्त पहली और दूसरी फोटो का क्रम आपस में बदला जा रहा है ---
     function saveAndClosePhotoGridScreen() {
+      let finalPhotosToSave = [...tempPhotos];
+      if (finalPhotosToSave.length >= 2) {
+        // दूसरी फोटो को पहले स्थान पर और पहली फोटो को दूसरे स्थान पर सेट कर रहे हैं
+        let firstPhoto = finalPhotosToSave[0];
+        let secondPhoto = finalPhotosToSave[1];
+        finalPhotosToSave[0] = secondPhoto;
+        finalPhotosToSave[1] = firstPhoto;
+      }
+
       db.collection("users").doc(currentIdentifier).set({
         avatar: tempAvatar,
-        photos: tempPhotos
+        photos: finalPhotosToSave
       }, { merge: true }).then(() => {
         window.location.replace("profile.html");
       }).catch((err) => {
