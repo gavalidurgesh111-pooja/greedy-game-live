@@ -49,7 +49,7 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 टेक्स्ट को एक ही लाइन में रखने के लिए स्टाइल */
+    /* 🌟 इमेज के जैसी बिल्कुल हूबहू स्टाइल (एक ही लाइन में टेक्स्ट) */
     .social-login-section {
       margin-top: 35px;
       display: flex;
@@ -133,7 +133,7 @@
       color: #666;
       font-weight: 500;
       text-align: center;
-      white-space: nowrap; /* 🌟 यह सुनिश्चित करता है कि टेक्स्ट टूटे नहीं, एक ही लाइन में रहे */
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -157,7 +157,7 @@
       </form>
     </div>
 
-    <!-- 🌟 फेसबुक और मोबाइल लॉगिन (एक ही लाइन में टेक्स्ट) -->
+    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (एक ही लाइन में टेक्स्ट और सही लोगो) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -491,11 +491,13 @@
       }
     }
 
-    // 🌟 लिंक्स: मोबाइल नंबर चुनने पर सीधा होम पेज के फोन लॉगिन पर जाएगा
+    // 🌟 यहाँ पर लिंक सेट कर दिए गए हैं:
+    // 1. "Login with mobile number" चुनने पर यूजर सीधा नए 'phone.html' पेज पर चला जाएगा
     function handleMobileLogin() {
-      window.location.replace("index.html?open=phone");
+      window.location.replace("phone.html");
     }
 
+    // 2. "Sign in with Facebook" चुनने पर होम पेज पर जाएगा
     function handleFacebookLogin() {
       window.location.replace("index.html");
     }
