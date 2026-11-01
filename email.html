@@ -49,9 +49,9 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 इमेज के जैसी बिल्कुल हूबहू स्टाइल (एक ही लाइन में टेक्स्ट) */
+    /* 🌟 लोगो और नामों को नीचे करने और साइज़ नॉर्मल छोटा करने के लिए */
     .social-login-section {
-      margin-top: 35px;
+      margin-top: 55px; /* इसे थोड़ा और नीचे कर दिया गया है */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,41 +93,51 @@
       width: 48%;
     }
     .social-icon-circle {
-      width: 64px;
-      height: 64px;
+      width: 52px;  /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
+      height: 52px; /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       background: #fff;
       border: 1px solid #eaeaea;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .facebook-icon {
-      width: 32px;
-      height: 32px;
+      width: 26px;  /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
+      height: 26px; /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
       background: #1877f2;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-size: 20px;
+      font-size: 16px;
       font-weight: bold;
       font-family: Arial, sans-serif;
     }
-    .mobile-icon {
-      width: 32px;
-      height: 32px;
+    
+    /* 🌟 मोबाइल डिवाइस लोगो का साइज़ भी छोटा और नॉर्मल किया गया */
+    .mobile-icon-shape {
+      width: 16px;
+      height: 24px;
       background: #00c853;
-      border-radius: 6px;
+      border-radius: 3px;
+      position: relative;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
-      color: #fff;
-      font-size: 16px;
+      padding-bottom: 2px;
     }
+    .mobile-icon-shape::after {
+      content: "";
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+    }
+
     .social-btn-text {
       font-size: 12px;
       color: #666;
@@ -157,7 +167,7 @@
       </form>
     </div>
 
-    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (एक ही लाइन में टेक्स्ट और सही लोगो) -->
+    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (नॉर्मल छोटे लोगो और नीचे खिसके हुए) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -169,7 +179,7 @@
         </div>
         <div class="social-btn-item" onclick="handleMobileLogin()">
           <div class="social-icon-circle">
-            <div class="mobile-icon">📱</div>
+            <div class="mobile-icon-shape"></div>
           </div>
           <div class="social-btn-text">Login with mobile number</div>
         </div>
@@ -491,13 +501,10 @@
       }
     }
 
-    // 🌟 यहाँ पर लिंक सेट कर दिए गए हैं:
-    // 1. "Login with mobile number" चुनने पर यूजर सीधा नए 'phone.html' पेज पर चला जाएगा
     function handleMobileLogin() {
       window.location.replace("phone.html");
     }
 
-    // 2. "Sign in with Facebook" चुनने पर होम पेज पर जाएगा
     function handleFacebookLogin() {
       window.location.replace("index.html");
     }
