@@ -16,7 +16,6 @@
     .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
     .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
     
-    .cell-badge-profile-left { position: absolute; bottom: 6px; left: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 4px; display: flex; align-items: center; gap: 2px; z-index: 2; }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
@@ -63,15 +62,14 @@
   <div class="page-container">
     <div class="sub-header">
       <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
-      <h2>Profile photo</h2>
+      <h2>Cover Photos (1 to 9)</h2>
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 9 खानों की ग्रिड (क्रमिक अपलोड नियम के साथ) -->
+    <!-- केवल कवर फोटो के लिए 1 से 9 क्रमिक अपलोड ग्रिड -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
-    <input type="file" id="hiddenAvatarInput" accept="image/*" style="display:none;" onchange="handleAvatarFileSelect(event)">
 
     <div id="unsavedTipsModal">
       <div class="unsaved-tips-box">
@@ -84,10 +82,10 @@
       </div>
     </div>
 
+    <!-- केवल कवर फोटो बदलने या हटाने का विकल्प -->
     <div id="tipsModal" class="modal-overlay">
       <div class="tips-box" style="text-align:left;">
-        <h3>Tips</h3>
-        <div class="tips-item" onclick="tipsUseAsProfile()">Use it as profile picture</div>
+        <h3>Manage Cover Photo</h3>
         <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
         <div class="tips-item" onclick="tipsDeletePicture()">Delete</div>
         <div style="margin-top:15px; text-align:right;"><button onclick="closeTipsModal()" style="padding:6px 14px; background:#ddd; border:none; border-radius:6px; cursor:pointer; font-weight:bold;">Cancel</button></div>
@@ -135,13 +133,10 @@
     const CLOUDINARY_UPLOAD_PRESET = "greedy_preset";
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let cloudAvatar = "";
     let cloudPhotos = [];
-    let tempAvatar = "";
     let tempPhotos = [];
     
     let activeSlotIndex = 1;
-    let activeEditorMode = "cover";
     let rawImageObj = null;
     let posX = 0, posY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
     let baseLeft = 0, baseTop = 0;
@@ -151,7 +146,7 @@
     history.pushState({page: "photo_grid"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
-      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
+      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
       if (hasChanges) {
         history.pushState({page: "photo_grid"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
@@ -164,13 +159,10 @@
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          cloudAvatar = data.avatar || "";
           cloudPhotos = data.photos || [];
         } else {
-          cloudAvatar = "";
           cloudPhotos = [];
         }
-        tempAvatar = cloudAvatar;
         tempPhotos = [...cloudPhotos];
         render9Grid();
       }).catch((err) => {
@@ -179,7 +171,7 @@
       });
     }
 
-    // --- 1 से 9 तक क्रमिक (Sequential) Upload बटन और स्लॉट दिखाने का नियम ---
+    // --- केवल कवर फोटो के लिए 1 से 9 तक क्रमिक (Sequential) Upload लूप नियम ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -193,12 +185,11 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
-          // अगर इस स्लॉट पर फोटो है, तो उसे दिखाएं
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleGridCellClick(i);
           container.appendChild(cell);
         } else {
-          // नियम: केवल अगली खाली जगह पर ही 'Upload' बटन दिखेगा (1 से 9 तक)
+          // नियम: केवल अगली खाली जगह पर ही 'Upload' बटन प्रकट होगा (1 से 9 तक)
           if (i === filledCount + 1 && filledCount < 9) {
             cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
             cell.onclick = () => handleGridCellClick(i);
@@ -208,7 +199,6 @@
             cell.onclick = () => handleGridCellClick(i);
             container.appendChild(cell);
           } else {
-            // आगे के खाली डिब्बे छिपे रहेंगे
             cell.style.display = "none";
             container.appendChild(cell);
           }
@@ -221,7 +211,7 @@
     }
 
     function handleGridBackAction() {
-      let hasChanges = (tempAvatar !== cloudAvatar || JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
+      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
       if (hasChanges) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
@@ -235,7 +225,6 @@
 
     function saveAndClosePhotoGridScreen() {
       db.collection("users").doc(currentIdentifier).set({
-        avatar: tempAvatar,
         photos: tempPhotos
       }, { merge: true }).then(() => {
         window.location.replace("profile.html");
@@ -255,7 +244,6 @@
         selectedSlotForTips = index;
         document.getElementById("tipsModal").style.display = "flex";
       } else {
-        activeEditorMode = "cover";
         activeSlotIndex = index;
         document.getElementById("hiddenGalleryInput").click();
       }
@@ -263,20 +251,8 @@
 
     function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
     
-    function tipsUseAsProfile() {
-      closeTipsModal();
-      if(selectedSlotForTips > 0) {
-        let val = tempPhotos[selectedSlotForTips - 1];
-        if(val) {
-          tempAvatar = val;
-          render9Grid();
-        }
-      }
-    }
-
     function tipsChangePicture() {
       closeTipsModal();
-      activeEditorMode = "cover";
       activeSlotIndex = selectedSlotForTips;
       document.getElementById("hiddenGalleryInput").click();
     }
@@ -287,8 +263,9 @@
       render9Grid();
     }
 
-    function handleGalleryFileSelect(e) { if(e.target.files && e.target.files[0]) loadEditorImage(e.target.files[0]); }
-    function handleAvatarFileSelect(e) { if(e.target.files && e.target.files[0]) loadEditorImage(e.target.files[0]); }
+    function handleGalleryFileSelect(e) { 
+      if(e.target.files && e.target.files[0]) loadEditorImage(e.target.files[0]); 
+    }
 
     function loadEditorImage(file) {
       let reader = new FileReader();
