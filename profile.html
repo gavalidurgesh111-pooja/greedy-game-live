@@ -373,7 +373,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // Firebase से डेटा लोड करने और कवर स्लाइडर को सही से दिखाने का फंक्शन
+    // Firebase से डेटा लोड करने और कवर स्लाइडर को सही से दिखाने का फिक्सड फंक्शन
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -405,7 +405,6 @@
         
         const avatarImg = document.getElementById("profAvatarImg");
         const plusIcon = document.getElementById("avatarPlusIcon");
-        const editNameBtn = document.getElementById("editNameBtn");
 
         if (currentAvatar && currentAvatar.trim() !== "") {
           avatarImg.src = currentAvatar;
@@ -416,28 +415,25 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर पेजेस सेटअप - Cloudinary के लिंक्स को सही क्रम में 1 से 9 खानों में सेट करना
-        let slotsData = [];
-        if (dbPhotos && dbPhotos.length > 0) {
-          slotsData = [...dbPhotos];
-        }
-
-        let filledCount = slotsData.length;
+        // --- कवर स्लाइडर और पहली फोटो (Cover Photo) को सही सेट करने का लॉजिक ---
+        let filledCount = dbPhotos.length;
 
         for(let i = 1; i <= 9; i++) {
           let pageEl = document.getElementById("coverPage" + i);
           let plusEl = document.getElementById("plusCover" + i);
           if(!pageEl) continue;
 
-          let slotVal = slotsData[i - 1] || "";
+          let slotVal = dbPhotos[i - 1] || "";
 
           if(slotVal && slotVal.trim() !== "") {
+            // अगर इस स्लॉट में फोटो मौजूद है, तो उसे कवर पर सेट करें
             pageEl.style.backgroundImage = `url('${slotVal}')`;
             pageEl.style.backgroundSize = "cover";
             pageEl.style.backgroundPosition = "center";
             pageEl.style.display = "flex";
             if(plusEl) plusEl.style.display = "none"; 
           } else {
+            // अगर फोटो नहीं है, तो सही क्रम में 'Upload' बटन दिखाएं
             if ((i === filledCount + 1) && filledCount < 9) {
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "flex";
@@ -468,12 +464,14 @@
         }
         updatePrivacyHeart();
 
+        // --- हमेशा पहली फोटो से लेफ्ट साइड स्क्रॉल शुरू करने के लिए ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = 0; // पहली फोटो से शुरुआत करने के लिए
+            slider.scrollLeft = 0; 
           }
-        }, 50);
+        }, 100);
+
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
       });
