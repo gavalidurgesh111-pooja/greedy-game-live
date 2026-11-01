@@ -365,8 +365,6 @@
           isPrivate = data.privacy || false;
           currentFrame = data.frame || "none";
           dbPhotos = data.photos || []; 
-          
-          // मुख्य अवतार: डेटाबेस के avatar से या photos के पहले इंडेक्स से सेट होगा
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
         } else {
           coins = 1000;
@@ -397,24 +395,26 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // कवर स्लाइडर रेंडरिंग
+        // --- कवर स्लाइडर रेंडरिंग: भरी हुई फोटो के साथ-साथ हमेशा अगला Upload बटन भी स्लाइडर में दिखेगा ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
         let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
-        if (validPhotos.length > 0) {
-          validPhotos.forEach((photoUrl) => {
-            let pageDiv = document.createElement("div");
-            pageDiv.className = "cover-page";
-            pageDiv.style.backgroundImage = `url('${photoUrl}')`;
-            sliderContainer.appendChild(pageDiv);
-          });
-        } else {
+        // पहले सभी भरी हुई तस्वीरें रेंडर करें
+        validPhotos.forEach((photoUrl) => {
           let pageDiv = document.createElement("div");
           pageDiv.className = "cover-page";
-          pageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+          pageDiv.style.backgroundImage = `url('${photoUrl}')`;
           sliderContainer.appendChild(pageDiv);
+        });
+
+        // उसके तुरंत बाद हमेशा अगली फोटो जोड़ने के लिए Upload बटन वाला पेज जोड़ें (यदि 9 से कम तस्वीरें हैं)
+        if (validPhotos.length < 9) {
+          let uploadPageDiv = document.createElement("div");
+          uploadPageDiv.className = "cover-page";
+          uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+          sliderContainer.appendChild(uploadPageDiv);
         }
 
         const frameEl = document.getElementById("profAvatarFrame");
@@ -430,8 +430,9 @@
           let slider = document.getElementById("coverSlider");
           if (slider) {
             let singlePageWidth = slider.clientWidth || 480;
+            // यदि एक से अधिक आइटम हैं और यूजर ने शुरुआत में सेट किया है, तो सही स्क्रॉल पोजीशन सेट करें
             if (validPhotos.length > 1) {
-              slider.scrollLeft = singlePageWidth; 
+              slider.scrollLeft = 0; 
             } else {
               slider.scrollLeft = 0; 
             }
