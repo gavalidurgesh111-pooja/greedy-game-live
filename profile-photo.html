@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Profile Photo - Greedy Coin</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
+    /* लॉन्ग प्रेस करने पर नीला रंग या सिलेक्शन आने से रोकने के लिए */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
     
@@ -182,7 +183,7 @@
       });
     }
 
-    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, बैकग्राउंड इमेज सेफ रहेंगे, और हर खाली डिब्बे पर Upload + 👤/🖼️ आइकन दिखेगा ---
+    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, फुल एचडी ओरिजिनल फोटो क्वालिटी के साथ ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -194,7 +195,6 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
-          // फोटो क्रोम सुरक्षा के साथ बैकग्राउंड इमेज के रूप में सेट होगी
           cell.style.backgroundImage = `url('${slotVal}')`;
           cell.innerHTML = `<div class="badge-num">${i}</div>`;
           cell.onclick = () => handleFilledCellClick(i);
@@ -244,7 +244,6 @@
     }
 
     function closePhotoGridWithoutSaving() {
-      // सीधे रिप्लेस करें ताकि हिस्ट्री साफ रहे
       window.location.replace("profile.html");
     }
 
@@ -258,13 +257,11 @@
     }
 
     function confirmNoThanks() {
-      // NO, THANKS पर क्लिक करने पर सीधे profile.html पर जाएं (बिना पुरानी हिस्ट्री के)
       document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
     function saveAndClosePhotoGridScreen() {
-      // यह ऊपर वाले सही (✓) निशान के लिए है (यह सेव करके profile.html पर जाता है)
       let firstPhoto = tempPhotos[0] || "";
 
       db.collection("users").doc(currentIdentifier).set({
@@ -278,7 +275,6 @@
     }
 
     function confirmSaveAndExit() {
-      // SAVE पर क्लिक करने पर फोटो सेव हो जाए, लेकिन यूजर इसी पेज पर रुका रहे
       document.getElementById("unsavedTipsModal").style.display = "none";
       
       let firstPhoto = tempPhotos[0] || "";
