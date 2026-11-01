@@ -256,10 +256,13 @@
     }
 
     function confirmNoThanks() {
+      // NO, THANKS पर क्लिक करने पर सीधे profile.html पर जाएं
+      document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
 
     function saveAndClosePhotoGridScreen() {
+      // यह ऊपर वाले सही (✓) निशान के लिए है (यह सेव करके profile.html पर जाता है)
       let firstPhoto = tempPhotos[0] || "";
 
       db.collection("users").doc(currentIdentifier).set({
@@ -273,7 +276,20 @@
     }
 
     function confirmSaveAndExit() {
-      saveAndClosePhotoGridScreen();
+      // SAVE पर क्लिक करने पर फोटो सेव हो जाए, लेकिन यूजर इसी पेज पर रुका रहे
+      document.getElementById("unsavedTipsModal").style.display = "none";
+      
+      let firstPhoto = tempPhotos[0] || "";
+
+      db.collection("users").doc(currentIdentifier).set({
+        photos: tempPhotos,
+        avatar: firstPhoto
+      }, { merge: true }).then(() => {
+        cloudPhotos = [...tempPhotos];
+        render9Grid();
+      }).catch((err) => {
+        alert("Error saving to database: " + err.message);
+      });
     }
 
     function handleGalleryFileSelect(e) { 
