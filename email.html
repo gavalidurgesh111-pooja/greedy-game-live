@@ -86,7 +86,7 @@
     </div>
   </div>
 
-  <!-- 3. ईमेल पासवर्ड स्क्रीन (लॉगिन या नया पासवर्ड सेट करने के लिए) -->
+  <!-- 3. ईमेल पासवर्ड स्क्रीन -->
   <div id="screenEmailPass" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
       <div class="back-btn" onclick="backFromPasswordScreen()" style="font-size:24px; cursor:pointer;">❮</div>
@@ -325,18 +325,21 @@
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
+        // नया यूज़र है, इसलिए पुराना सारा डेटा साफ़ करें ताकि मिक्स न हो
+        localStorage.clear();
+
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
+        localStorage.setItem("greedy_email_identifier", currentEmail);
 
-        if (!isRegistered) {
-          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-          localStorage.setItem("greedy_unique_id", freshId);
-          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-          localStorage.setItem("greedy_coins", "1000");
-          localStorage.setItem("greedy_won", "0");
-          localStorage.setItem("greedy_level", "1");
-        }
+        let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+        localStorage.setItem("greedy_unique_id", freshId);
+        localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+        localStorage.setItem("greedy_coins", "1000");
+        localStorage.setItem("greedy_won", "0");
+        localStorage.setItem("greedy_level", "1");
+
         isForgotFlow = false;
         showCustomAlert("Success! Logging in...", function() {
           localStorage.setItem("greedy_initialized", "true");
@@ -351,6 +354,7 @@
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
+        localStorage.setItem("greedy_email_identifier", currentEmail);
         localStorage.setItem("greedy_initialized", "true");
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
