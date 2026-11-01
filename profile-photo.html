@@ -66,7 +66,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- केवल कवर फोटो के लिए 1 से 9 क्रमिक अपलोड ग्रिड -->
+    <!-- 1 से 9 तक के सभी 9 डिब्बे एक साथ दिखाने के लिए ग्रिड कंटेनर -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <!-- केवल कवर फोटो बदलने या हटाने का विकल्प -->
+    <!-- कवर फोटो बदलने या हटाने का विकल्प -->
     <div id="tipsModal" class="modal-overlay">
       <div class="tips-box" style="text-align:left;">
         <h3>Manage Cover Photo</h3>
@@ -171,13 +171,11 @@
       });
     }
 
-    // --- केवल कवर फोटो के लिए 1 से 9 तक क्रमिक (Sequential) Upload लूप नियम ---
+    // --- यहाँ सुधार किया गया है: 1 से 9 तक के सभी 9 डिब्बे हमेशा एक साथ दिखेंगे ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
-      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
-
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
@@ -185,24 +183,16 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
+          // अगर इस डिब्बे में फोटो डली है तो फोटो दिखाएं
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-          cell.onclick = () => handleGridCellClick(i);
-          container.appendChild(cell);
         } else {
-          // नियम: केवल अगली खाली जगह पर ही 'Upload' बटन प्रकट होगा (1 से 9 तक)
-          if (i === filledCount + 1 && filledCount < 9) {
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-            cell.onclick = () => handleGridCellClick(i);
-            container.appendChild(cell);
-          } else if (filledCount === 0 && i === 1) {
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-            cell.onclick = () => handleGridCellClick(i);
-            container.appendChild(cell);
-          } else {
-            cell.style.display = "none";
-            container.appendChild(cell);
-          }
+          // अगर डिब्बा खाली है तो 'Upload' बटन दिखाएं ताकि सारे 1 से 9 डिब्बे एक साथ नजर आएं
+          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
         }
+        
+        // हर डिब्बे पर क्लिक करने का नियम
+        cell.onclick = () => handleGridCellClick(i);
+        container.appendChild(cell);
       }
     }
 
@@ -259,7 +249,7 @@
 
     function tipsDeletePicture() {
       closeTipsModal();
-      tempPhotos.splice(selectedSlotForTips - 1, 1);
+      tempPhotos[selectedSlotForTips - 1] = "";
       render9Grid();
     }
 
