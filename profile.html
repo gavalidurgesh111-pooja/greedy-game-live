@@ -363,6 +363,7 @@
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
+    // --- बैक बटन (popstate) का सही लॉजिक (अब सब-स्क्रीन बंद होगी, रजिस्ट्रेशन पेज पर नहीं जाएगा) ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -521,6 +522,7 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
+      history.pushState({ screen: "settings" }, "");
     }
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
@@ -537,6 +539,7 @@
     function openAboutMeScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenAboutMe").style.display = "flex"; 
+      history.pushState({ screen: "about" }, "");
     }
     function closeAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "none"; 
@@ -566,6 +569,7 @@
     function openGroupsScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenGroups").style.display = "flex"; 
+      history.pushState({ screen: "groups" }, "");
     }
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
