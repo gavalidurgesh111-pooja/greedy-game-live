@@ -153,12 +153,13 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
-    history.pushState({page: "photo_grid"}, "", window.location.href);
+    // --- हिस्ट्री को रिप्लेस करें ताकि कचरा या पुराने पेज स्टोर न हों ---
+    history.replaceState({page: "photo_grid"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
       let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
       if (hasChanges) {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
+        history.replaceState({page: "photo_grid"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -243,6 +244,7 @@
     }
 
     function closePhotoGridWithoutSaving() {
+      // सीधे रिप्लेस करें ताकि हिस्ट्री साफ रहे
       window.location.replace("profile.html");
     }
 
@@ -256,7 +258,7 @@
     }
 
     function confirmNoThanks() {
-      // NO, THANKS पर क्लिक करने पर सीधे profile.html पर जाएं
+      // NO, THANKS पर क्लिक करने पर सीधे profile.html पर जाएं (बिना पुरानी हिस्ट्री के)
       document.getElementById("unsavedTipsModal").style.display = "none";
       closePhotoGridWithoutSaving();
     }
