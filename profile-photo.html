@@ -179,21 +179,17 @@
       });
     }
 
-    // --- आपके नियम के अनुसार ग्रिड रेंडर करने का नया लॉजिक ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
+      let avatarPic = tempAvatar;
       
-      // कुल कितनी तस्वीरें भरी हुई हैं, उनकी गिनती (Avatar को छोड़कर सिर्फ कवर वाली tempPhotos)
-      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
-
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
-        
-        // i=1 हमेशा Avatar/Profile के लिए है, i>=2 कवर वाली tempPhotos के लिए हैं
-        let slotVal = (i === 1) ? tempAvatar : (tempPhotos[i - 2] || "");
+        let slotVal = (i === 1) ? avatarPic : (tempPhotos[i - 2] || "");
 
+        // --- फिक्स: हर सेल पर क्लिक इवेंट साफ़ तरीके से बाइंड किया गया है ---
         cell.onclick = (function(index) {
           return function() {
             handleGridCellClick(index);
@@ -201,26 +197,13 @@
         })(i);
 
         if (slotVal && slotVal.trim() !== "") {
-          // अगर इस खाने में फोटो मौजूद है तो फोटो दिखाएं
           if (i === 1) {
             cell.innerHTML = `<img src="${slotVal}"><div class="cell-badge-profile-left">👤</div><div class="badge-num">${i}</div>`;
           } else {
             cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
           }
         } else {
-          // --- यहाँ लागू किया है आपका नियम ---
-          // सिर्फ तभी 'Upload' बटन दिखेगा जब वह बॉक्स या तो पहला खाली हो, या ठीक अगली बारी (filledCount + 1) हो।
-          let targetCellNum = (i === 1) ? 1 : (i - 1);
-          
-          if ((i === 1 && (!tempAvatar || tempAvatar.trim() === "")) || 
-              (i > 1 && targetCellNum === filledCount + 1)) {
-            cell.innerHTML = `<div class="plus-sign">Upload</div><div class="badge-num">${i}</div>`;
-            cell.style.display = "flex";
-          } else {
-            // बाकी के सारे आगे वाले खाली बॉक्स पूरी तरह छिपे रहेंगे
-            cell.innerHTML = `<div class="badge-num">${i}</div>`;
-            cell.style.display = "none"; 
-          }
+          cell.innerHTML = `<div class="plus-sign">Upload</div><div class="badge-num">${i}</div>`;
         }
         container.appendChild(cell);
       }
@@ -270,7 +253,7 @@
           document.getElementById("hiddenAvatarInput").click();
         }
       } else {
-        let slotNum = index - 1;
+        let slotNum = index - 1; // 2nd cell -> index 2 -> slotNum 1
         let val = tempPhotos[slotNum - 1] || "";
         if(val && val.trim() !== "") {
           selectedSlotForTips = slotNum;
@@ -471,7 +454,7 @@
       window.addEventListener('touchend', (e) => {
         if(e.touches.length < 2) initialPinchDistance = null;
         if(e.touches.length === 0 && isDraggingImg) {
-          isDraggingImg = false;
+          isDraggingImg, isDraggingImg = false;
           applySmartBoundaryAndSnap(); 
         }
       });
