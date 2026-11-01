@@ -66,7 +66,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के ग्रिड डिब्बे -->
+    <!-- 1 से 9 तक के सभी 9 डिब्बे एक साथ दिखाने के लिए ग्रिड कंटेनर -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -163,46 +163,25 @@
       });
     }
 
-    // --- यहाँ नियम सेट किया गया है: पहला स्लॉट हमेशा अवतार/फोटो दिखाएगा ---
+    // --- यहाँ सुधार किया गया है: 1 से 9 तक के सभी 9 डिब्बे हमेशा एक साथ दिखेंगे ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
       
-      let filledCount = tempPhotos.filter(p => p && p.trim() !== "").length;
-
       for(let i = 1; i <= 9; i++) {
         let cell = document.createElement("div");
         cell.className = "grid-cell";
         
         let slotVal = tempPhotos[i - 1] || "";
 
-        // विशेष नियम: यदि यह पहला डिब्बा (Slot 1) है और इसमें कोई फोटो नहीं है, तो डिफ़ॉल्ट अवतार या अपलोड का विकल्प रहेगा
-        if (i === 1) {
-          if (slotVal && slotVal.trim() !== "") {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-          } else {
-            // पहला स्लॉट हमेशा खाली नहीं रहेगा, यहाँ अवतार या मुख्य अपलोड बटन दिखेगा
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-          }
-          cell.onclick = () => handleGridCellClick(i);
-          container.appendChild(cell);
+        if (slotVal && slotVal.trim() !== "") {
+          cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
         } else {
-          // बाकी 2 से 9 डिब्बों के लिए क्रमिक नियम
-          if (slotVal && slotVal.trim() !== "") {
-            cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-            cell.onclick = () => handleGridCellClick(i);
-            container.appendChild(cell);
-          } else {
-            if (i === filledCount + 1 && filledCount < 9) {
-              cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-              cell.onclick = () => handleGridCellClick(i);
-              container.appendChild(cell);
-            } else {
-              cell.style.display = "none";
-              container.appendChild(cell);
-            }
-          }
+          cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
         }
+        
+        cell.onclick = () => handleGridCellClick(i);
+        container.appendChild(cell);
       }
     }
 
@@ -259,7 +238,6 @@
 
     function tipsDeletePicture() {
       closeTipsModal();
-      // यदि पहला स्लॉट है तो उसे खाली होने से बचाने या रीसेट करने का नियम
       tempPhotos[selectedSlotForTips - 1] = "";
       render9Grid();
     }
