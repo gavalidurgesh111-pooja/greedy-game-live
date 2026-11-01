@@ -454,15 +454,15 @@
         }
         updatePrivacyHeart();
 
-        // 🌟 मुख्य बदलाव: यदि 2 या उससे अधिक फोटो हैं, तो स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
-        // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है। अगर एक ही फोटो है तो वह पहली पर रहेगी।
+        // 🌟 मुख्य नियम: यदि 2 या उससे अधिक फोटो हैं, तो स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
+        // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है।
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
             if (validPhotos.length >= 2) {
               slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर सेट करने के लिए
             } else {
-              slider.scrollLeft = 0; // अगर एक ही फोटो या अपलोड बटन है तो पहली पर
+              slider.scrollLeft = 0; 
             }
           }
         }, 120);
@@ -472,8 +472,9 @@
       });
     }
 
+    // 🌟 यहाँ window.location.replace का उपयोग किया गया है ताकि फोटो पेज की कोई हिस्ट्री पीछे न बचे
     function openPhotoGridScreen() {
-      window.location.href = "profile-photo.html";
+      window.location.replace("profile-photo.html");
     }
 
     function triggerAvatarUpload() {
