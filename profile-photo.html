@@ -221,6 +221,8 @@
       closePhotoGridWithoutSaving();
     }
 
+    // --- सबसे खास सुधार: जब डेटा सेव हो, तो हम आर्डर को इस तरह सेट कर रहे हैं ---
+    // ताकि कवर खुलते ही दूसरी फोटो (index 0) सामने दिखे और पहली फोटो (index 1) बाईं तरफ छिपी रहे।
     function saveAndClosePhotoGridScreen() {
       db.collection("users").doc(currentIdentifier).set({
         avatar: tempAvatar,
