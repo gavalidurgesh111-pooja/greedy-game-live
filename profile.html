@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>User Profile - Greedy Coin</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; }
+    /* -webkit-user-select और user-select से लॉन्ग प्रेस करने पर नीला रंग या सिलेक्शन नहीं आएगा */
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #fff; position: relative; padding-bottom: 60px; overflow-y: auto; }
     
@@ -330,7 +331,6 @@
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // --- प्रोफाइल पेज के लिए भी हिस्ट्री को रिप्लेस करें ---
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -394,7 +394,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर रेंडरिंग (Background Image के साथ ताकि क्रोम से डाउनलोड न हो सके) ---
+        // --- कवर स्लाइडर रेंडरिंग (ओरिजिनल फुल एचडी फोटो क्वालिटी के साथ) ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
