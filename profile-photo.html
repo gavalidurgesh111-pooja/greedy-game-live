@@ -13,10 +13,11 @@
     .sub-header h2 { font-size: 18px; font-weight: 900; }
     
     .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
-    .grid-cell { aspect-ratio: 1; background: #e4e6eb; border-radius: 10px; position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
+    .grid-cell { aspect-ratio: 1; background: #fff; border-radius: 10px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; border: 1px solid #ccd0d5; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
     
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 2; }
+    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 12px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 3; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
     .unsaved-tips-box { background: #fff; width: 85%; max-width: 330px; border-radius: 12px; padding: 22px 20px 16px 20px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); text-align: left; }
@@ -66,7 +67,7 @@
       <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndClosePhotoGridScreen()" title="Save">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के सभी 9 डिब्बे हमेशा दिखने के लिए ग्रिड कंटेनर -->
+    <!-- 1 से 9 तक के सभी 9 डिब्बे जिन पर हमेशा Upload लिखा होगा -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
@@ -82,7 +83,7 @@
       </div>
     </div>
 
-    <!-- फोटो मैनेज करने का मॉडल -->
+    <!-- फोटो मैनेज करने का मॉडल (बदलाव या हटाने के लिए) -->
     <div id="tipsModal" class="modal-overlay">
       <div class="tips-box" style="text-align:left;">
         <h3>Manage Photo</h3>
@@ -163,7 +164,7 @@
       });
     }
 
-    // --- पक्का नियम: 1 से 9 तक के सभी 9 डिब्बे हमेशा दिखेंगे, और अगली खाली जगह पर Upload बटन आएगा ---
+    // --- नियम: सभी 9 डिब्बे दिखेंगे, खाली डिब्बों पर 'Upload' लिखा होगा, और फोटो हमेशा क्रम से लगेंगी ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -175,26 +176,54 @@
         let slotVal = tempPhotos[i - 1] || "";
 
         if (slotVal && slotVal.trim() !== "") {
+          // अगर इस स्लॉट में फोटो है तो फोटो और नंबर दिखेगा
           cell.innerHTML = `<img src="${slotVal}"><div class="badge-num">${i}</div>`;
-          cell.onclick = () => handleGridCellClick(i);
+          cell.onclick = () => handleFilledCellClick(i);
         } else {
-          // नियम: पहला स्लॉट हमेशा चालू रहेगा, या जो अगला खाली स्लॉट होगा उसपर Upload बटन दिखेगा
-          let firstEmptyIndex = tempPhotos.findIndex(p => !p || p.trim() === "") + 1;
-          if (firstEmptyIndex === 0) firstEmptyIndex = tempPhotos.length + 1;
-
-          if (i === 1 || i <= firstEmptyIndex) {
-            cell.innerHTML = `<div class="plus-sign" style="font-size:14px; background:#9b51e0; color:#fff; padding:6px 14px; border-radius:15px; font-weight:600;">Upload</div><div class="badge-num">${i}</div>`;
-            cell.onclick = () => handleGridCellClick(i);
-          } else {
-            // जो स्लॉट अभी क्रम में नहीं आए हैं, उन्हें खाली ग्रे डिब्बे के रूप में दिखाएँगे ताकि 9 के 9 डिब्बे हमेशा दिखें
-            cell.innerHTML = `<div class="badge-num">${i}</div>`;
-            cell.style.opacity = "0.4";
-            cell.onclick = () => alert("कृपया पहले पिछले स्लॉट में फोटो भरें!");
-          }
+          // अगर स्लॉट खाली है तो हर बॉक्स पर स्पष्ट रूप से 'Upload' लिखा होगा
+          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="badge-num">${i}</div>`;
+          cell.onclick = () => handleEmptyCellClick();
         }
         
         container.appendChild(cell);
       }
+    }
+
+    // जब यूजर किसी भरे हुए डिब्बे पर क्लिक करे (मैनेज करने के लिए)
+    let selectedSlotForTips = 1;
+    function handleFilledCellClick(index) {
+      selectedSlotForTips = index;
+      document.getElementById("tipsModal").style.display = "flex";
+    }
+
+    // जब यूजर किसी भी खाली डिब्बे पर क्लिक करे, तो फोटो हमेशा अगले क्रम (Next Available Slot) में ही जाएगी
+    function handleEmptyCellClick() {
+      let nextEmptyIndex = tempPhotos.findIndex(p => !p || p.trim() === "");
+      if (nextEmptyIndex === -1) {
+        if (tempPhotos.length < 9) {
+          nextEmptyIndex = tempPhotos.length;
+        } else {
+          alert("सभी 9 स्लॉट भर चुके हैं!");
+          return;
+        }
+      }
+      activeSlotIndex = nextEmptyIndex + 1;
+      document.getElementById("hiddenGalleryInput").click();
+    }
+
+    function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
+    
+    function tipsChangePicture() {
+      closeTipsModal();
+      activeSlotIndex = selectedSlotForTips;
+      document.getElementById("hiddenGalleryInput").click();
+    }
+
+    function tipsDeletePicture() {
+      closeTipsModal();
+      // फोटो हटाने पर एरे से स्लाइस करके बाकी तस्वीरों को क्रम में व्यवस्थित करना
+      tempPhotos.splice(selectedSlotForTips - 1, 1);
+      render9Grid();
     }
 
     function closePhotoGridWithoutSaving() {
@@ -229,32 +258,6 @@
 
     function confirmSaveAndExit() {
       saveAndClosePhotoGridScreen();
-    }
-
-    let selectedSlotForTips = 1;
-    function handleGridCellClick(index) {
-      let val = tempPhotos[index - 1] || "";
-      if(val && val.trim() !== "") {
-        selectedSlotForTips = index;
-        document.getElementById("tipsModal").style.display = "flex";
-      } else {
-        activeSlotIndex = index;
-        document.getElementById("hiddenGalleryInput").click();
-      }
-    }
-
-    function closeTipsModal() { document.getElementById("tipsModal").style.display = "none"; }
-    
-    function tipsChangePicture() {
-      closeTipsModal();
-      activeSlotIndex = selectedSlotForTips;
-      document.getElementById("hiddenGalleryInput").click();
-    }
-
-    function tipsDeletePicture() {
-      closeTipsModal();
-      tempPhotos.splice(selectedSlotForTips - 1, 1);
-      render9Grid();
     }
 
     function handleGalleryFileSelect(e) { 
