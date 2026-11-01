@@ -373,7 +373,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // Firebase से डेटा लोड करने और कवर स्लाइडर को दूसरे फोटो से शुरू करने का फंक्शन
+    // Firebase से डेटा लोड करने और आपके नियमों के अनुसार कवर स्लाइडर सेट करने का फंक्शन
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -432,6 +432,7 @@
             pageEl.style.display = "flex";
             if(plusEl) plusEl.style.display = "none"; 
           } else {
+            // नियम: अगर सिर्फ 1 ही फोटो है, तो बाकी खाली बॉक्स (Upload) दिखेंगे
             if ((i === filledCount + 1) && filledCount < 9) {
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "flex";
@@ -462,18 +463,24 @@
         }
         updatePrivacyHeart();
 
-        // --- सबसे खास बदलाव: डिफ़ॉल्ट रूप से कवर पर हमेशा दूसरी फोटो (Index 1) दिखे ---
+        // --- आपका असली नियम: ---
+        // 1. अगर सिर्फ 1 फोटो है, तो हमेशा पहली फोटो (scrollLeft = 0) सामने दिखेगी।
+        // 2. अगर 2 या उससे ज्यादा फोटो हैं, तो दूसरी फोटो सामने दिखेगी (scrollLeft = width) और पहली फोटो बाईं तरफ होगी।
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            // अगर दूसरी फोटो मौजूद है, तो स्लाइडर को दूसरे पेज पर सेट करें (index 1 मतलब 100% चौड़ाई)
-            if (dbPhotos.length > 1 && dbPhotos[1] && dbPhotos[1].trim() !== "") {
-              slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर पोजीशन
+            let singlePageWidth = slider.clientWidth || 480;
+            let actualPhotosCount = dbPhotos.filter(p => p && p.trim() !== "").length;
+
+            if (actualPhotosCount > 1) {
+              // 2 या उससे ज्यादा फोटो होने पर दूसरी फोटो सामने दिखेगी
+              slider.scrollLeft = singlePageWidth; 
             } else {
-              slider.scrollLeft = 0; // अगर दूसरी फोटो नहीं है, तो पहली फोटो या अपलोड बटन दिखे
+              // सिर्फ 1 फोटो होने पर पहली फोटो ही सामने दिखेगी
+              slider.scrollLeft = 0; 
             }
           }
-        }, 100);
+        }, 150);
 
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
