@@ -425,7 +425,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर रेंडरिंग (हमेशा पहली फोटो पर लेफ्ट साइड से शुरू होगा) ---
+        // --- कवर स्लाइडर रेंडरिंग ---
         let sliderContainer = document.getElementById("coverSlider");
         sliderContainer.innerHTML = "";
 
@@ -454,13 +454,18 @@
         }
         updatePrivacyHeart();
 
-        // 🌟 यह सुनिश्चित करता है कि किसी भी पेज से आने पर कवर स्लाइडर हमेशा बिल्कुल बाएं (Left / पहली फोटो) से शुरू हो
+        // 🌟 मुख्य बदलाव: यदि 2 या उससे अधिक फोटो हैं, तो स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
+        // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है। अगर एक ही फोटो है तो वह पहली पर रहेगी।
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = 0; 
+            if (validPhotos.length >= 2) {
+              slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर सेट करने के लिए
+            } else {
+              slider.scrollLeft = 0; // अगर एक ही फोटो या अपलोड बटन है तो पहली पर
+            }
           }
-        }, 100);
+        }, 120);
 
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
