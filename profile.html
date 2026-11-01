@@ -363,7 +363,7 @@
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // --- बैक बटन (popstate) का बिल्कुल साफ़ और स्टेबल लॉजिक ---
+    // --- बैक बटन (popstate) का बिल्कुल सही और सॉलिड लॉजिक ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -454,7 +454,7 @@
         }
         updatePrivacyHeart();
 
-        // 🌟 मुख्य नियम: यदि 2 या उससे अधिक फोटो हैं, तो स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
+        // 🌟 मुख्य नियम: कवर स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
         // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है।
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
@@ -472,9 +472,8 @@
       });
     }
 
-    // 🌟 यहाँ window.location.replace का उपयोग किया गया है ताकि फोटो पेज की कोई हिस्ट्री पीछे न बचे
     function openPhotoGridScreen() {
-      window.location.replace("profile-photo.html");
+      window.location.href = "profile-photo.html";
     }
 
     function triggerAvatarUpload() {
@@ -494,6 +493,7 @@
     function showCustomAlert(text) {
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
+      history.pushState({modal: "alert"}, "", window.location.href);
     }
     function closeCustomAlert() { 
       document.getElementById("customAlertModal").style.display = "none"; 
@@ -522,6 +522,7 @@
 
     function openFrameModal() { 
       document.getElementById("modalFrame").style.display = "flex"; 
+      history.pushState({modal: "frame"}, "", window.location.href);
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
@@ -538,7 +539,6 @@
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
       document.getElementById("screenProfile").style.display = "block";
-      history.replaceState({page: "profile_main"}, "", window.location.href);
       initProfile();
     }
 
@@ -556,7 +556,6 @@
     function closeAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
-      history.replaceState({page: "profile_main"}, "", window.location.href);
     }
     
     function togglePrivacy() {
@@ -587,11 +586,11 @@
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
-      history.replaceState({page: "profile_main"}, "", window.location.href);
     }
 
     function openCoinSendModal() { 
       document.getElementById("modalCoinSend").style.display = "flex"; 
+      history.pushState({modal: "coinsend"}, "", window.location.href);
     }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
@@ -618,6 +617,7 @@
 
     function openSettingsModal() { 
       document.getElementById("modalSettings").style.display = "flex"; 
+      history.pushState({modal: "settings_modal"}, "", window.location.href);
     }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
