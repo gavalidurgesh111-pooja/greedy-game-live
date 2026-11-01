@@ -373,7 +373,7 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
-    // Firebase से डेटा लोड करने और कवर स्लाइडर को सही से दिखाने का फिक्सड फंक्शन
+    // Firebase से डेटा लोड करने और कवर स्लाइडर को दूसरे फोटो से शुरू करने का फंक्शन
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -415,7 +415,7 @@
           if(plusIcon) plusIcon.style.display = "block";
         }
 
-        // --- कवर स्लाइडर और पहली फोटो (Cover Photo) को सही सेट करने का लॉजिक ---
+        // --- कवर स्लाइडर सेटअप ---
         let filledCount = dbPhotos.length;
 
         for(let i = 1; i <= 9; i++) {
@@ -426,14 +426,12 @@
           let slotVal = dbPhotos[i - 1] || "";
 
           if(slotVal && slotVal.trim() !== "") {
-            // अगर इस स्लॉट में फोटो मौजूद है, तो उसे कवर पर सेट करें
             pageEl.style.backgroundImage = `url('${slotVal}')`;
             pageEl.style.backgroundSize = "cover";
             pageEl.style.backgroundPosition = "center";
             pageEl.style.display = "flex";
             if(plusEl) plusEl.style.display = "none"; 
           } else {
-            // अगर फोटो नहीं है, तो सही क्रम में 'Upload' बटन दिखाएं
             if ((i === filledCount + 1) && filledCount < 9) {
               pageEl.style.backgroundImage = "none";
               pageEl.style.display = "flex";
@@ -464,11 +462,16 @@
         }
         updatePrivacyHeart();
 
-        // --- हमेशा पहली फोटो से लेफ्ट साइड स्क्रॉल शुरू करने के लिए ---
+        // --- सबसे खास बदलाव: डिफ़ॉल्ट रूप से कवर पर हमेशा दूसरी फोटो (Index 1) दिखे ---
         setTimeout(() => {
           let slider = document.getElementById("coverSlider");
           if (slider) {
-            slider.scrollLeft = 0; 
+            // अगर दूसरी फोटो मौजूद है, तो स्लाइडर को दूसरे पेज पर सेट करें (index 1 मतलब 100% चौड़ाई)
+            if (dbPhotos.length > 1 && dbPhotos[1] && dbPhotos[1].trim() !== "") {
+              slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर पोजीशन
+            } else {
+              slider.scrollLeft = 0; // अगर दूसरी फोटो नहीं है, तो पहली फोटो या अपलोड बटन दिखे
+            }
           }
         }, 100);
 
