@@ -49,9 +49,8 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 लोगो और नामों को नीचे करने और साइज़ नॉर्मल छोटा करने के लिए */
     .social-login-section {
-      margin-top: 55px; /* इसे थोड़ा और नीचे कर दिया गया है */
+      margin-top: 55px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,8 +92,8 @@
       width: 48%;
     }
     .social-icon-circle {
-      width: 52px;  /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
-      height: 52px; /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -105,8 +104,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .facebook-icon {
-      width: 26px;  /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
-      height: 26px; /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
+      width: 26px;
+      height: 26px;
       background: #1877f2;
       border-radius: 50%;
       display: flex;
@@ -118,7 +117,6 @@
       font-family: Arial, sans-serif;
     }
     
-    /* 🌟 मोबाइल डिवाइस लोगो का साइज़ भी छोटा और नॉर्मल किया गया */
     .mobile-icon-shape {
       width: 16px;
       height: 24px;
@@ -167,7 +165,6 @@
       </form>
     </div>
 
-    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (नॉर्मल छोटे लोगो और नीचे खिसके हुए) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -249,12 +246,12 @@
     </div>
   </div>
 
-  <!-- Custom Popup Modal -->
+  <!-- 🌟 फोटो की तरह प्रीमियम और खूबसूरत स्टाइल वाला Custom Popup Modal -->
   <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Notice</h3>
-      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
-      <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
+    <div style="background:#fff; width:100%; max-width:320px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center;">
+      <h3 id="popupTitle" style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Registration and Login</h3>
+      <p id="popupMessage" style="color:#555; font-size:13px; line-height:1.5; margin:0 0 20px 0;"></p>
+      <div id="popupButtons" style="display:flex; gap:10px; justify-content:center;"></div>
     </div>
   </div>
 
@@ -311,21 +308,21 @@
     });
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupMessage").innerText = message;
+      document.getElementById("popupMessage").innerHTML = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
     }
 
     function showCustomConfirm(message, callback) {
-      document.getElementById("popupMessage").innerText = message;
+      document.getElementById("popupMessage").innerHTML = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:14px; border:1px solid #dcdcdc; background:#f4f5f7; font-weight:700; cursor:pointer; color:#333; font-size:14px;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -361,7 +358,7 @@
       let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
 
       if (!isRegistered) {
-        showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
+        showCustomConfirm("This email is not registered!<br>Do you want to register a new account?", function(confirmed) {
           if (confirmed) {
             updateEmailScreen("otp");
           }
@@ -387,7 +384,7 @@
     function verifyEmailOtp() {
       let otp = document.getElementById("emailOtpInput").value.trim();
       if (otp !== "1234") {
-        showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
+        showCustomAlert("Invalid OTP!<br>(Demo OTP is 1234)");
         return;
       }
 
@@ -456,16 +453,13 @@
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
-        localStorage.removeItem("greedy_coins");
-        localStorage.removeItem("greedy_unique_id");
-        localStorage.removeItem("greedy_name");
-        localStorage.removeItem("greedy_won");
-        localStorage.removeItem("greedy_level");
-
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
         localStorage.setItem("greedy_email_identifier", currentEmail);
+        
+        // 🌟 मुख्य सुधार: फोन और ईमेल दोनों के लिए एक ही 'greedy_login_identifier' सेट किया गया है 
+        // ताकि profile.html दोनों को एक ही तरह से पहचान सके और कभी ब्लैंक न हो।
         localStorage.setItem("greedy_login_identifier", currentEmail);
 
         let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
@@ -491,6 +485,7 @@
         }
 
         localStorage.setItem("greedy_email_identifier", currentEmail);
+        // 🌟 यहाँ भी सुनिश्चित किया गया है कि लॉगिन के वक्त सही आइडेंटिफायर सेव हो
         localStorage.setItem("greedy_login_identifier", currentEmail);
         localStorage.setItem("greedy_initialized", "true");
         
