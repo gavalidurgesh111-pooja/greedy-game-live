@@ -155,7 +155,7 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let cloudPhotos = [];
     let tempPhotos = [];
-    let isPhotoModified = false; // 🌟 बदलाव ट्रैक करने के लिए पक्का फ्लैग
+    let isPhotoModified = false; 
     let activeSlotIndex = 1;
     let selectedSlotForTips = 1;
     let rawImageObj = null;
@@ -166,13 +166,12 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // 🌟 पेज खुलते ही हिस्ट्री सेट करना
-    history.pushState({page: "photo_grid"}, "", window.location.href);
+    // 🌟 गेटवे मैजिक के साथ हिस्ट्री स्टेट लॉक करना
+    history.pushState({page: "photo_grid_secure"}, "", window.location.href);
 
-    // 🌟 फोन का असली बैक बटन दबाने पर नियम चेक करना
     window.addEventListener('popstate', function (event) {
       if (isPhotoModified) {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
+        history.pushState({page: "photo_grid_secure"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -257,15 +256,15 @@
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
-      isPhotoModified = true; // 🌟 फोटो डिलीट होते ही बदलाव मान लिया जाएगा
+      isPhotoModified = true; 
       render9Grid();
     }
 
+    // 🌟 बिना सेव किए बाहर जाने पर सीधे प्रोफाइल पर भेजना (गेटवे को बाईपास करके)
     function closePhotoGridWithoutSaving() {
       window.location.replace("profile.html");
     }
 
-    // 🌟 स्क्रीन का बैक बटन (❮) दबाने पर नियम चेक करना
     function handleGridBackAction() {
       if (isPhotoModified) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
@@ -274,7 +273,6 @@
       }
     }
 
-    // 🌟 NO, THANKS दबाने पर बिना सेव किए बाहर जाने देगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       isPhotoModified = false;
@@ -285,14 +283,12 @@
       closePhotoGridWithoutSaving();
     }
 
-    // 🌟 SAVE दबाने पर सेव होकर प्रोफाइल पर जाएगा
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       isPhotoModified = false;
       saveAndExitGrid();
     }
 
-    // टिक (✓) बटन दबाने पर सेव करना
     function saveAndExitGrid() {
       isPhotoModified = false;
       let firstPhoto = tempPhotos[0] || "";
@@ -487,7 +483,7 @@
 
         let currentSlot = activeSlotIndex - 1;
         tempPhotos[currentSlot] = instantLocalUrl;
-        isPhotoModified = true; // 🌟 फोटो एडिट/अपलोड होते ही बदलाव पक्का हो गया
+        isPhotoModified = true; 
         render9Grid();
 
         canvas.toBlob(function(blob) {
