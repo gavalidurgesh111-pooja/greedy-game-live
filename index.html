@@ -49,33 +49,34 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 15px 12px;
+      padding: 15px 15px 10px;
     }
 
     .brand-title { 
-      font-size: 40px; 
+      font-size: 38px; 
       font-weight: 900; 
       color: #ffd700;
       letter-spacing: 1px; 
       text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
-      margin-top: 30px; 
+      margin-top: 25px; 
       text-align: center; 
     }
 
+    /* 🌟 सभी बटनों और टर्म्स को एक साथ परफेक्ट फिट करने के लिए कॉम्पैक्ट पैनल */
     .auth-bottom-panel {
       width: 100%;
       max-width: 380px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       margin-bottom: 2px;
     }
 
     .btn-login {
       width: 100%;
-      height: 44px;
-      border-radius: 22px;
+      height: 42px;
+      border-radius: 21px;
       border: none;
       font-size: 15px;
       font-weight: 700;
@@ -97,9 +98,9 @@
     .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
     
-    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब बिल्कुल साफ़ और बिना कटे दिखेगा) */
+    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब स्क्रीन के अंदर बिल्कुल साफ़ दिखेगा)[span_3](start_span)[span_3](end_span) */
     .terms-text { 
-      font-size: 10px; 
+      font-size: 9.5px; 
       color: rgba(255,255,255,0.95); 
       text-align: center; 
       display: flex; 
@@ -111,8 +112,8 @@
       white-space: nowrap;
     }
     .terms-text input[type="checkbox"] {
-      width: 13px;
-      height: 13px;
+      width: 12px;
+      height: 12px;
       accent-color: #8a2be2;
       cursor: pointer;
     }
@@ -165,7 +166,7 @@
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
         
-        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स -->
+        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स[span_4](start_span)[span_4](end_span) -->
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
           <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
