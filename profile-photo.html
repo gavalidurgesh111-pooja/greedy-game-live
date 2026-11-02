@@ -166,7 +166,14 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // 🌟 गेटवे मैजिक के साथ हिस्ट्री स्टेट लॉक करना
+    // 🌟 दोहरी सुरक्षा: beforeunload और history lock
+    window.addEventListener('beforeunload', function (e) {
+      if (isPhotoModified) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+
     history.pushState({page: "photo_grid_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -260,7 +267,6 @@
       render9Grid();
     }
 
-    // 🌟 बिना सेव किए बाहर जाने पर सीधे प्रोफाइल पर भेजना (गेटवे को बाईपास करके)
     function closePhotoGridWithoutSaving() {
       window.location.replace("profile.html");
     }
