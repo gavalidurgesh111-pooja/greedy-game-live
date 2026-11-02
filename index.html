@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Greedy Coin - Registration and Login</title>
-  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
     /* लॉन्ग प्रेस और नीले बॉक्स को रोकने के लिए */
@@ -19,7 +19,7 @@
     }
 
     body {
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg') no-repeat center center fixed !important;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg') no-repeat center center fixed !important;
       background-size: cover !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -27,6 +27,71 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
+
+    #authFlowContainer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      background: transparent !important;
+    }
+
+    #screenMain {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 20px 25px;
+    }
+
+    .brand-title { 
+      font-size: 46px; 
+      font-weight: 900; 
+      color: #ffd700;
+      letter-spacing: 1px; 
+      text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
+      margin-top: 50px; 
+      text-align: center; 
+    }
+
+    .auth-bottom-panel {
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 🌟 फेसबुक और गूगल बटन को सही रखने के लिए */
+    .btn-login {
+      width: 100%;
+      height: 50px;
+      border-radius: 25px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .btn-facebook { background: #1877F2; color: #fff; }
+    .btn-google { background: #ffffff; color: #222; }
+
+    /* 🌟 लोगो का साइज़ बिल्कुल फिक्स रखने के लिए */
+    .social-logo-svg {
+      width: 22px !important;
+      height: 22px !important;
+      flex-shrink: 0;
+    }
+
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 10px; }
+    .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
+    .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
 
     /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
     .support-top-btn {
@@ -61,7 +126,7 @@
   </div>
 
   <div id="authFlowContainer">
-    <!-- मुख्य लॉगिन स्क्रीन (CSS के नियमों के अनुसार सही की गई) -->
+    <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
       <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
@@ -82,9 +147,9 @@
     <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()">📞 Sign in with Phone / ID</button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()">Cancel</button>
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
       </div>
     </div>
 
