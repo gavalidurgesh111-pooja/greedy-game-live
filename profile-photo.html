@@ -18,19 +18,19 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #ffffff; position: relative; display: flex; flex-direction: column; }
     
-    /* 🌟 फोटो के हिसाब से हेडर: बैक बटन, बाईं तरफ सही स्पेलिंग "Profile photo", और दाईं तरफ टिक मार्क */
+    /* फोटो के हिसाब से हेडर: बैक बटन, सही स्पेलिंग "Profile photo", और टिक मार्क */
     .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #fff; color: #111; border-bottom: 1px solid #eee; }
     .sub-header h2 { font-size: 17px; font-weight: 500; color: #222; text-align: left; }
     .back-arrow-btn { font-size: 20px; font-weight: normal; cursor: pointer; color: #222; background: none; border: none; }
     .save-tick-btn { cursor: pointer; font-size: 20px; color: #7b2cbf; font-weight: bold; background: none; border: none; }
 
-    /* 🌟 फोटो के जैसी ग्रिड साइज़ और खाली बॉक्स में प्लस (+) का निशान */
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
+    /* बॉक्स की साइज़ को बड़ा किया गया जैसा आपने फोटो में कहा था */
+    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
     
     .grid-cell { 
       aspect-ratio: 1; 
       background: #f4f5f7; 
-      border-radius: 6px; 
+      border-radius: 8px; 
       position: relative; 
       display: flex; 
       flex-direction: column; 
@@ -44,7 +44,8 @@
       background-position: center !important;
     }
     
-    .upload-plus-icon { font-size: 28px; font-weight: 300; color: #94a3b8; z-index: 2; }
+    /* खाली बॉक्स के अंदर 'Upload' बटन वापस जोड़ दिया गया है */
+    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 14px; border-radius: 12px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
     
     /* नंबर लोगो का रंग फिका और नंबर सफेद */
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.4); color: #ffffff; font-size: 11px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; z-index: 3; }
@@ -198,7 +199,7 @@
           cell.onclick = () => handleFilledCellClick(i);
         } else {
           cell.style.backgroundImage = "none";
-          cell.innerHTML = `<div class="upload-plus-icon">+</div><div class="badge-num">${i}</div>`;
+          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleEmptyCellClick();
         }
         
