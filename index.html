@@ -18,7 +18,7 @@
       padding: 0;
     }
 
-    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए ताकि हिले नहीं */
+    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए */
     html, body {
       width: 100%;
       height: 100%;
@@ -43,22 +43,23 @@
       overflow: hidden;
     }
 
+    /* 🌟 यहाँ पैडिंग कम कर दी है ताकि नीचे का टेक्स्ट आसानी से फिट हो जाए */
     #screenMain {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 25px 20px 18px;
+      padding: 20px 15px 15px;
     }
 
     .brand-title { 
-      font-size: 46px; 
+      font-size: 42px; 
       font-weight: 900; 
       color: #ffd700;
       letter-spacing: 1px; 
       text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
-      margin-top: 35px; 
+      margin-top: 25px; 
       text-align: center; 
     }
 
@@ -68,16 +69,16 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 5px;
     }
 
     .btn-login {
       width: 100%;
-      height: 48px;
-      border-radius: 24px;
+      height: 46px;
+      border-radius: 23px;
       border: none;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -89,29 +90,30 @@
     .btn-google { background: #ffffff; color: #222; }
 
     .social-logo-svg {
-      width: 22px !important;
-      height: 22px !important;
+      width: 20px !important;
+      height: 20px !important;
       flex-shrink: 0;
     }
 
-    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 4px; }
-    .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px; }
+    .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
     
-    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट */
+    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब पक्का दिखेगा) */
     .terms-text { 
-      font-size: 11px; 
+      font-size: 10px; 
       color: rgba(255,255,255,0.95); 
       text-align: center; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
-      gap: 6px; 
+      gap: 5px; 
       margin-top: 2px;
       width: 100%;
+      white-space: nowrap;
     }
     .terms-text input[type="checkbox"] {
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       accent-color: #8a2be2;
       cursor: pointer;
     }
@@ -119,10 +121,10 @@
     /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
     .support-top-btn {
       position: fixed !important;
-      top: 20px !important;
-      right: 20px !important;
-      width: 42px !important;
-      height: 42px !important;
+      top: 15px !important;
+      right: 15px !important;
+      width: 40px !important;
+      height: 40px !important;
       background: rgba(255, 255, 255, 0.95) !important;
       border-radius: 50% !important;
       display: flex !important;
@@ -141,7 +143,7 @@
 
   <!-- 🌟 दाईं तरफ ऊपर छोटा हेल्प/सपोर्ट लोगो -->
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
-    <svg viewBox="0 0 24 24" width="22" height="22" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
