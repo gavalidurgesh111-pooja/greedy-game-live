@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Greedy Coin - Registration and Login</title>
-  <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
     /* लॉन्ग प्रेस और नीले बॉक्स को पूरी तरह रोकने के लिए */
@@ -98,7 +98,7 @@
     .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
     
-    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट */
+    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब स्क्रीन के अंदर बिल्कुल साफ़ दिखेगा)[span_3](start_span)[span_3](end_span) */
     .terms-text { 
       font-size: 9.5px; 
       color: rgba(255,255,255,0.95); 
@@ -166,7 +166,7 @@
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
         
-        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स -->
+        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स[span_4](start_span)[span_4](end_span) -->
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
           <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
@@ -222,28 +222,18 @@
       e.preventDefault();
     }, false);
 
-    // 🌟 1. होम पेज पर आते ही पुरानी/आगे की सारी हिस्ट्री को पूरी तरह साफ़ (Replace) करके डेड-एंड बना दें
-    window.addEventListener("DOMContentLoaded", function() {
-      history.replaceState({ page: "home_terminal" }, "", window.location.href);
-    });
-
-    // 🌟 2. यह भी पक्का करें कि अगर पेज कैश (Cache) से रीलोड हो, तब भी हिस्ट्री साफ़ रहे
-    window.addEventListener('pageshow', function(event) {
-      history.replaceState({ page: "home_terminal" }, "", window.location.href);
-    });
-
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.replace("phone.html");
+      window.location.href = "phone.html";
     }
 
     function selectEmailOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.replace("email.html");
+      window.location.href = "email.html";
     }
 
     function openMoreOptionsSheet() {
-      history.pushState({ modalOpen: true }, "", window.location.href);
+      history.pushState({ modalOpen: true }, "");
       document.getElementById("moreOptionsModal").style.display = "flex";
     }
 
@@ -256,7 +246,7 @@
     }
 
     function openCustomerServiceModal() {
-      history.pushState({ modalOpen: true }, "", window.location.href);
+      history.pushState({ modalOpen: true }, "");
       document.getElementById("csIssueInput").value = "";
       document.getElementById("csEmailInput").value = "";
       document.getElementById("csCharCount").innerText = "0/300";
@@ -295,36 +285,28 @@
 
     let popupCallback = null;
 
-    // 🌟 3. होम पेज का सबसे सख्त बैक बटन (popstate) नियम
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       if (modal && modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
-        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
 
       let csModal = document.getElementById("customerServiceModal");
       if (csModal && csModal.style.display === "flex") {
         csModal.style.display = "none";
-        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
 
       let moreOptionsModal = document.getElementById("moreOptionsModal");
       if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
         moreOptionsModal.style.display = "none";
-        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
-
-      // जब कोई मोडल खुला न हो और यूजर होम पेज पर बैक बटन दबाए, तो सीधे बाहरी लिंक पर बाहर भेज दें!
-      window.location.replace("https://www.google.com"); // 👈 यहाँ अपनी वह बाहरी लिंक डाल दें जहाँ यूजर को भेजना है
     });
 
     function showCustomAlert(message, callback) {
-      history.pushState({ modalOpen: true }, "", window.location.href);
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
