@@ -7,15 +7,15 @@
 </head>
 <body style="background:#000;">
   <script>
-    // 🌟 ब्राउज़र की हिस्ट्री में गार्ड लॉक सेट करना
+    // 🌟 1. ब्राउज़र की हिस्ट्री में गार्ड लॉक सेट करना ताकि बैक बटन कंट्रोल में रहे
     history.pushState({page: "gateway_lock"}, "", window.location.href);
     
     window.addEventListener('popstate', function(event) {
-      // अगर यूजर पीछे आने की कोशिश करे, तो सुरक्षित रूप से प्रोफाइल पर भेजें
+      // अगर यूजर गेटवे पर आकर पीछे जाने की कोशिश करे, तो उसे सुरक्षित रूप से वापस प्रोफाइल पर भेजें
       window.location.replace("profile.html");
     });
 
-    // चुपचाप मुख्य ग्रिड पेज पर रीडायरेक्ट करना
+    // 🌟 2. चुपचाप मुख्य ग्रिड पेज (profile-photo.html) पर रीडायरेक्ट करना
     window.location.replace("profile-photo.html");
   </script>
 </body>
