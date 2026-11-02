@@ -154,7 +154,7 @@
     
     <div id="screenProfile">
       
-      <div class="profile-back-btn" onclick="showCustomAlert('Back to home')">❮</div>
+      <div class="profile-back-btn" onclick="window.location.href='index.html'">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
@@ -352,7 +352,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // लॉन्ग प्रेस और नीले बॉक्स को पूरी तरह रोकने के लिए
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
@@ -363,7 +362,6 @@
 
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // --- बैक बटन (popstate) का बिल्कुल सही और सॉलिड लॉजिक ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -383,6 +381,81 @@
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
     });
 
+    // 🌟 सुपर फास्ट रेंडरिंग: पहले लोकल स्टोरेज से तुरंत डेटा दिखाना
+    function renderProfileData() {
+      document.getElementById("profNameDisplay").innerText = userName;
+      document.getElementById("profBalance").innerText = coins;
+      document.getElementById("profWon").innerText = totalWon;
+      document.getElementById("profLevel").innerText = userLevel;
+      document.getElementById("profId").innerText = userId;
+      document.getElementById("aboutUserId").innerText = userId;
+      
+      const avatarImg = document.getElementById("profAvatarImg");
+      const plusIcon = document.getElementById("avatarPlusIcon");
+
+      if (currentAvatar && currentAvatar.trim() !== "") {
+        avatarImg.src = currentAvatar;
+        avatarImg.style.display = "block";
+        if(plusIcon) plusIcon.style.display = "none";
+      } else {
+        avatarImg.style.display = "none";
+        if(plusIcon) plusIcon.style.display = "block";
+      }
+
+      let sliderContainer = document.getElementById("coverSlider");
+      sliderContainer.innerHTML = "";
+      let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
+
+      validPhotos.forEach((photoUrl) => {
+        let pageDiv = document.createElement("div");
+        pageDiv.className = "cover-page";
+        pageDiv.style.backgroundImage = `url('${photoUrl}')`;
+        sliderContainer.appendChild(pageDiv);
+      });
+
+      if (validPhotos.length < 9) {
+        let uploadPageDiv = document.createElement("div");
+        uploadPageDiv.className = "cover-page";
+        uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+        sliderContainer.appendChild(uploadPageDiv);
+      }
+
+      const frameEl = document.getElementById("profAvatarFrame");
+      if (currentFrame === "none") {
+        frameEl.style.display = "none";
+      } else {
+        frameEl.style.display = "block";
+        applyFrameClass(currentFrame);
+      }
+      updatePrivacyHeart();
+
+      setTimeout(() => {
+        let slider = document.getElementById("coverSlider");
+        if (slider) {
+          if (validPhotos.length >= 2) {
+            slider.scrollLeft = slider.clientWidth;
+          } else {
+            slider.scrollLeft = 0; 
+          }
+        }
+      }, 50);
+    }
+
+    // पहले से सेव डेटा तुरंत लोड करें (बिना किसी लेग के)
+    if(localStorage.getItem("prof_name_" + currentIdentifier)) {
+      userName = localStorage.getItem("prof_name_" + currentIdentifier);
+      coins = parseInt(localStorage.getItem("prof_coins_" + currentIdentifier) || "1000");
+      userId = localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630";
+      userLevel = parseInt(localStorage.getItem("prof_level_" + currentIdentifier) || "1");
+      totalWon = parseInt(localStorage.getItem("prof_won_" + currentIdentifier) || "0");
+      isPrivate = localStorage.getItem("prof_private_" + currentIdentifier) === "true";
+      currentFrame = localStorage.getItem("prof_frame_" + currentIdentifier) || "none";
+      currentAvatar = localStorage.getItem("prof_avatar_" + currentIdentifier) || "";
+      let savedPhotos = localStorage.getItem("prof_photos_" + currentIdentifier);
+      dbPhotos = savedPhotos ? JSON.parse(savedPhotos) : [];
+      renderProfileData();
+    }
+
     function initProfile() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
@@ -396,6 +469,17 @@
           currentFrame = data.frame || "none";
           dbPhotos = data.photos || []; 
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
+
+          // लोकल स्टोरेज में ताजा डेटा सेव करना ताकि अगली बार और भी तुरंत खुले
+          localStorage.setItem("prof_name_" + currentIdentifier, userName);
+          localStorage.setItem("prof_coins_" + currentIdentifier, coins);
+          localStorage.setItem("prof_userid_" + currentIdentifier, userId);
+          localStorage.setItem("prof_level_" + currentIdentifier, userLevel);
+          localStorage.setItem("prof_won_" + currentIdentifier, totalWon);
+          localStorage.setItem("prof_private_" + currentIdentifier, isPrivate);
+          localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
+          localStorage.setItem("prof_avatar_" + currentIdentifier, currentAvatar);
+          localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(dbPhotos));
         } else {
           coins = 1000;
           userName = "User";
@@ -406,66 +490,7 @@
           currentAvatar = "";
         }
 
-        document.getElementById("profNameDisplay").innerText = userName;
-        document.getElementById("profBalance").innerText = coins;
-        document.getElementById("profWon").innerText = totalWon;
-        document.getElementById("profLevel").innerText = userLevel;
-        document.getElementById("profId").innerText = userId;
-        document.getElementById("aboutUserId").innerText = userId;
-        
-        const avatarImg = document.getElementById("profAvatarImg");
-        const plusIcon = document.getElementById("avatarPlusIcon");
-
-        if (currentAvatar && currentAvatar.trim() !== "") {
-          avatarImg.src = currentAvatar;
-          avatarImg.style.display = "block";
-          if(plusIcon) plusIcon.style.display = "none";
-        } else {
-          avatarImg.style.display = "none";
-          if(plusIcon) plusIcon.style.display = "block";
-        }
-
-        // --- कवर स्लाइडर रेंडरिंग ---
-        let sliderContainer = document.getElementById("coverSlider");
-        sliderContainer.innerHTML = "";
-
-        let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
-
-        validPhotos.forEach((photoUrl) => {
-          let pageDiv = document.createElement("div");
-          pageDiv.className = "cover-page";
-          pageDiv.style.backgroundImage = `url('${photoUrl}')`;
-          sliderContainer.appendChild(pageDiv);
-        });
-
-        if (validPhotos.length < 9) {
-          let uploadPageDiv = document.createElement("div");
-          uploadPageDiv.className = "cover-page";
-          uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
-          sliderContainer.appendChild(uploadPageDiv);
-        }
-
-        const frameEl = document.getElementById("profAvatarFrame");
-        if (currentFrame === "none") {
-          frameEl.style.display = "none";
-        } else {
-          frameEl.style.display = "block";
-          applyFrameClass(currentFrame);
-        }
-        updatePrivacyHeart();
-
-        // 🌟 मुख्य नियम: कवर स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
-        // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है।
-        setTimeout(() => {
-          let slider = document.getElementById("coverSlider");
-          if (slider) {
-            if (validPhotos.length >= 2) {
-              slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर सेट करने के लिए
-            } else {
-              slider.scrollLeft = 0; 
-            }
-          }
-        }, 120);
+        renderProfileData();
 
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
@@ -485,6 +510,7 @@
       let newName = prompt("Enter your name:", userName);
       if(newName && newName.trim() !== "") {
         userName = newName.trim();
+        localStorage.setItem("prof_name_" + currentIdentifier, userName);
         document.getElementById("profNameDisplay").innerText = userName;
         db.collection("users").doc(currentIdentifier).update({ name: userName }).catch((err) => console.error(err));
       }
@@ -501,6 +527,7 @@
 
     function applyFrameClass(frameName) {
       currentFrame = frameName;
+      localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
       
       const frameEl = document.getElementById("profAvatarFrame");
@@ -515,6 +542,7 @@
 
     function removeFrame() {
       currentFrame = "none";
+      localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
       document.getElementById("profAvatarFrame").style.display = "none";
       closeFrameModal();
@@ -560,6 +588,7 @@
     
     function togglePrivacy() {
       isPrivate = !isPrivate;
+      localStorage.setItem("prof_private_" + currentIdentifier, isPrivate);
       db.collection("users").doc(currentIdentifier).update({ privacy: isPrivate }).catch((err) => console.error(err));
       updatePrivacyHeart();
     }
@@ -606,6 +635,7 @@
       if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
       
       coins -= amt;
+      localStorage.setItem("prof_coins_" + currentIdentifier, coins);
       db.collection("users").doc(currentIdentifier).update({ coins: coins }).then(() => {
         initProfile();
         closeCoinSendModal();
