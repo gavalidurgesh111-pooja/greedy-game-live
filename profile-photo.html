@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Profile Photo - Greedy Coin</title>
   <style>
-    /* -webkit-touch-callout और user-select से लॉन्ग प्रेस पर नीला बॉक्स या मेनू नहीं आएगा */
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -14,7 +13,7 @@
       -webkit-user-select: none; 
       user-select: none; 
       -webkit-touch-callout: none; 
-      -webkit-tap-highlight-color: transparent; /* टच करते समय आने वाले नीले रंग को हटाने के लिए */
+      -webkit-tap-highlight-color: transparent; 
     }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
@@ -42,8 +41,7 @@
       background-position: center !important;
     }
     
-    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 12px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); margin-bottom: 4px; }
-    .cell-sub-info { font-size: 11px; color: #666; font-weight: bold; z-index: 2; display: flex; align-items: center; gap: 3px; }
+    .upload-btn-label { font-size: 14px; background: #9b51e0; color: #fff; padding: 6px 16px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 3; }
 
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
@@ -195,8 +193,8 @@
           cell.onclick = () => handleFilledCellClick(i);
         } else {
           cell.style.backgroundImage = "none";
-          let subIcon = (i === 1) ? "👤" : "🖼️";
-          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="cell-sub-info"><span>${subIcon}</span> <span>${i}</span></div><div class="badge-num">${i}</div>`;
+          // यहाँ से लोगो और नंबर पूरी तरह हटा दिए गए हैं
+          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleEmptyCellClick();
         }
         
@@ -498,7 +496,6 @@
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
         
-        // 🌟 तुरंत लोकल रेंडरिंग (बिना एक पल रुके ग्रिड पर दिखाना)
         let instantLocalUrl = canvas.toDataURL("image/jpeg", 0.90);
         
         document.getElementById("screenPhotoEditor").style.display = "none";
@@ -508,7 +505,6 @@
         tempPhotos[currentSlot] = instantLocalUrl;
         render9Grid();
 
-        // 🌟 बैकग्राउंड में चुपचाप क्लाउड पर अपलोड करना
         canvas.toBlob(function(blob) {
           uploadFileToCloudinarySilent(blob, currentSlot);
         }, "image/jpeg", 0.90);
