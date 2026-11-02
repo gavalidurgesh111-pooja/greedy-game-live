@@ -1,3 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>User Profile - Greedy Coin</title>
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Segoe UI', sans-serif; 
+      -webkit-user-select: none; 
+      user-select: none; 
+      -webkit-touch-callout: none; 
+      -webkit-tap-highlight-color: transparent;
+    }
+    body { 
+      background: #000; 
+      display: flex; 
+      justify-content: center; 
+      color: #333; 
+      min-height: 100vh; 
+      overflow-y: auto; 
+      -webkit-overflow-scrolling: touch; 
+    }
+    .page-container { 
+      width: 100%; 
+      max-width: 480px; 
+      min-height: 100vh; 
+      background: #fff; 
+      position: relative; 
+      padding-bottom: 60px; 
+      overflow-y: auto; 
+    }
+    
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    .cover-slider-container::-webkit-scrollbar { display: none; }
+    
+    .cover-page {
+      flex: 0 0 100%;
+      min-width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      background-size: cover !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      background-color: #9b51e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cover-center-plus {
+      width: 85%;
+      max-width: 260px;
+      height: 52px;
+      border-radius: 26px;
+      background: transparent;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      border: 2px solid #fff;
+      z-index: 5;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+    }
+
+    .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
+    .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 20; }
+    .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
+
+    .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
+    .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: visible !important; }
+    .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
+    
+    .avatar-frame {
+      position: absolute !important;
+      top: -14px !important;
+      left: -14px !important;
+      right: -14px !important;
+      bottom: -14px !important;
+      width: calc(100% + 28px) !important;
+      height: calc(100% + 28px) !important;
+      border-radius: 50% !important;
+      pointer-events: none !important;
+      box-sizing: border-box !important;
+      background-size: 100% 100% !important;
+      background-repeat: no-repeat !important;
+      background-position: center !important;
+      z-index: 25 !important;
+      display: none;
+    }
+
+    .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
+    .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
+    .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
+    .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
+    
+    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; }
+    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; }
+    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; }
+
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
+    .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+
+    .tags-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+    .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 3px 10px; border-radius: 12px; }
+    .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
+
+    .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
+    .follow-counts { display: flex; gap: 20px; }
+    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
+    .f-num { font-size: 16px; font-weight: 900; color: #111; }
+    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
+    .profile-action-btns { display: flex; gap: 8px; }
+    .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
+
+    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
+    .stat-item-balance { text-align: center; cursor: pointer; }
+    .stat-item-won { text-align: center; }
+    .stat-val { font-size: 16px; font-weight: 900; color: #222; }
+    .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
+
+    .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 35px; }
+    .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
+    .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
+    .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
+    .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+
+    .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
+    .sub-header h2 { font-size: 18px; font-weight: 900; }
+    
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+    .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
+    .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
+    .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <div id="screenProfile">
+      
+      <div class="profile-back-btn" onclick="window.location.replace('index.html')">❮</div>
+      
+      <div class="profile-top-icons">
+        <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
+        <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
+      </div>
+
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
+
+      <div class="profile-header-area">
+        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+          <img src="" class="avatar-img" id="profAvatarImg">
+          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div class="avatar-frame" id="profAvatarFrame"></div>
+        </div>
+        
+        <div class="user-name-row">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
+            <div id="editNameBtn" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
+          </div>
+          <div class="accompany-badge">Active: 1 Days ✨</div>
+        </div>
+
+        <div class="tags-row">
+          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
+          <div class="tag-id" onclick="copyMyId()">🆔 <span id="profId">#288630</span> 📋</div>
+        </div>
+      </div>
+
+      <div class="follow-stats-row">
+        <div class="follow-counts">
+          <div class="f-count-item" onclick="showCustomAlert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
+          <div class="f-count-item" onclick="showCustomAlert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
+        </div>
+        <div class="profile-action-btns">
+          <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
+          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-item-balance" onclick="openCoinSendModal()">
+          <div class="stat-val">🪙 <span id="profBalance">1000</span></div>
+          <div class="stat-label">Wallet Balance</div>
+        </div>
+        <div class="stat-item-won">
+          <div class="stat-val">🏆 <span id="profWon">0</span></div>
+          <div class="stat-label">Total Won Coins</div>
+        </div>
+      </div>
+
+      <div class="cards-wrapper">
+        <div class="action-card card-play" onclick="showCustomAlert('Game arena will open in next step!')">
+          <div><h3 style="font-size:18px;">🎮 Play Greedy Coin</h3><p style="font-size:11px; opacity:0.9;">Enter wheel arena to place bets</p></div>
+          <div style="font-size:32px;">🎰</div>
+        </div>
+        <div class="action-card card-about" onclick="openAboutMeScreen()">
+          <div><h3 style="font-size:18px;">📖 About Me</h3><p style="font-size:11px; opacity:0.9;">View personal bio & privacy status</p></div>
+          <div style="font-size:32px;">👤</div>
+        </div>
+        <div class="action-card card-group" onclick="openGroupsScreen()">
+          <div><h3 style="font-size:18px;">👥 Groups</h3><p style="font-size:11px; opacity:0.9;">Create or join community groups</p></div>
+          <div style="font-size:32px;">🌐</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="screenSettingsPage" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
+        <h2>Settings</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; justify-content:space-between; flex:1;">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Account Preferences</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Notifications</div>
+          <div style="background:#fff; padding:15px; border-radius:12px; font-weight:bold;">Privacy & Security</div>
+        </div>
+        <div style="margin-bottom: 90px;">
+          <button onclick="handleLogout()" style="width:100%; padding:14px; background:#d9534f; color:#fff; border:none; border-radius:12px; font-weight:bold; font-size:16px; cursor:pointer;">Log Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT ME SCREEN -->
+    <div id="screenAboutMe" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeAboutMeScreen()">❮</div>
+        <h2>About Me</h2>
+        <div id="privacyHeart" style="cursor:pointer; font-size:22px;" onclick="togglePrivacy()">🤍</div>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:15px;">
+        <div style="background:#fff; padding:15px; border-radius:12px;">
+          <h4 style="margin-bottom:8px;">My Unique ID</h4>
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
+            <span id="aboutUserId" style="font-weight:bold;">#288630</span>
+            <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
+          </div>
+        </div>
+        <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px;">
+          <h4 style="margin-bottom:8px;">Bio & Details</h4>
+          <p style="font-size:13px; color:#555;">This is your personal profile bio.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUPS SCREEN -->
+    <div id="screenGroups" class="sub-screen">
+      <div class="sub-header">
+        <div style="cursor:pointer; font-size:20px;" onclick="closeGroupsScreen()">❮</div>
+        <h2>Groups</h2>
+        <div style="width:20px;"></div>
+      </div>
+      <div style="padding:20px; text-align:center;">
+        <h3 style="margin-bottom:10px;">Community Groups</h3>
+        <p style="font-size:13px; color:#666;">Group creation tools will be configured here soon.</p>
+      </div>
+    </div>
+
+    <!-- FRAME & AVATAR MODAL -->
+    <div id="modalFrame" class="modal-overlay">
+      <div class="modal-box">
+        <h3>🎨 Select Avatar & Frame</h3>
+        <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
+         
+       <div class="grid-options" id="frameOptionsGrid">
+          <div class="grid-item" onclick="applyFrameClass('peacock')" style="background:#e0f2f1; color:#00695c; font-weight:bold;">Peacock Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('sun')" style="background:#fce4ec; color:#c2185b; font-weight:bold;">Sun Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom1')" style="background:#f3e5f5; color:#4a148c; font-weight:bold;">Royal Purple Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom2')" style="background:#e3f2fd; color:#0d47a1; font-weight:bold;">Eagle Silver Frame</div>
+          <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
+          <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
+        </div>
+
+        <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
+
+        <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo:</p>
+        <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Open Photo Manager</button>
+        
+        <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+    <!-- COIN SEND MODAL -->
+    <div id="modalCoinSend" class="modal-overlay">
+      <div class="modal-box">
+        <h3>Send Coins to User</h3>
+        <form onsubmit="handleCoinSendFormSubmit(event)">
+          <input type="text" id="targetUserId" placeholder="Enter Receiver ID" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
+          <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
+          <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
+        </form>
+        <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="modalSettings" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
+        <h3>Website Settings</h3>
+        <p style="font-size:13px; color:#666; margin:15px 0;">All global settings configurations.</p>
+        <button onclick="closeSettingsModal()" style="padding:8px 20px; background:#333; color:#fff; border:none; border-radius:8px; cursor:pointer;">Close</button>
+      </div>
+    </div>
+
+    <!-- CUSTOM ALERT MODAL -->
+    <div id="customAlertModal" class="modal-overlay">
+      <div class="modal-box" style="text-align:center;">
+        <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
+        <p id="customAlertText" style="font-size:14px; color:#555; margin-bottom:15px;"></p>
+        <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
@@ -9,22 +346,21 @@
       measurementId: "G-8LFKW4W3CP"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
 
-    // लॉन्ग प्रेस और नीले बॉक्स को पूरी तरह रोकने के लिए
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
+    let coins = 1000, userName = "User", userId = "#288630", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // जब यूजर profile.html पर आए, तो हिस्ट्री स्टेट सेट करें
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // --- बैक बटन (popstate) का बिल्कुल सही और सॉलिड लॉजिक ---
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -43,7 +379,6 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
-      // 🌟 जब कोई मोडल या सब-स्क्रीन खुली न हो, और यूजर बैक बटन दबाए तो सीधा index.html पर जाए
       window.location.replace("index.html");
     });
 
@@ -51,7 +386,7 @@
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          coins = data.coins || 1000;
+          coins = data.coins ?? 1000;
           userName = data.name || "User";
           userId = data.uniqueId || "#288630";
           userLevel = data.level || 1;
@@ -60,80 +395,72 @@
           currentFrame = data.frame || "none";
           dbPhotos = data.photos || []; 
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
-        } else {
-          coins = 1000;
-          userName = "User";
-          userId = "#288630";
-          userLevel = 1;
-          totalWon = 0;
-          dbPhotos = [];
-          currentAvatar = "";
         }
-
-        document.getElementById("profNameDisplay").innerText = userName;
-        document.getElementById("profBalance").innerText = coins;
-        document.getElementById("profWon").innerText = totalWon;
-        document.getElementById("profLevel").innerText = userLevel;
-        document.getElementById("profId").innerText = userId;
-        document.getElementById("aboutUserId").innerText = userId;
-        
-        const avatarImg = document.getElementById("profAvatarImg");
-        const plusIcon = document.getElementById("avatarPlusIcon");
-
-        if (currentAvatar && currentAvatar.trim() !== "") {
-          avatarImg.src = currentAvatar;
-          avatarImg.style.display = "block";
-          if(plusIcon) plusIcon.style.display = "none";
-        } else {
-          avatarImg.style.display = "none";
-          if(plusIcon) plusIcon.style.display = "block";
-        }
-
-        // --- कवर स्लाइडर रेंडरिंग ---
-        let sliderContainer = document.getElementById("coverSlider");
-        sliderContainer.innerHTML = "";
-
-        let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
-
-        validPhotos.forEach((photoUrl) => {
-          let pageDiv = document.createElement("div");
-          pageDiv.className = "cover-page";
-          pageDiv.style.backgroundImage = `url('${photoUrl}')`;
-          sliderContainer.appendChild(pageDiv);
-        });
-
-        if (validPhotos.length < 9) {
-          let uploadPageDiv = document.createElement("div");
-          uploadPageDiv.className = "cover-page";
-          uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
-          sliderContainer.appendChild(uploadPageDiv);
-        }
-
-        const frameEl = document.getElementById("profAvatarFrame");
-        if (currentFrame === "none") {
-          frameEl.style.display = "none";
-        } else {
-          frameEl.style.display = "block";
-          applyFrameClass(currentFrame);
-        }
-        updatePrivacyHeart();
-
-        // 🌟 मुख्य नियम: कवर स्लाइडर की शुरुआत हमेशा दूसरी फोटो (index 1) से होगी,
-        // और पहली फोटो बाईं तरफ रहेगी जिसे स्क्रॉल करके देखा जा सकता है।
-        setTimeout(() => {
-          let slider = document.getElementById("coverSlider");
-          if (slider) {
-            if (validPhotos.length >= 2) {
-              slider.scrollLeft = slider.clientWidth; // दूसरी फोटो पर सेट करने के लिए
-            } else {
-              slider.scrollLeft = 0; 
-            }
-          }
-        }, 120);
-
+        renderProfileUI();
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
+        renderProfileUI(); // अगर नेट या डेटा में एरर हो तब भी पेज खाली नहीं रहेगा
       });
+    }
+
+    function renderProfileUI() {
+      document.getElementById("profNameDisplay").innerText = userName;
+      document.getElementById("profBalance").innerText = coins;
+      document.getElementById("profWon").innerText = totalWon;
+      document.getElementById("profLevel").innerText = userLevel;
+      document.getElementById("profId").innerText = userId;
+      document.getElementById("aboutUserId").innerText = userId;
+      
+      const avatarImg = document.getElementById("profAvatarImg");
+      const plusIcon = document.getElementById("avatarPlusIcon");
+
+      if (currentAvatar && currentAvatar.trim() !== "") {
+        avatarImg.src = currentAvatar;
+        avatarImg.style.display = "block";
+        if(plusIcon) plusIcon.style.display = "none";
+      } else {
+        avatarImg.style.display = "none";
+        if(plusIcon) plusIcon.style.display = "block";
+      }
+
+      let sliderContainer = document.getElementById("coverSlider");
+      sliderContainer.innerHTML = "";
+
+      let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
+
+      validPhotos.forEach((photoUrl) => {
+        let pageDiv = document.createElement("div");
+        pageDiv.className = "cover-page";
+        pageDiv.style.backgroundImage = `url('${photoUrl}')`;
+        sliderContainer.appendChild(pageDiv);
+      });
+
+      if (validPhotos.length < 9) {
+        let uploadPageDiv = document.createElement("div");
+        uploadPageDiv.className = "cover-page";
+        uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
+        sliderContainer.appendChild(uploadPageDiv);
+      }
+
+      const frameEl = document.getElementById("profAvatarFrame");
+      if (currentFrame === "none") {
+        frameEl.style.display = "none";
+      } else {
+        frameEl.style.display = "block";
+        applyFrameClass(currentFrame);
+      }
+      updatePrivacyHeart();
+
+      setTimeout(() => {
+        let slider = document.getElementById("coverSlider");
+        if (slider) {
+          if (validPhotos.length >= 2) {
+            slider.scrollLeft = slider.clientWidth;
+          } else {
+            slider.scrollLeft = 0; 
+          }
+        }
+      }, 120);
     }
 
     function openPhotoGridScreen() {
@@ -291,3 +618,5 @@
 
     window.onload = () => { initProfile(); };
   </script>
+</body>
+</html>
