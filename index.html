@@ -7,7 +7,7 @@
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
-    /* लॉन्ग प्रेस और नीले बॉक्स को रोकने के लिए */
+    /* लॉन्ग प्रेस और नीले बॉक्स को पूरी तरह रोकने के लिए */
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -18,23 +18,29 @@
       padding: 0;
     }
 
+    /* 🌟 स्क्रीन को ऊपर-नीचे हिलने से रोकने के लिए यहाँ overflow hidden और height fix की गई है */
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden !important;
+      position: fixed !important;
+      inset: 0 !important;
+    }
+
     body {
       background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg') no-repeat center center fixed !important;
       background-size: cover !important;
-      margin: 0 !important;
-      padding: 0 !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
     }
 
     #authFlowContainer {
-      position: fixed;
+      position: absolute;
       inset: 0;
       z-index: 100;
       display: flex;
       flex-direction: column;
       background: transparent !important;
+      overflow: hidden;
     }
 
     #screenMain {
@@ -65,7 +71,6 @@
       gap: 12px;
     }
 
-    /* 🌟 फेसबुक और गूगल बटन को सही रखने के लिए */
     .btn-login {
       width: 100%;
       height: 50px;
@@ -82,7 +87,6 @@
     .btn-facebook { background: #1877F2; color: #fff; }
     .btn-google { background: #ffffff; color: #222; }
 
-    /* 🌟 लोगो का साइज़ बिल्कुल फिक्स रखने के लिए */
     .social-logo-svg {
       width: 22px !important;
       height: 22px !important;
