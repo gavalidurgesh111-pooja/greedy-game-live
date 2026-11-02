@@ -222,19 +222,24 @@
       e.preventDefault();
     }, false);
 
-    // 🌟 पेज लोड होते ही होम पेज की हिस्ट्री स्टेट जोड़ें, ताकि जब यूजर वापस यहाँ आए और बैक दबाए तो सीधे बाहर (मुख्य लिंक पर) चला जाए
+    // 🌟 1. होम पेज पर आते ही पुरानी/आगे की सारी हिस्ट्री को पूरी तरह साफ़ (Replace) करके डेड-एंड बना दें
     window.addEventListener("DOMContentLoaded", function() {
-      history.pushState({ page: "home" }, "", window.location.href);
+      history.replaceState({ page: "home_terminal" }, "", window.location.href);
+    });
+
+    // 🌟 2. यह भी पक्का करें कि अगर पेज कैश (Cache) से रीलोड हो, तब भी हिस्ट्री साफ़ रहे
+    window.addEventListener('pageshow', function(event) {
+      history.replaceState({ page: "home_terminal" }, "", window.location.href);
     });
 
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.href = "phone.html";
+      window.location.replace("phone.html");
     }
 
     function selectEmailOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.href = "email.html";
+      window.location.replace("email.html");
     }
 
     function openMoreOptionsSheet() {
@@ -265,7 +270,7 @@
       document.getElementById("customerServiceModal").style.display = "none";
     }
 
-    function updateCharCard(textarea) {
+    function updateCharCount(textarea) {
       let len = textarea.value.length;
       document.getElementById("csCharCount").innerText = len + "/300";
       let confirmBtn = document.getElementById("csConfirmBtn");
@@ -290,30 +295,32 @@
 
     let popupCallback = null;
 
-    // 🌟 मुख्य बैक बटन (popstate) हैंडलर
+    // 🌟 3. होम पेज का सबसे सख्त बैक बटन (popstate) नियम
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
       if (modal && modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
+        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
 
       let csModal = document.getElementById("customerServiceModal");
       if (csModal && csModal.style.display === "flex") {
         csModal.style.display = "none";
+        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
 
       let moreOptionsModal = document.getElementById("moreOptionsModal");
       if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
         moreOptionsModal.style.display = "none";
+        history.replaceState({ page: "home_terminal" }, "", window.location.href);
         return;
       }
 
-      // अगर कोई भी मोडल खुला नहीं है, और यूजर होम पेज पर बैक बटन दबाता है, 
-      // तो वह सीधे उस मुख्य/बाहरी लिंक पर चला जाएगा जहाँ से वह अंदर आया था
-      window.location.replace("https://www.google.com"); // 👈 यहाँ अपनी वह बाहरी लिंक या वेबसाइट डाल दें जहाँ यूजर को भेजना है
+      // जब कोई मोडल खुला न हो और यूजर होम पेज पर बैक बटन दबाए, तो सीधे बाहरी लिंक पर बाहर भेज दें!
+      window.location.replace("https://www.google.com"); // 👈 यहाँ अपनी वह बाहरी लिंक डाल दें जहाँ यूजर को भेजना है
     });
 
     function showCustomAlert(message, callback) {
