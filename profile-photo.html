@@ -166,13 +166,13 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // पेज खुलते ही हिस्ट्री में स्टेट पुश कर देना ताकि बैक बटन को आसानी से पकड़ा जा सके
-    history.pushState({page: "photo_grid"}, "", window.location.href);
+    // पेज लोड होते ही हिस्ट्री को लॉक करना ताकि बैक बटन को कंट्रोल किया जा सके
+    history.pushState({page: "photo_grid_lock"}, "", window.location.href);
 
-    // 🌟 असली बैक बटन या स्क्रीन बैक बटन दबाने पर रोक कर पॉपअप दिखाना
+    // 🌟 फोन का असली बैक बटन या स्क्रीन बैक बटन दबाने पर रोक कर पॉपअप दिखाना
     window.addEventListener('popstate', function (event) {
       if (hasUnsavedChanges) {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
+        history.pushState({page: "photo_grid_lock"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -256,7 +256,7 @@
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
-      hasUnsavedChanges = true; // 🌟 फोटो डिलीट होते ही बदलाव मार्क हो गया
+      hasUnsavedChanges = true; // फोटो डिलीट होते ही बदलाव मार्क हो गया
       render9Grid();
     }
 
@@ -272,10 +272,10 @@
       }
     }
 
-    // 🌟 NO, THANKS दबाने पर बिना सेव किए पुरानी फोटो पर लौट जाएगा
+    // 🌟 NO, THANKS दबाने पर लॉक हटेगा और बिना सेव किए पुरानी फोटो पर लौट जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
-      hasUnsavedChanges = false;
+      hasUnsavedChanges = false; 
       let localSaved = localStorage.getItem("prof_photos_" + currentIdentifier);
       if(localSaved) {
         tempPhotos = JSON.parse(localSaved);
@@ -283,9 +283,10 @@
       closePhotoGridWithoutSaving();
     }
 
-    // 🌟 SAVE दबाने पर सेव होकर प्रोफाइल पर जाएगा
+    // 🌟 SAVE दबाने पर लॉक हटेगा और सेव होकर प्रोफाइल पर जाएगा
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
+      hasUnsavedChanges = false; 
       saveAndExitGrid();
     }
 
@@ -394,7 +395,7 @@
         if(isDraggingImg) { isDraggingImg = false; applySmartBoundaryAndSnap(); }
       });
 
-      editorArea.addEventListener('wheel', (e) => {
+      window.addEventListener('wheel', (e) => {
         e.preventDefault();
         let zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
         let newScale = imgScale * zoomFactor;
@@ -408,7 +409,7 @@
         }
       }, { passive: false });
 
-      editorArea.addEventListener('touchstart', (e) => {
+      window.addEventListener('touchstart', (e) => {
         if(e.touches.length === 1) {
           isDraggingImg = true;
           startMouseX = e.touches[0].clientX;
@@ -484,7 +485,7 @@
 
         let currentSlot = activeSlotIndex - 1;
         tempPhotos[currentSlot] = instantLocalUrl;
-        hasUnsavedChanges = true; // 🌟 फोटो एडिट/अपलोड होते ही बदलाव मार्क हो गया
+        hasUnsavedChanges = true; // फोटो एडिट/अपलोड होते ही बदलाव मार्क हो गया
         render9Grid();
 
         canvas.toBlob(function(blob) {
