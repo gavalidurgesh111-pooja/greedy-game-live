@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Greedy Coin - Phone & ID Login</title>
   <link rel="stylesheet" href="style.css">
   <style>
@@ -111,7 +111,7 @@
         <option value="pl">🇵🇱 Polski (Polish)</option>
         <option value="nl">🇳🇱 Nederlands (Dutch)</option>
         <option value="el">🇬🇷 Ελληνικά (Greek)</option>
-        <option value="hu">🇮🇳 Magyar (Hungarian)</option>
+        <option value="hu">🇭🇺 Magyar (Hungarian)</option>
         <option value="cs">🇨🇿 Čeština (Czech)</option>
         <option value="sv">🇸🇪 Svenska (Swedish)</option>
         <option value="ro">🇷🇴 Română (Romanian)</option>
@@ -507,12 +507,12 @@
     </div>
   </div>
 
-  <!-- 🌟 आपकी फोटो की तरह बिल्कुल प्रीमियम और खूबसूरत स्टाइल वाला Custom Popup Modal -->
+  <!-- Custom Popup Modal -->
   <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; width:100%; max-width:320px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Registration and Login</h3>
-      <p id="popupMessage" style="color:#555; font-size:13px; line-height:1.5; margin:0 0 20px 0;"></p>
-      <div id="popupButtons" style="display:flex; gap:10px; justify-content:center;"></div>
+    <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
+      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
+      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+      <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
     </div>
   </div>
 
@@ -537,20 +537,6 @@
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
-
-    window.onload = function() {
-      history.replaceState({ page: "phone_input" }, "");
-    };
-
-    window.addEventListener("popstate", function(event) {
-      let modal = document.getElementById("customPopupModal");
-      if (modal && modal.style.display === "flex") {
-        modal.style.display = "none";
-        popupCallback = null;
-        return;
-      }
-      window.location.replace("index.html");
-    });
 
     let popupCallback = null;
 
@@ -581,21 +567,21 @@
     }
 
     function showCustomConfirm(message, callback) {
-      document.getElementById("popupMessage").innerHTML = message;
+      document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:14px; border:1px solid #dcdcdc; background:#f4f5f7; font-weight:700; cursor:pointer; color:#333; font-size:14px;">Cancel</button>
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
     }
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupMessage").innerHTML = message;
+      document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -605,12 +591,12 @@
       let demoCode = "123456";
       document.getElementById("popupMessage").innerHTML = `
         New account registration.<br><b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #dcdcdc; background:#f9f9f9; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
+        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:14px; border:1px solid #dcdcdc; background:#f4f5f7; font-weight:700; cursor:pointer; color:#333; font-size:14px;">Cancel</button>
-        <button onclick="verifyDemoOtp('${demoCode}')" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">Verify</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="verifyDemoOtp('${demoCode}')" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = onSuccessCallback;
@@ -646,7 +632,6 @@
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
-      // 🌟 मुख्य सुधार: फोन लॉगिन के लिए भी सही आइडेंटिफायर सेव किया गया है ताकि profile.html कभी ब्लैंक न हो
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
