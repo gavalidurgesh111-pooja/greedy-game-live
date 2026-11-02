@@ -151,6 +151,7 @@
     
     <div id="screenProfile">
       
+      <!-- 🌟 बैक बटन सीधा index.html पर ले जाएगा -->
       <div class="profile-back-btn" onclick="window.location.replace('index.html')">❮</div>
       
       <div class="profile-top-icons">
@@ -359,8 +360,11 @@
     let coins = 1000, userName = "User", userId = "#288630", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
+    // 🌟 1. प्रोफाइल पेज पर आते ही हिस्ट्री को इस तरह रिप्लेस करें कि यह मुख्य पॉइंट बन जाए
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
+    // 🌟 2. बैक बटन (popstate) का पक्का नियम: चाहे अंदर कोई भी सब-स्क्रीन या मोडल खुला हो,
+    // अगर वे बंद हो चुके हैं तो बैक दबाते ही सीधा index.html पर चले जाएँगे और बीच में कोई दूसरा पेज नहीं आएगा।
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -379,6 +383,7 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
+      // 🌟 यहाँ पर सीधा index.html पर रिडायरेक्ट किया जा रहा है ताकि बीच में कोई और पेज न आए
       window.location.replace("index.html");
     });
 
@@ -399,7 +404,7 @@
         renderProfileUI();
       }).catch((error) => {
         console.error("Error loading profile from Firebase: ", error);
-        renderProfileUI(); // अगर नेट या डेटा में एरर हो तब भी पेज खाली नहीं रहेगा
+        renderProfileUI();
       });
     }
 
