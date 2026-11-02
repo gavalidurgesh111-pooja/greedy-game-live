@@ -163,10 +163,12 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
+    // --- लॉन्ग प्रेस और राइट क्लिक मेनू को पूरी तरह से ब्लॉक करने के लिए ---
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
 
+    // --- हिस्ट्री को रिप्लेस करें ताकि कचरा या पुराने पेज स्टोर न हों ---
     history.replaceState({page: "photo_grid"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -195,6 +197,7 @@
       });
     }
 
+    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, फुल एचडी ओरिजिनल फोटो क्वालिटी के साथ ---
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -275,9 +278,6 @@
     function saveAndClosePhotoGridScreen() {
       let firstPhoto = tempPhotos[0] || "";
 
-      // 🌟 सिग्नल सेट करें ताकि profile.html समझ जाए कि फोटो सेव करके आ रहे हैं, होम पर न भेजें
-      localStorage.setItem("just_saved_photo", "true");
-
       db.collection("users").doc(currentIdentifier).set({
         photos: tempPhotos,
         avatar: firstPhoto
@@ -292,9 +292,6 @@
       document.getElementById("unsavedTipsModal").style.display = "none";
       
       let firstPhoto = tempPhotos[0] || "";
-
-      // 🌟 यहाँ भी सिग्नल सेट करें
-      localStorage.setItem("just_saved_photo", "true");
 
       db.collection("users").doc(currentIdentifier).set({
         photos: tempPhotos,
