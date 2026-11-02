@@ -165,9 +165,10 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    history.replaceState({page: "photo_grid"}, "", window.location.href);
+    // 🌟 पेज खुलते ही हिस्ट्री सेट करना ताकि बदलाव होने पर बैक बटन सही से काम करे
+    history.pushState({page: "photo_grid"}, "", window.location.href);
 
-    // 🌟 असली बैक बटन या स्क्रीन बैक बटन का लॉजिक
+    // 🌟 बैक बटन (फोन का या स्क्रीन का) दबाने पर नियम चेक करना
     window.addEventListener('popstate', function (event) {
       let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
       if (hasChanges) {
@@ -271,7 +272,7 @@
       }
     }
 
-    // 🌟 NO, THANKS दबाने पर बिना सेव किए पुरानी फोटो पर लौट जाएगा (बाहर जा सकेगा)
+    // 🌟 NO, THANKS दबाने पर बिना सेव किए पुरानी फोटो पर लौट जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
       let localSaved = localStorage.getItem("prof_photos_" + currentIdentifier);
