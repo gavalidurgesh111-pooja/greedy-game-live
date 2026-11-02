@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Greedy Coin - Phone & ID Login</title>
   <link rel="stylesheet" href="style.css">
   <style>
@@ -67,7 +67,6 @@
   <!-- Phone / ID Login Screen -->
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <!-- 🌟 बैक बटन दबाते ही सीधे index.html पर जाएगा -->
       <div class="back-btn" onclick="window.location.replace('index.html')" style="font-size:24px; cursor:pointer;">❮</div>
       
       <select class="phone-lang-select" id="phoneLangSelector">
@@ -112,7 +111,7 @@
         <option value="pl">🇵🇱 Polski (Polish)</option>
         <option value="nl">🇳🇱 Nederlands (Dutch)</option>
         <option value="el">🇬🇷 Ελληνικά (Greek)</option>
-        <option value="hu">🇮🇳 Magyar (Hungarian)</option>
+        <option value="hu">🇭🇺 Magyar (Hungarian)</option>
         <option value="cs">🇨🇿 Čeština (Czech)</option>
         <option value="sv">🇸🇪 Svenska (Swedish)</option>
         <option value="ro">🇷🇴 Română (Romanian)</option>
@@ -539,20 +538,6 @@
       e.preventDefault();
     }, false);
 
-    window.onload = function() {
-      history.replaceState({ page: "phone_input" }, "");
-    };
-
-    window.addEventListener("popstate", function(event) {
-      let modal = document.getElementById("customPopupModal");
-      if (modal && modal.style.display === "flex") {
-        modal.style.display = "none";
-        popupCallback = null;
-        return;
-      }
-      window.location.replace("index.html");
-    });
-
     let popupCallback = null;
 
     function checkNumber() {
@@ -582,21 +567,21 @@
     }
 
     function showCustomConfirm(message, callback) {
-      document.getElementById("popupMessage").innerHTML = message;
+      document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:14px; border:1px solid #dcdcdc; background:#f4f5f7; font-weight:700; cursor:pointer; color:#333; font-size:14px;">Cancel</button>
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
     }
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupMessage").innerHTML = message;
+      document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -604,15 +589,14 @@
 
     function showDemoOtpPrompt(onSuccessCallback) {
       let demoCode = "123456";
-      history.pushState({ modalOpen: true }, "");
       document.getElementById("popupMessage").innerHTML = `
         New account registration.<br><b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid #dcdcdc; background:#f9f9f9; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
+        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:14px; border:1px solid #dcdcdc; background:#f4f5f7; font-weight:700; cursor:pointer; color:#333; font-size:14px;">Cancel</button>
-        <button onclick="verifyDemoOtp('${demoCode}')" style="flex:1; padding:12px; border-radius:14px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;">Verify</button>
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="verifyDemoOtp('${demoCode}')" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = onSuccessCallback;
@@ -654,17 +638,15 @@
         if (!doc.exists) {
           showDemoOtpPrompt(function(verified) {
             if (verified) {
-              // 🌟 यहाँ window.location.replace का उपयोग किया गया है ताकि password.html पर जाते वक्त phone.html हिस्ट्री से हट जाए
-              window.location.replace("password.html");
+              window.location.href = "password.html";
             }
           });
         } else {
-          // 🌟 यहाँ भी window.location.replace का उपयोग किया गया है
-          window.location.replace("password.html");
+          window.location.href = "password.html";
         }
       }).catch((error) => {
         console.error("Error checking user: ", error);
-        window.location.replace("password.html");
+        window.location.href = "password.html";
       });
     }
   </script>
