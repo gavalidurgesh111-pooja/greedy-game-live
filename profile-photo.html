@@ -18,15 +18,19 @@
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
     .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
     
-    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
-    .sub-header h2 { font-size: 18px; font-weight: 900; }
-    
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
+    /* सब-हेडर: टाइटल को लेफ्ट साइड किया गया और बैक बटन बॉर्डर नॉर्मल छोटी की गई */
+    .sub-header { display: flex; align-items: center; justify-content: flex-start; gap: 15px; padding: 12px 15px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
+    .sub-header h2 { font-size: 17px; font-weight: 800; text-align: left; flex: 1; }
+    .back-arrow-btn { font-size: 18px; font-weight: bold; cursor: pointer; padding: 4px 8px; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; }
+    .save-tick-btn { cursor: pointer; font-size: 20px; color: #1e3c72; font-weight: bold; margin-left: auto; }
+
+    /* ग्रिड कंटेनर और बॉक्स साइज़ को थोड़ा बड़ा किया गया */
+    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
     
     .grid-cell { 
       aspect-ratio: 1; 
       background: #fff; 
-      border-radius: 10px; 
+      border-radius: 12px; 
       position: relative; 
       display: flex; 
       flex-direction: column; 
@@ -34,15 +38,17 @@
       justify-content: center; 
       cursor: pointer; 
       overflow: hidden; 
-      border: 1px solid #ccd0d5; 
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #d0d5dd; 
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
       background-size: cover !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
     }
     
-    .upload-btn-label { font-size: 14px; background: #9b51e0; color: #fff; padding: 6px 16px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 3; }
+    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 14px; border-radius: 12px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    
+    /* नंबर लोगो का रंग फिका (translucent) और नंबर का रंग सफेद किया गया */
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.4); color: #ffffff; font-size: 11px; padding: 2px 7px; border-radius: 50%; font-weight: bold; z-index: 3; }
 
     /* Unsaved Tips Modal (NO, THANKS / SAVE) */
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
@@ -87,9 +93,9 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
+      <div class="back-arrow-btn" onclick="handleGridBackAction()">❮</div>
       <h2>Profile Photo</h2>
-      <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="saveAndExitGrid()" title="Save">✓</div>
+      <div class="save-tick-btn" onclick="saveAndExitGrid()" title="Save">✓</div>
     </div>
 
     <!-- 9 ग्रिड डिब्बे -->
@@ -166,7 +172,6 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // 🌟 केवल आपका अपना कस्टमाइज़्ड पॉपअप सिस्टम (बिना किसी ब्राउज़र डिफ़ॉल्ट अलर्ट के)
     history.pushState({page: "photo_grid_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
