@@ -155,6 +155,7 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let cloudPhotos = [];
     let tempPhotos = [];
+    let isPhotoModified = false; // 🌟 सीधा और पक्का फ्लैग जो बदलाव ट्रैक करेगा
     let activeSlotIndex = 1;
     let selectedSlotForTips = 1;
     let rawImageObj = null;
@@ -165,13 +166,12 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    history.pushState({page: "photo_grid"}, "", window.location.href);
+    // 🌟 पक्का हिस्ट्री ट्रैप ताकि बैक बटन हमेशा पकड़ा जा सके
+    history.pushState({page: "photo_grid_lock"}, "", window.location.href);
 
-    // 🌟 नया नियम: बैक बटन दबाने पर पॉपअप खुलेगा, बंद होने पर दोबारा बैक दबाने पर फिर खुल जाएगा
     window.addEventListener('popstate', function (event) {
-      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
-        history.pushState({page: "photo_grid"}, "", window.location.href);
+      if (isPhotoModified) {
+        history.pushState({page: "photo_grid_lock"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -219,6 +219,7 @@
         }
         tempPhotos = [...cloudPhotos];
         localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(cloudPhotos));
+        isPhotoModified = false; // शुरू में कोई बदलाव नहीं
         render9Grid();
       }).catch((err) => {
         console.error("Error loading photos:", err);
@@ -255,6 +256,7 @@
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
+      isPhotoModified = true; // 🌟 फोटो डिलीट होते ही बदलाव पक्का हो गया
       render9Grid();
     }
 
@@ -263,17 +265,17 @@
     }
 
     function handleGridBackAction() {
-      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
+      if (isPhotoModified) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
       }
     }
 
-    // 🌟 NO, THANKS दबाने पर बिना सेव किए बाहर जाने देगा
+    // 🌟 NO, THANKS दबाने पर फ्लैग हटाकर बाहर जाने देगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
+      isPhotoModified = false; 
       let localSaved = localStorage.getItem("prof_photos_" + currentIdentifier);
       if(localSaved) {
         tempPhotos = JSON.parse(localSaved);
@@ -284,11 +286,13 @@
     // 🌟 SAVE दबाने पर सेव होकर प्रोफाइल पर जाएगा
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
+      isPhotoModified = false; 
       saveAndExitGrid();
     }
 
     // टिक (✓) बटन दबाने पर सेव करना
     function saveAndExitGrid() {
+      isPhotoModified = false;
       let firstPhoto = tempPhotos[0] || "";
       localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
       localStorage.setItem("prof_avatar_" + currentIdentifier, firstPhoto);
@@ -481,6 +485,7 @@
 
         let currentSlot = activeSlotIndex - 1;
         tempPhotos[currentSlot] = instantLocalUrl;
+        isPhotoModified = true; // 🌟 फोटो एडिट/अपलोड होते ही बदलाव पक्का हो गया
         render9Grid();
 
         canvas.toBlob(function(blob) {
