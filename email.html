@@ -49,9 +49,8 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 लोगो और नामों को नीचे करने और साइज़ नॉर्मल छोटा करने के लिए */
     .social-login-section {
-      margin-top: 55px; /* इसे थोड़ा और नीचे कर दिया गया है */
+      margin-top: 55px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,8 +92,8 @@
       width: 48%;
     }
     .social-icon-circle {
-      width: 52px;  /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
-      height: 52px; /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -105,8 +104,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .facebook-icon {
-      width: 26px;  /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
-      height: 26px; /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
+      width: 26px;
+      height: 26px;
       background: #1877f2;
       border-radius: 50%;
       display: flex;
@@ -118,7 +117,6 @@
       font-family: Arial, sans-serif;
     }
     
-    /* 🌟 मोबाइल डिवाइस लोगो का साइज़ भी छोटा और नॉर्मल किया गया */
     .mobile-icon-shape {
       width: 16px;
       height: 24px;
@@ -167,7 +165,6 @@
       </form>
     </div>
 
-    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (नॉर्मल छोटे लोगो और नीचे खिसके हुए) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -311,7 +308,7 @@
     });
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupMessage").innerText = message;
+      document.getElementById("popupMessageinnerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
         <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
@@ -480,6 +477,7 @@
           localStorage.setItem("greedy_initialized", "true");
           document.getElementById("loadingOverlay").style.display = "flex";
           setTimeout(() => {
+            // 🌟 यहाँ window.location.replace का उपयोग किया गया है ताकि profile.html पर जाते वक्त email.html हिस्ट्री से हट जाए
             window.location.replace("profile.html");
           }, 1000);
         });
@@ -496,6 +494,7 @@
         
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
+          // 🌟 यहाँ भी window.location.replace का उपयोग किया गया है
           window.location.replace("profile.html");
         }, 1000);
       }
