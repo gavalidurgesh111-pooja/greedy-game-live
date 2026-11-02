@@ -18,7 +18,7 @@
       padding: 0;
     }
 
-    /* स्क्रीन को ऊपर-नीचे हिलने से रोकने के लिए */
+    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए ताकि हिले नहीं */
     html, body {
       width: 100%;
       height: 100%;
@@ -49,7 +49,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 25px 20px 20px;
+      padding: 25px 20px 18px;
     }
 
     .brand-title { 
@@ -58,7 +58,7 @@
       color: #ffd700;
       letter-spacing: 1px; 
       text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
-      margin-top: 40px; 
+      margin-top: 35px; 
       text-align: center; 
     }
 
@@ -69,7 +69,7 @@
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .btn-login {
@@ -94,10 +94,10 @@
       flex-shrink: 0;
     }
 
-    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 6px; }
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 4px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
     
-    /* 🌟 Terms & Privacy Policy टेक्स्ट और चेकबॉक्स को साफ़ दिखाने के लिए */
+    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट */
     .terms-text { 
       font-size: 11px; 
       color: rgba(255,255,255,0.95); 
@@ -107,6 +107,13 @@
       justify-content: center; 
       gap: 6px; 
       margin-top: 2px;
+      width: 100%;
+    }
+    .terms-text input[type="checkbox"] {
+      width: 15px;
+      height: 15px;
+      accent-color: #8a2be2;
+      cursor: pointer;
     }
 
     /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
@@ -156,7 +163,12 @@
           <span>Sign in with Google</span>
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
-        <div class="terms-text"><input type="checkbox" checked id="termsCheck"><span>Agree to Terms & Privacy Policy</span></div>
+        
+        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स -->
+        <div class="terms-text">
+          <input type="checkbox" checked id="termsCheck">
+          <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
+        </div>
       </div>
     </div>
 
