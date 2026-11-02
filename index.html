@@ -18,7 +18,7 @@
       padding: 0;
     }
 
-    /* 🌟 स्क्रीन को ऊपर-नीचे हिलने से रोकने के लिए यहाँ overflow hidden और height fix की गई है */
+    /* स्क्रीन को ऊपर-नीचे हिलने से रोकने के लिए */
     html, body {
       width: 100%;
       height: 100%;
@@ -49,7 +49,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 30px 20px 25px;
+      padding: 25px 20px 20px;
     }
 
     .brand-title { 
@@ -58,7 +58,7 @@
       color: #ffd700;
       letter-spacing: 1px; 
       text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
-      margin-top: 50px; 
+      margin-top: 40px; 
       text-align: center; 
     }
 
@@ -68,13 +68,14 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     .btn-login {
       width: 100%;
-      height: 50px;
-      border-radius: 25px;
+      height: 48px;
+      border-radius: 24px;
       border: none;
       font-size: 16px;
       font-weight: 700;
@@ -93,9 +94,20 @@
       flex-shrink: 0;
     }
 
-    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 10px; }
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; padding: 6px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 12px; }
-    .terms-text { font-size: 11px; color: rgba(255,255,255,0.9); text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    
+    /* 🌟 Terms & Privacy Policy टेक्स्ट और चेकबॉक्स को साफ़ दिखाने के लिए */
+    .terms-text { 
+      font-size: 11px; 
+      color: rgba(255,255,255,0.95); 
+      text-align: center; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 6px; 
+      margin-top: 2px;
+    }
 
     /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
     .support-top-btn {
