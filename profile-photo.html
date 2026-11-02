@@ -155,6 +155,7 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let cloudPhotos = [];
     let tempPhotos = [];
+    let hasUnsavedChanges = false; // 🌟 यह ट्रैक रखेगा कि बदलाव हुआ है या नहीं
     let activeSlotIndex = 1;
     let selectedSlotForTips = 1;
     let rawImageObj = null;
@@ -167,10 +168,9 @@
 
     history.replaceState({page: "photo_grid"}, "", window.location.href);
 
-    // 🌟 असली बैक बटन या स्क्रीन बैक बटन दबाने पर चेक करना कि बदलाव हुए हैं या नहीं
+    // 🌟 बैक बटन (फोन का या स्क्रीन का) दबाने पर पॉपअप दिखाना
     window.addEventListener('popstate', function (event) {
-      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
+      if (hasUnsavedChanges) {
         history.pushState({page: "photo_grid"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
@@ -255,6 +255,7 @@
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
+      hasUnsavedChanges = true; // 🌟 फोटो डिलीट होते ही बदलाव मार्क हो गया
       render9Grid();
     }
 
@@ -263,8 +264,7 @@
     }
 
     function handleGridBackAction() {
-      let hasChanges = (JSON.stringify(tempPhotos) !== JSON.stringify(cloudPhotos));
-      if (hasChanges) {
+      if (hasUnsavedChanges) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -274,6 +274,7 @@
     // 🌟 NO, THANKS दबाने पर बिना सेव किए पुरानी फोटो पर लौट जाएगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
+      hasUnsavedChanges = false;
       let localSaved = localStorage.getItem("prof_photos_" + currentIdentifier);
       if(localSaved) {
         tempPhotos = JSON.parse(localSaved);
@@ -289,6 +290,7 @@
 
     // टिक (✓) बटन दबाने पर सेव करना
     function saveAndExitGrid() {
+      hasUnsavedChanges = false;
       let firstPhoto = tempPhotos[0] || "";
       localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
       localStorage.setItem("prof_avatar_" + currentIdentifier, firstPhoto);
@@ -456,7 +458,7 @@
       rawImageObj = null;
     }
 
-    // फोटो तुरंत क्रॉप होकर ग्रिड पर दिखेगी (बिना अटके)
+    // फोटो तुरंत क्रॉप होकर ग्रिड पर दिखेगी और बदलाव ट्रैक होगा
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
@@ -482,9 +484,10 @@
 
         let currentSlot = activeSlotIndex - 1;
         tempPhotos[currentSlot] = instantLocalUrl;
+        hasUnsavedChanges = true; // 🌟 फोटो एडिट/अपलोड होते ही बदलाव मार्क हो गया
         render9Grid();
 
-        // बैकग्राउंड में क्लाउड पर अपलोड करना
+        // बैकग्राउंड में क्लाउड पर अपलोड करना (डेटाबेस में तब तक सेव नहीं होगा जब तक SAVE या टिक न दबे)
         canvas.toBlob(function(blob) {
           uploadFileToCloudinarySilent(blob, currentSlot);
         }, "image/jpeg", 0.90);
