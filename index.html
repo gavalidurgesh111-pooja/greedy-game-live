@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Greedy Coin - Registration and Login</title>
   <link rel="preload" as="image" href="https://res.cloudinary.com/wolpzhms/image/upload/bg.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
+    /* लॉन्ग प्रेस और नीले बॉक्स को रोकने के लिए */
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -18,26 +19,13 @@
     }
 
     body {
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #111 url('https://res.cloudinary.com/wolpzhms/image/upload/bg.webp') no-repeat center center fixed !important;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/bd69b4eefc738ece7775cfa1996024d563a5a96d/IMG-20261023-WA0014.jpg') no-repeat center center fixed !important;
       background-size: cover !important;
       margin: 0 !important;
       padding: 0 !important;
-      font-family: 'Segoe UI', sans-serif;
-      position: relative;
+      font-family: 'Segoe UI', Roboto, sans-serif;
       min-height: 100vh;
-    }
-
-    /* 🌟 'GOLD COIN' को थोड़ा नीचे कर दिया है ताकि ऊपर वाले लोगो से जगह मिल जाए */
-    .brand-title { 
-      font-size: 48px; 
-      font-weight: 900; 
-      background: linear-gradient(45deg, #b8860b, #ffd700, #fff7ae, #ffae00);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1.5px; 
-      text-shadow: 0 4px 25px rgba(0,0,0,0.9); 
-      margin-top: 90px; /* यहाँ ऊपर से दूरी बढ़ा दी गई है */
-      text-align: center; 
+      overflow-x: hidden;
     }
 
     /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
@@ -45,8 +33,8 @@
       position: fixed !important;
       top: 20px !important;
       right: 20px !important;
-      width: 44px !important;
-      height: 44px !important;
+      width: 42px !important;
+      height: 42px !important;
       background: rgba(255, 255, 255, 0.95) !important;
       border-radius: 50% !important;
       display: flex !important;
@@ -54,7 +42,7 @@
       justify-content: center !important;
       cursor: pointer !important;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-      z-index: 999999 !important;
+      z-index: 99999 !important;
     }
     .support-top-btn:active {
       transform: scale(0.92);
@@ -65,7 +53,7 @@
 
   <!-- 🌟 दाईं तरफ ऊपर छोटा हेल्प/सपोर्ट लोगो -->
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
-    <svg viewBox="0 0 24 24" width="24" height="24" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" width="22" height="22" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -73,15 +61,17 @@
   </div>
 
   <div id="authFlowContainer">
-    <!-- मुख्य लॉगिन स्क्रीन -->
+    <!-- मुख्य लॉगिन स्क्रीन (CSS के नियमों के अनुसार सही की गई) -->
     <div id="screenMain">
       <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           <span>Sign in with Facebook</span>
         </button>
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.33 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.84 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.67 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
           <span>Sign in with Google</span>
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
@@ -90,16 +80,16 @@
     </div>
 
     <!-- More Options Modal -->
-    <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:120000; align-items:flex-end; justify-content:center;">
+    <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()">Cancel</button>
       </div>
     </div>
 
     <!-- 🌟 Customer Service Center Modal -->
-    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999999; align-items:center; justify-content:center; padding:20px;">
+    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         
         <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
@@ -123,7 +113,7 @@
     </div>
 
     <!-- Custom Popup Modal -->
-    <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:10000000; align-items:center; justify-content:center; padding:20px;">
+    <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
         <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
         <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
