@@ -155,7 +155,7 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let cloudPhotos = [];
     let tempPhotos = [];
-    let isPhotoModified = false; // 🌟 सीधा और पक्का फ्लैग जो बदलाव ट्रैक करेगा
+    let isPhotoModified = false; // 🌟 बदलाव ट्रैक करने के लिए पक्का फ्लैग
     let activeSlotIndex = 1;
     let selectedSlotForTips = 1;
     let rawImageObj = null;
@@ -166,12 +166,13 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // 🌟 पक्का हिस्ट्री ट्रैप ताकि बैक बटन हमेशा पकड़ा जा सके
-    history.pushState({page: "photo_grid_lock"}, "", window.location.href);
+    // 🌟 पेज खुलते ही हिस्ट्री सेट करना
+    history.pushState({page: "photo_grid"}, "", window.location.href);
 
+    // 🌟 फोन का असली बैक बटन दबाने पर नियम चेक करना
     window.addEventListener('popstate', function (event) {
       if (isPhotoModified) {
-        history.pushState({page: "photo_grid_lock"}, "", window.location.href);
+        history.pushState({page: "photo_grid"}, "", window.location.href);
         document.getElementById("unsavedTipsModal").style.display = "flex";
       } else {
         closePhotoGridWithoutSaving();
@@ -219,7 +220,7 @@
         }
         tempPhotos = [...cloudPhotos];
         localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(cloudPhotos));
-        isPhotoModified = false; // शुरू में कोई बदलाव नहीं
+        isPhotoModified = false;
         render9Grid();
       }).catch((err) => {
         console.error("Error loading photos:", err);
@@ -256,7 +257,7 @@
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
-      isPhotoModified = true; // 🌟 फोटो डिलीट होते ही बदलाव पक्का हो गया
+      isPhotoModified = true; // 🌟 फोटो डिलीट होते ही बदलाव मान लिया जाएगा
       render9Grid();
     }
 
@@ -264,6 +265,7 @@
       window.location.replace("profile.html");
     }
 
+    // 🌟 स्क्रीन का बैक बटन (❮) दबाने पर नियम चेक करना
     function handleGridBackAction() {
       if (isPhotoModified) {
         document.getElementById("unsavedTipsModal").style.display = "flex";
@@ -272,10 +274,10 @@
       }
     }
 
-    // 🌟 NO, THANKS दबाने पर फ्लैग हटाकर बाहर जाने देगा
+    // 🌟 NO, THANKS दबाने पर बिना सेव किए बाहर जाने देगा
     function confirmNoThanks() {
       document.getElementById("unsavedTipsModal").style.display = "none";
-      isPhotoModified = false; 
+      isPhotoModified = false;
       let localSaved = localStorage.getItem("prof_photos_" + currentIdentifier);
       if(localSaved) {
         tempPhotos = JSON.parse(localSaved);
@@ -286,7 +288,7 @@
     // 🌟 SAVE दबाने पर सेव होकर प्रोफाइल पर जाएगा
     function confirmSaveAndExit() {
       document.getElementById("unsavedTipsModal").style.display = "none";
-      isPhotoModified = false; 
+      isPhotoModified = false;
       saveAndExitGrid();
     }
 
