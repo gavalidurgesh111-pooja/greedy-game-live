@@ -179,7 +179,6 @@
       }
     });
 
-    // 🌟 सुपर फास्ट रेंडरिंग: पहले लोकल स्टोरेज से तुरंत ग्रिड दिखाना
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -205,7 +204,6 @@
       }
     }
 
-    // अगर लोकल स्टोरेज में फोटो सेव हैं, तो उन्हें तुरंत लोड करें
     let savedPhotos = localStorage.getItem("prof_photos_" + currentIdentifier);
     if(savedPhotos) {
       cloudPhotos = JSON.parse(savedPhotos);
@@ -222,8 +220,6 @@
           cloudPhotos = [];
         }
         tempPhotos = [...cloudPhotos];
-        
-        // लोकल स्टोरेज अपडेट करना
         localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(cloudPhotos));
         render9Grid();
       }).catch((err) => {
@@ -287,7 +283,6 @@
     function saveAndClosePhotoGridScreen() {
       let firstPhoto = tempPhotos[0] || "";
 
-      // लोकल स्टोरेज में तुरंत सेव करें ताकि Profile.html पर जाने पर तुरंत दिखे
       localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
       localStorage.setItem("prof_avatar_" + currentIdentifier, firstPhoto);
 
@@ -503,15 +498,24 @@
 
         ctx.drawImage(rawImageObj, sX, sY, sW, sH, 0, 0, canvas.width, canvas.height);
         
+        // 🌟 तुरंत लोकल रेंडरिंग (बिना एक पल रुके ग्रिड पर दिखाना)
+        let instantLocalUrl = canvas.toDataURL("image/jpeg", 0.90);
+        
+        document.getElementById("screenPhotoEditor").style.display = "none";
+        rawImageObj = null;
+
+        let currentSlot = activeSlotIndex - 1;
+        tempPhotos[currentSlot] = instantLocalUrl;
+        render9Grid();
+
+        // 🌟 बैकग्राउंड में चुपचाप क्लाउड पर अपलोड करना
         canvas.toBlob(function(blob) {
-          document.getElementById("screenPhotoEditor").style.display = "none";
-          rawImageObj = null;
-          uploadFileToCloudinary(blob);
-        }, "image/jpeg", 0.95);
+          uploadFileToCloudinarySilent(blob, currentSlot);
+        }, "image/jpeg", 0.90);
       }
     }
 
-    function uploadFileToCloudinary(fileBlob) {
+    function uploadFileToCloudinarySilent(fileBlob, targetIndex) {
       let formData = new FormData();
       formData.append("file", fileBlob);
       formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
@@ -523,15 +527,12 @@
       .then(response => response.json())
       .then(data => {
         if (data.secure_url) {
-          let cloudinaryUrl = data.secure_url;
-          tempPhotos[activeSlotIndex - 1] = cloudinaryUrl;
-          render9Grid();
-        } else {
-          alert("Cloudinary Upload Failed: " + (data.error ? data.error.message : "Unknown error"));
+          tempPhotos[targetIndex] = data.secure_url;
+          localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
         }
       })
       .catch(error => {
-        console.error("Cloudinary Error:", error);
+        console.error("Background Upload Error:", error);
       });
     }
 
