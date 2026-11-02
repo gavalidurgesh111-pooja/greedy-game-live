@@ -166,14 +166,7 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    // 🌟 दोहरी सुरक्षा: beforeunload और history lock
-    window.addEventListener('beforeunload', function (e) {
-      if (isPhotoModified) {
-        e.preventDefault();
-        e.returnValue = '';
-      }
-    });
-
+    // 🌟 केवल आपका अपना कस्टमाइज़्ड पॉपअप सिस्टम (बिना किसी ब्राउज़र डिफ़ॉल्ट अलर्ट के)
     history.pushState({page: "photo_grid_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
