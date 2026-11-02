@@ -360,17 +360,21 @@
     let coins = 1000, userName = "User", userId = "#288630", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // 🌟 1. प्रोफाइल पेज पर आते ही हिस्ट्री को हमेशा के लिए रिप्लेस करें ताकि पीछे के पेज डिलीट हो जाएं
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // 🌟 2. कैश या हिस्ट्री से रीलोड होने पर तुरंत होम पेज पर भेजने का पक्का नियम
+    // 🌟 1. यहाँ 'just_saved_photo' चेक जोड़ा गया है ताकि फोटो सेव करके आने पर होम पेज पर न भेजे
     window.addEventListener('pageshow', function(event) {
+      let justSaved = localStorage.getItem("just_saved_photo");
+      if (justSaved === "true") {
+        localStorage.removeItem("just_saved_photo");
+        return; 
+      }
+
       if (event.persisted) {
         window.location.replace("index.html");
       }
     });
 
-    // 🌟 3. बैक बटन (popstate) का पक्का नियम: कोई भी मोडल खुला हो तो बंद होगा, नहीं तो सीधा index.html पर जाएगा
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
