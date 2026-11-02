@@ -360,11 +360,17 @@
     let coins = 1000, userName = "User", userId = "#288630", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // 🌟 1. प्रोफाइल पेज पर आते ही हिस्ट्री को इस तरह रिप्लेस करें कि यह मुख्य पॉइंट बन जाए
+    // 🌟 1. प्रोफाइल पेज पर आते ही हिस्ट्री को हमेशा के लिए रिप्लेस करें ताकि पीछे के पेज डिलीट हो जाएं
     history.replaceState({page: "profile_main"}, "", window.location.href);
 
-    // 🌟 2. बैक बटन (popstate) का पक्का नियम: चाहे अंदर कोई भी सब-स्क्रीन या मोडल खुला हो,
-    // अगर वे बंद हो चुके हैं तो बैक दबाते ही सीधा index.html पर चले जाएँगे और बीच में कोई दूसरा पेज नहीं आएगा।
+    // 🌟 2. कैश या हिस्ट्री से रीलोड होने पर तुरंत होम पेज पर भेजने का पक्का नियम
+    window.addEventListener('pageshow', function(event) {
+      if (event.persisted) {
+        window.location.replace("index.html");
+      }
+    });
+
+    // 🌟 3. बैक बटन (popstate) का पक्का नियम: कोई भी मोडल खुला हो तो बंद होगा, नहीं तो सीधा index.html पर जाएगा
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
@@ -383,7 +389,6 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
-      // 🌟 यहाँ पर सीधा index.html पर रिडायरेक्ट किया जा रहा है ताकि बीच में कोई और पेज न आए
       window.location.replace("index.html");
     });
 
@@ -489,7 +494,7 @@
     function showCustomAlert(text) {
       document.getElementById("customAlertText").innerText = text;
       document.getElementById("customAlertModal").style.display = "flex";
-      history.pushState({modal: "alert"}, "", window.location.href);
+      history.replaceState({modal: "alert"}, "", window.location.href);
     }
     function closeCustomAlert() { 
       document.getElementById("customAlertModal").style.display = "none"; 
@@ -518,7 +523,7 @@
 
     function openFrameModal() { 
       document.getElementById("modalFrame").style.display = "flex"; 
-      history.pushState({modal: "frame"}, "", window.location.href);
+      history.replaceState({modal: "frame"}, "", window.location.href);
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
@@ -530,7 +535,7 @@
     function openSettingsPage() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenSettingsPage").style.display = "flex";
-      history.pushState({screen: "settings"}, "", window.location.href);
+      history.replaceState({screen: "settings"}, "", window.location.href);
     }
     function closeSettingsPage() {
       document.getElementById("screenSettingsPage").style.display = "none";
@@ -547,7 +552,7 @@
     function openAboutMeScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenAboutMe").style.display = "flex"; 
-      history.pushState({screen: "about"}, "", window.location.href);
+      history.replaceState({screen: "about"}, "", window.location.href);
     }
     function closeAboutMeScreen() { 
       document.getElementById("screenAboutMe").style.display = "none"; 
@@ -577,7 +582,7 @@
     function openGroupsScreen() { 
       document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenGroups").style.display = "flex"; 
-      history.pushState({screen: "groups"}, "", window.location.href);
+      history.replaceState({screen: "groups"}, "", window.location.href);
     }
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
@@ -586,7 +591,7 @@
 
     function openCoinSendModal() { 
       document.getElementById("modalCoinSend").style.display = "flex"; 
-      history.pushState({modal: "coinsend"}, "", window.location.href);
+      history.replaceState({modal: "coinsend"}, "", window.location.href);
     }
     function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
     
@@ -613,13 +618,9 @@
 
     function openSettingsModal() { 
       document.getElementById("modalSettings").style.display = "flex"; 
-      history.pushState({modal: "settings_modal"}, "", window.location.href);
+      history.replaceState({modal: "settings_modal"}, "", window.location.href);
     }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
-
-    window.onpageshow = function(event) {
-      initProfile();
-    };
 
     window.onload = () => { initProfile(); };
   </script>
