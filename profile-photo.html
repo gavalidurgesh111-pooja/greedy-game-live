@@ -163,12 +163,10 @@
     let isDraggingImg = false, startMouseX = 0, startMouseY = 0;
     let initialPinchDistance = null;
 
-    // --- लॉन्ग प्रेस और राइट क्लिक मेनू को पूरी तरह से ब्लॉक करने के लिए ---
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
 
-    // --- हिस्ट्री को रिप्लेस करें ताकि कचरा या पुराने पेज स्टोर न हों ---
     history.replaceState({page: "photo_grid"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -181,23 +179,7 @@
       }
     });
 
-    function initGridPage() {
-      db.collection("users").doc(currentIdentifier).get().then((doc) => {
-        if (doc.exists) {
-          let data = doc.data();
-          cloudPhotos = data.photos || [];
-        } else {
-          cloudPhotos = [];
-        }
-        tempPhotos = [...cloudPhotos];
-        render9Grid();
-      }).catch((err) => {
-        console.error("Error loading photos:", err);
-        render9Grid();
-      });
-    }
-
-    // --- नियम: सभी 9 डिब्बे हमेशा दिखेंगे, फुल एचडी ओरिजिनल फोटो क्वालिटी के साथ ---
+    // 🌟 सुपर फास्ट रेंडरिंग: पहले लोकल स्टोरेज से तुरंत ग्रिड दिखाना
     function render9Grid() {
       let container = document.getElementById("grid9Container");
       container.innerHTML = "";
@@ -221,6 +203,33 @@
         
         container.appendChild(cell);
       }
+    }
+
+    // अगर लोकल स्टोरेज में फोटो सेव हैं, तो उन्हें तुरंत लोड करें
+    let savedPhotos = localStorage.getItem("prof_photos_" + currentIdentifier);
+    if(savedPhotos) {
+      cloudPhotos = JSON.parse(savedPhotos);
+      tempPhotos = [...cloudPhotos];
+      render9Grid();
+    }
+
+    function initGridPage() {
+      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+        if (doc.exists) {
+          let data = doc.data();
+          cloudPhotos = data.photos || [];
+        } else {
+          cloudPhotos = [];
+        }
+        tempPhotos = [...cloudPhotos];
+        
+        // लोकल स्टोरेज अपडेट करना
+        localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(cloudPhotos));
+        render9Grid();
+      }).catch((err) => {
+        console.error("Error loading photos:", err);
+        render9Grid();
+      });
     }
 
     let selectedSlotForTips = 1;
@@ -278,6 +287,10 @@
     function saveAndClosePhotoGridScreen() {
       let firstPhoto = tempPhotos[0] || "";
 
+      // लोकल स्टोरेज में तुरंत सेव करें ताकि Profile.html पर जाने पर तुरंत दिखे
+      localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
+      localStorage.setItem("prof_avatar_" + currentIdentifier, firstPhoto);
+
       db.collection("users").doc(currentIdentifier).set({
         photos: tempPhotos,
         avatar: firstPhoto
@@ -292,6 +305,9 @@
       document.getElementById("unsavedTipsModal").style.display = "none";
       
       let firstPhoto = tempPhotos[0] || "";
+
+      localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
+      localStorage.setItem("prof_avatar_" + currentIdentifier, firstPhoto);
 
       db.collection("users").doc(currentIdentifier).set({
         photos: tempPhotos,
