@@ -16,21 +16,21 @@
       -webkit-tap-highlight-color: transparent; 
     }
     body { background: #000; display: flex; justify-content: center; color: #333; min-height: 100vh; }
-    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #f4f5f7; position: relative; display: flex; flex-direction: column; }
+    .page-container { width: 100%; max-width: 480px; min-height: 100vh; background: #ffffff; position: relative; display: flex; flex-direction: column; }
     
-    /* सब-हेडर: टाइटल को लेफ्ट साइड किया गया और बैक बटन बॉर्डर नॉर्मल छोटी की गई */
-    .sub-header { display: flex; align-items: center; justify-content: flex-start; gap: 15px; padding: 12px 15px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
-    .sub-header h2 { font-size: 17px; font-weight: 800; text-align: left; flex: 1; }
-    .back-arrow-btn { font-size: 18px; font-weight: bold; cursor: pointer; padding: 4px 8px; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; }
-    .save-tick-btn { cursor: pointer; font-size: 20px; color: #1e3c72; font-weight: bold; margin-left: auto; }
+    /* 🌟 फोटो के हिसाब से हेडर: बैक बटन, बाईं तरफ सही स्पेलिंग "Profile photo", और दाईं तरफ टिक मार्क */
+    .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #fff; color: #111; border-bottom: 1px solid #eee; }
+    .sub-header h2 { font-size: 17px; font-weight: 500; color: #222; text-align: left; }
+    .back-arrow-btn { font-size: 20px; font-weight: normal; cursor: pointer; color: #222; background: none; border: none; }
+    .save-tick-btn { cursor: pointer; font-size: 20px; color: #7b2cbf; font-weight: bold; background: none; border: none; }
 
-    /* ग्रिड कंटेनर और बॉक्स साइज़ को थोड़ा बड़ा किया गया */
-    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
+    /* 🌟 फोटो के जैसी ग्रिड साइज़ और खाली बॉक्स में प्लस (+) का निशान */
+    .grid-9-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; overflow-y: auto; flex: 1; align-content: start; }
     
     .grid-cell { 
       aspect-ratio: 1; 
-      background: #fff; 
-      border-radius: 12px; 
+      background: #f4f5f7; 
+      border-radius: 6px; 
       position: relative; 
       display: flex; 
       flex-direction: column; 
@@ -38,17 +38,16 @@
       justify-content: center; 
       cursor: pointer; 
       overflow: hidden; 
-      border: 1px solid #d0d5dd; 
-      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0; 
       background-size: cover !important;
       background-repeat: no-repeat !important;
       background-position: center !important;
     }
     
-    .upload-btn-label { font-size: 13px; background: #9b51e0; color: #fff; padding: 5px 14px; border-radius: 12px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .upload-plus-icon { font-size: 28px; font-weight: 300; color: #94a3b8; z-index: 2; }
     
-    /* नंबर लोगो का रंग फिका (translucent) और नंबर का रंग सफेद किया गया */
-    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.4); color: #ffffff; font-size: 11px; padding: 2px 7px; border-radius: 50%; font-weight: bold; z-index: 3; }
+    /* नंबर लोगो का रंग फिका और नंबर सफेद */
+    .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0, 0, 0, 0.4); color: #ffffff; font-size: 11px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; z-index: 3; }
 
     /* Unsaved Tips Modal (NO, THANKS / SAVE) */
     #unsavedTipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 130; align-items: center; justify-content: center; }
@@ -93,9 +92,9 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div class="back-arrow-btn" onclick="handleGridBackAction()">❮</div>
-      <h2>Profile Photo</h2>
-      <div class="save-tick-btn" onclick="saveAndExitGrid()" title="Save">✓</div>
+      <button class="back-arrow-btn" onclick="handleGridBackAction()">❮</button>
+      <h2>Profile photo</h2>
+      <button class="save-tick-btn" onclick="saveAndExitGrid()" title="Save">✓</button>
     </div>
 
     <!-- 9 ग्रिड डिब्बे -->
@@ -199,7 +198,7 @@
           cell.onclick = () => handleFilledCellClick(i);
         } else {
           cell.style.backgroundImage = "none";
-          cell.innerHTML = `<div class="upload-btn-label">Upload</div><div class="badge-num">${i}</div>`;
+          cell.innerHTML = `<div class="upload-plus-icon">+</div><div class="badge-num">${i}</div>`;
           cell.onclick = () => handleEmptyCellClick();
         }
         
