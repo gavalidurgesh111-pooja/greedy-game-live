@@ -44,8 +44,8 @@
     .upload-btn-label { font-size: 14px; background: #9b51e0; color: #fff; padding: 6px 16px; border-radius: 15px; font-weight: 600; z-index: 2; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
     .badge-num { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.6); color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 50%; font-weight: bold; z-index: 3; }
 
-    #tipsModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
-    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 120; align-items: center; justify-content: center; }
+    .tips-box { background: #fff; width: 82%; max-width: 300px; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.2); text-align: left; }
     .tips-box h3 { font-size: 18px; margin-bottom: 15px; color: #111; }
     .tips-item { padding: 10px 0; font-size: 15px; color: #333; cursor: pointer; border-bottom: 1px solid #eee; font-weight: 500; }
     .tips-item:last-child { border-bottom: none; color: #d9534f; }
@@ -76,19 +76,19 @@
 
   <div class="page-container">
     <div class="sub-header">
-      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="handleGridBackAction()">❮</div>
+      <div style="cursor:pointer; font-size:22px; font-weight:bold;" onclick="autoSaveAndExit()">❮</div>
       <h2>Profile Photo</h2>
-      <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="handleGridBackAction()" title="Save">✓</div>
+      <div style="cursor:pointer; font-size:22px; color:#1e3c72; font-weight:bold;" onclick="autoSaveAndExit()" title="Done">✓</div>
     </div>
 
-    <!-- 1 से 9 तक के ग्रिड डिब्बे -->
+    <!-- 9 ग्रिड डिब्बे -->
     <div class="grid-9-container" id="grid9Container"></div>
 
     <input type="file" id="hiddenGalleryInput" accept="image/*" style="display:none;" onchange="handleGalleryFileSelect(event)">
 
-    <!-- फोटो मैनेज करने का मॉडल -->
-    <div id="tipsModal" class="modal-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:120; align-items:center; justify-content:center;">
-      <div class="tips-box" style="text-align:left;">
+    <!-- फोटो मैनेज करने का मॉडल (Change / Delete) -->
+    <div id="tipsModal" class="modal-overlay">
+      <div class="tips-box">
         <h3>Manage Photo</h3>
         <div class="tips-item" onclick="tipsChangePicture()">Change picture</div>
         <div class="tips-item" onclick="tipsDeletePicture()">Delete</div>
@@ -96,6 +96,7 @@
       </div>
     </div>
 
+    <!-- फोटो एडिटर / क्रॉपर स्क्रीन -->
     <div id="screenPhotoEditor">
       <div class="editor-canvas-area" id="editorCanvasArea">
         <img id="editorImagePreview" src="" alt="Preview">
@@ -131,6 +132,7 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let tempPhotos = [];
     let activeSlotIndex = 1;
+    let selectedSlotForTips = 1;
     let rawImageObj = null;
     let posX = 0, posY = 0, imgScale = 1, minScale = 1, maxScale = 2.5;
     let baseLeft = 0, baseTop = 0;
@@ -141,7 +143,7 @@
 
     history.replaceState({page: "photo_grid"}, "", window.location.href);
 
-    // 🌟 बैक बटन दबाते ही बिना पूछे चुपचाप ऑटोमैटिक सेव होकर प्रोफाइल पर चला जाएगा
+    // बैक बटन दबाते ही चुपचाप ऑटोमैटिक सेव होकर प्रोफाइल पर जाना
     window.addEventListener('popstate', function (event) {
       autoSaveAndExit();
     });
@@ -193,7 +195,6 @@
       });
     }
 
-    let selectedSlotForTips = 1;
     function handleFilledCellClick(index) {
       selectedSlotForTips = index;
       document.getElementById("tipsModal").style.display = "flex";
@@ -220,7 +221,7 @@
       document.getElementById("hiddenGalleryInput").click();
     }
 
-    // 🌟 फोटो डिलीट करते ही तुरंत स्क्रीन से हटेगी और ऑटोमैटिक सेव होगी
+    // फोटो डिलीट करते ही तुरंत स्क्रीन से हटेगी और बैकग्राउंड में सेव होगी
     function tipsDeletePicture() {
       closeTipsModal();
       tempPhotos.splice(selectedSlotForTips - 1, 1);
@@ -228,7 +229,7 @@
       silentAutoSave();
     }
 
-    // 🌟 बैक बटन या टिक (✓) दबाने पर चुपचाप ऑटोमैटिक सेव होकर प्रोफाइल पर जाना
+    // चुपचाप ऑटोमैटिक सेव करके प्रोफाइल पेज पर लौटना
     function autoSaveAndExit() {
       let firstPhoto = tempPhotos[0] || "";
       localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(tempPhotos));
@@ -242,10 +243,6 @@
       }).catch((err) => {
         window.location.replace("profile.html");
       });
-    }
-
-    function handleGridBackAction() {
-      autoSaveAndExit();
     }
 
     function silentAutoSave() {
@@ -414,7 +411,7 @@
       rawImageObj = null;
     }
 
-    // 🌟 फोटो सेट करते ही तुरंत दिखेगी और बैकग्राउंड में सेव/अपलोड होगी
+    // फोटो सेट करते ही तुरंत दिखेगी और बैकग्राउंड में सेव/अपलोड होगी
     function confirmEditor() {
       if(rawImageObj) {
         let canvas = document.createElement("canvas");
@@ -441,7 +438,7 @@
         let currentSlot = activeSlotIndex - 1;
         tempPhotos[currentSlot] = instantLocalUrl;
         render9Grid();
-        silentAutoSave(); // चुपचाप बैकग्राउंड में सेव करना
+        silentAutoSave(); 
 
         canvas.toBlob(function(blob) {
           uploadFileToCloudinarySilent(blob, currentSlot);
