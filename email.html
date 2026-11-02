@@ -308,7 +308,7 @@
     });
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupMessageinnerText = message;
+      document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
         <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
@@ -477,7 +477,6 @@
           localStorage.setItem("greedy_initialized", "true");
           document.getElementById("loadingOverlay").style.display = "flex";
           setTimeout(() => {
-            // 🌟 यहाँ window.location.replace का उपयोग किया गया है ताकि profile.html पर जाते वक्त email.html हिस्ट्री से हट जाए
             window.location.replace("profile.html");
           }, 1000);
         });
@@ -494,7 +493,6 @@
         
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
-          // 🌟 यहाँ भी window.location.replace का उपयोग किया गया है
           window.location.replace("profile.html");
         }, 1000);
       }
