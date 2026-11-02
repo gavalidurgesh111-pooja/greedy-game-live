@@ -497,8 +497,9 @@
       });
     }
 
+    // 🌟 अब यहाँ से यूजर सीधे ग्रिड पर न जाकर पहले नए 'photo-gateway.html' पर जाएगा
     function openPhotoGridScreen() {
-      window.location.href = "profile-photo.html";
+      window.location.href = "photo-gateway.html";
     }
 
     function triggerAvatarUpload() {
@@ -649,7 +650,7 @@
       document.getElementById("modalSettings").style.display = "flex"; 
       history.pushState({modal: "settings_modal"}, "", window.location.href);
     }
-    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
+    function closeSettingsModal() { document.getElementById("modalSettingsN").style.display = "none"; }
 
     window.onpageshow = function(event) {
       initProfile();
