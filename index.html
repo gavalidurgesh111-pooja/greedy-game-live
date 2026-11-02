@@ -18,7 +18,7 @@
       padding: 0;
     }
 
-    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए */
+    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए ताकि हिले नहीं */
     html, body {
       width: 100%;
       height: 100%;
@@ -43,23 +43,22 @@
       overflow: hidden;
     }
 
-    /* 🌟 यहाँ पैडिंग कम कर दी है ताकि नीचे का टेक्स्ट आसानी से फिट हो जाए */
     #screenMain {
       flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 15px 15px;
+      padding: 20px 15px 12px;
     }
 
     .brand-title { 
-      font-size: 42px; 
+      font-size: 40px; 
       font-weight: 900; 
       color: #ffd700;
       letter-spacing: 1px; 
       text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
-      margin-top: 25px; 
+      margin-top: 30px; 
       text-align: center; 
     }
 
@@ -69,21 +68,21 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 5px;
+      gap: 6px;
+      margin-bottom: 2px;
     }
 
     .btn-login {
       width: 100%;
-      height: 46px;
-      border-radius: 23px;
+      height: 44px;
+      border-radius: 22px;
       border: none;
       font-size: 15px;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 10px;
       cursor: pointer;
     }
     .btn-facebook { background: #1877F2; color: #fff; }
@@ -95,10 +94,10 @@
       flex-shrink: 0;
     }
 
-    .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 4px; }
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
     
-    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब पक्का दिखेगा) */
+    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब बिल्कुल साफ़ और बिना कटे दिखेगा) */
     .terms-text { 
       font-size: 10px; 
       color: rgba(255,255,255,0.95); 
@@ -106,14 +105,14 @@
       display: flex; 
       align-items: center; 
       justify-content: center; 
-      gap: 5px; 
-      margin-top: 2px;
+      gap: 4px; 
+      margin-top: 1px;
       width: 100%;
       white-space: nowrap;
     }
     .terms-text input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
+      width: 13px;
+      height: 13px;
       accent-color: #8a2be2;
       cursor: pointer;
     }
@@ -123,8 +122,8 @@
       position: fixed !important;
       top: 15px !important;
       right: 15px !important;
-      width: 40px !important;
-      height: 40px !important;
+      width: 38px !important;
+      height: 38px !important;
       background: rgba(255, 255, 255, 0.95) !important;
       border-radius: 50% !important;
       display: flex !important;
