@@ -360,7 +360,8 @@
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    history.replaceState({page: "profile_main"}, "", window.location.href);
+    // 🌟 प्रोफाइल पेज पर बैक बटन दबाने पर सीधे गेटवे पर भेजने का नेविगेशन लॉक
+    history.pushState({page: "profile_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
@@ -379,6 +380,9 @@
       if (settingsPage && settingsPage.style.display === "flex") { closeSettingsPage(); return; }
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
+
+      // अगर कोई अन्य मॉडल खुला न हो, तो बैक दबाते ही गेटवे पर भेजें ताकि लॉगिन/रजिस्ट्रेशन पर न भटके
+      window.location.replace("photo-gateway.html");
     });
 
     // 🌟 सुपर फास्ट रेंडरिंग: पहले लोकल स्टोरेज से तुरंत डेटा दिखाना
@@ -441,7 +445,6 @@
       }, 50);
     }
 
-    // पहले से सेव डेटा तुरंत लोड करें (बिना किसी लेग के)
     if(localStorage.getItem("prof_name_" + currentIdentifier)) {
       userName = localStorage.getItem("prof_name_" + currentIdentifier);
       coins = parseInt(localStorage.getItem("prof_coins_" + currentIdentifier) || "1000");
@@ -470,7 +473,6 @@
           dbPhotos = data.photos || []; 
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
 
-          // लोकल स्टोरेज में ताजा डेटा सेव करना ताकि अगली बार और भी तुरंत खुले
           localStorage.setItem("prof_name_" + currentIdentifier, userName);
           localStorage.setItem("prof_coins_" + currentIdentifier, coins);
           localStorage.setItem("prof_userid_" + currentIdentifier, userId);
@@ -497,7 +499,6 @@
       });
     }
 
-    // 🌟 अब यहाँ से यूजर सीधे ग्रिड पर न जाकर पहले नए 'photo-gateway.html' पर जाएगा
     function openPhotoGridScreen() {
       window.location.href = "photo-gateway.html";
     }
@@ -650,7 +651,7 @@
       document.getElementById("modalSettings").style.display = "flex"; 
       history.pushState({modal: "settings_modal"}, "", window.location.href);
     }
-    function closeSettingsModal() { document.getElementById("modalSettingsN").style.display = "none"; }
+    function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
     window.onpageshow = function(event) {
       initProfile();
