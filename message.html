@@ -34,17 +34,17 @@
       flex-direction: column;
     }
 
-    /* 🌟 ऊपर का सुंदर एनिमेटेड ग्रेडिएंट हेडर (बिना किसी बॉर्डर या लाइन के) */
+    /* 🌟 ऊपर का हिस्सा: रंग से सफेद रंग का मिश्रण (to White Gradient) जो धीरे-धीरे एनिमेट होगा */
     .animated-top-header {
-      background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #ff9a9e, #da70d6, #ff4500, #fad0c4);
-      background-size: 400% 400%;
-      animation: smoothColorFlow 20s ease infinite;
+      background: linear-gradient(135deg, #a1c4fd, #ff9a9e, #da70d6, #ff4500, #ffffff);
+      background-size: 300% 300%;
+      animation: toWhiteGradientFlow 15s ease infinite;
       padding-bottom: 25px;
       border: none !important;
       outline: none !important;
     }
 
-    @keyframes smoothColorFlow {
+    @keyframes toWhiteGradientFlow {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
@@ -63,8 +63,8 @@
     .sub-header h2 {
       font-size: 24px;
       font-weight: 800;
-      color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      color: #111;
+      text-shadow: 0 1px 3px rgba(255,255,255,0.8);
     }
 
     .header-icons {
@@ -98,7 +98,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 10px 16px;
       margin: 0 15px;
       border-radius: 14px;
@@ -122,7 +122,7 @@
       padding: 0 4px;
     }
 
-    /* 🌟 नीचे चैटिंग का पूरा एरिया एकदम साफ White Background में, बिना किसी रेष के */
+    /* नीचे चैटिंग का पूरा एरिया एकदम साफ White Background में */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -320,7 +320,7 @@
 
   <div class="page-container">
     
-    <!-- ऊपर का रंगीन हिस्सा -->
+    <!-- ऊपर का रंग से सफेद रंग का मिश्रण (to White Gradient) वाला हिस्सा -->
     <div class="animated-top-header">
       <div class="sub-header">
         <h2>Messages</h2>
