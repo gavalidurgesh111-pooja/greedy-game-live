@@ -34,44 +34,41 @@
       flex-direction: column;
     }
 
-    /* Linear + Radial Gradient Background */
+    /* 🌟 नेवी ब्लू, बैंगन (Purple) और दूसरे रंगों के साथ ऊपर से नीचे फेड होने वाला 'To White Gradient' इफ़ेक्ट */
     .animated-top-header {
       background-image:
         radial-gradient(
-          circle at 50% 30%,
-          rgba(255,255,255,0.65) 0%,
-          rgba(218,112,214,0.30) 35%,
-          rgba(161,196,253,0) 70%
+          circle at 50% 20%,
+          rgba(255,255,255,0.7) 0%,
+          rgba(74,119,158,0.25) 40%,
+          rgba(255,255,255,1) 85%
         ),
         linear-gradient(
-          135deg,
-          #a1c4fd 0%,
-          #ff9a9e 25%,
-          #da70d6 50%,
-          #ff4500 75%,
+          180deg,
+          #1b263b 0%,
+          #4a0e4e 30%,
+          #4a90e2 60%,
           #ffffff 100%
         );
 
-      background-size: 200% 200%, 300% 300%;
-      background-position: 50% 0%, 0% 50%;
-      animation: toWhiteGradientFlow 15s ease infinite;
+      background-size: 200% 200%, 100% 300%;
+      background-position: 50% 0%, 0% 0%;
+      animation: smoothFadeFlow 15s ease infinite;
 
       padding-bottom: 25px;
       border: none !important;
       outline: none !important;
     }
 
-    @keyframes toWhiteGradientFlow {
+    @keyframes smoothFadeFlow {
       0% {
-        background-position: 50% 0%, 0% 50%;
+        background-position: 50% 0%, 0% 0%;
       }
-
       50% {
-        background-position: 100% 100%, 100% 50%;
+        background-position: 100% 100%, 0% 50%;
       }
-
       100% {
-        background-position: 50% 0%, 0% 50%;
+        background-position: 50% 0%, 0% 0%;
       }
     }
 
@@ -98,7 +95,7 @@
       align-items: center;
     }
 
-    /* सर्च और टिक आइकॉन */
+    /* सर्च और टिक आइकॉन - सफेद गोल बटन */
     .header-icon-btn {
       width: 34px;
       height: 34px;
@@ -147,7 +144,7 @@
       padding: 0 4px;
     }
 
-    /* नीचे चैटिंग एरिया */
+    /* नीचे चैटिंग एरिया एकदम साफ़ White Background में */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -345,7 +342,7 @@
 
   <div class="page-container">
 
-    <!-- ऊपर Linear + Radial Gradient -->
+    <!-- ऊपर का फेड होने वाला रंगीन हिस्सा (Navy, Purple & Gradient Fade) -->
     <div class="animated-top-header">
       <div class="sub-header">
         <h2>Messages</h2>
@@ -465,7 +462,7 @@
 
     function loadUserChats() {
       let container = document.getElementById("chatListContainer");
-      let userChats = [];
+      let userChats = []; 
 
       if (userChats.length === 0) {
         container.innerHTML = `
@@ -480,7 +477,7 @@
         userChats.forEach(chat => {
           let item = document.createElement("div");
           item.className = "chat-item";
-
+          
           item.onclick = () => {
             localStorage.setItem("viewing_user_id", chat.id);
             window.location.replace("profile.html");
