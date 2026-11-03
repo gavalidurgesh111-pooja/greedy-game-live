@@ -28,19 +28,19 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      /* 🌟 यहाँ पूरा बैकग्राउंड एक साथ है: ऊपर आपके रंग (नीला, गुलाबी, पर्पल) और नीचे आते-आते बिल्कुल साफ सफेद, बिना किसी लाइन के */
-      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 20%, #ff9a9e 40%, #ffffff 75%, #ffffff 100%);
-      background-size: 100% 300%;
-      animation: perfectPhotoFlow 15s ease infinite;
+      /* 🌟 यहाँ रंग सिर्फ ऊपर से शुरू होकर ठीक आधे रास्ते (50%) तक सफेद में पूरी तरह घुल जाते हैं और उसके आगे नीचे तक पूरा सफेद रहता है */
+      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 25%, #ff9a9e 45%, #ffffff 50%, #ffffff 100%);
+      background-size: 100% 200%;
+      animation: exactHalfFlow 15s ease infinite;
       position: relative;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
     }
 
-    @keyframes perfectPhotoFlow {
+    @keyframes exactHalfFlow {
       0% { background-position: 0% 0%; }
-      50% { background-position: 0% 50%; }
+      50% { background-position: 0% 30%; }
       100% { background-position: 0% 0%; }
     }
 
@@ -115,7 +115,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (पारदर्शी ताकि नीचे का स्मूथ सफेद और रंगीन बैकग्राउंड साफ दिखे) */
+    /* चैट लिस्ट एरिया */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -131,11 +131,11 @@
       cursor: pointer;
       border-bottom: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
-      background: rgba(255, 255, 255, 0.5); /* हल्का ट्रांसपेरेंट ताकि बैकग्राउंड कास एहसास रहे */
+      background: rgba(255, 255, 255, 0.6);
     }
 
     .chat-item:active {
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.9);
     }
 
     .chat-avatar {
