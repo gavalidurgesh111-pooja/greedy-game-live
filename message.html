@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज ही एक सिंगल और सीमलेस बैकग्राउंड है जो डार्क रंगों से शुरू होकर सफेद तक मिलता है */
+    /* 🌟 पूरा पेज सिंगल बैकग्राउंड: ऊपर 15 इंच तक डार्क रंग लेफ्ट से राइट तैरेंगे और वहीं नीचे आते-आते सफेद में मिल जाएंगे */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -33,32 +33,43 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
-      
-      /* सबसे ऊपर बिल्कुल डार्क और गहरे रंग, जो लेफ्ट से राइट बहते हैं और नीचे लगभग 25 इंच तक आते-आते फीके होकर पूरी तरह सफेद में मिल जाते हैं */
-      background: 
-        radial-gradient(circle at 30% 15%, rgba(186, 85, 211, 0.95) 0%, transparent 45%), /* Dark Medium Orchid */
-        radial-gradient(circle at 70% 10%, rgba(255, 20, 147, 0.95) 0%, transparent 45%),  /* Dark Hot Pink / Fuchsia */
-        radial-gradient(circle at 50% 25%, rgba(255, 140, 0, 0.9) 0%, transparent 50%),    /* Dark Soft Orange */
-        radial-gradient(circle at 20% 35%, rgba(138, 43, 226, 0.9) 0%, transparent 50%),    /* Dark Lovely Purple */
-        radial-gradient(circle at 80% 30%, rgba(30, 144, 255, 0.9) 0%, transparent 50%),    /* Dark Light Sky Blue */
-        radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.9) 0%, transparent 50%),     /* Dark Yellow Hot */
-        linear-gradient(180deg, 
-          rgba(255,255,255,1) 0%, 
-          rgba(255,255,255,0.95) 30%, 
-          #ffffff 60%, 
-          #ffffff 100%
-        );
-      
-      background-size: 200% 100%;
-      background-position: 0% 0%;
-      animation: leftToRightFlow 10s ease-in-out infinite alternate;
+      overflow-x: hidden;
+      background-color: #ffffff; /* 15 इंच के बाद पूरा पेज शुद्ध सफेद */
     }
 
-    /* रंगत का लेफ्ट से राइट और अंदर-बाहर तैरने का एनिमेशन */
-    @keyframes leftToRightFlow {
+    /* ऊपरी 15 इंच का विशेष रंगीन और तैरता हुआ हिस्सा */
+    .page-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 380px; /* लगभग 15 इंच का विजुअल दायरा */
+      
+      /* आपके बताए गए सभी गहरे (Dark) रंग */
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(186, 85, 211, 0.95) 0%, transparent 40%), /* Medium Orchid */
+        radial-gradient(circle. at 50% 15%, rgba(255, 20, 147, 0.95) 0%, transparent 40%), /* Hot Pink Fuchsia */
+        radial-gradient(circle at 80% 25%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),    /* Soft Orange */
+        radial-gradient(circle at 35% 45%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),    /* Lovely Purple */
+        radial-gradient(circle at 70% 50%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),    /* Light Sky Blue */
+        radial-gradient(circle at 15% 60%, rgba(255, 215, 0, 0.9) 0%, transparent 45%);     /* Yellow Hot */
+
+      background-size: 200% 100%;
+      animation: colorScrollLeftToRight 12s linear infinite;
+
+      /* ऊपर से शुरू होकर ठीक 15 इंच के अंदर-अंदर रंगों का फीका पड़ना और सफेद रंग में पूरी तरह मिल जाना */
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
+      
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* रंग एक के पीछे एक लेफ्ट से आएंगे और राइट की तरफ जाते हुए धीरे-धीरे चलेंगे */
+    @keyframes colorScrollLeftToRight {
       0% {
-        background-position: 0% 0%;
+        background-position: -100% 0%;
       }
       100% {
         background-position: 100% 0%;
@@ -141,7 +152,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (यहाँ बैकग्राउंड पूरी तरह सफेद और सीमलेस रहेगा) */
+    /* चैट लिस्ट एरिया (15 इंच के बाद पूरी तरह सफेद और सीमलेस) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
