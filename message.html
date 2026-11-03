@@ -28,27 +28,23 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      /* नीचे के हिस्से में हल्का सफेद और आसमानी रंग स्थिर */
-      background: linear-gradient(180deg, transparent 0%, transparent 30%, #f0f7ff 30%, #ffffff 100%);
+      /* नीचे का हल्का सफेद-आसमानी हिस्सा जो बिल्कुल स्थिर रहेगा और बिना किसी लाइन के मिलेगा */
+      background: #f4f8fc;
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    /* 🌟 स्क्रीन के केवल ऊपरी 25-30% हिस्से में एनिमेटेड स्मूथ ग्रेडिएंट */
+    /* 🌟 ऊपरी हिस्से में गुलाबी, बैंगनी, पोपट्री, पीला और ऑरेंज रंगों का स्मूथ एनिमेटेड ब्लेंड बिना किसी लाइन के */
     .animated-header-bg {
-      height: 28vh;
-      min-height: 180px;
-      background: linear-gradient(90deg, #4b0082, #800080, #da70d6, #ff9a9e, #ffaa00, #ffffe0, #98fb98);
-      background-size: 400% 100%;
-      animation: topGradientFlow 12s ease infinite;
+      background: linear-gradient(90deg, #ff9a9e, #da70d6, #800080, #ffaa00, #ffffe0, #98fb98, #f4f8fc);
+      background-size: 350% 100%;
+      animation: smoothColorBlend 14s ease infinite;
+      padding-bottom: 25px;
       position: relative;
-      border-bottom-left-radius: 30px;
-      border-bottom-right-radius: 30px;
-      overflow: hidden;
     }
 
-    @keyframes topGradientFlow {
+    @keyframes smoothColorBlend {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
@@ -140,7 +136,7 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid #f2f5f9;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
       position: relative;
       background: transparent;
     }
@@ -322,7 +318,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 ऊपरी 25-30% हिस्से में एनिमेटेड ग्रेडिएंट (बैंगन, पर्पल, पिंक, ऑरेंज, पीला और पोपट्री रंग) -->
+    <!-- 🌟 ऊपर स्मूथ एनिमेटेड रंग (गुलाबी, बैंगनी, पोपट्री, पीला और ऑरेंज) -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
