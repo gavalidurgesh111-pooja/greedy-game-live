@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज सिंगल बैकग्राउंड: ऊपर 15 इंच तक डार्क रंग लेफ्ट से राइट तैरेंगे और वहीं नीचे आते-आते सफेद में मिल जाएंगे */
+    /* 🌟 एक ही सिंगल और पक्का बैकग्राउंड: सीधे मुख्य बैकग्राउंड में रंग और सफेद का मिलन */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -34,42 +34,30 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
-      background-color: #ffffff; /* 15 इंच के बाद पूरा पेज शुद्ध सफेद */
-    }
-
-    /* ऊपरी 15 इंच का विशेष रंगीन और तैरता हुआ हिस्सा */
-    .page-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 380px; /* लगभग 15 इंच का विजुअल दायरा */
       
-      /* आपके बताए गए सभी गहरे (Dark) रंग */
+      /* ऊपर गहरे रंग (Medium orchid, hot pink fuchsia, soft orange, lovely purple, light sky blue, yellow hot), जो नीचे आते-आते सफेद में बदल जाते हैं */
       background: 
-        radial-gradient(circle at 20% 20%, rgba(186, 85, 211, 0.95) 0%, transparent 40%), /* Medium Orchid */
-        radial-gradient(circle. at 50% 15%, rgba(255, 20, 147, 0.95) 0%, transparent 40%), /* Hot Pink Fuchsia */
-        radial-gradient(circle at 80% 25%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),    /* Soft Orange */
-        radial-gradient(circle at 35% 45%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),    /* Lovely Purple */
-        radial-gradient(circle at 70% 50%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),    /* Light Sky Blue */
-        radial-gradient(circle at 15% 60%, rgba(255, 215, 0, 0.9) 0%, transparent 45%);     /* Yellow Hot */
+        radial-gradient(circle at 20% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 50% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 80% 12%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 30% 20%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 70% 18%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 45% 25%, rgba(255, 215, 0, 0.9) 0%, transparent 45%),
+        linear-gradient(180deg, 
+          rgba(255,255,255,0.2) 0%, 
+          rgba(255,255,255,0.85) 35%, 
+          #ffffff 50%, 
+          #ffffff 100%
+        );
 
       background-size: 200% 100%;
-      animation: colorScrollLeftToRight 12s linear infinite;
-
-      /* ऊपर से शुरू होकर ठीक 15 इंच के अंदर-अंदर रंगों का फीका पड़ना और सफेद रंग में पूरी तरह मिल जाना */
-      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
-      mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0) 100%);
-      
-      z-index: 1;
-      pointer-events: none;
+      animation: colorScrollLeftToRight 15s ease-in-out infinite alternate;
     }
 
-    /* रंग एक के पीछे एक लेफ्ट से आएंगे और राइट की तरफ जाते हुए धीरे-धीरे चलेंगे */
+    /* रंग बाएं से दाएं और आपस में धीरे-धीरे तैरेंगे */
     @keyframes colorScrollLeftToRight {
       0% {
-        background-position: -100% 0%;
+        background-position: 0% 0%;
       }
       100% {
         background-position: 100% 0%;
@@ -152,7 +140,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (15 इंच के बाद पूरी तरह सफेद और सीमलेस) */
+    /* चैट लिस्ट एरिया */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
