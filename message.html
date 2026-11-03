@@ -28,17 +28,24 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      /* 🌟 यहाँ रंग सिर्फ ऊपर से शुरू होकर ठीक आधे रास्ते (50%) तक सफेद में पूरी तरह घुल जाते हैं और उसके आगे नीचे तक पूरा सफेद रहता है */
-      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 25%, #ff9a9e 45%, #ffffff 50%, #ffffff 100%);
-      background-size: 100% 200%;
-      animation: exactHalfFlow 15s ease infinite;
+      background: #ffffff; /* 'धरती' जो हमेशा अपनी जगह पर ठोस सफेद है */
       position: relative;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
     }
 
-    @keyframes exactHalfFlow {
+    /* 🌟 'रंगीन बादल' जो सिर्फ ऊपर आसमान में तैरते और मिलते हैं, कभी नीचे नहीं आते और बीच में कोई लाइन नहीं है */
+    .animated-header-bg {
+      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 50%, #ffffff 50.5%, #ffffff 100%);
+      background-size: 100% 200%;
+      animation: skyCloudsFlow 15s ease infinite;
+      padding-bottom: 25px;
+      position: relative;
+      border: none !important;
+    }
+
+    @keyframes skyCloudsFlow {
       0% { background-position: 0% 0%; }
       50% { background-position: 0% 30%; }
       100% { background-position: 0% 0%; }
@@ -91,9 +98,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       padding: 10px 16px;
-      margin: 0 15px 15px 15px;
+      margin: 0 15px;
       border-radius: 12px;
       font-size: 13px;
       color: #333;
@@ -115,11 +122,11 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया */
+    /* चैट लिस्ट एरिया - 'धरती' का हिस्सा जो पूरी तरह साफ सफेद है */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
-      background: transparent;
+      background: #ffffff;
       padding-bottom: 70px;
     }
 
@@ -129,13 +136,13 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid #f5f5f5;
       position: relative;
-      background: rgba(255, 255, 255, 0.6);
+      background: #ffffff;
     }
 
     .chat-item:active {
-      background: rgba(255, 255, 255, 0.9);
+      background: #f1f2f6;
     }
 
     .chat-avatar {
@@ -171,12 +178,12 @@
 
     .chat-time {
       font-size: 11px;
-      color: #666;
+      color: #999;
     }
 
     .chat-last-msg {
       font-size: 13px;
-      color: #444;
+      color: #666;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -195,7 +202,7 @@
     .empty-state {
       text-align: center;
       padding: 50px 20px;
-      color: #555;
+      color: #888;
     }
 
     /* पॉप-अप और बॉटम बार */
@@ -225,8 +232,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      border-top: 1px solid rgba(0,0,0,0.05);
+      background: #fff;
+      border-top: 1px solid #eee;
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
@@ -249,21 +256,23 @@
 
   <div class="page-container">
     
-    <!-- टॉप हेडर -->
-    <div class="sub-header">
-      <h2>Messages</h2>
-      <div class="header-icons">
-        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
-        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+    <!-- 🌟 रंगीन बादल (ऊपर का हिस्सा) -->
+    <div class="animated-header-bg">
+      <div class="sub-header">
+        <h2>Messages</h2>
+        <div class="header-icons">
+          <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
+          <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+        </div>
+      </div>
+
+      <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
+        <span>🔔 Turn on notifications, don't miss any messages</span>
+        <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
       </div>
     </div>
 
-    <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
-      <span>🔔 Turn on notifications, don't miss any messages</span>
-      <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
-    </div>
-
-    <!-- चैट लिस्ट एरिया -->
+    <!-- 🌟 धरती (नीचे का पूरा साफ सफेद हिस्सा) -->
     <div class="chat-list-area" id="chatListContainer"></div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
