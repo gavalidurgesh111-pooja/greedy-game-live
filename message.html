@@ -28,25 +28,24 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: #ffffff; /* नीचे की धरती - एकदम साफ़ सफेद */
+      background: #ffffff;
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    /* 🌟 बाएं से दाएं बहते हुए रंगीन बादल और धूप, जो ऊपर गहरे और नीचे आते-आते बिना किसी लाइन के सीधे सफेद में घुल जाते हैं */
+    /* 🌟 रंग बाएं से दाएं एक के पीछे एक बादलों की तरह बहेंगे और नीचे सफेद में मिलेंगे */
     .animated-header-bg {
-      background: linear-gradient(135deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 60%, #ffffff 90%, #ffffff 100%);
-      background-size: 300% 300%;
-      animation: cloudLeftToRightFlow 10s ease infinite;
+      background: linear-gradient(90deg, #1e3c72, #da70d6, #ff9a9e, #ffffff, #ffffff);
+      background-size: 400% 100%;
+      animation: cloudLeftToRightLine 8s linear infinite;
       padding-bottom: 20px;
       position: relative;
     }
 
-    @keyframes cloudLeftToRightFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes cloudLeftToRightLine {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 0%; }
     }
 
     /* टॉप हेडर */
@@ -316,7 +315,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 बाएं से दाएं बहते हुए रंगीन बादल और धूप -->
+    <!-- 🌟 बाएं से दाएं बहने वाला रंगीन हेडर -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
