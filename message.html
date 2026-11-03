@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड है: ऊपर गहरे रंग जो बाएं से दाएं तैरेंगे, और बिना किसी लाइन/बॉर्डर के नीचे सफेद में मिलते जाएंगे */
+    /* 🌟 पूरा पेज सिंगल बैकग्राउंड: बाएं से दाएं तेज गति से तैरते रंग, 4 इंच सीमा, बिना किसी लाइन/बॉर्डर के सफेद में विलय */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -36,31 +36,33 @@
       overflow-x: hidden;
       
       background: 
-        radial-gradient(circle at 20% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),
-        radial-gradient(circle at 50% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),
-        radial-gradient(circle at 80% 12%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 35% 15%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 70% 10%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 45% 18%, rgba(255, 215, 0, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 38%), 
+        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 38%),  
+        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 40%),   
+        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 40%),   
+        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 40%),  
+        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 40%), 
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.5) 0%, transparent 42%),   
         linear-gradient(180deg, 
           rgba(255,255,255,0.05) 0%, 
-          rgba(255,255,255,0.4) 150px, 
-          #ffffff 280px, 
+          rgba(255,255,255,0.5) 120px, 
+          #ffffff 220px, 
           #ffffff 100%
         );
 
-      background-size: 200% 320px, 200% 320px, 200% 320px, 200% 320px, 200% 320px, 200% 320px, 100% 100%;
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
-      animation: colorScrollSmooth 6s ease-in-out infinite alternate;
+      background-size: 200% 260px, 200% 260px, 200% 260px, 200% 260px, 200% 260px, 200% 260px, 200% 260px, 100% 100%;
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
+      /* स्पीड बढ़ाई गई है (3.5s) ताकि रंग बाएं से दाएं तेजी से स्क्रॉल होते हुए दिखें */
+      animation: colorScrollFast 3.5s linear infinite;
     }
 
-    /* रंग बाएं से दाएं बादलों की तरह नॉर्मल स्पीड से तैरेंगे */
-    @keyframes colorScrollSmooth {
+    /* रंग बाएं से दाएं लगातार तेजी से स्क्रॉल होने का एनिमेशन */
+    @keyframes colorScrollFast {
       0% {
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
       }
       100% {
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;
       }
     }
 
