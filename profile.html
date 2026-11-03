@@ -154,7 +154,7 @@
     
     <div id="screenProfile">
       
-      <div class="profile-back-btn" onclick="window.location.href='index.html'">❮</div>
+      <div class="profile-back-btn" onclick="window.location.replace('photo-gateway.html')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
@@ -500,7 +500,7 @@
     }
 
     function openPhotoGridScreen() {
-      window.location.href = "photo-gateway.html";
+      window.location.replace("photo-gateway.html");
     }
 
     function triggerAvatarUpload() {
@@ -572,10 +572,15 @@
       initProfile();
     }
 
+    // 🌟 यहाँ पर localStorage.clear() जोड़ दिया गया है ताकि लॉगआउट करते ही पुराना सारा डेटा साफ़ हो जाए
     function handleLogout() {
-      localStorage.removeItem("greedy_login_identifier");
+      localStorage.clear(); 
+      
       showCustomAlert("Logged out successfully!");
-      setTimeout(() => { window.location.replace("index.html"); }, 800);
+      
+      setTimeout(() => { 
+        window.location.replace("index.html"); 
+      }, 800);
     }
 
     function openAboutMeScreen() { 
