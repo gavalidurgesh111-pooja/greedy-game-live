@@ -34,12 +34,12 @@
       flex-direction: column;
     }
 
-    /* 🌟 सुबह की धूप और बादलों की तरह फैले हुए, आपस में बदलते और स्क्रोल होते हुए सभी रंग */
+    /* 🌟 फीके, शांत और नेचुरल रंग (आकाशी, ऑर्किड, जैस्मीन पर्पल, नेवी ब्लू, रेड ऑरेंज, ग्रीन) और धीमी गति से चलते हुए बादल */
     .animated-header-bg {
-      background: linear-gradient(120deg, #ff9a9e, #da70d6, #dda0dd, #1e3c72, #ff4500, #228b22, #fad0c4);
+      background: linear-gradient(120deg, #ffccd5, #e8c5ff, #d4e4ff, #bde0fe, #ffdab9, #d8f3dc, #e2ece9);
       background-size: 400% 400%;
-      animation: morningCloudsFlow 12s ease infinite;
-      padding-bottom: 15px;
+      animation: morningCloudsFlow 25s ease infinite;
+      padding-bottom: 20px;
     }
 
     @keyframes morningCloudsFlow {
@@ -61,8 +61,8 @@
     .sub-header h2 {
       font-size: 24px;
       font-weight: 800;
-      color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      color: #333;
+      text-shadow: 0 1px 3px rgba(255,255,255,0.6);
     }
 
     .header-icons {
@@ -84,7 +84,7 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .header-icon-btn:active {
@@ -96,14 +96,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.85);
       padding: 10px 16px;
       margin: 0 15px;
       border-radius: 12px;
       font-size: 13px;
       color: #333;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
 
     .notification-banner span {
@@ -199,7 +199,7 @@
     /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
-      padding: 50px 20px;
+      padding: 60px 20px;
       color: #888;
     }
 
@@ -315,7 +315,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 हिलता हुआ और सुबह की धूप वाले बादलों की तरह रंगीन बैकग्राउंड -->
+    <!-- 🌟 फीके, शांत और आकाशी रंग मिले हुए बादलों का बैकग्राउंड -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
