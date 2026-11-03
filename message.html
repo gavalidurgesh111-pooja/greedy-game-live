@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड है: ऊपर 5 इंच में गहरे रंग जो बाएं से दाएं तैरेंगे, बिना किसी लाइन/बॉर्डर के सफेद में मिलेंगे, और नीचे पूरा पेज सफेद */
+    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड है: ऊपर गहरे रंग जो बाएं से दाएं तैरेंगे, और बिना किसी लाइन/बॉर्डर के नीचे सफेद में मिलते जाएंगे */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -36,22 +36,21 @@
       overflow-x: hidden;
       
       background: 
-        radial-gradient(circle at 20% 15%, rgba(186, 85, 211, 0.95) 0%, transparent 35%),
-        radial-gradient(circle at 50% 10%, rgba(255, 20, 147, 0.95) 0%, transparent 35%),
-        radial-gradient(circle at 80% 20%, rgba(255, 140, 0, 0.9) 0%, transparent 40%),
-        radial-gradient(circle at 35% 25%, rgba(138, 43, 226, 0.9) 0%, transparent 40%),
-        radial-gradient(circle at 70% 15%, rgba(30, 144, 255, 0.9) 0%, transparent 40%),
-        radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.9) 0%, transparent 40%),
+        radial-gradient(circle at 20% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 50% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 80% 12%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 35% 15%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 70% 10%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 45% 18%, rgba(255, 215, 0, 0.9) 0%, transparent 45%),
         linear-gradient(180deg, 
-          rgba(255,255,255,0.02) 0%, 
-          rgba(255,255,255,0.7) 35%, 
-          #ffffff 50%, 
+          rgba(255,255,255,0.05) 0%, 
+          rgba(255,255,255,0.4) 150px, 
+          #ffffff 280px, 
           #ffffff 100%
         );
 
-      background-size: 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 100% 100%;
+      background-size: 200% 320px, 200% 320px, 200% 320px, 200% 320px, 200% 320px, 200% 320px, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
-      background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
       animation: colorScrollSmooth 6s ease-in-out infinite alternate;
     }
 
@@ -141,7 +140,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (5 इंच के बाद नीचे का पूरा हिस्सा शुद्ध सफेद) */
+    /* चैट लिस्ट एरिया */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
