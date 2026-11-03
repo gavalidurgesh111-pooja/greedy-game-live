@@ -26,6 +26,7 @@
       overflow-x: hidden;
     }
 
+    /* Page Background */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -45,17 +46,18 @@
         radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),
         linear-gradient(180deg,
           rgba(255,255,255,0.02) 0%,
-          rgba(255,255,255,0.4)  -102px,
-          rgba(255,255,255,0.85) -22px,
-          #ffffff 48px,
+          rgba(255,255,255,0.4) -342px,
+          rgba(255,255,255,0.85) -262px,
+          #ffffff -192px,
           #ffffff 100%
         );
 
       background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
-      animation: colorScrollSmooth 3.5s linear infinite;
+      animation: colorScrollSmooth 1.5s linear infinite;
     }
 
+    /* Color Scroll Animation */
     @keyframes colorScrollSmooth {
       0% {
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
@@ -65,6 +67,7 @@
       }
     }
 
+    /* Top Header */
     .sub-header {
       display: flex;
       align-items: center;
@@ -88,6 +91,7 @@
       align-items: center;
     }
 
+    /* Search and Tick Buttons */
     .header-icon-btn {
       width: 32px;
       height: 32px;
@@ -107,6 +111,7 @@
       transform: scale(0.92);
     }
 
+    /* Notification Banner */
     .notification-banner {
       display: flex;
       align-items: center;
@@ -138,6 +143,7 @@
       padding: 0 4px;
     }
 
+    /* Chat List Area */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -216,12 +222,14 @@
       font-weight: bold;
     }
 
+    /* Empty Chat State */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
       color: #888;
     }
 
+    /* Custom Modal Overlay */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -305,6 +313,7 @@
       padding: 6px;
     }
 
+    /* Bottom Action Bar */
     .bottom-action-bar {
       position: absolute;
       bottom: 0;
@@ -336,7 +345,7 @@
 
   <div class="page-container">
 
-    <!-- हेडर -->
+    <!-- Header -->
     <div class="sub-header">
       <h2>Messages</h2>
       <div class="header-icons">
@@ -345,18 +354,18 @@
       </div>
     </div>
 
-    <!-- नोटिफिकेशन बैनर -->
+    <!-- Notification Banner -->
     <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
       <span>🔔 Turn on notifications, don't miss any messages</span>
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
     </div>
 
-    <!-- चैट लिस्ट एरिया -->
+    <!-- Chat List Area -->
     <div class="chat-list-area" id="chatListContainer">
-      <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->
+      <!-- Chats rendered by JavaScript -->
     </div>
 
-    <!-- सबसे नीचे लॉगआउट और आईडी बार -->
+    <!-- Bottom Logout and ID Bar -->
     <div class="bottom-action-bar">
       <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>
