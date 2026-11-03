@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 एक ही सिंगल और पक्का बैकग्राउंड: सीधे मुख्य बैकग्राउंड में रंग और सफेद का मिलन */
+    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड: ऊपर 5 इंच तक गहरे रंग, जो बाएं से दाएं तेजी से तैरेंगे और 5 इंच के अंदर सफेद में मिल जाएंगे, उसके बाद पूरा पेज सफेद */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -35,27 +35,27 @@
       flex-direction: column;
       overflow-x: hidden;
       
-      /* ऊपर गहरे रंग (Medium orchid, hot pink fuchsia, soft orange, lovely purple, light sky blue, yellow hot), जो नीचे आते-आते सफेद में बदल जाते हैं */
       background: 
-        radial-gradient(circle at 20% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),
-        radial-gradient(circle at 50% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),
-        radial-gradient(circle at 80% 12%, rgba(255, 140, 0, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 30% 20%, rgba(138, 43, 226, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 70% 18%, rgba(30, 144, 255, 0.9) 0%, transparent 45%),
-        radial-gradient(circle at 45% 25%, rgba(255, 215, 0, 0.9) 0%, transparent 45%),
+        radial-gradient(circle at 20% 15%, rgba(186, 85, 211, 0.95) 0%, transparent 35%),
+        radial-gradient(circle at 50% 10%, rgba(255, 20, 147, 0.95) 0%, transparent 35%),
+        radial-gradient(circle at 80% 20%, rgba(255, 140, 0, 0.9) 0%, transparent 40%),
+        radial-gradient(circle at 35% 25%, rgba(138, 43, 226, 0.9) 0%, transparent 40%),
+        radial-gradient(circle at 70% 15%, rgba(30, 144, 255, 0.9) 0%, transparent 40%),
+        radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.9) 0%, transparent 40%),
         linear-gradient(180deg, 
-          rgba(255,255,255,0.2) 0%, 
-          rgba(255,255,255,0.85) 35%, 
-          #ffffff 50%, 
+          rgba(255,255,255,0.05) 0%, 
+          rgba(255,255,255,0.6) 40%, 
+          #ffffff 55%, 
           #ffffff 100%
         );
 
-      background-size: 200% 100%;
-      animation: colorScrollLeftToRight 15s ease-in-out infinite alternate;
+      background-size: 200% 180px; /* ठीक 5 इंच (180px) की ऊंचाई तक रंग सीमित रहेंगे */
+      background-repeat: no-repeat;
+      animation: colorScrollFast 6s ease-in-out infinite alternate; /* स्क्रोल स्पीड नॉर्मल से थोड़ी बढ़ाई गई */
     }
 
-    /* रंग बाएं से दाएं और आपस में धीरे-धीरे तैरेंगे */
-    @keyframes colorScrollLeftToRight {
+    /* रंग बाएं से दाएं और आपस में तैरने की प्रक्रिया */
+    @keyframes colorScrollFast {
       0% {
         background-position: 0% 0%;
       }
@@ -140,7 +140,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया */
+    /* चैट लिस्ट एरिया (5 इंच के बाद पूरा हिस्सा शुद्ध सफेद) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
