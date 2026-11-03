@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक अखंड सिंगल बैकग्राउंड: ऊपर ठीक 4 इंच में सीमित रंग जो बाएं से दाएं स्क्रॉल होंगे, और बिना किसी लाइन/बॉर्डर के कुदरती रूप से नीचे सफेद में विलीन हो जाएंगे */
+    /* 🌟 पूरा पेज एक अखंड, सिंगल और निरंतर बैकग्राउंड: ऊपर 4 इंच में रंग और सफेद का प्राकृतिक मिलन, बिना किसी लाइन, बॉर्डर या अलग टुकड़े के */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -36,22 +36,23 @@
       overflow-x: hidden;
       
       background: 
-        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 35%), 
-        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 35%),  
-        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 38%),   
-        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 38%),   
-        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 38%),  
-        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 38%), 
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.4) 0%, transparent 40%),   
+        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%), 
+        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),  
+        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 42%),   
+        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),   
+        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),  
+        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%), 
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),   
         linear-gradient(180deg, 
           rgba(255,255,255,0.02) 0%, 
-          rgba(255,255,255,0.5) 90px, 
-          rgba(255,255,255,0.9) 150px, 
-          #ffffff 200px, 
+          rgba(255,255,255,0.4) 90px, 
+          rgba(255,255,255,0.85) 170px, 
+          #ffffff 240px, 
           #ffffff 100%
         );
 
-      background-size: 200% 200px, 200% 200px, 200% 200px, 200% 200px, 200% 200px, 200% 200px, 200% 200px, 100% 100%;
+      /* यहाँ सभी लेयर्स को एक ही अखंड निरंतरता में रखा गया है ताकि कोई अलग कट या लाइन न दिखे */
+      background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
       animation: colorScrollSmooth 3.5s linear infinite;
     }
