@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +26,6 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक अखंड, सिंगल और निरंतर बैकग्राउंड: ऊपर 4 इंच में रंग और सफेद का प्राकृतिक मिलन, बिना किसी लाइन, बॉर्डर या अलग टुकड़े के */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -34,30 +34,28 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
-      
-      background: 
-        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%), 
-        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),  
-        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 42%),   
-        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),   
-        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),  
-        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%), 
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),   
-        linear-gradient(180deg, 
-          rgba(255,255,255,0.02) 0%, 
-          rgba(255,255,255,0.4) 90px, 
-          rgba(255,255,255,0.85) 170px, 
-          #ffffff 240px, 
+
+      background:
+        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),
+        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 42%),
+        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),
+        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),
+        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%),
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),
+        linear-gradient(180deg,
+          rgba(255,255,255,0.02) 0%,
+          rgba(255,255,255,0.4)  -102px,
+          rgba(255,255,255,0.85) -22px,
+          #ffffff 48px,
           #ffffff 100%
         );
 
-      /* यहाँ सभी लेयर्स को एक ही अखंड निरंतरता में रखा गया है ताकि कोई अलग कट या लाइन न दिखे */
       background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
       animation: colorScrollSmooth 3.5s linear infinite;
     }
 
-    /* रंग बाएं से दाएं लगातार प्राकृतिक रूप से स्क्रॉल होने का एनिमेशन */
     @keyframes colorScrollSmooth {
       0% {
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
@@ -67,7 +65,6 @@
       }
     }
 
-    /* टॉप हेडर */
     .sub-header {
       display: flex;
       align-items: center;
@@ -91,7 +88,6 @@
       align-items: center;
     }
 
-    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */
     .header-icon-btn {
       width: 32px;
       height: 32px;
@@ -111,7 +107,6 @@
       transform: scale(0.92);
     }
 
-    /* नोटिफिकेशन बैनर */
     .notification-banner {
       display: flex;
       align-items: center;
@@ -143,7 +138,6 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -222,14 +216,12 @@
       font-weight: bold;
     }
 
-    /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
       padding: 60px 20px;
       color: #888;
     }
 
-    /* कस्टम पॉप-अप ओवरले */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -313,7 +305,6 @@
       padding: 6px;
     }
 
-    /* सबसे नीचे फिक्स बॉटम बार */
     .bottom-action-bar {
       position: absolute;
       bottom: 0;
@@ -344,7 +335,7 @@
 <body>
 
   <div class="page-container">
-    
+
     <!-- हेडर -->
     <div class="sub-header">
       <h2>Messages</h2>
@@ -467,7 +458,7 @@
 
     function loadUserChats() {
       let container = document.getElementById("chatListContainer");
-      let userChats = []; 
+      let userChats = [];
 
       if (userChats.length === 0) {
         container.innerHTML = `
@@ -482,7 +473,7 @@
         userChats.forEach(chat => {
           let item = document.createElement("div");
           item.className = "chat-item";
-          
+
           item.onclick = () => {
             localStorage.setItem("viewing_user_id", chat.id);
             window.location.replace("profile.html");
