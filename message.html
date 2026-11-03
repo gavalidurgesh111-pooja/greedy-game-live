@@ -34,20 +34,35 @@
       flex-direction: column;
     }
 
+    /* 🌟 हिलता हुआ (Animated) रंगीन बैकग्राउंड हेडर जैसा आपने फोटो में दिखाया है */
+    .animated-header-bg {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc531, #ff6b81);
+      background-size: 300% 300%;
+      animation: gradientAnimation 6s ease infinite;
+      padding-bottom: 15px;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     /* टॉप हेडर */
     .sub-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 16px 20px;
-      background: #fff;
-      color: #111;
+      background: transparent;
+      color: #fff;
     }
 
     .sub-header h2 {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
-      color: #111;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
     .header-icons {
@@ -58,10 +73,10 @@
 
     /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */
     .header-icon-btn {
-      width: 32px;
-      height: 32px;
-      background: #ffffff;
-      border: 1px solid #ddd;
+      width: 34px;
+      height: 34px;
+      background: rgba(255, 255, 255, 0.85);
+      border: none;
       border-radius: 50%;
       font-size: 14px;
       cursor: pointer;
@@ -69,25 +84,26 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     }
 
     .header-icon-btn:active {
       transform: scale(0.92);
     }
 
-    /* नोटिफिकेशन बैनर (क्लिक करने पर परमिशन वाला पॉप-अप खुलेगा) */
+    /* नोटिफिकेशन बैनर */
     .notification-banner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #f0f2f5;
+      background: rgba(255, 255, 255, 0.9);
       padding: 10px 16px;
-      margin: 0 15px 10px 15px;
-      border-radius: 10px;
+      margin: 0 15px;
+      border-radius: 12px;
       font-size: 13px;
-      color: #444;
+      color: #333;
       cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
     }
 
     .notification-banner span {
@@ -180,10 +196,10 @@
       font-weight: bold;
     }
 
-    /* खाली चैट स्टेट */
+    /* खाली चैट स्टेट (जब कोई मैसेज न हो) */
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
+      padding: 50px 20px;
       color: #888;
     }
 
@@ -206,10 +222,6 @@
       border-radius: 16px;
       padding: 24px 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      text-align: center;
-    }
-
-    .custom-modal-box.left-align {
       text-align: left;
     }
 
@@ -244,7 +256,6 @@
       color: #7a52b3;
     }
 
-    /* नोटिफिकेशन परमिशन पॉप-अप के बटन स्टाइल */
     .notif-modal-actions {
       display: flex;
       flex-direction: column;
@@ -260,6 +271,7 @@
       font-size: 14px;
       cursor: pointer;
       padding: 6px;
+      text-align: left;
     }
 
     .btn-notif-cancel {
@@ -270,6 +282,7 @@
       font-size: 14px;
       cursor: pointer;
       padding: 6px;
+      text-align: left;
     }
 
     /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
@@ -302,19 +315,22 @@
 
   <div class="page-container">
     
-    <!-- हेडर: Messages और सफेद छोटे सर्च/टिक आइकॉन -->
-    <div class="sub-header">
-      <h2>Messages</h2>
-      <div class="header-icons">
-        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
-        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+    <!-- 🌟 हिलता हुआ रंगीन बैकग्राउंड वाला हेडर एरिया -->
+    <div class="animated-header-bg">
+      <!-- हेडर: Messages और सफेद छोटे सर्च/टिक आइकॉन -->
+      <div class="sub-header">
+        <h2>Messages</h2>
+        <div class="header-icons">
+          <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
+          <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+        </div>
       </div>
-    </div>
 
-    <!-- नोटिफिकेशन बैनर (क्लिक करने पर परमिशन वाला पॉप-अप खुलेगा) -->
-    <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
-      <span>🔔 Turn on notifications, don't miss any messages</span>
-      <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
+      <!-- नोटिफिकेशन बैनर -->
+      <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
+        <span>🔔 Turn on notifications, don't miss any messages</span>
+        <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
+      </div>
     </div>
 
     <!-- चैट लिस्ट एरिया -->
@@ -332,7 +348,7 @@
 
   <!-- Tips Modal (✔️ बटन पर क्लिक करने पर खुलने वाला पॉप-अप) -->
   <div id="tipsModal" class="custom-modal-overlay">
-    <div class="custom-modal-box left-align">
+    <div class="custom-modal-box">
       <h3>Tips</h3>
       <p>Are you sure to mark all messages as read?</p>
       <div class="modal-actions">
@@ -342,9 +358,9 @@
     </div>
   </div>
 
-  <!-- Notification Permission Modal (बैनर पर क्लिक करने पर खुलने वाला पॉप-अप)[span_1](start_span)[span_1](end_span) -->
+  <!-- Notification Permission Modal -->
   <div id="notificationModal" class="custom-modal-overlay">
-    <div class="custom-modal-box left-align">
+    <div class="custom-modal-box">
       <p style="color: #222; font-size: 15px; margin-bottom: 15px;">
         You have disabled the notification permissions of this APP in the system. To enable it, turn on the Allow notification in the Settings - Notifications.
       </p>
@@ -388,13 +404,11 @@
       history.pushState({page: "message_secure"}, "", window.location.href);
     });
 
-    // नोटिफिकेशन बैनर बंद करना
     function closeNotificationBanner(e) {
       e.stopPropagation();
       document.getElementById("notificationBanner").style.display = "none";
     }
 
-    // नोटिफिकेशन बैनर पर क्लिक करने पर परमिशन वाला पॉप-अप खोलना[span_2](start_span)[span_2](end_span)
     function openNotificationModal() {
       document.getElementById("notificationModal").style.display = "flex";
     }
@@ -412,7 +426,6 @@
       alert("Search functionality active.");
     }
 
-    // ✔️ बटन पर क्लिक करने पर Tips पॉप-अप खोलना
     function openMarkAsReadModal() {
       document.getElementById("tipsModal").style.display = "flex";
     }
@@ -426,10 +439,9 @@
       alert("All messages marked as read successfully.");
     }
 
-    // चैट लोड लॉजिक
     function loadUserChats() {
       let container = document.getElementById("chatListContainer");
-      let userChats = []; // वर्तमान में खाली, ताकि कोई डेमो नाम न दिखे
+      let userChats = []; 
 
       if (userChats.length === 0) {
         container.innerHTML = `
@@ -468,7 +480,6 @@
       }
     }
 
-    // सिक्योर लॉगआउट
     function secureLogout() {
       localStorage.clear();
       sessionStorage.clear();
