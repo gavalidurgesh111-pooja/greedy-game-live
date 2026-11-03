@@ -24,14 +24,14 @@
       min-height: 100vh;
     }
 
-    /* 🌟 पूरे पेज के बैकग्राउंड पर आकाशी और सुंदर रंग, बिना किसी रेष या डिब्बे के */
+    /* 🌟 पूरे पेज पर डार्क और गहरे रंग जो आपस में पूरी तरह मिक्स होकर एनिमेट होंगे */
     .page-container {
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #ff9a9e, #da70d6, #ff4500, #fad0c4);
+      background: linear-gradient(135deg, #4a90e2, #b83280, #ff4500, #8a2be2, #ff6b81, #2e8b57);
       background-size: 400% 400%;
-      animation: smoothColorFlow 25s ease infinite;
+      animation: smoothColorFlow 20s ease infinite;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -57,7 +57,7 @@
       font-size: 24px;
       font-weight: 800;
       color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
     .header-icons {
@@ -79,7 +79,7 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     }
 
     .header-icon-btn:active {
@@ -91,14 +91,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.9);
       padding: 10px 16px;
       margin: 0 15px 15px 15px;
       border-radius: 14px;
       font-size: 13px;
       color: #333;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
     .notification-banner span {
@@ -115,30 +115,29 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (जो नीचे से साफ़ और सुंदर दिखेगा) */
+    /* 🌟 चैट लिस्ट एरिया का बैकग्राउंड पारदर्शी (transparent) कर दिया गया है ताकि रंग सीधे चैटिंग के पीछे से मिक्स होकर दिखें */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
-      background: #ffffff;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding-top: 10px;
+      background: transparent;
       padding-bottom: 70px;
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
     }
 
     .chat-item {
       display: flex;
       align-items: center;
-      padding: 12px 20px;
+      padding: 14px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid #f9f9f9;
+      background: rgba(255, 255, 255, 0.85); /* हर चैट रो हल्की पारदर्शी सफेद ताकि नाम साफ़ पढ़ें जा सकें */
+      margin: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       position: relative;
     }
 
     .chat-item:active {
-      background: #f1f2f6;
+      background: rgba(255, 255, 255, 0.95);
     }
 
     .chat-avatar {
@@ -174,12 +173,12 @@
 
     .chat-time {
       font-size: 11px;
-      color: #999;
+      color: #666;
     }
 
     .chat-last-msg {
       font-size: 13px;
-      color: #666;
+      color: #444;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -198,8 +197,9 @@
     /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
-      color: #888;
+      padding: 80px 20px;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
 
     /* कस्टम पॉप-अप ओवरले */
@@ -290,8 +290,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: #fff;
-      border-top: 1px solid #eee;
+      background: rgba(255, 255, 255, 0.95);
+      border-top: 1px solid rgba(0,0,0,0.05);
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
@@ -328,12 +328,12 @@
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
     </div>
 
-    <!-- चैट लिस्ट एरिया (जो ऊपर से बहुत ही शानदार और गोलकिनारों के साथ घुला हुआ दिखेगा) -->
+    <!-- चैट लिस्ट एरिया (अब रंग आपस में पूरी तरह घुले हुए दिखेंगे) -->
     <div class="chat-list-area" id="chatListContainer"></div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
     <div class="bottom-action-bar">
-      <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>
+      <span style="font-size: 12px; color: #555;" id="currentUserDisplay">ID: #288630</span>
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>
     </div>
 
@@ -438,8 +438,8 @@
         container.innerHTML = `
           <div class="empty-state">
             <div style="font-size: 45px; margin-bottom: 12px;">💬</div>
-            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>
-            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>
+            <div style="font-weight: bold; font-size: 17px; color: #fff;">Greetings Received</div>
+            <div style="font-size: 13px; color: #f0f0f0; margin-top: 6px;">No greetings yet</div>
           </div>
         `;
       } else {
