@@ -32,32 +32,23 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
-    /* 🌟 फोटो की तरह कोनों में ग्लो और नीचे सफेद में स्मूथ घुलने वाला इफ़ेक्ट */
+    /* 🌟 आपके सभी रंग + चारों तरफ फैलने वाला ग्लो और नीचे सफेद में स्मूथ घुलने वाला इफ़ेक्ट */
     .animated-header-bg {
-      background-image:
-        radial-gradient(circle at 10% 15%, rgba(30, 60, 114, 0.8) 0%, rgba(30, 60, 114, 0) 50%),
-        radial-gradient(circle at 90% 15%, rgba(218, 112, 214, 0.85) 0%, rgba(218, 112, 214, 0) 50%),
-        linear-gradient(180deg, #ff9a9e 0%, #da70d6 25%, #1e3c72 50%, #ffffff 100%);
-
-      background-size: 200% 200%, 200% 200%, 100% 200%;
-      background-position: 0% 0%, 100% 0%, 0% 0%;
-      animation: photoGlowFlow 15s ease infinite;
-      padding-bottom: 20px;
+      background: linear-gradient(120deg, #ff9a9e, #da70d6, #dda0dd, #1e3c72, #ff4500, #228b22, #fad0c4, #ffffff, #ffffff);
+      background-size: 400% 400%;
+      animation: allColorsFlow 15s ease infinite;
+      padding-bottom: 15px;
+      position: relative;
       border: none !important;
     }
 
-    @keyframes photoGlowFlow {
-      0% {
-        background-position: 0% 0%, 100% 0%, 0% 0%;
-      }
-      50% {
-        background-position: 50% 50%, 50% 50%, 0% 50%;
-      }
-      100% {
-        background-position: 0% 0%, 100% 0%, 0% 0%;
-      }
+    @keyframes allColorsFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* टॉप हेडर */
@@ -328,7 +319,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 फोटो की तरह ग्लोइंग और फेड होने वाला हेडर -->
+    <!-- 🌟 आपके सभी रंग और स्मूथ फेड इफ़ेक्ट -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
