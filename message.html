@@ -24,17 +24,22 @@
       min-height: 100vh;
     }
 
-    /* 🌟 पूरे पेज पर डार्क और गहरे रंग जो आपस में पूरी तरह मिक्स होकर एनिमेट होंगे */
     .page-container {
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: linear-gradient(135deg, #4a90e2, #b83280, #ff4500, #8a2be2, #ff6b81, #2e8b57);
-      background-size: 400% 400%;
-      animation: smoothColorFlow 20s ease infinite;
+      background: #ffffff;
       position: relative;
       display: flex;
       flex-direction: column;
+    }
+
+    /* 🌟 सिर्फ ऊपर वाले हिस्से में रंगीन और गहरे एनिमेटेड कलर्स, बिना किसी रेष के */
+    .animated-top-header {
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb, #ff9a9e, #da70d6, #ff4500, #fad0c4);
+      background-size: 400% 400%;
+      animation: smoothColorFlow 20s ease infinite;
+      padding-bottom: 20px;
     }
 
     @keyframes smoothColorFlow {
@@ -57,7 +62,7 @@
       font-size: 24px;
       font-weight: 800;
       color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
     .header-icons {
@@ -79,7 +84,7 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .header-icon-btn:active {
@@ -93,12 +98,12 @@
       justify-content: space-between;
       background: rgba(255, 255, 255, 0.9);
       padding: 10px 16px;
-      margin: 0 15px 15px 15px;
+      margin: 0 15px;
       border-radius: 14px;
       font-size: 13px;
       color: #333;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
     }
 
     .notification-banner span {
@@ -115,29 +120,27 @@
       padding: 0 4px;
     }
 
-    /* 🌟 चैट लिस्ट एरिया का बैकग्राउंड पारदर्शी (transparent) कर दिया गया है ताकि रंग सीधे चैटिंग के पीछे से मिक्स होकर दिखें */
+    /* 🌟 नीचे चैटिंग का पूरा एरिया एकदम साफ White Background में */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
-      background: transparent;
+      background: #ffffff;
+      padding-top: 10px;
       padding-bottom: 70px;
     }
 
     .chat-item {
       display: flex;
       align-items: center;
-      padding: 14px 20px;
+      padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.85); /* हर चैट रो हल्की पारदर्शी सफेद ताकि नाम साफ़ पढ़ें जा सकें */
-      margin: 6px 12px;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-bottom: 1px solid #f9f9f9;
       position: relative;
     }
 
     .chat-item:active {
-      background: rgba(255, 255, 255, 0.95);
+      background: #f1f2f6;
     }
 
     .chat-avatar {
@@ -173,12 +176,12 @@
 
     .chat-time {
       font-size: 11px;
-      color: #666;
+      color: #999;
     }
 
     .chat-last-msg {
       font-size: 13px;
-      color: #444;
+      color: #666;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -197,9 +200,8 @@
     /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
-      padding: 80px 20px;
-      color: #fff;
-      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+      padding: 60px 20px;
+      color: #888;
     }
 
     /* कस्टम पॉप-अप ओवरले */
@@ -290,8 +292,8 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.95);
-      border-top: 1px solid rgba(0,0,0,0.05);
+      background: #fff;
+      border-top: 1px solid #eee;
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
@@ -314,26 +316,28 @@
 
   <div class="page-container">
     
-    <!-- हेडर और नोटिफिकेशन बैनर -->
-    <div class="sub-header">
-      <h2>Messages</h2>
-      <div class="header-icons">
-        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
-        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+    <!-- 🌟 केवल ऊपर के हिस्से में सुंदर रंगीन ग्रेडिएंट (Animated Header) -->
+    <div class="animated-top-header">
+      <div class="sub-header">
+        <h2>Messages</h2>
+        <div class="header-icons">
+          <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
+          <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
+        </div>
+      </div>
+
+      <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
+        <span>🔔 Turn on notifications, don't miss any messages</span>
+        <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
       </div>
     </div>
 
-    <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
-      <span>🔔 Turn on notifications, don't miss any messages</span>
-      <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
-    </div>
-
-    <!-- चैट लिस्ट एरिया (अब रंग आपस में पूरी तरह घुले हुए दिखेंगे) -->
+    <!-- चैट लिस्ट एरिया (नीचे एकदम साफ White Background) -->
     <div class="chat-list-area" id="chatListContainer"></div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
     <div class="bottom-action-bar">
-      <span style="font-size: 12px; color: #555;" id="currentUserDisplay">ID: #288630</span>
+      <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>
     </div>
 
@@ -438,8 +442,8 @@
         container.innerHTML = `
           <div class="empty-state">
             <div style="font-size: 45px; margin-bottom: 12px;">💬</div>
-            <div style="font-weight: bold; font-size: 17px; color: #fff;">Greetings Received</div>
-            <div style="font-size: 13px; color: #f0f0f0; margin-top: 6px;">No greetings yet</div>
+            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>
+            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>
           </div>
         `;
       } else {
