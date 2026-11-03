@@ -28,27 +28,25 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: #ffffff; /* धरती: पक्की ठोस सफेद जमीन */
+      background: #ffffff; /* नीचे की धरती - एकदम साफ़ सफेद */
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
     }
 
-    /* 🌟 बादल और उनका स्क्रोलिंग मिलन: ऊपर गहरे रंग, जो नीचे आधे रास्ते पर बिना किसी लाइन के सफेद धरती में घुल जाते हैं और स्क्रोल के साथ जीवंत लगते हैं */
+    /* 🌟 बाएं से दाएं बहते हुए रंगीन बादल और धूप, जो ऊपर गहरे और नीचे आते-आते बिना किसी लाइन के सीधे सफेद में घुल जाते हैं */
     .animated-header-bg {
-      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 48%, #ffffff 50%, #ffffff 100%);
-      background-size: 100% 200%;
-      animation: scrollingCloudFlow 12s ease infinite;
-      padding-bottom: 25px;
+      background: linear-gradient(135deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 60%, #ffffff 90%, #ffffff 100%);
+      background-size: 300% 300%;
+      animation: cloudLeftToRightFlow 10s ease infinite;
+      padding-bottom: 20px;
       position: relative;
-      border: none !important;
     }
 
-    @keyframes scrollingCloudFlow {
-      0% { background-position: 0% 0%; }
-      50% { background-position: 0% 35%; }
-      100% { background-position: 0% 0%; }
+    @keyframes cloudLeftToRightFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* टॉप हेडर */
@@ -74,6 +72,7 @@
       align-items: center;
     }
 
+    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */
     .header-icon-btn {
       width: 34px;
       height: 34px;
@@ -98,14 +97,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.92);
       padding: 10px 16px;
       margin: 0 15px;
       border-radius: 12px;
       font-size: 13px;
       color: #333;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .notification-banner span {
@@ -122,7 +121,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया - धरती का हिस्सा जो स्क्रोल होने पर बादलों के मिलन को और शानदार दिखाता है */
+    /* चैट लिस्ट एरिया */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -136,9 +135,8 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid #f5f5f5;
+      border-bottom: 1px solid #f9f9f9;
       position: relative;
-      background: #ffffff;
     }
 
     .chat-item:active {
@@ -199,13 +197,14 @@
       font-weight: bold;
     }
 
+    /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
       padding: 50px 20px;
       color: #888;
     }
 
-    /* पॉप-अप और बॉटम बार */
+    /* कस्टम पॉप-अप ओवरले */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -227,6 +226,67 @@
       text-align: left;
     }
 
+    .custom-modal-box h3 {
+      font-size: 18px;
+      color: #111;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .custom-modal-box p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-btn-cancel {
+      color: #7a52b3;
+    }
+
+    .modal-btn-confirm {
+      color: #7a52b3;
+    }
+
+    .notif-modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .btn-app-info {
+      background: transparent;
+      border: none;
+      color: #4a90e2;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px;
+      text-align: left;
+    }
+
+    .btn-notif-cancel {
+      background: transparent;
+      border: none;
+      color: #555;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px;
+      text-align: left;
+    }
+
+    /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
     .bottom-action-bar {
       position: absolute;
       bottom: 0;
@@ -256,7 +316,7 @@
 
   <div class="page-container">
     
-    <!-- रंगीन बादल (ऊपर का हिस्सा) -->
+    <!-- 🌟 बाएं से दाएं बहते हुए रंगीन बादल और धूप -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
@@ -272,7 +332,7 @@
       </div>
     </div>
 
-    <!-- धरती (नीचे का पूरा साफ सफेद हिस्सा, जो स्क्रोल करने पर बादलों के साथ जीवंत लगेगा) -->
+    <!-- चैट लिस्ट एरिया -->
     <div class="chat-list-area" id="chatListContainer"></div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
@@ -288,9 +348,9 @@
     <div class="custom-modal-box">
       <h3>Tips</h3>
       <p>Are you sure to mark all messages as read?</p>
-      <div style="display: flex; justify-content: flex-end; gap: 20px; font-weight: bold; cursor: pointer; margin-top: 20px;">
-        <span onclick="closeTipsModal()" style="color: #7a52b3;">CANCEL</span>
-        <span onclick="confirmMarkAsRead()" style="color: #7a52b3;">CONFIRM</span>
+      <div class="modal-actions">
+        <span class="modal-btn-cancel" onclick="closeTipsModal()">CANCEL</span>
+        <span class="modal-btn-confirm" onclick="confirmMarkAsRead()">CONFIRM</span>
       </div>
     </div>
   </div>
@@ -305,9 +365,9 @@
         <input type="checkbox" id="notifCheck" style="width: 16px; height: 16px; accent-color: #7a52b3;">
         <label for="notifCheck">Notifications</label>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 10px;">
-        <button onclick="goToAppInfo()" style="background:transparent; border:none; color:#4a90e2; font-weight:bold; text-align:left; cursor:pointer;">Go to APP info</button>
-        <button onclick="closeNotificationModal()" style="background:transparent; border:none; color:#555; font-weight:bold; text-align:left; cursor:pointer;">Cancel</button>
+      <div class="notif-modal-actions">
+        <button class="btn-app-info" onclick="goToAppInfo()">Go to APP info</button>
+        <button class="btn-notif-cancel" onclick="closeNotificationModal()">Cancel</button>
       </div>
     </div>
   </div>
@@ -383,7 +443,7 @@
           <div class="empty-state">
             <div style="font-size: 45px; margin-bottom: 12px;">💬</div>
             <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>
-            <div style="font-size: 13px; color: #666; margin-top: 6px;">No greetings yet</div>
+            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>
           </div>
         `;
       } else {
