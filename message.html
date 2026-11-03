@@ -52,18 +52,31 @@
 
     .header-icons {
       display: flex;
-      gap: 16px;
+      gap: 12px;
       align-items: center;
     }
 
+    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */
     .header-icon-btn {
-      background: none;
-      border: none;
-      font-size: 20px;
+      width: 32px;
+      height: 32px;
+      background: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      font-size: 14px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
-    /* नोटिफिकेशन बैनर */
+    .header-icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* नोटिफिकेशन बैनर (क्लिक करने पर परमिशन वाला पॉप-अप खुलेगा) */
     .notification-banner {
       display: flex;
       align-items: center;
@@ -74,6 +87,7 @@
       border-radius: 10px;
       font-size: 13px;
       color: #444;
+      cursor: pointer;
     }
 
     .notification-banner span {
@@ -87,6 +101,7 @@
       font-size: 16px;
       color: #777;
       font-weight: bold;
+      padding: 0 4px;
     }
 
     /* चैट लिस्ट एरिया */
@@ -165,11 +180,96 @@
       font-weight: bold;
     }
 
-    /* खाली चैट का स्टेट */
+    /* खाली चैट स्टेट */
     .empty-state {
       text-align: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
       color: #888;
+    }
+
+    /* कस्टम पॉप-अप ओवरले */
+    .custom-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .custom-modal-box {
+      background: #fff;
+      width: 100%;
+      max-width: 330px;
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .custom-modal-box.left-align {
+      text-align: left;
+    }
+
+    .custom-modal-box h3 {
+      font-size: 18px;
+      color: #111;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+
+    .custom-modal-box p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .modal-btn-cancel {
+      color: #7a52b3;
+    }
+
+    .modal-btn-confirm {
+      color: #7a52b3;
+    }
+
+    /* नोटिफिकेशन परमिशन पॉप-अप के बटन स्टाइल */
+    .notif-modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .btn-app-info {
+      background: transparent;
+      border: none;
+      color: #4a90e2;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    .btn-notif-cancel {
+      background: transparent;
+      border: none;
+      color: #555;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 6px;
     }
 
     /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
@@ -202,24 +302,24 @@
 
   <div class="page-container">
     
-    <!-- हेडर: Messages और सर्च/टिक आइकॉन -->
+    <!-- हेडर: Messages और सफेद छोटे सर्च/टिक आइकॉन -->
     <div class="sub-header">
       <h2>Messages</h2>
       <div class="header-icons">
-        <button class="header-icon-btn" onclick="searchChats()">🔍</button>
-        <button class="header-icon-btn" onclick="markAllAsRead()">✓</button>
+        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>
+        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>
       </div>
     </div>
 
-    <!-- नोटिफिकेशन बैनर -->
-    <div id="notificationBanner" class="notification-banner">
+    <!-- नोटिफिकेशन बैनर (क्लिक करने पर परमिशन वाला पॉप-अप खुलेगा) -->
+    <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">
       <span>🔔 Turn on notifications, don't miss any messages</span>
-      <span class="close-banner" onclick="closeNotificationBanner()">✕</span>
+      <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>
     </div>
 
     <!-- चैट लिस्ट एरिया -->
     <div class="chat-list-area" id="chatListContainer">
-      <!-- यहाँ चैट्स रेंडर होंगी -->
+      <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->
     </div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
@@ -228,6 +328,35 @@
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>
     </div>
 
+  </div>
+
+  <!-- Tips Modal (✔️ बटन पर क्लिक करने पर खुलने वाला पॉप-अप) -->
+  <div id="tipsModal" class="custom-modal-overlay">
+    <div class="custom-modal-box left-align">
+      <h3>Tips</h3>
+      <p>Are you sure to mark all messages as read?</p>
+      <div class="modal-actions">
+        <span class="modal-btn-cancel" onclick="closeTipsModal()">CANCEL</span>
+        <span class="modal-btn-confirm" onclick="confirmMarkAsRead()">CONFIRM</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Permission Modal (बैनर पर क्लिक करने पर खुलने वाला पॉप-अप)[span_1](start_span)[span_1](end_span) -->
+  <div id="notificationModal" class="custom-modal-overlay">
+    <div class="custom-modal-box left-align">
+      <p style="color: #222; font-size: 15px; margin-bottom: 15px;">
+        You have disabled the notification permissions of this APP in the system. To enable it, turn on the Allow notification in the Settings - Notifications.
+      </p>
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: #333;">
+        <input type="checkbox" id="notifCheck" style="width: 16px; height: 16px; accent-color: #7a52b3;">
+        <label for="notifCheck">Notifications</label>
+      </div>
+      <div class="notif-modal-actions">
+        <button class="btn-app-info" onclick="goToAppInfo()">Go to APP info</button>
+        <button class="btn-notif-cancel" onclick="closeNotificationModal()">Cancel</button>
+      </div>
+    </div>
   </div>
 
   <!-- Firebase SDKs -->
@@ -259,43 +388,63 @@
       history.pushState({page: "message_secure"}, "", window.location.href);
     });
 
-    function closeNotificationBanner() {
+    // नोटिफिकेशन बैनर बंद करना
+    function closeNotificationBanner(e) {
+      e.stopPropagation();
       document.getElementById("notificationBanner").style.display = "none";
     }
 
+    // नोटिफिकेशन बैनर पर क्लिक करने पर परमिशन वाला पॉप-अप खोलना[span_2](start_span)[span_2](end_span)
+    function openNotificationModal() {
+      document.getElementById("notificationModal").style.display = "flex";
+    }
+
+    function closeNotificationModal() {
+      document.getElementById("notificationModal").style.display = "none";
+    }
+
+    function goToAppInfo() {
+      alert("Redirecting to app info / system settings...");
+      closeNotificationModal();
+    }
+
     function searchChats() {
-      alert("Search functionality will filter conversations.");
+      alert("Search functionality active.");
     }
 
-    function markAllAsRead() {
-      alert("All messages marked as read.");
+    // ✔️ बटन पर क्लिक करने पर Tips पॉप-अप खोलना
+    function openMarkAsReadModal() {
+      document.getElementById("tipsModal").style.display = "flex";
     }
 
-    // चैट लोड करना और क्लिक करने पर उस यूजर की प्रोफाइल खोलना
+    function closeTipsModal() {
+      document.getElementById("tipsModal").style.display = "none";
+    }
+
+    function confirmMarkAsRead() {
+      document.getElementById("tipsModal").style.display = "none";
+      alert("All messages marked as read successfully.");
+    }
+
+    // चैट लोड लॉजिक
     function loadUserChats() {
       let container = document.getElementById("chatListContainer");
-      
-      let sampleChats = [
-        { id: "#123456", name: "Blacku", avatar: "https://via.placeholder.com/50", time: "14:38", msg: "Arzuu ❤️ is broadcasting...", badge: "1" },
-        { id: "#789012", name: "Family Assistant", avatar: "https://via.placeholder.com/50", time: "26-11-01", msg: "Reward points 100", badge: "" },
-        { id: "#345678", name: "90000", avatar: "https://via.placeholder.com/50", time: "26-10-31", msg: "Last Day! Join the Battle!", badge: "" }
-      ];
+      let userChats = []; // वर्तमान में खाली, ताकि कोई डेमो नाम न दिखे
 
-      if (sampleChats.length === 0) {
+      if (userChats.length === 0) {
         container.innerHTML = `
           <div class="empty-state">
-            <div style="font-size: 40px; margin-bottom: 10px;">💬</div>
-            <div style="font-weight: bold; font-size: 16px; color: #333;">Greetings Received</div>
-            <div style="font-size: 13px; color: #888; margin-top: 4px;">No greetings yet</div>
+            <div style="font-size: 45px; margin-bottom: 12px;">💬</div>
+            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>
+            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>
           </div>
         `;
       } else {
         container.innerHTML = "";
-        sampleChats.forEach(chat => {
+        userChats.forEach(chat => {
           let item = document.createElement("div");
           item.className = "chat-item";
           
-          // 🌟 किसी भी यूजर के चैट पर क्लिक करते ही उसकी आईडी सेव होगी और प्रोफाइल खुलेगी
           item.onclick = () => {
             localStorage.setItem("viewing_user_id", chat.id);
             window.location.replace("profile.html");
