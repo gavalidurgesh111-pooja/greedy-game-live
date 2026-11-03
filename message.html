@@ -22,25 +22,57 @@
       justify-content: center;
       color: #333;
       min-height: 100vh;
+      overflow-x: hidden;
     }
 
     .page-container {
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      /* 🌟 फोटो जैसा सीमलेस बैकग्राउंड: ऊपर कोनों पर हल्का नीला और गुलाबी ग्लो, जो धीरे-धीरे नीचे पूरी तरह सफेद में घुल जाता है */
-      background: 
-        radial-gradient(circle at 10% 5%, rgba(56, 189, 248, 0.35) 0%, transparent 40%),
-        radial-gradient(circle at 90% 8%, rgba(244, 63, 94, 0.3) 0%, transparent 45%),
-        linear-gradient(180deg, #f7f9fc 0%, #ffffff 40%, #ffffff 100%);
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      background: #ffffff;
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    /* टॉप हेडर */
+    /* 🌟 डायनेमिक और एनिमेटेड मल्टी-कलर टॉप बैकग्राउंड (ऊपर 15 इंच/हि हिस्से तक) */
+    .page-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 280px; /* ऊपरी हिस्से का दायरा, जहाँ तक रंग खेलेंगे */
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(186, 85, 211, 0.65) 0%, transparent 50%), /* Medium Orchid */
+        radial-gradient(circle at 50% 20%, rgba(255, 105, 180, 0.7) 0%, transparent 45%),  /* Hot Pink / Fuchsia */
+        radial-gradient(circle at 80% 25%, rgba(255, 165, 0, 0.55) 0%, transparent 50%),   /* Soft Orange */
+        radial-gradient(circle at 35% 70%, rgba(147, 112, 219, 0.6) 0%, transparent 55%),  /* Lovely Purple */
+        radial-gradient(circle at 10% 80%, rgba(135, 206, 250, 0.6) 0%, transparent 45%),  /* Light Sky Blue */
+        radial-gradient(circle at 90% 70%, rgba(255, 223, 0, 0.65) 0%, transparent 50%);  /* Yellow Hot */
+      background-size: 200% 200%;
+      animation: colorFlowShift 8s ease infinite alternate;
+      /* नीचे की तरफ आते-आते इन्हें पूरी तरह सफेद में घोलने के लिए मास्क या ग्रेडिएंट फेड */
+      -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* रंगत को लेफ्ट से राइट और आपस में तैरने/स्क्रोल करने का एनिमेशन */
+    @keyframes colorFlowShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 50% 100%;
+      }
+    }
+
+    /* टॉप हेडर (रंगों के ऊपर तैरता हुआ) */
     .sub-header {
       display: flex;
       align-items: center;
@@ -48,6 +80,8 @@
       padding: 16px 20px;
       background: transparent;
       color: #111;
+      position: relative;
+      z-index: 2;
     }
 
     .sub-header h2 {
@@ -67,7 +101,7 @@
       width: 32px;
       height: 32px;
       background: rgba(255, 255, 255, 0.9);
-      border: 1px solid #e2e8f0;
+      border: 1px solid rgba(255, 255, 255, 0.6);
       border-radius: 50%;
       font-size: 14px;
       cursor: pointer;
@@ -87,14 +121,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(240, 242, 245, 0.85);
-      backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
       padding: 10px 16px;
       margin: 0 15px 10px 15px;
       border-radius: 10px;
       font-size: 13px;
       color: #444;
       cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
     .notification-banner span {
@@ -111,12 +148,14 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया */
+    /* चैट लिस्ट एरिया (बाकी का पूरा हिस्सा सफेद) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
-      background: transparent;
+      background: #ffffff; /* इसके बाद का पूरा हिस्सा शुद्ध सफेद */
       padding-bottom: 70px;
+      position: relative;
+      z-index: 2;
     }
 
     .chat-item {
@@ -125,13 +164,13 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid #f9f9f9;
       position: relative;
-      background: transparent;
+      background: #ffffff;
     }
 
     .chat-item:active {
-      background: rgba(0, 0, 0, 0.04);
+      background: #f1f2f6;
     }
 
     .chat-avatar {
@@ -252,7 +291,6 @@
       color: #7a52b3;
     }
 
-    /* नोटिफिकेशन परमिशन पॉप-अप के बटन स्टाइल */
     .notif-modal-actions {
       display: flex;
       flex-direction: column;
@@ -286,13 +324,13 @@
       bottom: 0;
       left: 0;
       width: 100%;
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(5px);
+      background: #fff;
       border-top: 1px solid #eee;
       padding: 12px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      z-index: 10;
     }
 
     .logout-btn-bottom {
@@ -311,7 +349,7 @@
 
   <div class="page-container">
     
-    <!-- हेडर: Messages और सफेद छोटे सर्च/टिक आइकॉन -->
+    <!-- हेडर -->
     <div class="sub-header">
       <h2>Messages</h2>
       <div class="header-icons">
@@ -391,13 +429,11 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     document.getElementById("currentUserDisplay").innerText = "ID: " + (localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630");
 
-    // बैक बटन गार्ड
     history.pushState({page: "message_secure"}, "", window.location.href);
     window.addEventListener('popstate', function(event) {
       history.pushState({page: "message_secure"}, "", window.location.href);
     });
 
-    // नोटिफिकेशन बैनर बंद करना
     function closeNotificationBanner(e) {
       e.stopPropagation();
       document.getElementById("notificationBanner").style.display = "none";
@@ -433,7 +469,6 @@
       alert("All messages marked as read successfully.");
     }
 
-    // चैट लोड लॉजिक
     function loadUserChats() {
       let container = document.getElementById("chatListContainer");
       let userChats = []; 
@@ -475,7 +510,6 @@
       }
     }
 
-    // सिक्योर लॉगआउट
     function secureLogout() {
       localStorage.clear();
       sessionStorage.clear();
