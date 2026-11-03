@@ -17,7 +17,7 @@
     }
 
     body {
-      background: #000;
+      background: #ffffff;
       display: flex;
       justify-content: center;
       color: #333;
@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक ही सिंगल बैकग्राउंड है - कोई लाइन या बॉर्डर नहीं, ऊपर गहरे रंग जो नीचे सफेद में मिलते हैं */
+    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड है: ऊपर 5 इंच में गहरे रंग जो बाएं से दाएं तैरेंगे, बिना किसी लाइन/बॉर्डर के सफेद में मिलेंगे, और नीचे पूरा पेज सफेद */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -43,19 +43,20 @@
         radial-gradient(circle at 70% 15%, rgba(30, 144, 255, 0.9) 0%, transparent 40%),
         radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.9) 0%, transparent 40%),
         linear-gradient(180deg, 
-          rgba(255,255,255,0.05) 0%, 
-          rgba(255,255,255,0.65) 30%, 
-          #ffffff 45%, 
+          rgba(255,255,255,0.02) 0%, 
+          rgba(255,255,255,0.7) 35%, 
+          #ffffff 50%, 
           #ffffff 100%
         );
 
       background-size: 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
-      animation: colorScrollFast 6s ease-in-out infinite alternate;
+      background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+      animation: colorScrollSmooth 6s ease-in-out infinite alternate;
     }
 
-    /* रंग बाएं से दाएं बादलों की तरह धीरे-धीरे तैरेंगे */
-    @keyframes colorScrollFast {
+    /* रंग बाएं से दाएं बादलों की तरह नॉर्मल स्पीड से तैरेंगे */
+    @keyframes colorScrollSmooth {
       0% {
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
       }
@@ -140,7 +141,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (बिना किसी बॉर्डर या लाइन के शुद्ध सफेद बैकग्राउंड) */
+    /* चैट लिस्ट एरिया (5 इंच के बाद नीचे का पूरा हिस्सा शुद्ध सफेद) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
