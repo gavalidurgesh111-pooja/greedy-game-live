@@ -191,7 +191,8 @@
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="openSettingsPage()">Inbox message</button>
+          <!-- 🌟 यहाँ Inbox message की जगह सीधा message.html पर जाने का बटन जोड़ दिया गया है -->
+          <button class="btn-action" onclick="window.location.replace('message.html')">Messages</button>
         </div>
       </div>
 
@@ -360,7 +361,6 @@
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
-    // 🌟 प्रोफाइल पेज पर बैक बटन दबाने पर सीधे गेटवे पर भेजने का नेविगेशन लॉक
     history.pushState({page: "profile_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function (event) {
@@ -381,11 +381,9 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
-      // अगर कोई अन्य मॉडल खुला न हो, तो बैक दबाते ही गेटवे पर भेजें ताकि लॉगिन/रजिस्ट्रेशन पर न भटके
       window.location.replace("photo-gateway.html");
     });
 
-    // 🌟 सुपर फास्ट रेंडरिंग: पहले लोकल स्टोरेज से तुरंत डेटा दिखाना
     function renderProfileData() {
       document.getElementById("profNameDisplay").innerText = userName;
       document.getElementById("profBalance").innerText = coins;
@@ -572,12 +570,9 @@
       initProfile();
     }
 
-    // 🌟 यहाँ पर localStorage.clear() जोड़ दिया गया है ताकि लॉगआउट करते ही पुराना सारा डेटा साफ़ हो जाए
     function handleLogout() {
       localStorage.clear(); 
-      
       showCustomAlert("Logged out successfully!");
-      
       setTimeout(() => { 
         window.location.replace("index.html"); 
       }, 800);
