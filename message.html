@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड: ऊपर 5 इंच तक गहरे रंग, जो बाएं से दाएं तेजी से तैरेंगे और 5 इंच के अंदर सफेद में मिल जाएंगे, उसके बाद पूरा पेज सफेद */
+    /* 🌟 सिंगल और पक्का बैकग्राउंड: ऊपर ठीक 5 इंच तक गहरे रंग, बाएं से दाएं तैरेंगे, नीचे सफेद में मिलेंगे, और बाकी पूरा पेज सफेद */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -43,24 +43,24 @@
         radial-gradient(circle at 70% 15%, rgba(30, 144, 255, 0.9) 0%, transparent 40%),
         radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.9) 0%, transparent 40%),
         linear-gradient(180deg, 
-          rgba(255,255,255,0.05) 0%, 
-          rgba(255,255,255,0.6) 40%, 
-          #ffffff 55%, 
+          rgba(255,255,255,0.1) 0%, 
+          rgba(255,255,255,0.7) 35%, 
+          #ffffff 50%, 
           #ffffff 100%
         );
 
-      background-size: 200% 180px; /* ठीक 5 इंच (180px) की ऊंचाई तक रंग सीमित रहेंगे */
-      background-repeat: no-repeat;
-      animation: colorScrollFast 6s ease-in-out infinite alternate; /* स्क्रोल स्पीड नॉर्मल से थोड़ी बढ़ाई गई */
+      background-size: 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 200% 180px, 100% 100%;
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
+      animation: colorScrollFast 6s ease-in-out infinite alternate;
     }
 
     /* रंग बाएं से दाएं और आपस में तैरने की प्रक्रिया */
     @keyframes colorScrollFast {
       0% {
-        background-position: 0% 0%;
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
       }
       100% {
-        background-position: 100% 0%;
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;
       }
     }
 
