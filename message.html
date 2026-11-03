@@ -34,18 +34,38 @@
       flex-direction: column;
     }
 
-    /* 🌟 सुबह की धूप और बादलों की तरह फैले हुए, आपस में बदलते और स्क्रोल होते हुए सभी रंग */
+    /* 🌟 आपके सभी रंग + चारों तरफ फैलने वाला ग्लो और धीरे-धीरे स्क्रॉल होने वाला 'to White Gradient' इफ़ेक्ट */
     .animated-header-bg {
-      background: linear-gradient(120deg, #ff9a9e, #da70d6, #dda0dd, #1e3c72, #ff4500, #228b22, #fad0c4);
-      background-size: 400% 400%;
-      animation: morningCloudsFlow 12s ease infinite;
-      padding-bottom: 15px;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(30, 60, 114, 0.7) 0%, rgba(30, 60, 114, 0) 55%),
+        radial-gradient(circle at 85% 25%, rgba(218, 112, 214, 0.75) 0%, rgba(218, 112, 214, 0) 55%),
+        linear-gradient(
+          180deg,
+          #1e3c72 0%,
+          #da70d6 25%,
+          #ff9a9e 50%,
+          #ff4500 75%,
+          #ffffff 100%
+        );
+
+      background-size: 200% 200%, 200% 200%, 100% 300%;
+      background-position: 0% 0%, 100% 0%, 0% 0%;
+      animation: smoothAuroraFlow 25s ease infinite;
+      padding-bottom: 20px;
+      border: none !important;
+      outline: none !important;
     }
 
-    @keyframes morningCloudsFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes smoothAuroraFlow {
+      0% {
+        background-position: 0% 0%, 100% 0%, 0% 0%;
+      }
+      50% {
+        background-position: 50% 50%, 50% 50%, 0% 50%;
+      }
+      100% {
+        background-position: 0% 0%, 100% 0%, 0% 0%;
+      }
     }
 
     /* टॉप हेडर */
@@ -61,8 +81,8 @@
     .sub-header h2 {
       font-size: 24px;
       font-weight: 800;
-      color: #fff;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      color: #111;
+      text-shadow: 0 1px 3px rgba(255,255,255,0.8);
     }
 
     .header-icons {
@@ -120,12 +140,15 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया */
+    /* चैट लिस्ट एरिया (बिना किसी रेष के एकदम साफ White Background) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
       background: #ffffff;
+      padding-top: 10px;
       padding-bottom: 70px;
+      border: none !important;
+      margin-top: 0 !important;
     }
 
     .chat-item {
@@ -315,7 +338,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 हिलता हुआ और सुबह की धूप वाले बादलों की तरह रंगीन बैकग्राउंड -->
+    <!-- 🌟 हिलता हुआ और चारों तरफ फैलता हुआ ग्लोइंग बैकग्राउंड -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
