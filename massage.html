@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Greedy Coin - Messages & Secure Hub</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Greedy Coin - Messages</title>
   <style>
     * {
       box-sizing: border-box;
@@ -35,80 +34,165 @@
       flex-direction: column;
     }
 
-    /* हेडर: टाइटल और सिक्योर लॉगआउट बटन */
+    /* टॉप हेडर */
     .sub-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 18px;
+      padding: 16px 20px;
       background: #fff;
       color: #111;
-      border-bottom: 1px solid #eee;
     }
 
     .sub-header h2 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #222;
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
     }
 
-    .logout-btn {
-      background: #d9534f;
-      color: #fff;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .logout-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* चैट लिस्ट या मैसेज एरिया */
-    .chat-content-area {
-      flex: 1;
+    .header-icons {
       display: flex;
-      flex-direction: column;
-      padding: 15px;
-      overflow-y: auto;
-      background: #f9f9f9;
-    }
-
-    .empty-chat-notice {
-      text-align: center;
-      color: #888;
-      margin-top: 50px;
-      font-size: 14px;
-    }
-
-    /* नीचे मैसेज भेजने का बॉक्स */
-    .chat-input-bar {
-      padding: 12px 15px;
-      background: #fff;
-      border-top: 1px solid #eee;
-      display: flex;
-      gap: 10px;
+      gap: 16px;
       align-items: center;
     }
 
-    .chat-input-bar input {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      outline: none;
-      font-size: 14px;
+    .header-icon-btn {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
     }
 
-    .chat-send-btn {
-      background: #8a2be2;
+    /* नोटिफिकेशन बैनर */
+    .notification-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f0f2f5;
+      padding: 10px 16px;
+      margin: 0 15px 10px 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .notification-banner span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-banner {
+      cursor: pointer;
+      font-size: 16px;
+      color: #777;
+      font-weight: bold;
+    }
+
+    /* चैट लिस्ट एरिया */
+    .chat-list-area {
+      flex: 1;
+      overflow-y: auto;
+      background: #ffffff;
+      padding-bottom: 70px;
+    }
+
+    .chat-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      gap: 14px;
+      cursor: pointer;
+      border-bottom: 1px solid #f9f9f9;
+      position: relative;
+    }
+
+    .chat-item:active {
+      background: #f1f2f6;
+    }
+
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+
+    .chat-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .chat-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chat-time {
+      font-size: 11px;
+      color: #999;
+    }
+
+    .chat-last-msg {
+      font-size: 13px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 240px;
+    }
+
+    .badge-tag {
+      background: #ff4757;
+      color: #fff;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    /* खाली चैट का स्टेट */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #888;
+    }
+
+    /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
+    .bottom-action-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1px solid #eee;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logout-btn-bottom {
+      background: #d9534f;
       color: #fff;
       border: none;
-      padding: 10px 18px;
-      border-radius: 20px;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
     }
@@ -117,22 +201,33 @@
 <body>
 
   <div class="page-container">
-    <!-- हेडर जिसमें सिक्योर लॉगआउट बटन है -->
+    
+    <!-- हेडर: Messages और सर्च/टिक आइकॉन -->
     <div class="sub-header">
       <h2>Messages</h2>
-      <button class="logout-btn" onclick="secureLogout()">Log Out</button>
+      <div class="header-icons">
+        <button class="header-icon-btn" onclick="searchChats()">🔍</button>
+        <button class="header-icon-btn" onclick="markAllAsRead()">✓</button>
+      </div>
     </div>
 
-    <!-- चैट और मैसेज दिखाने का मुख्य डिब्बा -->
-    <div class="chat-content-area" id="chatContainer">
-      <div class="empty-chat-notice">No messages yet. Start a conversation securely!</div>
+    <!-- नोटिफिकेशन बैनर -->
+    <div id="notificationBanner" class="notification-banner">
+      <span>🔔 Turn on notifications, don't miss any messages</span>
+      <span class="close-banner" onclick="closeNotificationBanner()">✕</span>
     </div>
 
-    <!-- मैसेज टाइप करने की पट्टी -->
-    <div class="chat-input-bar">
-      <input type="text" id="messageInput" placeholder="Type a message...">
-      <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+    <!-- चैट लिस्ट एरिया -->
+    <div class="chat-list-area" id="chatListContainer">
+      <!-- यहाँ चैट्स रेंडर होंगी -->
     </div>
+
+    <!-- सबसे नीचे लॉगआउट और आईडी बार -->
+    <div class="bottom-action-bar">
+      <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>
+      <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>
+    </div>
+
   </div>
 
   <!-- Firebase SDKs -->
@@ -156,32 +251,84 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+    document.getElementById("currentUserDisplay").innerText = "ID: " + (localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630");
 
-    // 🌟 1. पेज सुरक्षा: बैक बटन को सुरक्षित रखना
+    // बैक बटन गार्ड
     history.pushState({page: "message_secure"}, "", window.location.href);
     window.addEventListener('popstate', function(event) {
       history.pushState({page: "message_secure"}, "", window.location.href);
     });
 
-    // 🌟 2. सबसे महत्वपूर्ण: परफेक्ट और सिक्योर लॉगआउट फंक्शन
+    function closeNotificationBanner() {
+      document.getElementById("notificationBanner").style.display = "none";
+    }
+
+    function searchChats() {
+      alert("Search functionality will filter conversations.");
+    }
+
+    function markAllAsRead() {
+      alert("All messages marked as read.");
+    }
+
+    // चैट लोड करना और क्लिक करने पर उस यूजर की प्रोफाइल खोलना
+    function loadUserChats() {
+      let container = document.getElementById("chatListContainer");
+      
+      let sampleChats = [
+        { id: "#123456", name: "Blacku", avatar: "https://via.placeholder.com/50", time: "14:38", msg: "Arzuu ❤️ is broadcasting...", badge: "1" },
+        { id: "#789012", name: "Family Assistant", avatar: "https://via.placeholder.com/50", time: "26-11-01", msg: "Reward points 100", badge: "" },
+        { id: "#345678", name: "90000", avatar: "https://via.placeholder.com/50", time: "26-10-31", msg: "Last Day! Join the Battle!", badge: "" }
+      ];
+
+      if (sampleChats.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size: 40px; margin-bottom: 10px;">💬</div>
+            <div style="font-weight: bold; font-size: 16px; color: #333;">Greetings Received</div>
+            <div style="font-size: 13px; color: #888; margin-top: 4px;">No greetings yet</div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = "";
+        sampleChats.forEach(chat => {
+          let item = document.createElement("div");
+          item.className = "chat-item";
+          
+          // 🌟 किसी भी यूजर के चैट पर क्लिक करते ही उसकी आईडी सेव होगी और प्रोफाइल खुलेगी
+          item.onclick = () => {
+            localStorage.setItem("viewing_user_id", chat.id);
+            window.location.replace("profile.html");
+          };
+
+          item.innerHTML = `
+            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">
+            <div class="chat-info">
+              <div class="chat-name-row">
+                <span class="chat-name">${chat.name}</span>
+                <span class="chat-time">${chat.time}</span>
+              </div>
+              <div class="chat-name-row">
+                <span class="chat-last-msg">${chat.msg}</span>
+                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}
+              </div>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+    }
+
+    // सिक्योर लॉगआउट
     function secureLogout() {
-      // ब्राउज़र का सारा डेटा और सेशन एक झटके में साफ़ करना
       localStorage.clear();
       sessionStorage.clear();
-
-      // बिना कोई हिस्ट्री छोड़े सीधे होम पेज पर भेजना
       window.location.replace("index.html");
     }
 
-    function sendMessage() {
-      let input = document.getElementById("messageInput");
-      let text = input.value.trim();
-      if (!text) return;
-
-      // यहाँ आप फायरबेस में मैसेज सेव करने का कोड जोड़ सकते हैं
-      alert("Message feature ready! Current User: " + currentIdentifier);
-      input.value = "";
-    }
+    window.onload = function() {
+      loadUserChats();
+    };
   </script>
 </body>
 </html>
