@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 सिंगल और पक्का बैकग्राउंड: ऊपर ठीक 5 इंच तक गहरे रंग, बाएं से दाएं तैरेंगे, नीचे सफेद में मिलेंगे, और बाकी पूरा पेज सफेद */
+    /* 🌟 पूरा पेज एक ही सिंगल बैकग्राउंड है - कोई लाइन या बॉर्डर नहीं, ऊपर गहरे रंग जो नीचे सफेद में मिलते हैं */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -43,9 +43,9 @@
         radial-gradient(circle at 70% 15%, rgba(30, 144, 255, 0.9) 0%, transparent 40%),
         radial-gradient(circle at 40% 30%, rgba(255, 215, 0, 0.9) 0%, transparent 40%),
         linear-gradient(180deg, 
-          rgba(255,255,255,0.1) 0%, 
-          rgba(255,255,255,0.7) 35%, 
-          #ffffff 50%, 
+          rgba(255,255,255,0.05) 0%, 
+          rgba(255,255,255,0.65) 30%, 
+          #ffffff 45%, 
           #ffffff 100%
         );
 
@@ -54,7 +54,7 @@
       animation: colorScrollFast 6s ease-in-out infinite alternate;
     }
 
-    /* रंग बाएं से दाएं और आपस में तैरने की प्रक्रिया */
+    /* रंग बाएं से दाएं बादलों की तरह धीरे-धीरे तैरेंगे */
     @keyframes colorScrollFast {
       0% {
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;
@@ -93,7 +93,7 @@
       width: 32px;
       height: 32px;
       background: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border: none;
       border-radius: 50%;
       font-size: 14px;
       cursor: pointer;
@@ -140,7 +140,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया (5 इंच के बाद पूरा हिस्सा शुद्ध सफेद) */
+    /* चैट लिस्ट एरिया (बिना किसी बॉर्डर या लाइन के शुद्ध सफेद बैकग्राउंड) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -310,7 +310,7 @@
       padding: 6px;
     }
 
-    /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
+    /* सबसे नीचे फिक्स बॉटम बार */
     .bottom-action-bar {
       position: absolute;
       bottom: 0;
