@@ -28,26 +28,26 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      /* नीचे का हल्का सफेद-आसमानी हिस्सा जो बिल्कुल स्थिर रहेगा और बिना किसी लाइन के मिलेगा */
-      background: #f4f8fc;
+      /* नीचे का हिस्सा पूरी तरह स्थिर, साफ सफेद और सियान टोन में */
+      background: #ffffff;
       position: relative;
       display: flex;
       flex-direction: column;
     }
 
-    /* 🌟 ऊपरी हिस्से में गुलाबी, बैंगनी, पोपट्री, पीला और ऑरेंज रंगों का स्मूथ एनिमेटेड ब्लेंड बिना किसी लाइन के */
+    /* 🌟 ऊपर गहरा नेवी-ब्लू, चमकीला नीला, हल्का सियान और सफेद का स्मूद सीमलेस एनिमेटेड ग्रेडिएंट */
     .animated-header-bg {
-      background: linear-gradient(90deg, #ff9a9e, #da70d6, #800080, #ffaa00, #ffffe0, #98fb98, #f4f8fc);
-      background-size: 350% 100%;
-      animation: smoothColorBlend 14s ease infinite;
+      background: linear-gradient(180deg, #0a192f 0%, #1d4ed8 35%, #38bdf8 65%, #e0f2fe 85%, #ffffff 100%);
+      background-size: 100% 300%;
+      animation: seamlessWaveFlow 10s ease infinite;
       padding-bottom: 25px;
       position: relative;
     }
 
-    @keyframes smoothColorBlend {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    @keyframes seamlessWaveFlow {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 0% 50%; }
+      100% { background-position: 0% 0%; }
     }
 
     /* टॉप हेडर */
@@ -126,7 +126,7 @@
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
-      background: transparent;
+      background: #ffffff;
       padding-bottom: 70px;
     }
 
@@ -136,13 +136,13 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+      border-bottom: 1px solid #f2f5f9;
       position: relative;
-      background: transparent;
+      background: #ffffff;
     }
 
     .chat-item:active {
-      background: rgba(0, 0, 0, 0.03);
+      background: #f1f2f6;
     }
 
     .chat-avatar {
@@ -318,7 +318,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 ऊपर स्मूथ एनिमेटेड रंग (गुलाबी, बैंगनी, पोपट्री, पीला और ऑरेंज) -->
+    <!-- 🌟 नेवी-ब्लू, चमकीले नीले, सियान और सफेद का सीमलेस एनिमेटेड ग्रेडिएंट बिना किसी बॉर्डर या लाइन के -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
