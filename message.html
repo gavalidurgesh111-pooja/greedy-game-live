@@ -25,7 +25,7 @@
       overflow-x: hidden;
     }
 
-    /* 🌟 पूरा पेज एक सिंगल बैकग्राउंड: 4 इंच सीमा, बिना किसी लाइन/बॉर्डर के रंग और सफेद का प्राकृतिक मिलन, बाएं से दाएं स्क्रॉलिंग */
+    /* 🌟 पूरा पेज एक अखंड, सिंगल और निरंतर बैकग्राउंड: ऊपर 4 इंच में रंग और सफेद का प्राकृतिक मिलन, बिना किसी लाइन, बॉर्डर या अलग टुकड़े के */
     .page-container {
       width: 100%;
       max-width: 480px;
@@ -45,13 +45,14 @@
         radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),   
         linear-gradient(180deg, 
           rgba(255,255,255,0.02) 0%, 
-          rgba(255,255,255,0.35) 80px, 
-          rgba(255,255,255,0.75) 150px, 
-          #ffffff 220px, 
+          rgba(255,255,255,0.4) 90px, 
+          rgba(255,255,255,0.85) 170px, 
+          #ffffff 240px, 
           #ffffff 100%
         );
 
-      background-size: 200% 220px, 200% 220px, 200% 220px, 200% 220px, 200% 220px, 200% 220px, 200% 220px, 100% 100%;
+      /* यहाँ सभी लेयर्स को एक ही अखंड निरंतरता में रखा गया है ताकि कोई अलग कट या लाइन न दिखे */
+      background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;
       animation: colorScrollSmooth 3.5s linear infinite;
     }
