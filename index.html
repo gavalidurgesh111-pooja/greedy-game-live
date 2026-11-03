@@ -33,7 +33,6 @@
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
-
     #authFlowContainer {
       position: absolute;
       inset: 0;
@@ -63,24 +62,23 @@
       text-align: center; 
     }
 
-    /* 🌟 सभी बटनों और टर्म्स को एक साथ परफेक्ट फिट करने के लिए कॉम्पैक्ट पैनल */
     .auth-bottom-panel {
       width: 100%;
-      max-width: 330px; /* लेफ्ट और राइट से थोड़ा छोटा करने के लिए */
+      max-width: 330px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px; /* दोनों बटनों के बीच लगभग एक इंच/सटीक अंतर */
-      margin-top: -20px; /* बटनों को थोड़ा ऊपर लेने के लिए */
+      gap: 12px;
+      margin-top: -20px;
       margin-bottom: 2px;
     }
 
     .btn-login {
       width: 100%;
-      height: 48px; /* बटन को नॉर्मल बड़ा करने के लिए */
+      height: 48px;
       border-radius: 24px;
       border: none;
-      font-size: 16px; /* टेक्स्ट का साइज़ थोड़ा बेहतर और बड़ा */
+      font-size: 16px;
       font-weight: 700;
       display: flex;
       align-items: center;
@@ -100,7 +98,6 @@
     .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
     .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
     
-    /* 🌟 MIKA ऐप की तरह नीचे Terms & Privacy Policy का चेकबॉक्स और टेक्स्ट (अब स्क्रीन के अंदर बिल्कुल साफ़ दिखेगा)[span_3](start_span)[span_3](end_span) */
     .terms-text { 
       font-size: 9.5px; 
       color: rgba(255,255,255,0.95); 
@@ -120,7 +117,6 @@
       cursor: pointer;
     }
 
-    /* 🌟 दाईं तरफ ऊपर वाला फिक्स सपोर्ट लोगो */
     .support-top-btn {
       position: fixed !important;
       top: 15px !important;
@@ -143,7 +139,6 @@
 </head>
 <body>
 
-  <!-- 🌟 दाईं तरफ ऊपर छोटा हेल्प/सपोर्ट लोगो -->
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -153,7 +148,6 @@
   </div>
 
   <div id="authFlowContainer">
-    <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
       <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
@@ -168,7 +162,6 @@
         </button>
         <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
         
-        <!-- MIKA ऐप की तरह बिल्कुल सटीक टर्म्स और चेकबॉक्स[span_4](start_span)[span_4](end_span) -->
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
           <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
@@ -185,7 +178,7 @@
       </div>
     </div>
 
-    <!-- 🌟 Customer Service Center Modal -->
+    <!-- Customer Service Center Modal -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         
@@ -223,6 +216,28 @@
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
     }, false);
+
+    // 🌟 होम पेज (index.html) को पूरी तरह स्वतंत्र रखना ताकि कोई पिछला बंधन या रुकावट न रहे
+    window.addEventListener("popstate", function(event) {
+      let modal = document.getElementById("customPopupModal");
+      if (modal && modal.style.display === "flex") {
+        modal.style.display = "none";
+        popupCallback = null;
+        return;
+      }
+
+      let csModal = document.getElementById("customerServiceModal");
+      if (csModal && csModal.style.display === "flex") {
+        csModal.style.display = "none";
+        return;
+      }
+
+      let moreOptionsModal = document.getElementById("moreOptionsModal");
+      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
+        moreOptionsModal.style.display = "none";
+        return;
+      }
+    });
 
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
@@ -286,27 +301,6 @@
     }
 
     let popupCallback = null;
-
-    window.addEventListener("popstate", function(event) {
-      let modal = document.getElementById("customPopupModal");
-      if (modal && modal.style.display === "flex") {
-        modal.style.display = "none";
-        popupCallback = null;
-        return;
-      }
-
-      let csModal = document.getElementById("customerServiceModal");
-      if (csModal && csModal.style.display === "flex") {
-        csModal.style.display = "none";
-        return;
-      }
-
-      let moreOptionsModal = document.getElementById("moreOptionsModal");
-      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
-        moreOptionsModal.style.display = "none";
-        return;
-      }
-    });
 
     function showCustomAlert(message, callback) {
       document.getElementById("popupMessage").innerText = message;
