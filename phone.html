@@ -91,7 +91,7 @@
         <option value="fil">🇵🇭 Filipino (Tagalog)</option>
         <option value="my">🇲🇲 ဗမာစာ (Burmese)</option>
         <option value="km">🇰🇭 ភាសាខ្មែរ (Khmer)</option>
-        <option value="lo">🇱🇦 ລາວ (Lao)</option>
+        <option value="lo">🇱າວ (Lao)</option>
         <option value="ne">🇳🇵 नेपाली (Nepali)</option>
         <option value="si">🇱🇰 සිංහල (Sinhala)</option>
         <option value="mn">🇲🇳 Монгол (Mongolian)</option>
@@ -538,6 +538,9 @@
       e.preventDefault();
     }, false);
 
+    // 🌟 पेज खुलते ही पिछली सारी स्टोरेज को साफ़ कर देना ताकि कोई पुराना डेटा या मिक्सिंग न हो
+    localStorage.clear();
+
     let popupCallback = null;
 
     function checkNumber() {
@@ -632,21 +635,23 @@
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
+      // नया नंबर सेट करने से पहले पुरानी स्टोरेज साफ करना
+      localStorage.clear();
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         if (!doc.exists) {
           showDemoOtpPrompt(function(verified) {
             if (verified) {
-              window.location.href = "password.html";
+              window.location.replace("password.html");
             }
           });
         } else {
-          window.location.href = "password.html";
+          window.location.replace("password.html");
         }
       }).catch((error) => {
         console.error("Error checking user: ", error);
-        window.location.href = "password.html";
+        window.location.replace("password.html");
       });
     }
   </script>
