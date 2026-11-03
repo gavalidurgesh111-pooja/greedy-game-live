@@ -28,26 +28,26 @@
       width: 100%;
       max-width: 480px;
       min-height: 100vh;
-      background: #ffffff; /* 'धरती' जो हमेशा अपनी जगह पर ठोस सफेद है */
+      background: #ffffff; /* धरती: पक्की ठोस सफेद जमीन */
       position: relative;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
     }
 
-    /* 🌟 'रंगीन बादल' जो सिर्फ ऊपर आसमान में तैरते और मिलते हैं, कभी नीचे नहीं आते और बीच में कोई लाइन नहीं है */
+    /* 🌟 बादल और उनका स्क्रोलिंग मिलन: ऊपर गहरे रंग, जो नीचे आधे रास्ते पर बिना किसी लाइन के सफेद धरती में घुल जाते हैं और स्क्रोल के साथ जीवंत लगते हैं */
     .animated-header-bg {
-      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 50%, #ffffff 50.5%, #ffffff 100%);
+      background: linear-gradient(180deg, #1e3c72 0%, #da70d6 30%, #ff9a9e 48%, #ffffff 50%, #ffffff 100%);
       background-size: 100% 200%;
-      animation: skyCloudsFlow 15s ease infinite;
+      animation: scrollingCloudFlow 12s ease infinite;
       padding-bottom: 25px;
       position: relative;
       border: none !important;
     }
 
-    @keyframes skyCloudsFlow {
+    @keyframes scrollingCloudFlow {
       0% { background-position: 0% 0%; }
-      50% { background-position: 0% 30%; }
+      50% { background-position: 0% 35%; }
       100% { background-position: 0% 0%; }
     }
 
@@ -122,7 +122,7 @@
       padding: 0 4px;
     }
 
-    /* चैट लिस्ट एरिया - 'धरती' का हिस्सा जो पूरी तरह साफ सफेद है */
+    /* चैट लिस्ट एरिया - धरती का हिस्सा जो स्क्रोल होने पर बादलों के मिलन को और शानदार दिखाता है */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -256,7 +256,7 @@
 
   <div class="page-container">
     
-    <!-- 🌟 रंगीन बादल (ऊपर का हिस्सा) -->
+    <!-- रंगीन बादल (ऊपर का हिस्सा) -->
     <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
@@ -272,7 +272,7 @@
       </div>
     </div>
 
-    <!-- 🌟 धरती (नीचे का पूरा साफ सफेद हिस्सा) -->
+    <!-- धरती (नीचे का पूरा साफ सफेद हिस्सा, जो स्क्रोल करने पर बादलों के साथ जीवंत लगेगा) -->
     <div class="chat-list-area" id="chatListContainer"></div>
 
     <!-- सबसे नीचे लॉगआउट और आईडी बार -->
