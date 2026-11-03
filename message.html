@@ -34,44 +34,18 @@
       flex-direction: column;
     }
 
-    /* 🌟 आपके पुराने रंग + नेवी ब्लू और बैंगन, जो नीचे चैटिंग एरिया तक बिना किसी रेष के स्मूथली घुलते हैं */
-    .animated-top-header {
-      background-image:
-        radial-gradient(
-          circle at 50% 20%,
-          rgba(255,255,255,0.6) 0%,
-          rgba(218,112,214,0.2) 40%,
-          rgba(255,255,255,1) 85%
-        ),
-        linear-gradient(
-          180deg,
-          #1b263b 0%,
-          #4a0e4e 20%,
-          #a1c4fd 40%,
-          #ff9a9e 60%,
-          #da70d6 80%,
-          #ffffff 100%
-        );
-
-      background-size: 200% 200%, 100% 300%;
-      background-position: 50% 0%, 0% 0%;
-      animation: smoothColorFlow 18s ease infinite;
-
-      padding-bottom: 25px;
-      border: none !important;
-      outline: none !important;
+    /* 🌟 होम पेज की तरह आकाशी और खूबसूरत रंगों का मिक्स, बिना किसी रेष के, धीमी गति से चलते हुए */
+    .animated-header-bg {
+      background: linear-gradient(120deg, #a1c4fd, #c2e9fb, #ff9a9e, #da70d6, #ff4500, #fad0c4);
+      background-size: 400% 400%;
+      animation: morningCloudsFlow 25s ease infinite;
+      padding-bottom: 20px;
     }
 
-    @keyframes smoothColorFlow {
-      0% {
-        background-position: 50% 0%, 0% 0%;
-      }
-      50% {
-        background-position: 100% 100%, 0% 50%;
-      }
-      100% {
-        background-position: 50% 0%, 0% 0%;
-      }
+    @keyframes morningCloudsFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     /* टॉप हेडर */
@@ -87,8 +61,8 @@
     .sub-header h2 {
       font-size: 24px;
       font-weight: 800;
-      color: #111;
-      text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
     .header-icons {
@@ -97,7 +71,7 @@
       align-items: center;
     }
 
-    /* सर्च और टिक आइकॉन - सफेद गोल बटन */
+    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */
     .header-icon-btn {
       width: 34px;
       height: 34px;
@@ -110,7 +84,7 @@
       align-items: center;
       justify-content: center;
       color: #333;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
     }
 
     .header-icon-btn:active {
@@ -122,14 +96,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.92);
       padding: 10px 16px;
       margin: 0 15px;
-      border-radius: 14px;
+      border-radius: 12px;
       font-size: 13px;
       color: #333;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .notification-banner span {
@@ -146,15 +120,12 @@
       padding: 0 4px;
     }
 
-    /* नीचे चैटिंग एरिया एकदम साफ़ White Background में बिना किसी लाइन के */
+    /* चैट लिस्ट एरिया (बिना किसी रेष के सीधे रंगों से जुड़ा हुआ) */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
       background: #ffffff;
-      padding-top: 15px;
       padding-bottom: 70px;
-      border: none !important;
-      margin-top: 0 !important;
     }
 
     .chat-item {
@@ -163,7 +134,7 @@
       padding: 12px 20px;
       gap: 14px;
       cursor: pointer;
-      border-bottom: 1px solid #f2f2f2;
+      border-bottom: 1px solid #f9f9f9;
       position: relative;
     }
 
@@ -314,7 +285,7 @@
       text-align: left;
     }
 
-    /* सबसे नीचे फिक्स बॉटम बार */
+    /* सबसे नीचे फिक्स बॉटम बार (लॉगआउट) */
     .bottom-action-bar {
       position: absolute;
       bottom: 0;
@@ -343,9 +314,9 @@
 <body>
 
   <div class="page-container">
-
-    <!-- ऊपर का हिस्सा (नेवी ब्लू, बैंगन और आपके सभी पुराने रंग + स्मूथ फेड इफ़ेक्ट) -->
-    <div class="animated-top-header">
+    
+    <!-- 🌟 आकाशी और खूबसूरत रंगों वाला एनिमेटेड हेडर -->
+    <div class="animated-header-bg">
       <div class="sub-header">
         <h2>Messages</h2>
         <div class="header-icons">
