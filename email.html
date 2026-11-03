@@ -269,6 +269,8 @@
     }, false);
 
     window.onload = function() {
+      // 🌟 पेज खुलते ही पुरानी सारी स्टोरेज साफ़ करना ताकि कोई पुराना डेटा या मिक्सिंग न हो
+      localStorage.clear();
       history.replaceState({ page: "email_input" }, "");
     };
 
@@ -480,7 +482,7 @@
           localStorage.setItem("greedy_initialized", "true");
           document.getElementById("loadingOverlay").style.display = "flex";
           setTimeout(() => {
-            window.location.replace("profile.html");
+            window.location.replace("photo-gateway.html");
           }, 1000);
         });
       } else {
@@ -496,7 +498,7 @@
         
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
-          window.location.replace("profile.html");
+          window.location.replace("photo-gateway.html");
         }, 1000);
       }
     }
