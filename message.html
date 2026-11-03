@@ -34,33 +34,35 @@
       flex-direction: column;
     }
 
-    /* 🌟 नेवी ब्लू, बैंगन (Purple) और दूसरे रंगों के साथ ऊपर से नीचे फेड होने वाला 'To White Gradient' इफ़ेक्ट */
+    /* 🌟 आपके पुराने रंग + नेवी ब्लू और बैंगन, जो नीचे चैटिंग एरिया तक बिना किसी रेष के स्मूथली घुलते हैं */
     .animated-top-header {
       background-image:
         radial-gradient(
           circle at 50% 20%,
-          rgba(255,255,255,0.7) 0%,
-          rgba(74,119,158,0.25) 40%,
+          rgba(255,255,255,0.6) 0%,
+          rgba(218,112,214,0.2) 40%,
           rgba(255,255,255,1) 85%
         ),
         linear-gradient(
           180deg,
           #1b263b 0%,
-          #4a0e4e 30%,
-          #4a90e2 60%,
+          #4a0e4e 20%,
+          #a1c4fd 40%,
+          #ff9a9e 60%,
+          #da70d6 80%,
           #ffffff 100%
         );
 
       background-size: 200% 200%, 100% 300%;
       background-position: 50% 0%, 0% 0%;
-      animation: smoothFadeFlow 15s ease infinite;
+      animation: smoothColorFlow 18s ease infinite;
 
       padding-bottom: 25px;
       border: none !important;
       outline: none !important;
     }
 
-    @keyframes smoothFadeFlow {
+    @keyframes smoothColorFlow {
       0% {
         background-position: 50% 0%, 0% 0%;
       }
@@ -144,7 +146,7 @@
       padding: 0 4px;
     }
 
-    /* नीचे चैटिंग एरिया एकदम साफ़ White Background में */
+    /* नीचे चैटिंग एरिया एकदम साफ़ White Background में बिना किसी लाइन के */
     .chat-list-area {
       flex: 1;
       overflow-y: auto;
@@ -342,7 +344,7 @@
 
   <div class="page-container">
 
-    <!-- ऊपर का फेड होने वाला रंगीन हिस्सा (Navy, Purple & Gradient Fade) -->
+    <!-- ऊपर का हिस्सा (नेवी ब्लू, बैंगन और आपके सभी पुराने रंग + स्मूथ फेड इफ़ेक्ट) -->
     <div class="animated-top-header">
       <div class="sub-header">
         <h2>Messages</h2>
