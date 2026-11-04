@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 नॉर्मल हल्के रंग, Left से Right बहने वाला तेज़ स्क्रॉल, और ऊपर सिमटा हुआ अखंड बैकग्राउंड */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,13 +36,13 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.55) 0%, transparent 28%),   
+        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.55) 0%, transparent 28%),    
+        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.50) 0%, transparent 28%),     
+        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.60) 0%, transparent 30%),     
+        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.55) 0%, transparent 28%),    
+        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.55) 0%, transparent 28%),   
+        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.45) 0%, transparent 30%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.3) 100px,   
@@ -57,13 +57,13 @@
       animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
+    /* रंग Left से शुरू होकर Right की तरफ बहते हुए किनारों पर छुपने का सही नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
     }  
 
