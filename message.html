@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: हरे रंग सहित सभी रंग आपस में मिक्स होकर लूप में स्क्रॉल होंगे */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: बढ़ा हुआ ऑरेंज, हल्का आकाशी रंग और बिना हरे रंग के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -39,10 +39,9 @@
         radial-gradient(circle at 10% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),   
         radial-gradient(circle at 25% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),    
         radial-gradient(circle at 40% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 42%),     
-        radial-gradient(circle at 55% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),     
-        radial-gradient(circle at 70% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),    
-        radial-gradient(circle at 85% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%),   
-        radial-gradient(circle at 95% 14%, rgba(46, 204, 113, 0.9) 0%, transparent 42%),     
+        radial-gradient(circle at 60% 15%, rgba(255, 140, 0, 0.98) 0%, transparent 45%),     
+        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),    
+        radial-gradient(circle at 88% 10%, rgba(135, 206, 235, 0.95) 0%, transparent 42%),   
         radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 45%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.02) 0%,   
@@ -52,18 +51,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
       animation: colorScrollSmooth 2.2s linear infinite;  
     }  
 
-    /* रंग स्क्रॉल होते हुए आखिरी रंग के बाद पहले रंग को सहजता से लाने का नियम */  
+    /* रंग स्क्रॉल होते हुए लूप में चलने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
