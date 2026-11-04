@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: कम चौड़ाई (130%), स्क्रॉलिंग और परफेक्ट कलर-व्हाइट ब्लेंडिंग */  
+    /* 🌟 अखंड बैकग्राउंड: कम चौड़ाई (120%) और तेज स्क्रॉल स्पीड (1.4s) के साथ */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -52,13 +52,12 @@
           #ffffff 100%  
         );  
 
-      /* चौड़ाई को 130% रखा गया है ताकि यह कम भी रहे और स्क्रॉल भी हो सके */  
-      background-size: 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 100% 100%;  
+      background-size: 120% 360px, 120% 360px, 120% 360px, 120% 360px, 120% 360px, 120% 360px, 120% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 2.2s linear infinite;  
+      animation: colorScrollSmooth 1.4s linear infinite;  
     }  
 
-    /* रंग आपस में मिक्स होकर लूप में तेज़ी से स्क्रॉल होने का नियम */  
+    /* रंग तेज़ी से स्क्रॉल होने का नियम (स्पीड बढ़ाई गई है: 1.4s) */  
     @keyframes colorScrollSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
@@ -428,8 +427,6 @@
     window.addEventListener('popstate', function(event) {  
       history.pushState({page: "message_secure"}, "", window.location.href);  
     });  
-  
-    backgroundClose = function(e) { /* helper */ };
   
     function closeNotificationBanner(e) {  
       e.stopPropagation();  
