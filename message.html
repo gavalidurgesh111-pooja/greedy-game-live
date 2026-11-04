@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: कम चौड़ाई (130%), स्क्रॉलिंग और परफेक्ट कलर-व्हाइट ब्लेंडिंग */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी रंगों की ओपिसिटी 0.95 पर एक समान सेट की गई है */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,29 +36,27 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 15% 12%, rgba(186, 85, 211, 0.60) 0%, transparent 45%),   
-        radial-gradient(circle at 30% 10%, rgba(255, 20, 147, 0.60) 0%, transparent 45%),    
-        radial-gradient(circle at 45% 15%, rgba(255, 0, 255, 0.55) 0%, transparent 45%),     
-        radial-gradient(circle at 60% 12%, rgba(255, 140, 0, 0.65) 0%, transparent 48%),     
-        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.60) 0%, transparent 45%),    
-        radial-gradient(circle at 90% 10%, rgba(135, 206, 235, 0.60) 0%, transparent 45%),   
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.50) 0%, transparent 50%),     
+        radial-gradient(circle at 10% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),   
+        radial-gradient(circle at 25% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),    
+        radial-gradient(circle at 40% 12%, rgba(255, 0, 255, 0.95) 0%, transparent 42%),     
+        radial-gradient(circle at 60% 15%, rgba(255, 140, 0, 0.95) 0%, transparent 45%),     
+        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.95) 0%, transparent 42%),    
+        radial-gradient(circle at 88% 10%, rgba(135, 206, 235, 0.95) 0%, transparent 42%),   
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 45%),     
         linear-gradient(180deg,   
-          rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.25) 120px,   
-          rgba(255,255,255,0.65) 220px,   
-          rgba(255,255,255,0.9) 300px,   
+          rgba(255,255,255,0.02) 0%,   
+          rgba(255,255,255,0.4) 140px,   
+          rgba(255,255,255,0.85) 260px,   
           #ffffff 360px,   
           #ffffff 100%  
         );  
 
-      /* चौड़ाई को 130% रखा गया है ताकि यह कम भी रहे और स्क्रॉल भी हो सके */  
-      background-size: 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 100% 100%;  
+      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
       animation: colorScrollSmooth 2.2s linear infinite;  
     }  
 
-    /* रंग आपस में मिक्स होकर लूप में तेज़ी से स्क्रॉल होने का नियम */  
+    /* रंग स्क्रॉल होते हुए लूप में चलने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
@@ -428,8 +426,6 @@
     window.addEventListener('popstate', function(event) {  
       history.pushState({page: "message_secure"}, "", window.location.href);  
     });  
-  
-    backgroundClose = function(e) { /* helper */ };
   
     function closeNotificationBanner(e) {  
       e.stopPropagation();  
