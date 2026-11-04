@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल बैकग्राउंड: रंग और सफेद का मिलन ठीक मैसेज लोगो के पास तक विस्तारित किया गया है */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी 7 रंग, सही स्क्रॉल नियम और कम पीला रंग */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -42,21 +42,21 @@
         radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),     
         radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),    
         radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%),   
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.45) 0%, transparent 45%),     
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 45%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.02) 0%,   
-          rgba(255,255,255,0.4) 140px,   
-          rgba(255,255,255,0.85) 260px,   
-          #ffffff 360px,   
+          rgba(255,255,255,0.4) 90px,   
+          rgba(255,255,255,0.85) 170px,   
+          #ffffff 240px,   
           #ffffff 100%  
         );  
 
-      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
+      background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
       animation: colorScrollSmooth 3.5s linear infinite;  
     }  
 
-    /* रंग बाएं से दाएं लगातार प्राकृतिक रूप से स्क्रॉल होने का एनिमेशन */  
+    /* रंग बाएं से दाएं लगातार प्राकृतिक रूप से स्क्रॉल होने का ऑरिजिनल नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
