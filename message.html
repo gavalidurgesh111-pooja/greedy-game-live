@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: रंग आपस में मिक्स होकर अंदर-बाहर और तेज स्पीड से स्क्रॉल होंगे */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी रंगों की ओपिसिटी 0.95 पर एक समान सेट की गई है */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,12 +36,12 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),   
-        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),    
-        radial-gradient(circle at 65% 12%, rgba(255, 0, 255, 0.9) 0%, transparent 42%),     
-        radial-gradient(circle at 85% 15%, rgba(255, 140, 0, 0.9) 0%, transparent 42%),     
-        radial-gradient(circle at 30% 18%, rgba(138, 43, 226, 0.9) 0%, transparent 42%),    
-        radial-gradient(circle at 75% 10%, rgba(30, 144, 255, 0.95) 0%, transparent 42%),   
+        radial-gradient(circle at 10% 10%, rgba(186, 85, 211, 0.95) 0%, transparent 40%),   
+        radial-gradient(circle at 25% 8%, rgba(255, 20, 147, 0.95) 0%, transparent 40%),    
+        radial-gradient(circle at 40% 12%, rgba(255, 0, 255, 0.95) 0%, transparent 42%),     
+        radial-gradient(circle at 60% 15%, rgba(255, 140, 0, 0.95) 0%, transparent 45%),     
+        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.95) 0%, transparent 42%),    
+        radial-gradient(circle at 88% 10%, rgba(135, 206, 235, 0.95) 0%, transparent 42%),   
         radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 45%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.02) 0%,   
@@ -51,12 +51,12 @@
           #ffffff 100%  
         );  
 
-      background-size: 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 100% 100%;  
+      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 2.2s ease-in-out infinite alternate;  
+      animation: colorScrollSmooth 2.2s linear infinite;  
     }  
 
-    /* रंग आपस में मिक्स होते हुए अंदर-बाहर और दाएं-बाएं गति करने का नियम */  
+    /* रंग स्क्रॉल होते हुए लूप में चलने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
