@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 सुपर-कंट्रोल्ड अखंड बैकग्राउंड: और कम चौड़ाई (115%), सुपर-फास्ट स्पीड (1.0s) और परफेक्ट ब्लेंडिंग */  
+    /* 🌟 अति-संक्षिप्त (Ultra-Compact) और सुपर-फास्ट स्क्रॉलिंग बैकग्राउंड: चौड़ाई 105% और स्पीड 0.6s */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -52,13 +52,13 @@
           #ffffff 100%  
         );  
 
-      /* चौड़ाई 115% और ऊँचाई 360px */  
-      background-size: 115% 360px, 115% 360px, 115% 360px, 115% 360px, 115% 360px, 115% 360px, 115% 360px, 100% 100%;  
+      /* चौड़ाई 105% (सबसे कम संभव सीमा जिसपर स्क्रॉल काम करे) और ऊँचाई 360px */  
+      background-size: 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 1.0s linear infinite;  
+      animation: colorScrollSmooth 0.6s linear infinite;  
     }  
 
-    /* रंग सुपर-फास्ट स्पीड (1.0s) से स्क्रॉल होने का नियम */  
+    /* रंग अति-तेज़ गति (0.6s) से स्क्रॉल होने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
