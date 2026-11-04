@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 परफेक्ट अखंड बैकग्राउंड: बिना किसी लाइन के, Left से Right सही क्रम में तेज़ स्क्रॉल होने वाला रूप */  
+    /* 🌟 फिक्स साइज (100%) और बादलों जैसा निरंतर स्क्रॉलिंग बैकग्राउंड बिना किसी लाइन के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -48,18 +48,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 250px, 200% 250px, 200% 250px, 200% 250px, 100% 100%;  
+      background-size: 100% 250px, 100% 250px, 100% 250px, 100% 250px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: cloudFlowSmooth 2.5s linear infinite;  
+      animation: cloudFlowSmooth 3s linear infinite;  
     }  
 
-    /* रंग Left से Right सही क्रम में तेज़ी से बहने का नियम */  
+    /* साइज को छेड़े बिना रंगों को Left से Right सुचारू रूप से चलाने का नियम */  
     @keyframes cloudFlowSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
