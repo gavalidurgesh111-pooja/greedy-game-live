@@ -83,17 +83,16 @@
 
     .header-icons {  
       display: flex;  
-      gap: 12px;  
+      gap: 14px;  
       align-items: center;  
     }  
 
-    /* सर्च और टिक आइकॉन - बिल्कुल साफ़, गोल और परफेक्ट SVG आउटलाइन वाले */  
+    /* सर्च और टिक आइकॉन - बिना बॉर्डर के छोटे और साफ़ रूप में */  
     .header-icon-btn {  
-      width: 40px;  
-      height: 40px;  
+      width: 32px;  
+      height: 32px;  
       background: transparent;  
-      border: 1.5px solid rgba(255, 255, 255, 0.85);  
-      border-radius: 50%;  
+      border: none;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
@@ -102,8 +101,8 @@
     }  
 
     .header-icon-btn svg {  
-      width: 18px;  
-      height: 18px;  
+      width: 20px;  
+      height: 20px;  
       stroke: #ffffff;  
       fill: none;  
       stroke-width: 2;  
@@ -345,11 +344,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (SVG) -->  
+        <!-- सर्च आइकॉन (बिना बॉर्डर के छोटा रूप) -->  
         <button class="header-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (SVG) - अब ठीक कर दिया गया है -->  
+        <!-- मार्क/टिक आइकॉन (बिना बॉर्डर के छोटा रूप) -->  
         <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
