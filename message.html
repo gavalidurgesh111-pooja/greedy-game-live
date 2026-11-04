@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अति-संक्षिप्त (Ultra-Compact) और सुपर-फास्ट स्क्रॉलिंग बैकग्राउंड: चौड़ाई 105% और स्पीड 0.6s */  
+    /* 🌟 जीवंत रंग, Left से Right बहने वाला स्क्रॉल, चौड़ाई 105% और तेज़ स्पीड (0.6s) */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,13 +36,13 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 15% 12%, rgba(186, 85, 211, 0.60) 0%, transparent 45%),   
-        radial-gradient(circle at 30% 10%, rgba(255, 20, 147, 0.60) 0%, transparent 45%),    
-        radial-gradient(circle at 45% 15%, rgba(255, 0, 255, 0.55) 0%, transparent 45%),     
-        radial-gradient(circle at 60% 12%, rgba(255, 140, 0, 0.65) 0%, transparent 48%),     
-        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.60) 0%, transparent 45%),    
-        radial-gradient(circle at 90% 10%, rgba(135, 206, 235, 0.60) 0%, transparent 45%),   
-        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.50) 0%, transparent 50%),     
+        radial-gradient(circle at 15% 12%, rgba(186, 85, 211, 0.75) 0%, transparent 40%),   
+        radial-gradient(circle at 30% 10%, rgba(255, 20, 147, 0.75) 0%, transparent 40%),    
+        radial-gradient(circle at 45% 15%, rgba(255, 0, 255, 0.70) 0%, transparent 40%),     
+        radial-gradient(circle at 60% 12%, rgba(255, 140, 0, 0.80) 0%, transparent 42%),     
+        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.75) 0%, transparent 40%),    
+        radial-gradient(circle at 90% 10%, rgba(135, 206, 235, 0.75) 0%, transparent 40%),   
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.65) 0%, transparent 45%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.25) 120px,   
@@ -52,19 +52,18 @@
           #ffffff 100%  
         );  
 
-      /* चौड़ाई 105% (सबसे कम संभव सीमा जिसपर स्क्रॉल काम करे) और ऊँचाई 360px */  
       background-size: 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 105% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 0.6s linear infinite;  
+      animation: colorScrollLeftToRight 0.6s linear infinite;  
     }  
 
-    /* रंग अति-तेज़ गति (0.6s) से स्क्रॉल होने का नियम */  
-    @keyframes colorScrollSmooth {  
+    /* रंग Left से Right बहते हुए किनारों पर छुपने का नियम */  
+    @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: -50% 0%, -30% 0%, -40% 0%, -60% 0%, -35% 0%, -45% 0%, -50% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 50% 0%, 70% 0%, 60% 0%, 40% 0%, 65% 0%, 55% 0%, 50% 0%, 0 0;  
       }  
     }  
 
