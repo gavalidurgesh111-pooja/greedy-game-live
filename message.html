@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: तेज स्पीड और सही दिशा के साथ */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: रंग आपस में मिक्स होकर अंदर-बाहर और तेज स्पीड से स्क्रॉल होंगे */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -51,18 +51,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
+      background-size: 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 250% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 1.8s linear infinite;  
+      animation: colorScrollSmooth 2.2s ease-in-out infinite alternate;  
     }  
 
-    /* रंग लेफ्ट से राइट की ओर तेजी से स्क्रॉल होने का नियम */  
+    /* रंग आपस में मिक्स होते हुए अंदर-बाहर और दाएं-बाएं गति करने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
-        background-position: -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
