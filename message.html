@@ -63,15 +63,15 @@
       }  
     }  
 
-    /* टॉप हेडर - फोटो के अनुसार और ब्राउज़र से सुरक्षित दूरी पर नीचे सेट */  
+    /* टॉप हेडर - फोटो के अनुसार सटीक पोजीशन */  
     .sub-header {  
       display: flex;  
       align-items: center;  
       justify-content: space-between;  
       padding: 16px 20px;  
-      margin-top: 45px; /* ब्राउज़र एरिया से नीचे लाने के लिए */  
+      margin-top: 45px;  
       background: transparent;  
-      color: #ffffff; /* फोटो की तरह टेक्स्ट का रंग सफेद */  
+      color: #ffffff;  
       position: relative;  
       z-index: 2;  
     }  
@@ -79,28 +79,28 @@
     .sub-header h2 {  
       font-size: 24px;  
       font-weight: 700;  
-      color: #ffffff; /* फोटो की तरह पूरी तरह सफेद */  
+      color: #ffffff;  
     }  
 
     .header-icons {  
       display: flex;  
-      gap: 16px;  
+      gap: 12px;  
       align-items: center;  
     }  
 
-    /* सर्च और टिक आइकॉन - फोटो की तरह साफ़ सफेद आउटलाइन और ट्रांसपेरेंट गोल रूप */  
+    /* सर्च और टिक आइकॉन - बिल्कुल भेजी गई फोटो जैसे गोल और साफ़[span_2](start_span)[span_2](end_span) */  
     .header-icon-btn {  
-      width: 36px;  
-      height: 36px;  
+      width: 38px;  
+      height: 38px;  
       background: transparent;  
-      border: 1.5px solid rgba(255, 255, 255, 0.8);  
+      border: 1.2px solid rgba(255, 255, 255, 0.75);  
       border-radius: 50%;  
-      font-size: 15px;  
+      font-size: 16px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      color: #ffffff; /* आइकॉन का रंग सफेद */  
+      color: #ffffff;  
     }  
 
     .header-icon-btn:active {  
@@ -139,7 +139,7 @@
       padding: 0 4px;  
     }  
 
-    /* चैट लिस्ट एरिया (नीचे का फालतू टेक्स्ट हटा दिया गया है) */  
+    /* चैट लिस्ट एरिया */  
     .chat-list-area {  
       flex: 1;  
       overflow-y: auto;  
@@ -333,7 +333,7 @@
 <body>  
 
   <div class="page-container">  
-    <!-- हेडर - फोटो के अनुसार सफेद और सही पोजीशन पर -->  
+    <!-- हेडर - फोटो के अनुसार सटीक रूप -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
@@ -348,7 +348,7 @@
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>  
     </div>  
 
-    <!-- चैट लिस्ट एरिया (खाली स्टेट टेक्स्ट हटा दिया गया है) -->  
+    <!-- चैट लिस्ट एरिया -->  
     <div class="chat-list-area" id="chatListContainer">  
       <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->  
     </div>  
@@ -457,7 +457,7 @@
       let userChats = [];   
   
       if (userChats.length === 0) {  
-        container.innerHTML = ""; // खाली स्टेट का फालतू टेक्स्ट पूरी तरह हटा दिया गया है  
+        container.innerHTML = "";   
       } else {  
         container.innerHTML = "";  
         userChats.forEach(chat => {  
