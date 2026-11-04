@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी 7 रंग, नॉर्मल स्क्रॉल और सही पोजीशन */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: तेज स्पीड और सही दिशा के साथ */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -53,16 +53,16 @@
 
       background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollSmooth 3.5s linear infinite;  
+      animation: colorScrollSmooth 1.8s linear infinite;  
     }  
 
-    /* रंग बाएं से दाएं लगातार प्राकृतिक रूप से स्क्रॉल होने का ऑरिजिनल नियम */  
+    /* रंग लेफ्ट से राइट की ओर तेजी से स्क्रॉल होने का नियम */  
     @keyframes colorScrollSmooth {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, -100% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
     }  
 
@@ -337,7 +337,7 @@
       font-size: 13px;  
       font-weight: bold;  
       cursor: pointer;  
-    }
+    }  
   </style>  
 </head>  
 <body>  
