@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी 7 रंग, सही स्क्रॉल नियम और कम पीला रंग */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: सभी 7 रंग, नॉर्मल स्क्रॉल और सही पोजीशन */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -45,13 +45,13 @@
         radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.25) 0%, transparent 45%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.02) 0%,   
-          rgba(255,255,255,0.4) 90px,   
-          rgba(255,255,255,0.85) 170px,   
-          #ffffff 240px,   
+          rgba(255,255,255,0.4) 140px,   
+          rgba(255,255,255,0.85) 260px,   
+          #ffffff 360px,   
           #ffffff 100%  
         );  
 
-      background-size: 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 200% 100%, 100% 100%;  
+      background-size: 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 200% 360px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
       animation: colorScrollSmooth 3.5s linear infinite;  
     }  
