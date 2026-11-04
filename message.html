@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 नॉर्मल हल्के रंग, Left से Right बहने वाला तेज़ स्क्रॉल, और ऊपर सिमटा हुआ अखंड बैकग्राउंड */  
+    /* 🌟 बादलों की तरह बहने वाला अखंड बैकग्राउंड: बिना किसी लाइन के, एक के पीछे एक लगातार चलने वाले रंग */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,13 +36,13 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.55) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.55) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.50) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.60) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.55) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.55) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.45) 0%, transparent 30%),     
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.55) 0%, transparent 30%),   
+        radial-gradient(circle at 35% 3%, rgba(255, 20, 147, 0.50) 0%, transparent 30%),    
+        radial-gradient(circle at 60% 5%, rgba(255, 0, 255, 0.45) 0%, transparent 30%),     
+        radial-gradient(circle at 80% 4%, rgba(255, 140, 0, 0.55) 0%, transparent 32%),     
+        radial-gradient(circle at 20% 6%, rgba(138, 43, 226, 0.50) 0%, transparent 30%),    
+        radial-gradient(circle at 50% 3%, rgba(135, 206, 235, 0.55) 0%, transparent 30%),   
+        radial-gradient(circle at 90% 7%, rgba(255, 215, 0, 0.45) 0%, transparent 32%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.3) 100px,   
@@ -52,18 +52,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
+      background-size: 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 0.8s linear infinite;  
+      animation: cloudFlowSmooth 3.5s linear infinite;  
     }  
 
-    /* रंग Left से शुरू होकर Right की तरफ बहते हुए किनारों पर छुपने का सही नियम */  
-    @keyframes colorScrollLeftToRight {  
+    /* रंग बादलों की तरह Left से Right निरंतर और बिना किसी जोड़ के बहने का नियम */  
+    @keyframes cloudFlowSmooth {  
       0% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
       }  
     }  
 
