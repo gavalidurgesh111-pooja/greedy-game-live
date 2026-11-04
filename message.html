@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 फिक्स साइज (100%) और बादलों जैसा निरंतर स्क्रॉलिंग बैकग्राउंड बिना किसी लाइन के */  
+    /* 🌟 अखंड बैकग्राउंड: बिना किसी लाइन के, बादलों की तरह बहने वाला और ऊपर सिमटा हुआ रूप */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -50,10 +50,10 @@
 
       background-size: 100% 250px, 100% 250px, 100% 250px, 100% 250px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: cloudFlowSmooth 3s linear infinite;  
+      animation: cloudFlowSmooth 4s linear infinite;  
     }  
 
-    /* साइज को छेड़े बिना रंगों को Left से Right सुचारू रूप से चलाने का नियम */  
+    /* बादलों की तरह निरंतर और साफ़ स्क्रॉल होने का नियम */  
     @keyframes cloudFlowSmooth {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
@@ -63,44 +63,44 @@
       }  
     }  
 
-    /* टॉप हेडर */  
+    /* टॉप हेडर - फोटो के अनुसार और ब्राउज़र से सुरक्षित दूरी पर नीचे सेट */  
     .sub-header {  
       display: flex;  
       align-items: center;  
       justify-content: space-between;  
       padding: 16px 20px;  
+      margin-top: 45px; /* ब्राउज़र एरिया से नीचे लाने के लिए */  
       background: transparent;  
-      color: #111;  
+      color: #ffffff; /* फोटो की तरह टेक्स्ट का रंग सफेद */  
       position: relative;  
       z-index: 2;  
     }  
 
     .sub-header h2 {  
-      font-size: 22px;  
-      font-weight: 800;  
-      color: #111;  
+      font-size: 24px;  
+      font-weight: 700;  
+      color: #ffffff; /* फोटो की तरह पूरी तरह सफेद */  
     }  
 
     .header-icons {  
       display: flex;  
-      gap: 12px;  
+      gap: 16px;  
       align-items: center;  
     }  
 
-    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */  
+    /* सर्च और टिक आइकॉन - फोटो की तरह साफ़ सफेद आउटलाइन और ट्रांसपेरेंट गोल रूप */  
     .header-icon-btn {  
-      width: 32px;  
-      height: 32px;  
-      background: rgba(255, 255, 255, 0.9);  
-      border: none;  
+      width: 36px;  
+      height: 36px;  
+      background: transparent;  
+      border: 1.5px solid rgba(255, 255, 255, 0.8);  
       border-radius: 50%;  
-      font-size: 14px;  
+      font-size: 15px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      color: #333;  
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);  
+      color: #ffffff; /* आइकॉन का रंग सफेद */  
     }  
 
     .header-icon-btn:active {  
@@ -115,7 +115,7 @@
       background: rgba(255, 255, 255, 0.85);  
       backdrop-filter: blur(6px);  
       padding: 10px 16px;  
-      margin: 0 15px 10px 15px;  
+      margin: 10px 15px 10px 15px;  
       border-radius: 10px;  
       font-size: 13px;  
       color: #444;  
@@ -139,7 +139,7 @@
       padding: 0 4px;  
     }  
 
-    /* चैट लिस्ट एरिया */  
+    /* चैट लिस्ट एरिया (नीचे का फालतू टेक्स्ट हटा दिया गया है) */  
     .chat-list-area {  
       flex: 1;  
       overflow-y: auto;  
@@ -216,13 +216,6 @@
       padding: 2px 6px;  
       border-radius: 10px;  
       font-weight: bold;  
-    }  
-
-    /* खाली चैट स्टेट */  
-    .empty-state {  
-      text-align: center;  
-      padding: 60px 20px;  
-      color: #888;  
     }  
 
     /* कस्टम पॉप-अप ओवरले */  
@@ -340,7 +333,7 @@
 <body>  
 
   <div class="page-container">  
-    <!-- हेडर -->  
+    <!-- हेडर - फोटो के अनुसार सफेद और सही पोजीशन पर -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
@@ -355,7 +348,7 @@
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>  
     </div>  
 
-    <!-- चैट लिस्ट एरिया -->  
+    <!-- चैट लिस्ट एरिया (खाली स्टेट टेक्स्ट हटा दिया गया है) -->  
     <div class="chat-list-area" id="chatListContainer">  
       <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->  
     </div>  
@@ -464,13 +457,7 @@
       let userChats = [];   
   
       if (userChats.length === 0) {  
-        container.innerHTML = `  
-          <div class="empty-state">  
-            <div style="font-size: 45px; margin-bottom: 12px;">💬</div>  
-            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>  
-            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>  
-          </div>  
-        `;  
+        container.innerHTML = ""; // खाली स्टेट का फालतू टेक्स्ट पूरी तरह हटा दिया गया है  
       } else {  
         container.innerHTML = "";  
         userChats.forEach(chat => {  
