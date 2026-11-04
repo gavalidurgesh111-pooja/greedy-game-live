@@ -87,20 +87,28 @@
       align-items: center;  
     }  
 
-    /* सर्च और टिक आइकॉन - बिल्कुल दूसरी फोटो जैसे गोल, साफ़ और सही अनुपात में[span_2](start_span)[span_2](end_span) */  
+    /* सर्च और टिक आइकॉन - बिल्कुल दूसरी फोटो जैसे गोल, साफ़ और परफेक्ट SVG आउटलाइन वाले[span_1](start_span)[span_1](end_span) */  
     .header-icon-btn {  
       width: 40px;  
       height: 40px;  
       background: transparent;  
       border: 1.5px solid rgba(255, 255, 255, 0.85);  
       border-radius: 50%;  
-      font-size: 17px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      color: #ffffff;  
       padding: 0;  
+    }  
+
+    .header-icon-btn svg {  
+      width: 18px;  
+      height: 18px;  
+      stroke: #ffffff;  
+      fill: none;  
+      stroke-width: 2;  
+      stroke-linecap: round;  
+      stroke-linejoin: round;  
     }  
 
     .header-icon-btn:active {  
@@ -333,12 +341,18 @@
 <body>  
 
   <div class="page-container">  
-    <!-- हेडर -->  
+    <!-- हेडर - फोटो के अनुसार सटीक रूप और पोजीशन -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>  
-        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>  
+        <!-- सर्च आइकॉन (SVG) -->  
+        <button class="header-icon-btn" onclick="searchChats()" title="Search">  
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
+        </button>  
+        <!-- मार्क/टिक आइकॉन (SVG) -->  
+        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
+          <polyline points="20 6 9 17 4 12"></polyline>  
+        </button>  
       </div>  
     </div>  
 
