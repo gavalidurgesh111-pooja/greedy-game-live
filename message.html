@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: बिना किसी लाइन के, बादलों की तरह बहने वाला और सही पोजीशन वाला रूप */  
+    /* 🌟 अखंड, सिंगल और निरंतर बैकग्राउंड: कम चौड़ाई (130%), स्क्रॉलिंग और परफेक्ट कलर-व्हाइट ब्लेंडिंग */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,49 +36,54 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 15% 10%, rgba(186, 85, 211, 0.55) 0%, transparent 25%),   
-        radial-gradient(circle at 40% 8%, rgba(255, 20, 147, 0.50) 0%, transparent 25%),    
-        radial-gradient(circle at 65% 10%, rgba(255, 0, 255, 0.45) 0%, transparent 25%),     
-        radial-gradient(circle at 85% 8%, rgba(255, 140, 0, 0.55) 0%, transparent 28%),     
+        radial-gradient(circle at 15% 12%, rgba(186, 85, 211, 0.60) 0%, transparent 45%),   
+        radial-gradient(circle at 30% 10%, rgba(255, 20, 147, 0.60) 0%, transparent 45%),    
+        radial-gradient(circle at 45% 15%, rgba(255, 0, 255, 0.55) 0%, transparent 45%),     
+        radial-gradient(circle at 60% 12%, rgba(255, 140, 0, 0.65) 0%, transparent 48%),     
+        radial-gradient(circle at 75% 18%, rgba(138, 43, 226, 0.60) 0%, transparent 45%),    
+        radial-gradient(circle at 90% 10%, rgba(135, 206, 235, 0.60) 0%, transparent 45%),   
+        radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.50) 0%, transparent 50%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.4) 100px,   
-          rgba(255,255,255,0.85) 180px,   
-          #ffffff 250px,   
+          rgba(255,255,255,0.25) 120px,   
+          rgba(255,255,255,0.65) 220px,   
+          rgba(255,255,255,0.9) 300px,   
+          #ffffff 360px,   
           #ffffff 100%  
         );  
 
-      background-size: 100% 250px, 100% 250px, 100% 250px, 100% 250px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: cloudFlowSmooth 4s linear infinite;  
+      /* चौड़ाई को 130% रखा गया है ताकि यह कम भी रहे और स्क्रॉल भी हो सके */  
+      background-size: 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 130% 360px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      animation: colorScrollSmooth 2.2s linear infinite;  
     }  
 
-    @keyframes cloudFlowSmooth {  
+    /* रंग आपस में मिक्स होकर लूप में तेज़ी से स्क्रॉल होने का नियम */  
+    @keyframes colorScrollSmooth {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
-    /* टॉप हेडर - ब्राउज़र बार से नीचे, सही पोजीशन पर */  
+    /* टॉप हेडर */  
     .sub-header {  
       display: flex;  
       align-items: center;  
       justify-content: space-between;  
-      padding: 12px 20px;  
-      margin-top: 60px;  
+      padding: 16px 20px;  
       background: transparent;  
-      color: #ffffff;  
+      color: #111;  
       position: relative;  
       z-index: 2;  
     }  
 
     .sub-header h2 {  
-      font-size: 24px;  
-      font-weight: 700;  
-      color: #ffffff;  
+      font-size: 22px;  
+      font-weight: 800;  
+      color: #111;  
     }  
 
     .header-icons {  
@@ -87,54 +92,23 @@
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - बिना बॉर्डर के साफ़ रूप में */  
-    .search-icon-btn {  
+    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */  
+    .header-icon-btn {  
       width: 32px;  
       height: 32px;  
-      background: transparent;  
+      background: rgba(255, 255, 255, 0.9);  
       border: none;  
-      cursor: pointer;  
-      display: flex;  
-      align-items: center;  
-      justify-content: center;  
-      padding: 0;  
-    }  
-
-    .search-icon-btn svg {  
-      width: 20px;  
-      height: 20px;  
-      stroke: #ffffff;  
-      fill: none;  
-      stroke-width: 2;  
-      stroke-linecap: round;  
-      stroke-linejoin: round;  
-    }  
-
-    /* मार्क/टिक आइकॉन - और भी छोटा गोल घेरा (Border) */  
-    .mark-icon-btn {  
-      width: 30px;  
-      height: 30px;  
-      background: transparent;  
-      border: 1.2px solid rgba(255, 255, 255, 0.85);  
       border-radius: 50%;  
+      font-size: 14px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      padding: 0;  
+      color: #333;  
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);  
     }  
 
-    .mark-icon-btn svg {  
-      width: 14px;  
-      height: 14px;  
-      stroke: #ffffff;  
-      fill: none;  
-      stroke-width: 2;  
-      stroke-linecap: round;  
-      stroke-linejoin: round;  
-    }  
-
-    .search-icon-btn:active, .mark-icon-btn:active {  
+    .header-icon-btn:active {  
       transform: scale(0.92);  
     }  
 
@@ -146,7 +120,7 @@
       background: rgba(255, 255, 255, 0.85);  
       backdrop-filter: blur(6px);  
       padding: 10px 16px;  
-      margin: 10px 15px 10px 15px;  
+      margin: 0 15px 10px 15px;  
       border-radius: 10px;  
       font-size: 13px;  
       color: #444;  
@@ -247,6 +221,13 @@
       padding: 2px 6px;  
       border-radius: 10px;  
       font-weight: bold;  
+    }  
+
+    /* खाली चैट स्टेट */  
+    .empty-state {  
+      text-align: center;  
+      padding: 60px 20px;  
+      color: #888;  
     }  
 
     /* कस्टम पॉप-अप ओवरले */  
@@ -368,14 +349,8 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (बिना बॉर्डर के) -->  
-        <button class="search-icon-btn" onclick="searchChats()" title="Search">  
-          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
-        </button>  
-        <!-- मार्क/टिक आइकॉन (छोटा गोल घेरा) -->  
-        <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
-        </button>  
+        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>  
+        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>  
       </div>  
     </div>  
 
@@ -454,6 +429,8 @@
       history.pushState({page: "message_secure"}, "", window.location.href);  
     });  
   
+    backgroundClose = function(e) { /* helper */ };
+  
     function closeNotificationBanner(e) {  
       e.stopPropagation();  
       document.getElementById("notificationBanner").style.display = "none";  
@@ -494,7 +471,13 @@
       let userChats = [];   
   
       if (userChats.length === 0) {  
-        container.innerHTML = "";   
+        container.innerHTML = `  
+          <div class="empty-state">  
+            <div style="font-size: 45px; margin-bottom: 12px;">💬</div>  
+            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>  
+            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>  
+          </div>  
+        `;  
       } else {  
         container.innerHTML = "";  
         userChats.forEach(chat => {  
