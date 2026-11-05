@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 बैकग्राउंड: बिना किसी लाइन/सीम के एकदम स्मूथ लेफ्ट-राइट स्क्रॉल */  
+    /* 🌟 बैकग्राउंड: लाइन/सीम को पूरी तरह खत्म करने के लिए साइज और पोजीशन का सटीक लूप */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -52,18 +52,17 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 100% 100%;  
+      background-size: 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 3s linear infinite;  
+      animation: colorScrollLeftToRight 4s linear infinite;  
     }  
 
-    /* सीमलेस लूप ताकि कोई लाइन न दिखे */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
+        background-position: -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, 0 0;  
       }  
     }  
 
@@ -113,7 +112,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क आइकॉन - जैसा आपने सेट किया था, बिल्कुल वैसा ही सुरक्षित */  
+    /* मार्क आइकॉन - बिल्कुल सुरक्षित और जैसा आपने सेट किया था */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
