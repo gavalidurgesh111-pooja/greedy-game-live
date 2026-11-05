@@ -92,10 +92,10 @@
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - मीडियम साइज़ (36px), बिना किसी गोल घेरे के */  
+    /* सर्च आइकॉन - 40px × 40px, बिना बॉर्डर के */  
     .search-icon-btn {  
-      width: 36px;  
-      height: 36px;  
+      width: 40px;  
+      height: 40px;  
       background: transparent;  
       border: none;  
       cursor: pointer;  
@@ -106,21 +106,21 @@
     }  
 
     .search-icon-btn svg {  
-      width: 20px;  
-      height: 20px;  
+      width: 25px;  
+      height: 25px;  
       stroke: #ffffff;  
       fill: none;  
-      stroke-width: 2.2;  
+      stroke-width: 2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - मीडियम साइज़ (36px), मोटा गोल घेरा */  
+    /* मार्क/टिक आइकॉन - 40px × 40px, गोल घेरे के साथ */  
     .mark-icon-btn {  
-      width: 36px;  
-      height: 36px;  
+      width: 40px;  
+      height: 40px;  
       background: transparent;  
-      border: 2.5px solid rgba(255, 255, 255, 0.95);  
+      border: 1px solid rgba(255, 255, 255, 0.60);  
       border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
@@ -130,11 +130,11 @@
     }  
 
     .mark-icon-btn svg {  
-      width: 17px;  
-      height: 17px;  
+      width: 25px;  
+      height: 25px;  
       stroke: #ffffff;  
       fill: none;  
-      stroke-width: 2.5;  
+      stroke-width: 2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
@@ -373,11 +373,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (मीडियम साइज़, बिना बॉर्डर के) -->  
+        <!-- सर्च आइकॉन -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (मीडियम साइज़, मोटे गोल घेरे के साथ) -->  
+        <!-- मार्क/टिक आइकॉन -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
