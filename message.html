@@ -88,14 +88,14 @@
 
     .header-icons {  
       display: flex;  
-      gap: 14px;  
+      gap: 12px;  
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - बिना बॉर्डर के, और साइज़ बिल्कुल दूसरी फोटो के अनुसार सटीक */  
+    /* सर्च आइकॉन - बिना बॉर्डर के, एकदम कॉम्पैक्ट साइज़ (28px) */  
     .search-icon-btn {  
-      width: 32px;  
-      height: 32px;  
+      width: 28px;  
+      height: 28px;  
       background: transparent;  
       border: none;  
       cursor: pointer;  
@@ -106,8 +106,8 @@
     }  
 
     .search-icon-btn svg {  
-      width: 20px;  
-      height: 20px;  
+      width: 18px;  
+      height: 18px;  
       stroke: #ffffff;  
       fill: none;  
       stroke-width: 2;  
@@ -115,12 +115,12 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - गोल घेरे के साथ, सर्च के बिल्कुल बराबर साइज़ में */  
+    /* मार्क/टिक आइकॉन - छोटा गोल घेरा, बिल्कुल सर्च के बराबर साइज़ (28px) */  
     .mark-icon-btn {  
-      width: 32px;  
-      height: 32px;  
+      width: 28px;  
+      height: 28px;  
       background: transparent;  
-      border: 2px solid rgba(255, 255, 255, 0.95);  
+      border: 1.8px solid rgba(255, 255, 255, 0.95);  
       border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
@@ -130,8 +130,8 @@
     }  
 
     .mark-icon-btn svg {  
-      width: 16px;  
-      height: 16px;  
+      width: 14px;  
+      height: 14px;  
       stroke: #ffffff;  
       fill: none;  
       stroke-width: 2;  
@@ -373,11 +373,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (दूसरी फोटो के अनुसार बिल्कुल साफ़ और सही साइज़ में) -->  
+        <!-- सर्च आइकॉन (छोटा और बिना बॉर्डर के) -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (दूसरी फोटो के अनुसार गोल घेरे में) -->  
+        <!-- मार्क/टिक आइकॉन (छोटा गोल घेरा, सर्च के बिल्कुल बराबर साइज़ में) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
