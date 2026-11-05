@@ -67,14 +67,15 @@
       }  
     }  
 
-    /* टॉप हेडर */  
+    /* टॉप हेडर - 1 इंच (लगभग 40px) नीचे खिसकाया गया है और नाम सफेद किया गया है */  
     .sub-header {  
       display: flex;  
       align-items: center;  
       justify-content: space-between;  
       padding: 16px 20px;  
+      margin-top: 40px;  
       background: transparent;  
-      color: #111;  
+      color: #ffffff;  
       position: relative;  
       z-index: 2;  
     }  
@@ -82,7 +83,7 @@
     .sub-header h2 {  
       font-size: 22px;  
       font-weight: 800;  
-      color: #111;  
+      color: #ffffff;  
     }  
 
     .header-icons {  
@@ -91,10 +92,10 @@
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - बिना बॉर्डर के साफ़ SVG रूप में */  
+    /* सर्च आइकॉन - बिना बॉर्डर के साफ़ सफेद रूप में */  
     .search-icon-btn {  
-      width: 32px;  
-      height: 32px;  
+      width: 28px;  
+      height: 28px;  
       background: transparent;  
       border: none;  
       cursor: pointer;  
@@ -105,34 +106,33 @@
     }  
 
     .search-icon-btn svg {  
-      width: 20px;  
-      height: 20px;  
-      stroke: #333;  
+      width: 18px;  
+      height: 18px;  
+      stroke: #ffffff;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - छोटा गोल घेरा (Border) */  
+    /* मार्क/टिक आइकॉन - छोटा गोल घेरा (Border) और सफेद रंग */  
     .mark-icon-btn {  
-      width: 30px;  
-      height: 30px;  
-      background: rgba(255, 255, 255, 0.9);  
-      border: 1.2px solid rgba(0, 0, 0, 0.2);  
+      width: 26px;  
+      height: 26px;  
+      background: transparent;  
+      border: 1.2px solid rgba(255, 255, 255, 0.9);  
       border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
       padding: 0;  
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);  
     }  
 
     .mark-icon-btn svg {  
-      width: 14px;  
-      height: 14px;  
-      stroke: #333;  
+      width: 13px;  
+      height: 13px;  
+      stroke: #ffffff;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
@@ -151,7 +151,7 @@
       background: rgba(255, 255, 255, 0.85);  
       backdrop-filter: blur(6px);  
       padding: 10px 16px;  
-      margin: 0 15px 10px 15px;  
+      margin: 10px 15px 10px 15px;  
       border-radius: 10px;  
       font-size: 13px;  
       color: #444;  
@@ -380,11 +380,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (बिना बॉर्डर के) -->  
+        <!-- सर्च आइकॉन (सफेद, बिना बॉर्डर के) -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (छोटा गोल घेरा) -->  
+        <!-- मार्क/टिक आइकॉन (सफेद, छोटा गोल घेरा) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
