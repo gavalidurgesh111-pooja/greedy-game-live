@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 सीमलेस बैकग्राउंड: शुरुआत और अंत के किनारे आपस में मैच, कोई लाइन नहीं */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,12 +36,12 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 0% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 20% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
         radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 60% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 80% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 100% 3%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
+        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
         radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
@@ -52,18 +52,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 100% 100%;  
+      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 2s linear infinite;  
+      animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
-    /* परफेक्ट मैचिंग लूप */  
+    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
@@ -115,7 +115,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - जैसा आपका ओरिजिनल था बिल्कुल वैसा ही सुरक्षित */  
+    /* मार्क/टिक आइकॉन - गोल घेरे की साइज़ 25px × 25px, बॉर्डर 3px */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -540,4 +540,4 @@
     };  
   </script>  
 </body>  
-</html>  
+</html>
