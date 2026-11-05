@@ -91,23 +91,55 @@
       align-items: center;  
     }  
 
-    /* सर्च और टिक आइकॉन - सफेद छोटे गोल बटन */  
-    .header-icon-btn {  
+    /* सर्च आइकॉन - बिना बॉर्डर के साफ़ SVG रूप में */  
+    .search-icon-btn {  
       width: 32px;  
       height: 32px;  
-      background: rgba(255, 255, 255, 0.9);  
+      background: transparent;  
       border: none;  
-      border-radius: 50%;  
-      font-size: 14px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      color: #333;  
+      padding: 0;  
+    }  
+
+    .search-icon-btn svg {  
+      width: 20px;  
+      height: 20px;  
+      stroke: #333;  
+      fill: none;  
+      stroke-width: 2;  
+      stroke-linecap: round;  
+      stroke-linejoin: round;  
+    }  
+
+    /* मार्क/टिक आइकॉन - छोटा गोल घेरा (Border) */  
+    .mark-icon-btn {  
+      width: 30px;  
+      height: 30px;  
+      background: rgba(255, 255, 255, 0.9);  
+      border: 1.2px solid rgba(0, 0, 0, 0.2);  
+      border-radius: 50%;  
+      cursor: pointer;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      padding: 0;  
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);  
     }  
 
-    .header-icon-btn:active {  
+    .mark-icon-btn svg {  
+      width: 14px;  
+      height: 14px;  
+      stroke: #333;  
+      fill: none;  
+      stroke-width: 2;  
+      stroke-linecap: round;  
+      stroke-linejoin: round;  
+    }  
+
+    .search-icon-btn:active, .mark-icon-btn:active {  
       transform: scale(0.92);  
     }  
 
@@ -348,8 +380,14 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <button class="header-icon-btn" onclick="searchChats()" title="Search">🔍</button>  
-        <button class="header-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">✓</button>  
+        <!-- सर्च आइकॉन (बिना बॉर्डर के) -->  
+        <button class="search-icon-btn" onclick="searchChats()" title="Search">  
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
+        </button>  
+        <!-- मार्क/टिक आइकॉन (छोटा गोल घेरा) -->  
+        <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
+        </button>  
       </div>  
     </div>  
 
