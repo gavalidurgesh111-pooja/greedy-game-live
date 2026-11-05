@@ -92,8 +92,31 @@
       align-items: center;  
     }  
 
-    /* सर्च और मार्क दोनों आइकॉन - समान साइज और मोटे गोल घेरे (Border) के साथ */  
-    .search-icon-btn, .mark-icon-btn {  
+    /* सर्च आइकॉन - बिना बॉर्डर के, पर मार्क के बराबर साइज़ में */  
+    .search-icon-btn {  
+      width: 34px;  
+      height: 34px;  
+      background: transparent;  
+      border: none;  
+      cursor: pointer;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      padding: 0;  
+    }  
+
+    .search-icon-btn svg {  
+      width: 18px;  
+      height: 18px;  
+      stroke: #ffffff;  
+      fill: none;  
+      stroke-width: 2.2;  
+      stroke-linecap: round;  
+      stroke-linejoin: round;  
+    }  
+
+    /* मार्क/टिक आइकॉन - मोटे गोल घेरे (Border) के साथ */  
+    .mark-icon-btn {  
       width: 34px;  
       height: 34px;  
       background: transparent;  
@@ -106,7 +129,7 @@
       padding: 0;  
     }  
 
-    .search-icon-btn svg, .mark-icon-btn svg {  
+    .mark-icon-btn svg {  
       width: 16px;  
       height: 16px;  
       stroke: #ffffff;  
@@ -350,11 +373,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (समान साइज़ और मोटा गोल घेरा) -->  
+        <!-- सर्च आइकॉन (समान साइज़, बिना गोल घेरे के) -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (समान साइज़ और मोटा गोल घेरा) -->  
+        <!-- मार्क/टिक आइकॉन (समान साइज़, मोटे गोल घेरे के साथ) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
