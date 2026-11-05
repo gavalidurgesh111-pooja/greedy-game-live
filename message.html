@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड और सीमलेस बैकग्राउंड - बिना किसी लाइन या कट के */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,9 +36,13 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 20% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 35%),   
-        radial-gradient(circle at 50% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 35%),    
-        radial-gradient(circle at 80% 5%, rgba(255, 140, 0, 0.90) 0%, transparent 35%),     
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
+        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
+        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.3) 100px,   
@@ -48,20 +52,22 @@
           #ffffff 100%  
         );  
 
-      background-size: 100% 350px, 100% 350px, 100% 350px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 4s linear infinite;  
+      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
+    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
+    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -86,6 +92,7 @@
       align-items: center;  
     }  
 
+    /* सर्च आइकॉन - 40px × 40px, बिना बॉर्डर के, SVG साइज़ 25px */  
     .search-icon-btn {  
       width: 40px;  
       height: 40px;  
@@ -108,27 +115,26 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क आइकॉन - बिल्कुल सुरक्षित और अपनी जगह पर */  
+    /* मार्क/टिक आइकॉन - गोल घेरे की साइज़ 25px × 25px, बॉर्डर 3px */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
       background: transparent;  
-      border: none;  
+      border: 3px solid rgba(255, 255, 255, 0.60);  
+      border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
       padding: 0;  
-      position: relative;  
-      transform: rotate(-15deg) scale(1.08);  
     }  
 
     .mark-icon-btn svg {  
-      width: 25px;  
-      height: 25px;  
-      stroke: rgba(255, 255, 255, 0.85);  
+      width: 14px;  
+      height: 14px;  
+      stroke: #ffffff;  
       fill: none;  
-      stroke-width: 2.8;  
+      stroke-width: 2.5;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
@@ -137,6 +143,7 @@
       transform: scale(0.92);  
     }  
 
+    /* नोटिफिकेशन बैनर */  
     .notification-banner {  
       display: flex;  
       align-items: center;  
@@ -168,6 +175,7 @@
       padding: 0 4px;  
     }  
 
+    /* चैट लिस्ट एरिया */  
     .chat-list-area {  
       flex: 1;  
       overflow-y: auto;  
@@ -246,6 +254,7 @@
       font-weight: bold;  
     }  
 
+    /* कस्टम पॉप-अप ओवरले */  
     .custom-modal-overlay {  
       display: none;  
       position: fixed;  
@@ -329,6 +338,7 @@
       padding: 6px;  
     }  
 
+    /* सबसे नीचे फिक्स बॉटम बार */  
     .bottom-action-bar {  
       position: absolute;  
       bottom: 0;  
@@ -359,35 +369,40 @@
 <body>  
 
   <div class="page-container">  
+    <!-- हेडर -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
+        <!-- सर्च आइकॉन -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
+        <!-- मार्क/टिक आइकॉन -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
-          <svg viewBox="0 0 24 24">  
-            <path d="M 18.5 9.5 A 9.5 9.5 0 1 1 12 2.5 L 18.5 5" />  
-            <polyline points="9 12 11.5 14.5 16 9.5"></polyline>  
-          </svg>  
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
       </div>  
     </div>  
 
+    <!-- नोटिफिकेशन बैनर -->  
     <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">  
       <span>🔔 Turn on notifications, don't miss any messages</span>  
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>  
     </div>  
 
+    <!-- चैट लिस्ट एरिया -->  
     <div class="chat-list-area" id="chatListContainer">  
+      <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->  
     </div>  
 
+    <!-- सबसे नीचे लॉगआउट और आईडी बार -->  
     <div class="bottom-action-bar">  
       <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>  
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>  
     </div>  
   </div>  
 
+  <!-- Tips Modal -->  
   <div id="tipsModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <h3>Tips</h3>  
@@ -399,6 +414,7 @@
     </div>  
   </div>  
 
+  <!-- Notification Permission Modal -->  
   <div id="notificationModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <p style="color: #222; font-size: 15px; margin-bottom: 15px;">  
@@ -415,6 +431,7 @@
     </div>  
   </div>  
 
+  <!-- Firebase SDKs -->  
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>  
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>  
 
@@ -485,6 +502,30 @@
         container.innerHTML = "";   
       } else {  
         container.innerHTML = "";  
+        userChats.forEach(chat => {  
+          let item = document.createElement("div");  
+          item.className = "chat-item";  
+            
+          item.onclick = () => {  
+            localStorage.setItem("viewing_user_id", chat.id);  
+            window.location.replace("profile.html");  
+          };  
+  
+          item.innerHTML = `  
+            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">  
+            <div class="chat-info">  
+              <div class="chat-name-row">  
+                <span class="chat-name">${chat.name}</span>  
+                <span class="chat-time">${chat.time}</span>  
+              </div>  
+              <div class="chat-name-row">  
+                <span class="chat-last-msg">${chat.msg}</span>  
+                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}  
+              </div>  
+            </div>  
+          `;  
+          container.appendChild(item);  
+        });  
       }  
     }  
 
