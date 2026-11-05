@@ -67,7 +67,7 @@
       }  
     }  
 
-    /* टॉप हेडर - 1 इंच (लगभग 40px) नीचे खिसकाया गया है और नाम सफेद किया गया है */  
+    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -92,10 +92,10 @@
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - बिना बॉर्डर के साफ़ सफेद रूप में */  
+    /* सर्च आइकॉन - बिना बॉर्डर के सफेद रूप में (समान साइज) */  
     .search-icon-btn {  
-      width: 28px;  
-      height: 28px;  
+      width: 32px;  
+      height: 32px;  
       background: transparent;  
       border: none;  
       cursor: pointer;  
@@ -115,12 +115,12 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - छोटा गोल घेरा (Border) और सफेद रंग */  
+    /* मार्क/टिक आइकॉन - समान साइज, मोटी बॉर्डर वाला गोल घेरा */  
     .mark-icon-btn {  
-      width: 26px;  
-      height: 26px;  
+      width: 32px;  
+      height: 32px;  
       background: transparent;  
-      border: 1.2px solid rgba(255, 255, 255, 0.9);  
+      border: 2px solid rgba(255, 255, 255, 0.95);  
       border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
@@ -130,11 +130,11 @@
     }  
 
     .mark-icon-btn svg {  
-      width: 13px;  
-      height: 13px;  
+      width: 16px;  
+      height: 16px;  
       stroke: #ffffff;  
       fill: none;  
-      stroke-width: 2;  
+      stroke-width: 2.2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
@@ -252,13 +252,6 @@
       padding: 2px 6px;  
       border-radius: 10px;  
       font-weight: bold;  
-    }  
-
-    /* खाली चैट स्टेट */  
-    .empty-state {  
-      text-align: center;  
-      padding: 60px 20px;  
-      color: #888;  
     }  
 
     /* कस्टम पॉप-अप ओवरले */  
@@ -384,7 +377,7 @@
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (सफेद, छोटा गोल घेरा) -->  
+        <!-- मार्क/टिक आइकॉन (सफेद, मोटी बॉर्डर वाला गोल घेरा) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
@@ -506,13 +499,7 @@
       let userChats = [];   
   
       if (userChats.length === 0) {  
-        container.innerHTML = `  
-          <div class="empty-state">  
-            <div style="font-size: 45px; margin-bottom: 12px;">💬</div>  
-            <div style="font-weight: bold; font-size: 17px; color: #222;">Greetings Received</div>  
-            <div style="font-size: 13px; color: #888; margin-top: 6px;">No greetings yet</div>  
-          </div>  
-        `;  
+        container.innerHTML = "";   
       } else {  
         container.innerHTML = "";  
         userChats.forEach(chat => {  
