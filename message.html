@@ -115,7 +115,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - 25px × 25px, 3px बॉर्डर के साथ Custom Hook डिज़ाइन [image_7.png के अनुसार] */  
+    /* मार्क/टिक आइकॉन - फोटो के अनुसार नीचे-राइट कोने पर हुक/लूप वाली डिज़ाइन[span_2](start_span)[span_2](end_span)[span_3](start_span)[span_3](end_span) */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -128,8 +128,7 @@
       justify-content: center;  
       padding: 0;  
       position: relative;  
-      /* नीचे-दाएँ कोने को काटकर विशिष्ट हुक आकार बनाना */  
-      clip-path: polygon(0% 0%, 100% 0%, 100% 75%, 85% 100%, 0% 100%);  
+      overflow: visible;  
     }  
 
     /* आइकॉन के अंदर का टिक मार्क SVG */  
@@ -143,17 +142,18 @@
       stroke-linejoin: round;  
     }  
 
-    /* कस्टम हूक/कटे हुए भाग का इफ़ेक्ट */  
-    .mark-icon-btn::before {  
+    /* नीचे-दाएँ कोने पर फोटो जैसा लूप या मुड़ा हुआ हुक बनाने के लिए */  
+    .mark-icon-btn::after {  
       content: '';  
       position: absolute;  
-      bottom: -2px;  
-      right: -2px;  
-      width: 7px;  
-      height: 7px;  
+      bottom: -1px;  
+      right: -1px;  
+      width: 8px;  
+      height: 8px;  
       border-bottom: 3px solid rgba(255, 255, 255, 0.60);  
-      border-right: 3px solid rgba(255, 255, 255, 0.60);  
-      transform: rotate(30deg);  
+      border-left: 3px solid rgba(255, 255, 255, 0.60);  
+      border-radius: 0 0 0 50%;  
+      transform: rotate(-45deg);  
     }  
 
     .search-icon-btn:active, .mark-icon-btn:active {  
@@ -394,7 +394,7 @@
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (कटी हुई डिज़ाइन) [image_7.png के अनुसार] -->  
+        <!-- मार्क/टिक आइकॉन (फोटो के अनुसार लूप/हुक डिज़ाइन)[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
@@ -557,4 +557,4 @@
     };  
   </script>  
 </body>  
-</html> 
+</html>
