@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 अखंड बैकग्राउंड: लेफ्ट-राइट स्क्रॉल लूप बिल्कुल स्मूथ और बिना किसी लाइन के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -52,18 +52,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
+      background-size: 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 100% 100%;  
       background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 0.8s linear infinite;  
+      animation: colorScrollLeftToRight 3s linear infinite;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
+    /* परफेक्ट सीमलेस लेफ्ट-टू-राइट लूप एनिमेशन */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
       }  
     }  
 
@@ -115,26 +115,27 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - गोल घेरे की साइज़ 25px × 25px, बॉर्डर 3px */  
+    /* मार्क/टिक आइकॉन - ऊपर right साइड हुक और आपका ट्रांसफॉर्म इफ़ेक्ट */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
       background: transparent;  
-      border: 3px solid rgba(255, 255, 255, 0.60);  
-      border-radius: 50%;  
+      border: none;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
       padding: 0;  
+      position: relative;  
+      transform: rotate(-15deg) scale(1.08);  
     }  
 
     .mark-icon-btn svg {  
-      width: 14px;  
-      height: 14px;  
-      stroke: #ffffff;  
+      width: 25px;  
+      height: 25px;  
+      stroke: rgba(255, 255, 255, 0.85);  
       fill: none;  
-      stroke-width: 2.5;  
+      stroke-width: 2.8;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
@@ -377,9 +378,12 @@
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन -->  
+        <!-- मार्क/टिक आइकॉन (ऊपर right साइड हुक और SVG पाथ के साथ) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
-          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
+          <svg viewBox="0 0 24 24">  
+            <path d="M 18.5 9.5 A 9.5 9.5 0 1 1 12 2.5 L 18.5 5" />  
+            <polyline points="9 12 11.5 14.5 16 9.5"></polyline>  
+          </svg>  
         </button>  
       </div>  
     </div>  
