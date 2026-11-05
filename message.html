@@ -88,14 +88,14 @@
 
     .header-icons {  
       display: flex;  
-      gap: 12px;  
+      gap: 14px;  
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - बिना गोल घेरे के, पर कुल साइज़ मार्क के बराबर */  
+    /* सर्च आइकॉन - बिना बॉर्डर के, और साइज़ मार्क के बिल्कुल बराबर (38px) */  
     .search-icon-btn {  
-      width: 34px;  
-      height: 34px;  
+      width: 38px;  
+      height: 38px;  
       background: transparent;  
       border: none;  
       cursor: pointer;  
@@ -106,8 +106,8 @@
     }  
 
     .search-icon-btn svg {  
-      width: 18px;  
-      height: 18px;  
+      width: 21px;  
+      height: 21px;  
       stroke: #ffffff;  
       fill: none;  
       stroke-width: 2.2;  
@@ -115,10 +115,10 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - मोटे गोल घेरे (Border) के साथ, समान साइज़ में */  
+    /* मार्क/टिक आइकॉन - मोटे गोल घेरे के साथ, बिल्कुल सर्च के बराबर साइज़ (38px) */  
     .mark-icon-btn {  
-      width: 34px;  
-      height: 34px;  
+      width: 38px;  
+      height: 38px;  
       background: transparent;  
       border: 2.2px solid rgba(255, 255, 255, 0.95);  
       border-radius: 50%;  
@@ -130,8 +130,8 @@
     }  
 
     .mark-icon-btn svg {  
-      width: 16px;  
-      height: 16px;  
+      width: 18px;  
+      height: 18px;  
       stroke: #ffffff;  
       fill: none;  
       stroke-width: 2.2;  
@@ -373,11 +373,11 @@
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन (समान साइज़, बिना गोल घेरे के) -->  
+        <!-- सर्च आइकॉन (बिना बॉर्डर के, सही साइज़ में) -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (समान साइज़, मोटे गोल घेरे के साथ) -->  
+        <!-- मार्क/टिक आइकॉन (मोटे गोल घेरे के साथ, सर्च के बराबर साइज़ में) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
@@ -494,50 +494,7 @@
       alert("All messages marked as read successfully.");  
     }  
   
-    function loadUserChats() {  
-      let container = document.getElementById("chatListContainer");  
-      let userChats = [];   
-  
-      if (userChats.length === 0) {  
-        container.innerHTML = "";   
-      } else {  
-        container.innerHTML = "";  
-        userChats.forEach(chat => {  
-          let item = document.createElement("div");  
-          item.className = "chat-item";  
-            
-          item.onclick = () => {  
-            localStorage.setItem("viewing_user_id", chat.id);  
-            window.location.replace("profile.html");  
-          };  
-  
-          item.innerHTML = `  
-            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">  
-            <div class="chat-info">  
-              <div class="chat-name-row">  
-                <span class="chat-name">${chat.name}</span>  
-                <span class="chat-time">${chat.time}</span>  
-              </div>  
-              <div class="chat-name-row">  
-                <span class="chat-last-msg">${chat.msg}</span>  
-                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}  
-              </div>  
-            </div>  
-          `;  
-          container.appendChild(item);  
-        });  
-      }  
-    }  
-  
-    function secureLogout() {  
-      localStorage.clear();  
-      sessionStorage.clear();  
-      window.location.replace("index.html");  
-    }  
-  
-    window.onload = function() {  
-      loadUserChats();  
-    };  
+    loadUserChats();
   </script>  
 </body>  
 </html>
