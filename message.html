@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: लेफ्ट-राइट स्क्रॉल लूप बिल्कुल स्मूथ और बिना किसी लाइन के */  
+    /* 🌟 बैकग्राउंड: बिना किसी लाइन/सीम के एकदम स्मूथ लेफ्ट-राइट स्क्रॉल */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -57,7 +57,7 @@
       animation: colorScrollLeftToRight 3s linear infinite;  
     }  
 
-    /* परफेक्ट सीमलेस लेफ्ट-टू-राइट लूप एनिमेशन */  
+    /* सीमलेस लूप ताकि कोई लाइन न दिखे */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
@@ -67,7 +67,6 @@
       }  
     }  
 
-    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -92,7 +91,6 @@
       align-items: center;  
     }  
 
-    /* सर्च आइकॉन - 40px × 40px, बिना बॉर्डर के, SVG साइज़ 25px */  
     .search-icon-btn {  
       width: 40px;  
       height: 40px;  
@@ -115,7 +113,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - ऊपर right साइड हुक और आपका ट्रांसफॉर्म इफ़ेक्ट */  
+    /* मार्क आइकॉन - जैसा आपने सेट किया था, बिल्कुल वैसा ही सुरक्षित */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -144,7 +142,6 @@
       transform: scale(0.92);  
     }  
 
-    /* नोटिफिकेशन बैनर */  
     .notification-banner {  
       display: flex;  
       align-items: center;  
@@ -176,7 +173,6 @@
       padding: 0 4px;  
     }  
 
-    /* चैट लिस्ट एरिया */  
     .chat-list-area {  
       flex: 1;  
       overflow-y: auto;  
@@ -255,7 +251,6 @@
       font-weight: bold;  
     }  
 
-    /* कस्टम पॉप-अप ओवरले */  
     .custom-modal-overlay {  
       display: none;  
       position: fixed;  
@@ -339,7 +334,6 @@
       padding: 6px;  
     }  
 
-    /* सबसे नीचे फिक्स बॉटम बार */  
     .bottom-action-bar {  
       position: absolute;  
       bottom: 0;  
@@ -370,15 +364,12 @@
 <body>  
 
   <div class="page-container">  
-    <!-- हेडर -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
       <div class="header-icons">  
-        <!-- सर्च आइकॉन -->  
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (ऊपर right साइड हुक और SVG पाथ के साथ) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24">  
             <path d="M 18.5 9.5 A 9.5 9.5 0 1 1 12 2.5 L 18.5 5" />  
@@ -388,25 +379,20 @@
       </div>  
     </div>  
 
-    <!-- नोटिफिकेशन बैनर -->  
     <div id="notificationBanner" class="notification-banner" onclick="openNotificationModal()">  
       <span>🔔 Turn on notifications, don't miss any messages</span>  
       <span class="close-banner" onclick="closeNotificationBanner(event)">✕</span>  
     </div>  
 
-    <!-- चैट लिस्ट एरिया -->  
     <div class="chat-list-area" id="chatListContainer">  
-      <!-- जावास्क्रिप्ट द्वारा चैट्स रेंडर होंगी -->  
     </div>  
 
-    <!-- सबसे नीचे लॉगआउट और आईडी बार -->  
     <div class="bottom-action-bar">  
       <span style="font-size: 12px; color: #666;" id="currentUserDisplay">ID: #288630</span>  
       <button class="logout-btn-bottom" onclick="secureLogout()">Log Out</button>  
     </div>  
   </div>  
 
-  <!-- Tips Modal -->  
   <div id="tipsModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <h3>Tips</h3>  
@@ -418,7 +404,6 @@
     </div>  
   </div>  
 
-  <!-- Notification Permission Modal -->  
   <div id="notificationModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <p style="color: #222; font-size: 15px; margin-bottom: 15px;">  
@@ -435,7 +420,6 @@
     </div>  
   </div>  
 
-  <!-- Firebase SDKs -->  
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>  
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>  
 
