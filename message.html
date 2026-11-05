@@ -115,27 +115,26 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - ऊपर right साइड में मुड़े हुए हुक के साथ */  
+    /* मार्क/टिक आइकॉन - गोल घेरे की साइज़ 25px × 25px, बॉर्डर 3px */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
       background: transparent;  
-      border: none;  
+      border: 3px solid rgba(255, 255, 255, 0.60);  
+      border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
       padding: 0;  
-      position: relative;  
-      transform: rotate(-15deg) scale(1.08);  
     }  
 
     .mark-icon-btn svg {  
-      width: 25px;  
-      height: 25px;  
-      stroke: rgba(255, 255, 255, 0.85);  
+      width: 14px;  
+      height: 14px;  
+      stroke: #ffffff;  
       fill: none;  
-      stroke-width: 2.8;  
+      stroke-width: 2.5;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
     }  
@@ -378,14 +377,9 @@
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन (ऊपर right साइड हुक के साथ) -->  
+        <!-- मार्क/टिक आइकॉन -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
-          <svg viewBox="0 0 24 24">  
-            <!-- गोल घेरा जिसमें ऊपर-दाएँ तरफ प्राकृतिक मोड़ (Bend/Loop) है -->  
-            <path d="M 18.5 9.5 A 9.5 9.5 0 1 1 12 2.5 L 18.5 5" />  
-            <!-- बीच का टिक मार्क -->  
-            <polyline points="9 12 11.5 14.5 16 9.5"></polyline>  
-          </svg>  
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
       </div>  
     </div>  
