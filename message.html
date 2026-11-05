@@ -115,13 +115,13 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - 40px × 40px, पतला गोल घेरा, SVG साइज़ 25px */  
+    /* मार्क/टिक आइकॉन - 40px × 20px (अंडाकार शेप), SVG साइज़ 25px */  
     .mark-icon-btn {  
       width: 40px;  
-      height: 40px;  
+      height: 20px;  
       background: transparent;  
       border: 1px solid rgba(255, 255, 255, 0.60);  
-      border-radius: 50%;  
+      border-radius: 10px;  
       cursor: pointer;  
       display: flex;  
       align-items: center;  
@@ -377,7 +377,7 @@
         <button class="search-icon-btn" onclick="searchChats()" title="Search">  
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>  
         </button>  
-        <!-- मार्क/टिक आइकॉन -->  
+        <!-- मार्क/टिक आइकॉन (40px × 20px) -->  
         <button class="mark-icon-btn" onclick="openMarkAsReadModal()" title="Mark as Read">  
           <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>  
         </button>  
