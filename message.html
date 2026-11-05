@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 बैकग्राउंड: लाइन/सीम को पूरी तरह खत्म करने के लिए साइज और पोजीशन का सटीक लूप */  
+    /* 🌟 अखंड और सीमलेस बैकग्राउंड - बिना किसी लाइन या कट के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,13 +36,9 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
+        radial-gradient(circle at 20% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 35%),   
+        radial-gradient(circle at 50% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 35%),    
+        radial-gradient(circle at 80% 5%, rgba(255, 140, 0, 0.90) 0%, transparent 35%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.3) 100px,   
@@ -52,17 +48,17 @@
           #ffffff 100%  
         );  
 
-      background-size: 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 400% 350px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      background-size: 100% 350px, 100% 350px, 100% 350px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, no-repeat;  
       animation: colorScrollLeftToRight 4s linear infinite;  
     }  
 
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, -400% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
@@ -112,7 +108,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क आइकॉन - बिल्कुल सुरक्षित और जैसा आपने सेट किया था */  
+    /* मार्क आइकॉन - बिल्कुल सुरक्षित और अपनी जगह पर */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -489,30 +485,6 @@
         container.innerHTML = "";   
       } else {  
         container.innerHTML = "";  
-        userChats.forEach(chat => {  
-          let item = document.createElement("div");  
-          item.className = "chat-item";  
-            
-          item.onclick = () => {  
-            localStorage.setItem("viewing_user_id", chat.id);  
-            window.location.replace("profile.html");  
-          };  
-  
-          item.innerHTML = `  
-            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">  
-            <div class="chat-info">  
-              <div class="chat-name-row">  
-                <span class="chat-name">${chat.name}</span>  
-                <span class="chat-time">${chat.time}</span>  
-              </div>  
-              <div class="chat-name-row">  
-                <span class="chat-last-msg">${chat.msg}</span>  
-                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}  
-              </div>  
-            </div>  
-          `;  
-          container.appendChild(item);  
-        });  
       }  
     }  
 
