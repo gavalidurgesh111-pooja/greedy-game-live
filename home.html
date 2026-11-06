@@ -184,26 +184,26 @@
       cursor: pointer;  
     }  
 
-    /* 🌟 ID बॉक्स स्टाइल जिसमें GREEDYCOIN और कॉपी आइकॉन है */  
+    /* 🌟 ID के पीछे का सफेद बैकग्राउंड पूरी तरह हटा दिया गया है */  
     .profile-id {  
       font-size: 12px;  
       color: #555;  
-      background: rgba(255,255,255,0.85);  
-      padding: 4px 12px;  
-      border-radius: 14px;  
-      backdrop-filter: blur(4px);  
+      background: transparent !important;  
+      padding: 2px 6px;  
+      border-radius: 0;  
+      backdrop-filter: none;  
       display: flex;  
       align-items: center;  
-      gap: 6px;  
+      gap: 5px;  
       cursor: pointer;  
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);  
+      box-shadow: none;  
       font-weight: 600;  
     }  
 
     .profile-id svg {  
       width: 13px;  
       height: 13px;  
-      stroke: #666;  
+      stroke: #555;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
@@ -369,7 +369,7 @@
       </div>  
       <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       
-      <!-- 🌟 GREEDYCOIN ID और कॉपी लोगो वाला हिस्सा -->  
+      <!-- 🌟 ID के पीछे का सफेद हिस्सा हटा दिया गया है -->  
       <div class="profile-id" onclick="copyMyId()">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
@@ -452,7 +452,7 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let rawUserId = "#288630"; // असली आईडी स्टोर करने के लिए
+    let rawUserId = "#288630"; 
 
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
@@ -536,7 +536,6 @@
       }
     }
 
-    // 🌟 आईडी पर क्लिक करने पर क्लिपबोर्ड पर कॉपी हो जाएगा
     function copyMyId() {
       navigator.clipboard.writeText(rawUserId);
       alert("ID Copied: " + rawUserId);
