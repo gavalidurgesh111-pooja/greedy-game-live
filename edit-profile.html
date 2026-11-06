@@ -442,7 +442,7 @@
       stroke-linejoin: round;
     }
 
-    /* 🌟 पोस्ट-रिकॉर्डिंग लेआउट: Save, Re-record, Listen[span_1](start_span)[span_1](end_span) */
+    /* 🌟 पोस्ट-रिकॉर्डिंग लेआउट: Save, Re-record, Listen */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -512,6 +512,36 @@
       font-weight: 700;
       color: #333;
       margin-bottom: 80px;
+    }
+
+    /* 🌟 पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल */
+    .voice-played-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .play-circle-icon {
+      width: 24px;
+      height: 24px;
+      background: #007aff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .play-circle-icon svg {
+      width: 12px;
+      height: 12px;
+      fill: #ffffff;
+      margin-left: 2px;
+    }
+
+    .voice-time-text {
+      font-size: 15px;
+      color: #007aff;
+      font-weight: 600;
     }
 
     /* कस्टम परमिशन डायलॉग */
@@ -692,14 +722,14 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <!-- 🎙️ Voice show ऑप्शन -->
+    <!-- 🎙️ Voice show ऑप्शन (पाँचवीं फोटो जैसा डिजाइन)[span_3](start_span)[span_3](end_span) -->
     <div class="list-item" onclick="openVoiceShowModal()">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
         <span>Voice show</span>
       </div>
       <div style="display: flex; align-items: center; gap: 8px;">
-        <span id="voiceStatusDisplay" style="color: #888; font-size: 14px;">Not recorded</span>
+        <div id="voiceStatusDisplay" style="color: #888; font-size: 14px;">Not recorded</div>
         <span style="color:#bbb; font-size:18px;">›</span>
       </div>
     </div>
@@ -715,7 +745,7 @@
     </div>
   </div>
 
-  <!-- 🎙️ Voice Show Modal (Hold to Speak Logic) -->
+  <!-- 🎙️ Voice Show Modal -->
   <div id="voiceShowModal" class="voice-modal-overlay">
     <div class="voice-top-bar">
       <button class="voice-back-btn" onclick="closeVoiceShowModal()">
@@ -727,7 +757,6 @@
     <div class="voice-content-center">
       <div class="voice-prompt-text" id="voicePromptText">What do you want to say?</div>
       
-      <!-- वेवफॉर्म और सेकंड काउंटर -->
       <div class="waveform-display" id="waveformDisplay">
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
         <span id="recordedSecondsCount">0</span>s
@@ -735,7 +764,6 @@
       </div>
     </div>
 
-    <!-- शुरुआती माइक बटन (मददगार: mousedown, touchstart, mouseup, touchend पर काम करेगा) -->
     <div class="voice-record-section" id="initialRecordSection">
       <span class="voice-hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="voice-mic-btn" id="micButton">
@@ -743,7 +771,6 @@
       </button>
     </div>
 
-    <!-- 🌟 रिकॉर्डिंग पूरी होने के बाद दिखने वाले बटंस (Re-record, Save, Listen)[span_2](start_span)[span_2](end_span) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -852,10 +879,12 @@
     let hasMicPermission = false;
     let isMicDenied = false;
     let recordedAudioUrl = "";
+    let recordedDurationSeconds = 0;
     
     let isRecording = false;
     let recordingTimer = null;
     let secondsElapsed = 0;
+    let pendingHoldAction = false;
 
     const allLanguagesList = [
       "English", "Hindi", "Marathi", "Gujarati", "Panjabi", "Bhili", "konkani", "kannada", 
@@ -882,7 +911,6 @@
       }
     };
 
-    // 🎙️ Voice Show Modal
     function openVoiceShowModal() {
       document.getElementById("voiceShowModal").style.display = "flex";
       resetVoiceModalState();
@@ -899,42 +927,41 @@
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
       document.getElementById("postRecordActions").style.display = "none";
+      document.getElementById("holdInstructionText").innerText = "Hold to speak";
       secondsElapsed = 0;
+      pendingHoldAction = false;
     }
 
-    // 👆 Hold to Speak Touch & Mouse Listeners setup
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
 
-      // मोबाइल टच इवेंट्स
       micBtn.addEventListener("touchstart", function(e) {
         e.preventDefault();
-        checkPermissionAndStart();
+        onHoldStart();
       });
 
       micBtn.addEventListener("touchend", function(e) {
         e.preventDefault();
-        checkPermissionAndStop();
+        onHoldEnd();
       });
 
-      // कंप्यूटर माउस क्लिक एंड होल्ड इवेंट्स
       micBtn.addEventListener("mousedown", function(e) {
         e.preventDefault();
-        checkPermissionAndStart();
+        onHoldStart();
       });
 
       micBtn.addEventListener("mouseup", function(e) {
         e.preventDefault();
-        checkPermissionAndStop();
+        onHoldEnd();
       });
     }
 
-    function checkPermissionAndStart() {
+    function onHoldStart() {
       if (!hasMicPermission) {
+        pendingHoldAction = true;
         if (isMicDenied) {
           showDeniedPermDialog();
         } else {
-          // पहली बार परमिशन पॉप-अप दिखाएं
           document.getElementById("permDialogMsg").innerText = "Allow GREEDYCOIN to record audio?";
           document.getElementById("permOptionsFirst").style.display = "flex";
           let deniedDiv = document.getElementById("permOptionsDenied");
@@ -944,11 +971,10 @@
         return;
       }
 
-      // परमिशन मिलने पर रिकॉर्डिंग शुरू
       startActualRecording();
     }
 
-    function checkPermissionAndStop() {
+    function onHoldEnd() {
       if (hasMicPermission && isRecording) {
         stopActualRecording();
       }
@@ -958,13 +984,17 @@
       hasMicPermission = true;
       isMicDenied = false;
       closePermModal();
-      // परमिशन मिलते ही तुरंत रिकॉर्डिंग शुरू हो जाएगी
-      startActualRecording();
+      
+      if (pendingHoldAction) {
+        pendingHoldAction = false;
+        startActualRecording();
+      }
     }
 
     function denyMicPermission() {
       hasMicPermission = false;
       isMicDenied = true;
+      pendingHoldAction = false;
       closePermModal();
       showDeniedPermDialog();
     }
@@ -992,13 +1022,13 @@
       document.getElementById("recordedSecondsCount").innerText = secondsElapsed;
       document.getElementById("holdInstructionText").innerText = "Recording... Release to stop";
 
-      // 0 सेकंड से आगे बढ़ाना (अधिकतम 20 सेकंड तक)
+      if(recordingTimer) clearInterval(recordingTimer);
+
       recordingTimer = setInterval(() => {
         secondsElapsed++;
         if (secondsElapsed <= 20) {
           document.getElementById("recordedSecondsCount").innerText = secondsElapsed;
         } else {
-          // 20 सेकंड पूरा होते ही ऑटोमैटिक रोक दें
           stopActualRecording();
         }
       }, 1000);
@@ -1009,7 +1039,6 @@
       isRecording = false;
       if (recordingTimer) clearInterval(recordingTimer);
 
-      // रिकॉर्डिंग रुकते ही चौथी फोटो वाला लेआउट दिखाएं (Save, Re-record, Listen)[span_3](start_span)[span_3](end_span)
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
@@ -1028,12 +1057,27 @@
       alert("Playing recorded audio preview (" + secondsElapsed + "s)...");
     }
 
+    // 🌟 जब यूजर सेव करेगा, तो पाँचवीं फोटो जैसा नीले रंग का प्ले आइकॉन और सेकंड दिखाई देगा[span_4](start_span)[span_4](end_span)
     function saveVoiceRecordingFinal() {
       stopRecordingProcess();
-      recordedAudioUrl = "voice_recorded_" + secondsElapsed + "s";
-      document.getElementById("voiceStatusDisplay").innerText = "Recorded (" + secondsElapsed + "s)";
+      recordedDurationSeconds = secondsElapsed > 0 ? secondsElapsed : 5; // डिफ़ॉल्ट अगर कम हो
+      recordedAudioUrl = "voice_recorded_" + recordedDurationSeconds + "s";
+      
+      updateVoiceStatusUI(recordedDurationSeconds);
       alert("Voice show saved successfully!");
       closeVoiceShowModal();
+    }
+
+    function updateVoiceStatusUI(duration) {
+      let statusContainer = document.getElementById("voiceStatusDisplay");
+      statusContainer.innerHTML = `
+        <div class="voice-played-badge">
+          <div class="play-circle-icon">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          </div>
+          <span class="voice-time-text">${duration}"</span>
+        </div>
+      `;
     }
 
     // बाकी बेसिक फंक्शन्स
@@ -1145,7 +1189,10 @@
           }
           if (data.voiceShow) {
             recordedAudioUrl = data.voiceShow;
-            document.getElementById("voiceStatusDisplay").innerText = "Recorded";
+            // अगर डेटाबेस में सेव है तो सेकंड निकालकर डिस्प्ले करें
+            let matchSec = recordedAudioUrl.match(/_(\d+)s/);
+            let secVal = matchSec ? matchSec[1] : "7";
+            updateVoiceStatusUI(secVal);
           }
         }
         document.getElementById("mainContainer").style.opacity = "1";
