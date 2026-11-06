@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>User Profile - Greedy Coin</title>
   <style>
-    /* -webkit-user-select और user-select से लॉन्ग प्रेस करने पर नीला रंग या सिलेक्शन नहीं आएगा */
     * { 
       box-sizing: border-box; 
       margin: 0; 
@@ -14,7 +13,7 @@
       -webkit-user-select: none; 
       user-select: none; 
       -webkit-touch-callout: none; 
-      -webkit-tap-highlight-color: transparent; /* टच करते वक्त आने वाले नीले रंग को हटाने के लिए */
+      -webkit-tap-highlight-color: transparent; 
     }
     body { 
       background: #000; 
@@ -34,11 +33,8 @@
       padding-bottom: 60px; 
       overflow-y: auto; 
     }
-    
-    /* Cover Slider Area */
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
-    
     .cover-page {
       flex: 0 0 100%;
       min-width: 100%;
@@ -53,7 +49,6 @@
       align-items: center;
       justify-content: center;
     }
-
     .cover-center-plus {
       width: 85%;
       max-width: 260px;
@@ -72,52 +67,34 @@
       letter-spacing: 0.5px;
       cursor: pointer;
     }
-
     .profile-back-btn { position: absolute; top: 15px; left: 15px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; z-index: 20; }
     .profile-top-icons { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; z-index: 20; }
     .icon-circle { width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; cursor: pointer; }
-
-    /* Header & Avatar */
     .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
     .avatar-wrapper { position: relative; width: 90px; height: 90px; border-radius: 50%; background: #e0e0e0; padding: 3px; box-shadow: 0 4px 15px rgba(0,0,0,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; overflow: visible !important; }
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
-    
     .avatar-frame {
       position: absolute !important;
-      top: -14px !important;
-      left: -14px !important;
-      right: -14px !important;
-      bottom: -14px !important;
-      width: calc(100% + 28px) !important;
-      height: calc(100% + 28px) !important;
-      border-radius: 50% !important;
-      pointer-events: none !important;
-      box-sizing: border-box !important;
-      background-size: 100% 100% !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      z-index: 25 !important;
-      display: none;
+      top: -14px !important; left: -14px !important; right: -14px !important; bottom: -14px !important;
+      width: calc(100% + 28px) !important; height: calc(100% + 28px) !important;
+      border-radius: 50% !important; pointer-events: none !important; box-sizing: border-box !important;
+      background-size: 100% 100% !important; background-repeat: no-repeat !important; background-position: center !important;
+      z-index: 25 !important; display: none;
     }
-
     .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
     .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
     .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
-    
-    .frame-custom1 { background-image: url('frame1.png') !important; background-size: 100% 100% !important; }
-    .frame-custom2 { background-image: url('frame2.png') !important; background-size: 100% 100% !important; }
-    .frame-custom3 { background-image: url('frame3.png') !important; background-size: 100% 100% !important; }
-    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; background-size: 100% 100% !important; }
-
+    .frame-custom1 { background-image: url('frame1.png') !important; }
+    .frame-custom2 { background-image: url('frame2.png') !important; }
+    .frame-custom3 { background-image: url('frame3.png') !important; }
+    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-
     .tags-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
     .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 3px 10px; border-radius: 12px; }
     .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
-
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 20px; }
     .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
@@ -125,23 +102,19 @@
     .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
     .profile-action-btns { display: flex; gap: 8px; }
     .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
-
     .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
     .stat-item-balance { text-align: center; cursor: pointer; }
     .stat-item-won { text-align: center; }
     .stat-val { font-size: 16px; font-weight: 900; color: #222; }
     .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
-
     .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 35px; }
     .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
     .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
     .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
     .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
-
     .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
     .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
-    
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
@@ -151,17 +124,15 @@
 <body>
 
   <div class="page-container">
-    
     <div id="screenProfile">
       
-      <!-- 🌟 यहाँ photo-gateway.html की जगह सीधा home.html पर जाने का लिंक जोड़ दिया गया है -->
+      <!-- 🌟 बैक बटन सीधे home.html पर ले जाएगा -->
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
       </div>
 
-      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
 
       <div class="profile-header-area">
@@ -223,7 +194,7 @@
       </div>
     </div>
 
-    <!-- SETTINGS PAGE -->
+    <!-- SETTINGS, ABOUT, GROUPS SCREENS & MODALS -->
     <div id="screenSettingsPage" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeSettingsPage()">❮</div>
@@ -242,7 +213,6 @@
       </div>
     </div>
 
-    <!-- ABOUT ME SCREEN -->
     <div id="screenAboutMe" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeAboutMeScreen()">❮</div>
@@ -264,7 +234,6 @@
       </div>
     </div>
 
-    <!-- GROUPS SCREEN -->
     <div id="screenGroups" class="sub-screen">
       <div class="sub-header">
         <div style="cursor:pointer; font-size:20px;" onclick="closeGroupsScreen()">❮</div>
@@ -277,13 +246,11 @@
       </div>
     </div>
 
-    <!-- FRAME & AVATAR MODAL -->
     <div id="modalFrame" class="modal-overlay">
       <div class="modal-box">
         <h3>🎨 Select Avatar & Frame</h3>
         <p style="font-size:12px; color:#666; margin:8px 0;">Choose your frame style:</p>
-         
-       <div class="grid-options" id="frameOptionsGrid">
+        <div class="grid-options" id="frameOptionsGrid">
           <div class="grid-item" onclick="applyFrameClass('peacock')" style="background:#e0f2f1; color:#00695c; font-weight:bold;">Peacock Frame</div>
           <div class="grid-item" onclick="applyFrameClass('lion')" style="background:#fbe9e7; color:#d84315; font-weight:bold;">Lion Frame</div>
           <div class="grid-item" onclick="applyFrameClass('star')" style="background:#fffde7; color:#fbc02d; font-weight:bold;">Star Frame</div>
@@ -293,17 +260,13 @@
           <div class="grid-item" onclick="applyFrameClass('custom3')" style="background:#e8f5e9; color:#1b5e20; font-weight:bold;">Custom Frame 3</div>
           <div class="grid-item" onclick="applyFrameClass('custom4')" style="background:#fff3e0; color:#e65100; font-weight:bold;">Custom Frame 4</div>
         </div>
-
         <button onclick="removeFrame()" style="width:100%; margin-top:10px; padding:8px; background:#ff4b2b; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">❌ Remove Frame</button>
-
         <p style="font-size:12px; color:#666; margin:15px 0 8px 0;">Change Avatar Photo:</p>
         <button onclick="triggerAvatarUpload()" style="width:100%; padding:10px; background:#1e3c72; color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">🖼️ Open Photo Manager</button>
-        
         <button onclick="closeFrameModal()" style="width:100%; margin-top:12px; padding:8px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Close</button>
       </div>
     </div>
 
-    <!-- COIN SEND MODAL -->
     <div id="modalCoinSend" class="modal-overlay">
       <div class="modal-box">
         <h3>Send Coins to User</h3>
@@ -316,7 +279,6 @@
       </div>
     </div>
 
-    <!-- SETTINGS MODAL -->
     <div id="modalSettings" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
         <h3>Website Settings</h3>
@@ -325,7 +287,6 @@
       </div>
     </div>
 
-    <!-- CUSTOM ALERT MODAL -->
     <div id="customAlertModal" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
@@ -333,7 +294,6 @@
         <button onclick="closeCustomAlert()" style="padding:8px 24px; background:#1e3c72; color:#fff; border:none; border-radius:8px; cursor:pointer; font-weight:bold;">OK</button>
       </div>
     </div>
-
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -353,9 +313,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    }, false);
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
@@ -381,7 +339,7 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
-      // 🌟 बैक बटन प्रेस करने पर सीधा home.html पर ले जाने के लिए
+      // 🌟 प्रोफाइल से बाहर निकलते ही सीधे home.html पर भेजना
       window.location.replace("home.html");
     });
 
@@ -435,11 +393,8 @@
       setTimeout(() => {
         let slider = document.getElementById("coverSlider");
         if (slider) {
-          if (validPhotos.length >= 2) {
-            slider.scrollLeft = slider.clientWidth;
-          } else {
-            slider.scrollLeft = 0; 
-          }
+          if (validPhotos.length >= 2) { slider.scrollLeft = slider.clientWidth; }
+          else { slider.scrollLeft = 0; }
         }
       }, 50);
     }
@@ -482,22 +437,13 @@
           localStorage.setItem("prof_avatar_" + currentIdentifier, currentAvatar);
           localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(dbPhotos));
         } else {
-          coins = 1000;
-          userName = "User";
-          userId = "#288630";
-          userLevel = 1;
-          totalWon = 0;
-          dbPhotos = [];
-          currentAvatar = "";
+          coins = 1000; userName = "User"; userId = "#288630"; userLevel = 1; totalWon = 0; dbPhotos = []; currentAvatar = "";
         }
-
         renderProfileData();
-
-      }).catch((error) => {
-        console.error("Error loading profile from Firebase: ", error);
-      });
+      }).catch((error) => { console.error("Error loading profile: ", error); });
     }
 
+    // 🌟 फोटो अपलोड करने के लिए गेटवे पर जाना
     function openPhotoGridScreen() {
       window.location.replace("photo-gateway.html");
     }
@@ -522,15 +468,12 @@
       document.getElementById("customAlertModal").style.display = "flex";
       history.pushState({modal: "alert"}, "", window.location.href);
     }
-    function closeCustomAlert() { 
-      document.getElementById("customAlertModal").style.display = "none"; 
-    }
+    function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
 
     function applyFrameClass(frameName) {
       currentFrame = frameName;
       localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
-      
       const frameEl = document.getElementById("profAvatarFrame");
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
@@ -574,9 +517,7 @@
     function handleLogout() {
       localStorage.clear(); 
       showCustomAlert("Logged out successfully!");
-      setTimeout(() => { 
-        window.location.replace("index.html"); 
-      }, 800);
+      setTimeout(() => { window.location.replace("index.html"); }, 800);
     }
 
     function openAboutMeScreen() { 
@@ -643,9 +584,7 @@
         initProfile();
         closeCoinSendModal();
         showCustomAlert(`Successfully sent ${amt} coins!`);
-      }).catch((err) => {
-        showCustomAlert("Error updating coins: " + err.message);
-      });
+      }).catch((err) => { showCustomAlert("Error updating coins: " + err.message); });
     }
 
     function openSettingsModal() { 
@@ -654,10 +593,7 @@
     }
     function closeSettingsModal() { document.getElementById("modalSettings").style.display = "none"; }
 
-    window.onpageshow = function(event) {
-      initProfile();
-    };
-
+    window.onpageshow = function(event) { initProfile(); };
     window.onload = () => { initProfile(); };
   </script>
 </body>
