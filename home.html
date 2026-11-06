@@ -184,7 +184,7 @@
       cursor: default;  
     }  
 
-    /* 🌟 यह पूरा एक ही सिंगल डिब्बा है, जिसकी डिज़ाइन एकदम साफ और परफेक्ट है */  
+    /* 🌟 पूरा डिब्बा दिखने में वैसा ही है, पर टच/क्लिक से पूरी तरह सुरक्षित कर दिया है */  
     .profile-id {  
       font-size: 12px;  
       color: #555;  
@@ -199,15 +199,17 @@
       cursor: default;  
     }  
 
+    /* 🌟 सिर्फ इस आइकॉन पर क्लिक काम करेगा और कोई डबल सिग्नल नहीं जाएगा */  
     .profile-id svg {  
-      width: 14px;  
-      height: 14px;  
+      width: 16px;  
+      height: 16px;  
       stroke: #555;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
-      cursor: pointer; /* 🌟 सिर्फ इस आइकॉन पर क्लिक काम करेगा */  
+      cursor: pointer;  
+      padding: 2px;  
     }  
 
     .profile-stats-row {  
@@ -397,7 +399,7 @@
       
       <div class="profile-name" id="homeNameDisplay">User</div>  
       
-      <!-- 🌟 यह एक ही डिब्बा है, जिसमें आईडी और आइकॉन साथ हैं और सिर्फ आइकॉन पर क्लिक से एक बार कॉपी होगा -->  
+      <!-- 🌟 सिंगल डिब्बा, जिसमें टेक्स्ट पर क्लिक बंद है और सिर्फ SVG आइकॉन पर क्लिक से एक बार कॉपी होगा -->  
       <div class="profile-id">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
         <svg viewBox="0 0 24 24" onclick="copyMyId(event)"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
@@ -483,7 +485,7 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let rawUserId = "#288630"; 
-    let isCopiedShowing = false; 
+    let isCopyProcessing = false; // 🌟 सुपर स्ट्रिक्ट लॉक ताकि किसी भी हाल में दोबारा कॉल न हो
 
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
@@ -567,23 +569,27 @@
       }
     }
 
-    // 🌟 एक ही डिब्बे के अंदर सिर्फ SVG आइकॉन पर क्लिक होने पर सुरक्षित रूप से कॉपी होगा
+    // 🌟 एकदम पक्का और ठोस तरीका (डबल ट्रिगर का नाम ही मिटा देगा)
     function copyMyId(event) {
       if (event) {
         event.stopPropagation();
         event.stopImmediatePropagation();
+        event.preventDefault();
       }
 
-      if (isCopiedShowing) return;
-      isCopiedShowing = true;
+      if (isCopyProcessing) return;
+      isCopyProcessing = true;
 
       navigator.clipboard.writeText(rawUserId);
       
       let toast = document.getElementById("copiedToast");
       toast.className = "show";
+      
       setTimeout(function(){ 
         toast.className = ""; 
-        isCopiedShowing = false;
+        setTimeout(function() {
+          isCopyProcessing = false;
+        }, 300); // पूरी सुरक्षा के साथ लॉक को रीसेट करना
       }, 1200); 
     }
 
