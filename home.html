@@ -130,7 +130,7 @@
       100% { transform: translate(-8vw, 4vh, 0) scale(0.9); }  
     }  
 
-    /* टॉप हेडर आइकॉन (फोटो के अनुसार) */  
+    /* टॉप हेडर आइकॉन */  
     .profile-top-bar {  
       display: flex;  
       justify-content: flex-end;  
@@ -162,7 +162,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* प्रोफाइल विवरण (अवतार, नाम, आईडी) - फोटो की तरह */  
+    /* प्रोफाइल विवरण */  
     .profile-info-section {  
       display: flex;  
       flex-direction: column;  
@@ -209,7 +209,7 @@
       backdrop-filter: blur(4px);  
     }  
 
-    /* दोस्तों और फॉलोअर्स की संख्या (फोटो के अनुसार) */  
+    /* स्टैट्स */  
     .profile-stats-row {  
       display: flex;  
       justify-content: space-around;  
@@ -238,7 +238,7 @@
       color: #666;  
     }  
 
-    /* बैनर बटन (Recharge Coins और Live Streamer Center) - फोटो के अनुसार */  
+    /* प्रोमो बैनर्स */  
     .promo-banners-container {  
       display: flex;  
       gap: 12px;  
@@ -269,7 +269,7 @@
       background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);  
     }  
 
-    /* फीचर्स ग्रिड (फोटो में दिए गए सभी ऑप्शंस) */  
+    /* फीचर्स ग्रिड */  
     .features-grid {  
       display: grid;  
       grid-template-columns: repeat(3, 1fr);  
@@ -367,7 +367,7 @@
       <div class="mesh mesh-blue"></div>  
     </div>  
 
-    <!-- टॉप बार (फोटो के अनुसार सेटिंग्स और एडिट आइकॉन) -->  
+    <!-- टॉप बार -->  
     <div class="profile-top-bar">  
       <button class="top-icon-btn" onclick="openEditProfile()">  
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
@@ -377,7 +377,7 @@
       </button>  
     </div>  
 
-    <!-- प्रोफाइल डिटेल्स (इस पर क्लिक करने से प्रोफाइल पेज खुलेगा) -->  
+    <!-- प्रोफाइल डिटेल्स -->  
     <div class="profile-info-section" onclick="openProfilePage()">  
       <div class="profile-avatar-container">  
         <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="profile-avatar">  
@@ -390,7 +390,7 @@
       </div>  
     </div>  
 
-    <!-- स्टैट्स (Friends, Followings, Followers, Groups) -->  
+    <!-- स्टैट्स -->  
     <div class="profile-stats-row">  
       <div class="stat-item" onclick="openProfilePage()">  
         <span class="stat-num">672</span>  
@@ -422,7 +422,7 @@
       </div>  
     </div>  
 
-    <!-- फीचर्स ग्रिड (फोटो में दिए गए सभी 12 ऑप्शंस) -->  
+    <!-- फीचर्स ग्रिड -->  
     <div class="features-grid">  
       <div class="feature-card" onclick="openFeature('Recent Visitors')">  
         <div class="feature-icon-box">👻</div>  
@@ -489,6 +489,16 @@
   </div>  
 
   <script>  
+    // 🌟 जैसे ही यूजर home.html पर लैंड करेगा, पिछली सारी हिस्ट्री ओवरराइट होकर साफ़ हो जाएगी
+    window.onload = function() {
+      history.replaceState({ page: "home_secure" }, "", window.location.href);
+    };
+
+    // 🌟 यदि यूजर home पर आने के बाद बैक बटन दबाता है, तो वह सीधे index.html (लॉगिन पेज) पर चला जाएगा
+    window.addEventListener('popstate', function(event) {
+      window.location.replace("index.html");
+    });
+
     function openProfilePage() {  
       window.location.href = "profile.html";  
     }  
@@ -506,4 +516,4 @@
     }  
   </script>  
 </body>  
-</html>  
+</html>
