@@ -35,6 +35,8 @@
       flex-direction: column;
       background: #ffffff;
       padding-bottom: 40px;
+      opacity: 0; /* पेज लोड होते समय ब्लिंक रोकने के लिए छिपाया गया है */
+      transition: opacity 0.2s ease-in;
     }
 
     /* टॉप बार */
@@ -260,19 +262,6 @@
       z-index: 1;
     }
 
-    /* 🌟 Done बटन बिना हिले केवल परछाई पर अंक आने पर स्थिर चमक के साथ ON होगा */
-    @keyframes steadyGlow {
-      0% { box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); background: #a18cd1; color: #fff; }
-      50% { box-shadow: 0 0 10px rgba(161, 140, 209, 0.8); background: #9370db; color: #fff; }
-      100% { box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); background: #a18cd1; color: #fff; }
-    }
-
-    .glow-btn {
-      animation: steadyGlow 1.2s infinite ease-in-out;
-      padding: 6px 14px;
-      border-radius: 8px;
-    }
-
     .modal-overlay-center {
       display: none;
       position: fixed;
@@ -309,7 +298,7 @@
 
 <body>
 
-  <div class="page-container">
+  <div class="page-container" id="mainContainer">
     <div class="top-bar">
       <button class="back-btn" onclick="history.back()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -323,8 +312,8 @@
     <div class="form-section">
       <div class="input-group">
         <span class="input-label">Nickname</span>
-        <input type="text" id="inputNickname" class="text-input" maxlength="30" value="User" oninput="updateCounter()">
-        <span class="char-counter" id="nicknameCounter">4/30</span>
+        <input type="text" id="inputNickname" class="text-input" maxlength="30" value="" oninput="updateCounter()">
+        <span class="char-counter" id="nicknameCounter">0/30</span>
       </div>
 
       <div class="input-group" onclick="openAgeModal()" style="cursor: pointer;">
@@ -342,7 +331,7 @@
             <input type="radio" name="gender" value="Male" id="genderMale"> Male
           </label>
           <label class="radio-label">
-            <input type="radio" name="gender" value="Female" id="genderFemale" checked> Female
+            <input type="radio" name="gender" value="Female" id="genderFemale"> Female
           </label>
         </div>
       </div>
@@ -421,7 +410,7 @@
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 0 10px;">
         <span onclick="closeAgeModal()" style="color: #666; font-size: 16px; font-weight: 600; cursor: pointer; padding: 5px;">Cancel</span>
-        <span id="doneAgeBtn" onclick="confirmAge()" style="color: #a18cd1; font-size: 16px; font-weight: 700; cursor: pointer; padding: 6px 14px; border-radius: 8px;">Done</span>
+        <span onclick="confirmAge()" style="color: #8a2be2; font-size: 16px; font-weight: 700; cursor: pointer; padding: 6px 14px;">Done</span>
       </div>
     </div>
   </div>
@@ -438,7 +427,7 @@
       </div>
       <div class="modal-btns-row">
         <span style="color: #888;" onclick="closeRelationshipModal()">CANCEL</span>
-        <span style="color: #a18cd1;" onclick="confirmRelationship()">CONFIRM</span>
+        <span style="color: #8a2be2;" onclick="confirmRelationship()">CONFIRM</span>
       </div>
     </div>
   </div>
@@ -483,6 +472,13 @@
     }
 
     function loadUserData() {
+      // पहले लोकल स्टोरेज से तुरंत डेटा दिखाएं ताकि ब्लिंक न हो
+      if(localStorage.getItem("prof_name_" + currentIdentifier)) {
+        document.getElementById("inputNickname").value = localStorage.getItem("prof_name_" + currentIdentifier);
+        updateCounter();
+      }
+
+      // फिर फायरबेस से डेटा लोड करें और स्क्रीन पर दिखाएं
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
@@ -512,8 +508,11 @@
             });
           }
         }
+        // डेटा लोड होने के बाद पेज को स्मूथली दिखाएं
+        document.getElementById("mainContainer").style.opacity = "1";
       }).catch((err) => {
         console.error("Error loading user data:", err);
+        document.getElementById("mainContainer").style.opacity = "1";
       });
     }
 
@@ -535,13 +534,6 @@
         wheel.scrollTop = targetDiv.offsetTop - 75;
       }
       highlightActiveAge();
-      
-      // शुरू में Done बटन सामान्य रहेगा
-      let doneBtn = document.getElementById("doneAgeBtn");
-      if(doneBtn) {
-        doneBtn.classList.remove("glow-btn");
-        doneBtn.style.color = "#a18cd1";
-      }
     }
 
     function closeAgeModal() {
@@ -563,12 +555,6 @@
           item.style.fontWeight = "600";
         }
       });
-
-      // 🌟 जैसे ही परछाई पर कोई अंक आएगा, Done बटन अपनी जगह पर स्थिर रहकर ON हो जाएगा
-      let doneBtn = document.getElementById("doneAgeBtn");
-      if(doneBtn) {
-        doneBtn.classList.add("glow-btn");
-      }
     }
 
     function confirmAge() {
