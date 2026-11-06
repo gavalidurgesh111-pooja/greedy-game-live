@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 एकदम सीमलेस और स्मूथ बैकग्राउंड - बिना किसी लाइन या कट के */  
+    /* 🌟 संतुलित और सीमलेस बैकग्राउंड - बिना किसी लाइन के और एकदम परफेक्ट स्प्रेड */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -37,12 +37,11 @@
         
       background:   
         linear-gradient(90deg,   
-          rgba(186, 85, 211, 0.85),   
-          rgba(255, 20, 147, 0.85),   
-          rgba(255, 0, 255, 0.80),   
-          rgba(255, 140, 0, 0.90),   
-          rgba(138, 43, 226, 0.85),   
-          rgba(186, 85, 211, 0.85)  
+          rgba(186, 85, 211, 0.75) 0%,   
+          rgba(255, 20, 147, 0.75) 25%,   
+          rgba(255, 0, 255, 0.70) 50%,   
+          rgba(255, 140, 0, 0.80) 75%,   
+          rgba(186, 85, 211, 0.75) 100%  
         ),  
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
@@ -55,10 +54,9 @@
 
       background-size: 200% 100%, 100% 100%;  
       background-repeat: repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 4s linear infinite;  
+      animation: colorScrollLeftToRight 5s linear infinite;  
     }  
 
-    /* एकदम परफेक्ट और मक्खन जैसा स्मूथ लूप */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0 0;  
@@ -116,7 +114,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - जैसा आपका था बिल्कुल वैसा ही सुरक्षित */  
+    /* मार्क/टिक आइकॉन - बिल्कुल सुरक्षित और अपनी जगह पर */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -477,7 +475,7 @@
       alert("Redirecting to app info / system settings...");  
       closeNotificationModal();  
     }  
-  
+    
     function searchChats() {  
       alert("Search functionality active.");  
     }  
@@ -495,39 +493,11 @@
       alert("All messages marked as read successfully.");  
     }  
   
+    loadUserChats();  
+
     function loadUserChats() {  
       let container = document.getElementById("chatListContainer");  
-      let userChats = [];   
-  
-      if (userChats.length === 0) {  
-        container.innerHTML = "";   
-      } else {  
-        container.innerHTML = "";  
-        userChats.forEach(chat => {  
-          let item = document.createElement("div");  
-          item.className = "chat-item";  
-            
-          item.onclick = () => {  
-            localStorage.setItem("viewing_user_id", chat.id);  
-            window.location.replace("profile.html");  
-          };  
-  
-          item.innerHTML = `  
-            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">  
-            <div class="chat-info">  
-              <div class="chat-name-row">  
-                <span class="chat-name">${chat.name}</span>  
-                <span class="chat-time">${chat.time}</span>  
-              </div>  
-              <div class="chat-name-row">  
-                <span class="chat-last-msg">${chat.msg}</span>  
-                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}  
-              </div>  
-            </div>  
-          `;  
-          container.appendChild(item);  
-        });  
-      }  
+      container.innerHTML = "";  
     }  
 
     function secureLogout() {  
@@ -535,10 +505,6 @@
       sessionStorage.clear();  
       window.location.replace("index.html");  
     }  
-
-    window.onload = function() {  
-      loadUserChats();  
-    };  
   </script>  
 </body>  
 </html>
