@@ -127,6 +127,17 @@
       color: #aaa;
     }
 
+    /* उम्र डिस्प्ले बॉक्स */
+    .age-selector-box {
+      font-size: 16px;
+      color: #222;
+      padding: 6px 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     /* जेंडर सेलेक्शन */
     .gender-row {
       display: flex;
@@ -186,6 +197,106 @@
       background: #f7f8fa;
       width: 100%;
     }
+
+    /* 🌟 पॉपअप मॉडल्स (Age और Relationship status के लिए) */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-content-bottom {
+      background: #fff;
+      width: 100%;
+      max-width: 480px;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    /* सेंटर वाला पॉपअप (जैसे फोटो 2 में है) */
+    .modal-overlay-center {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-content-center {
+      background: #fff;
+      width: 100%;
+      max-width: 360px;
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* स्क्रॉलिंग व्हील (Age के लिए) */
+    .wheel-container {
+      height: 180px;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      text-align: center;
+      position: relative;
+      margin: 15px 0;
+    }
+    .wheel-container::-webkit-scrollbar { display: none; }
+    
+    .wheel-item {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #888;
+      scroll-snap-align: center;
+    }
+
+    .wheel-highlight-bar {
+      position: absolute;
+      top: 65px;
+      left: 10%;
+      right: 10%;
+      height: 50px;
+      border-radius: 25px;
+      background: #f0f2f5;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .wheel-selected-text {
+      color: #111 !important;
+      font-size: 24px !important;
+    }
+
+    .modal-btns-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 25px;
+      margin-top: 15px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -194,7 +305,7 @@
   <div class="page-container">
     <!-- टॉप बार -->
     <div class="top-bar">
-      <button class="back-btn" onclick="goBack()">
+      <button class="back-btn" onclick="history.back()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
@@ -212,17 +323,13 @@
         <span class="char-counter" id="nicknameCounter">4/30</span>
       </div>
 
-      <!-- Age -->
-      <div class="input-group" style="border-bottom: none; padding-bottom: 5px;">
+      <!-- Age (स्क्रॉलिंग पिकर खोलने के लिए) -->
+      <div class="input-group" onclick="openAgeModal()" style="cursor: pointer;">
         <span class="input-label">Age</span>
-        <select id="inputAge" class="text-input" style="padding: 4px 0;">
-          <option value="18">18</option>
-          <option value="20">20</option>
-          <option value="22">22</option>
-          <option value="25" selected>25</option>
-          <option value="30">30</option>
-          <option value="35">35</option>
-        </select>
+        <div class="age-selector-box">
+          <span id="selectedAgeDisplay">25</span>
+          <span style="color:#aaa; font-size:14px;">▼</span>
+        </div>
       </div>
 
       <!-- Gender -->
@@ -248,16 +355,19 @@
 
     <div class="section-divider"></div>
 
-    <!-- नीचे की लिस्ट वाले विकल्प (जो स्क्रीनशॉट में हैं) -->
-    <div class="list-item" onclick="openSubOption('Relationship status')">
+    <!-- Relationship status (पॉपअप खोलने के लिए) -->
+    <div class="list-item" onclick="openRelationshipModal()">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         <span>Relationship status</span>
       </div>
-      <span style="color:#bbb; font-size:18px;">›</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span id="selectedStatusDisplay" style="color: #888; font-size: 14px;">Single</span>
+        <span style="color:#bbb; font-size:18px;">›</span>
+      </div>
     </div>
 
-    <div class="list-item" onclick="openSubOption('Languages')">
+    <div class="list-item" onclick="alert('Languages clicked')">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
         <span>Languages</span>
@@ -265,7 +375,7 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <div class="list-item" onclick="openSubOption('Current locations')">
+    <div class="list-item" onclick="alert('Current locations clicked')">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
         <span>Current locations</span>
@@ -273,7 +383,7 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <div class="list-item" onclick="openSubOption('Interests')">
+    <div class="list-item" onclick="alert('Interests clicked')">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         <span>Interests</span>
@@ -281,7 +391,7 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <div class="list-item" onclick="openSubOption('Voice show')">
+    <div class="list-item" onclick="alert('Voice show clicked')">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
         <span>Voice show</span>
@@ -291,12 +401,43 @@
 
     <div class="section-divider"></div>
 
-    <div class="list-item" onclick="openSubOption('Linked Accounts')">
+    <div class="list-item" onclick="alert('Linked Accounts clicked')">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         <span>Linked Accounts</span>
       </div>
       <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+  </div>
+
+  <!-- 🌟 1. Age Picker Modal (फोटो 1 जैसा स्क्रॉल व्हील) -->
+  <div id="ageModal" class="modal-overlay">
+    <div class="modal-content-bottom">
+      <div class="wheel-highlight-bar"></div>
+      <div class="wheel-container" id="ageWheel">
+        <!-- 18 से 80 तक के नंबर्स जनरेट होंगे -->
+      </div>
+      <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+        <span onclick="closeAgeModal()" style="color: #666; font-size: 16px; font-weight: 600; cursor: pointer; padding: 10px;">Cancel</span>
+        <span onclick="confirmAge()" style="color: #8a2be2; font-size: 16px; font-weight: 700; cursor: pointer; padding: 10px;">Done</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🌟 2. Relationship Status Modal (फोटो 2 जैसा पॉपअप) -->
+  <div id="relationshipModal" class="modal-overlay-center">
+    <div class="modal-content-center">
+      <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 20px;">Relationship status</h3>
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <label class="radio-label"><input type="radio" name="relStatus" value="Single" checked> Single</label>
+        <label class="radio-label"><input type="radio" name="relStatus" value="In a relationship"> In a relationship</label>
+        <label class="radio-label"><input type="radio" name="relStatus" value="Married"> Married</label>
+        <label class="radio-label"><input type="radio" name="relStatus" value="Privacy"> Privacy</label>
+      </div>
+      <div class="modal-btns-row">
+        <span style="color: #888;" onclick="closeRelationshipModal()">CANCEL</span>
+        <span style="color: #8a2be2;" onclick="confirmRelationship()">CONFIRM</span>
+      </div>
     </div>
   </div>
 
@@ -319,11 +460,27 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+    let tempSelectedAge = 25;
+    let currentRelationship = "Single";
 
-    // पेज लोड होने पर डेटा लोड करें
     window.onload = function() {
+      buildAgeWheel();
       loadUserData();
     };
+
+    // 18 से 80 तक व्हील आइटम्स बनाना
+    function buildAgeWheel() {
+      let wheel = document.getElementById("ageWheel");
+      wheel.innerHTML = '<div style="height: 65px;"></div>'; // ऊपर स्पेस
+      for(let i = 18; i <= 80; i++) {
+        let div = document.createElement("div");
+        div.className = "wheel-item";
+        div.innerText = i;
+        div.setAttribute("data-val", i);
+        wheel.appendChild(div);
+      }
+      wheel.innerHTML += '<div style="height: 65px;"></div>'; // नीचे स्पेस
+    }
 
     function loadUserData() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
@@ -334,7 +491,8 @@
             updateCounter();
           }
           if (data.age) {
-            document.getElementById("inputAge").value = data.age;
+            tempSelectedAge = data.age;
+            document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
           }
           if (data.gender === "Male") {
             document.getElementById("genderMale").checked = true;
@@ -345,68 +503,99 @@
             document.getElementById("inputBio").value = data.bio;
             updateBioCounter();
           }
+          if (data.relationship) {
+            currentRelationship = data.relationship;
+            document.getElementById("selectedStatusDisplay").innerText = currentRelationship;
+            let radios = document.querySelectorAll('input[name="relStatus"]');
+            radios.forEach(r => {
+              if(r.value === currentRelationship) r.checked = true;
+            });
+          }
         }
       }).catch((err) => {
         console.error("Error loading user data:", err);
       });
     }
 
-    // निकनेम काउंटर अपडेट करें
     function updateCounter() {
       let len = document.getElementById("inputNickname").value.length;
       document.getElementById("nicknameCounter").innerText = len + "/30";
     }
 
-    // बायो काउंटर अपडेट करें
     function updateBioCounter() {
       let len = document.getElementById("inputBio").value.length;
       document.getElementById("bioCounter").innerText = len + "/140";
     }
 
-    // डेटा सेव करें और वापस भेजें
+    // Age Modal Functions
+    function openAgeModal() {
+      document.getElementById("ageModal").style.display = "flex";
+      let wheel = document.getElementById("ageWheel");
+      let targetDiv = wheel.querySelector(`[data-val='${tempSelectedAge}']`);
+      if(targetDiv) {
+        wheel.scrollTop = targetDiv.offsetTop - 65;
+      }
+    }
+
+    function closeAgeModal() {
+      document.getElementById("ageModal").style.display = "none";
+    }
+
+    function confirmAge() {
+      let wheel = document.getElementById("ageWheel");
+      let index = Math.round(wheel.scrollTop / 50);
+      let items = wheel.querySelectorAll(".wheel-item");
+      if(items[index]) {
+        tempSelectedAge = items[index].innerText;
+        document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
+      }
+      closeAgeModal();
+    }
+
+    // Relationship Modal Functions
+    function openRelationshipModal() {
+      document.getElementById("relationshipModal").style.display = "flex";
+    }
+
+    function closeRelationshipModal() {
+      document.getElementById("relationshipModal").style.display = "none";
+    }
+
+    function confirmRelationship() {
+      let selected = document.querySelector('input[name="relStatus"]:checked');
+      if(selected) {
+        currentRelationship = selected.value;
+        document.getElementById("selectedStatusDisplay").innerText = currentRelationship;
+      }
+      closeRelationshipModal();
+    }
+
+    // डेटा सेव करना (फायरबेस और लोकल स्टोरेज दोनों जगह ताकि profile.html और home.html पर तुरंत दिखे)
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
-      let age = document.getElementById("inputAge").value;
-      let gender = document.querySelector('input[name="gender"]:checked').value;
       let bio = document.getElementById("inputBio").value.trim();
+      let gender = document.querySelector('input[name="gender"]:checked').value;
 
       if (!name) {
         alert("Nickname cannot be empty!");
         return;
       }
 
-      // लोकल स्टोरेज में अपडेट करें ताकि तुरंत दिखे
+      // लोकल स्टोरेज अपडेट करें ताकि होम और प्रोफाइल पेज पर तुरंत नाम बदल जाए
       localStorage.setItem("prof_name_" + currentIdentifier, name);
 
-      // फायरबेस में अपडेट करें
-      db.collection("users").doc(currentIdentifier).update({
+      db.collection("users").doc(currentIdentifier).set({
         name: name,
-        age: age,
+        age: tempSelectedAge,
         gender: gender,
-        bio: bio
-      }).then(() => {
+        bio: bio,
+        relationship: currentRelationship
+      }, { merge: true }).then(() => {
         alert("Basic info updated successfully!");
-        history.back(); // वापस पिछले पेज पर जाने के लिए
+        history.back();
       }).catch((error) => {
-        // अगर डॉक्यूमेंट नहीं है तो सेट करें
-        db.collection("users").doc(currentIdentifier).set({
-          name: name,
-          age: age,
-          gender: gender,
-          bio: bio
-        }, { merge: true }).then(() => {
-          alert("Basic info saved successfully!");
-          history.back();
-        });
+        alert("Error saving data: " + error.message);
       });
-    }
-
-    function goBack() {
-      history.back();
-    }
-
-    function openSubOption(title) {
-      alert(title + " clicked!");
     }
   </script>
 </body>
