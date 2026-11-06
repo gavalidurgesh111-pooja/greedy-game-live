@@ -346,6 +346,33 @@
     }
 
     .nav-item.active svg { stroke: #a18cd1; }
+
+    /* 🌟 होम पेज पर नीचे आने वाला पॉप-अप स्टाइल (जैसे फोटो में है) */
+    #successToast {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #111;
+      padding: 14px 26px;
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      align-items: center;
+      gap: 10px;
+      animation: fadeInOut 1.5s ease;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, 20px); }
+      20% { opacity: 1; transform: translate(-50%, 0); }
+      80% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -10px); }
+    }
   </style>
 </head>
 
@@ -446,6 +473,11 @@
     </div>
   </div>
 
+  <!-- 🌟 स्क्रीन पर नीचे आने वाला पॉप-अप नोटिफिकेशन बॉक्स -->
+  <div id="successToast">
+    <span>😺</span> Profile update successfully
+  </div>
+
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -469,11 +501,27 @@
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
       loadHomeData();
+      checkUpdateToast();
     };
 
     window.addEventListener('popstate', function(event) {
       window.location.replace("index.html");
     });
+
+    // 🌟 प्रोफाइल अपडेट होने पर होम पेज पर नीचे पॉप-अप दिखाने का फंक्शन
+    function checkUpdateToast() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('updated') === 'true') {
+        let toast = document.getElementById("successToast");
+        if (toast) {
+          toast.style.display = "flex";
+          setTimeout(() => {
+            toast.style.display = "none";
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }, 1500);
+        }
+      }
+    }
 
     function loadHomeData() {
       let savedName = localStorage.getItem("prof_name_" + currentIdentifier) || "User";
