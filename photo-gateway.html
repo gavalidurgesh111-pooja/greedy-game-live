@@ -11,12 +11,12 @@
     history.replaceState({page: "gateway_secure"}, "", window.location.href);
 
     window.addEventListener('popstate', function(event) {
-      // बैक बटन दबाने पर सीधे प्रोफाइल पर भेजना
-      window.location.replace("profile.html");
+      // बैक बटन दबाने पर सीधे मुख्य होम पेज पर भेजना
+      window.location.replace("home.html");
     });
 
-    // बिना किसी रुकावट के सीधे ग्रिड पेज पर भेजना
-    window.location.replace("profile-photo.html");
+    // बिना किसी रुकावट के सीधे प्रोफाइल पेज पर भेजना
+    window.location.replace("profile.html");
   </script>
 </body>
 </html>
