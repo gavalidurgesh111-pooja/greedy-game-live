@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड और सीमलेस बैकग्राउंड: बिना किसी लाइन के, ऊपर फिक्स और नीचे सफेद में मर्ज */  
+    /* 🌟 बादलों की तरह सॉफ्ट मर्ज और सीमलेस अखंड बैकग्राउंड */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -37,27 +37,28 @@
         
       background:   
         linear-gradient(90deg,   
-          rgba(186, 85, 211, 0.65) 0%,   
-          rgba(255, 20, 147, 0.65) 25%,   
-          rgba(255, 0, 255, 0.60) 50%,   
-          rgba(255, 140, 0, 0.70) 75%,   
-          rgba(186, 85, 211, 0.65) 100%  
+          rgba(186, 85, 211, 0.60) 0%,   
+          rgba(255, 20, 147, 0.60) 25%,   
+          rgba(255, 0, 255, 0.55) 50%,   
+          rgba(255, 140, 0, 0.65) 75%,   
+          rgba(186, 85, 211, 0.60) 100%  
         ),  
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.3) 100px,   
-          rgba(255,255,255,0.7) 200px,   
-          rgba(255,255,255,0.95) 280px,   
-          #ffffff 350px,   
+          rgba(255,255,255,0.15) 80px,   
+          rgba(255,255,255,0.45) 150px,   
+          rgba(255,255,255,0.80) 220px,   
+          rgba(255,255,255,0.98) 280px,   
+          #ffffff 340px,   
           #ffffff 100%  
         );  
 
-      background-size: 200% 350px, 100% 100%;  
+      background-size: 200% 380px, 100% 100%;  
       background-repeat: repeat-x, no-repeat;  
       animation: colorScrollLeftToRight 5s linear infinite;  
     }  
 
-    /* परफेक्ट लूप - शुरुआत और अंत का रंग एक जैसा होने से कोई लाइन नहीं दिखेगी */  
+    /* परफेक्ट लूप - बिना किसी कट या लाइन के */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0 0;  
@@ -418,7 +419,7 @@
   <div id="notificationModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <p style="color: #222; font-size: 15px; margin-bottom: 15px;">  
-        You have disabled the notification permissions of this APP in the system. To enable it, turn on the Allow notification in the Settings - Notifications.  
+        You have disabled the notification permissions of this APP in the system. To enable it, turn on, turn on the Allow notification in the Settings - Notifications.  
       </p>  
       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: #333;">  
         <input type="checkbox" id="notifCheck" style="width: 16px; height: 16px; accent-color: #7a52b3;">  
