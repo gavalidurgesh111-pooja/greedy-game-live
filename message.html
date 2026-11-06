@@ -38,7 +38,7 @@
       background: #ffffff;  
     }  
 
-    /* 🌟 Background Area - रंग और ब्लब्स लगातार घूमते और तैरते रहेंगे */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर फिक्स, घूमते-तैरते हुए, और नीचे बादलों की तरह सफेद में मर्ज */  
     .background {  
       position: absolute;  
       z-index: 1;  
@@ -46,7 +46,7 @@
       height: 63vh;  
       min-height: 430px;  
       overflow: hidden;  
-      background: #f8f8f8;  
+      background: #ffffff;  
     }  
 
     .background::after {  
@@ -57,8 +57,8 @@
       pointer-events: none;  
       background: linear-gradient(  
         to bottom,  
-        rgba(248, 248, 248, 0) 30%,  
-        rgba(248, 248, 248, 0.3) 55%,  
+        rgba(255, 255, 255, 0) 30%,  
+        rgba(255, 255, 255, 0.4) 55%,  
         #ffffff 100%  
       );  
     }  
@@ -80,21 +80,21 @@
     .mesh-peach {  
       top: -20%;  
       left: -10%;  
-      background: #ff9a8b;  
+      background: rgba(186, 85, 211, 0.85);  
       animation: rotateAndFloat1 8s ease-in-out infinite alternate;  
     }  
 
     .mesh-pink {  
       top: -25%;  
       left: 20%;  
-      background: #ff6b95;  
+      background: rgba(255, 20, 147, 0.85);  
       animation: rotateAndFloat2 10s ease-in-out infinite alternate;  
     }  
 
     .mesh-purple {  
       top: -15%;  
       right: -10%;  
-      background: #a18cd1;  
+      background: rgba(255, 0, 255, 0.80);  
       animation: rotateAndFloat3 9s ease-in-out infinite alternate;  
     }  
 
@@ -103,62 +103,38 @@
       height: 35vw;  
       top: 5%;  
       right: 15%;  
-      background: #84fab0;  
-      opacity: 0.25;  
+      background: rgba(255, 140, 0, 0.85);  
+      opacity: 0.85;  
       filter: blur(80px);  
       animation: rotateAndFloat4 11s ease-in-out infinite alternate;  
     }  
 
     /* स्मूथ घूमने और तैरने वाले एनिमेशन */  
     @keyframes rotateAndFloat1 {  
-      0% {  
-        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
-      }  
-      50% {  
-        transform: translate3d(15vw, 8vh, 0) scale(1.15) rotate(180deg);  
-      }  
-      100% {  
-        transform: translate3d(5vw, 12vh, 0) scale(0.95) rotate(360deg);  
-      }  
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
+      50% { transform: translate3d(15vw, 8vh, 0) scale(1.15) rotate(180deg); }  
+      100% { transform: translate3d(5vw, 12vh, 0) scale(0.95) rotate(360deg); }  
     }  
 
     @keyframes rotateAndFloat2 {  
-      0% {  
-        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
-      }  
-      50% {  
-        transform: translate3d(-12vw, 10vh, 0) scale(1.1) rotate(-180deg);  
-      }  
-      100% {  
-        transform: translate3d(8vw, 5vh, 0) scale(1.05) rotate(-360deg);  
-      }  
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
+      50% { transform: translate3d(-12vw, 10vh, 0) scale(1.1) rotate(-180deg); }  
+      100% { transform: translate3d(8vw, 5vh, 0) scale(1.05) rotate(-360deg); }  
     }  
 
     @keyframes rotateAndFloat3 {  
-      0% {  
-        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
-      }  
-      50% {  
-        transform: translate3d(-15vw, 12vh, 0) scale(0.9) rotate(180deg);  
-      }  
-      100% {  
-        transform: translate3d(-5vw, 6vh, 0) scale(1.2) rotate(360deg);  
-      }  
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
+      50% { transform: translate3d(-15vw, 12vh, 0) scale(0.9) rotate(180deg); }  
+      100% { transform: translate3d(-5vw, 6vh, 0) scale(1.2) rotate(360deg); }  
     }  
 
     @keyframes rotateAndFloat4 {  
-      0% {  
-        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
-      }  
-      50% {  
-        transform: translate3d(10vw, -8vh, 0) scale(1.25) rotate(-180deg);  
-      }  
-      100% {  
-        transform: translate3d(-8vw, 8vh, 0) scale(0.95) rotate(-360deg);  
-      }  
+      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
+      50% { transform: translate3d(10vw, -8vh, 0) scale(1.25) rotate(-180deg); }  
+      100% { transform: translate3d(-8vw, 8vh, 0) scale(0.95) rotate(-360deg); }  
     }  
 
-    /* टॉप हेडर - अपनी जगह पर सुरक्षित */  
+    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -639,4 +615,4 @@
     };  
   </script>  
 </body>  
-</html>  
+</html>
