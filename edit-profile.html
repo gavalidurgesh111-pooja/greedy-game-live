@@ -504,7 +504,7 @@
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
     }
 
-    /* छठी फोटो जैसा लिसनिंग मोड (Delete, Stop/Play, Pause)[span_0](start_span)[span_0](end_span) */
+    /* लिसनिंग मोड (Delete, Stop/Play, Pause)[span_0](start_span)[span_0](end_span) */
     .listening-actions {
       display: none;
       flex-direction: row;
@@ -998,9 +998,10 @@
     function openVoiceShowModal() {
       document.getElementById("voiceShowModal").style.display = "flex";
       if (recordedDurationSeconds > 0) {
-        // अगर पहले से रिकॉर्डिंग मौजूद है, तो सीधे पोस्ट-रिकॉर्डिंग पेज दिखाएं
+        // यदि पहले से रिकॉर्डिंग मौजूद है, तो सीधे पोस्ट-रिकॉर्डिंग पेज (Save/Listen/Re-record) दिखाएं
         document.getElementById("voicePromptText").style.display = "none";
         document.getElementById("initialRecordSection").style.display = "none";
+        document.getElementById("listeningActionsSection").style.display = "none";
         document.getElementById("postRecordActions").style.display = "flex";
       } else {
         resetVoiceModalState();
@@ -1145,10 +1146,11 @@
     }
 
     function reRecordAudio() {
+      recordedDurationSeconds = 0;
       resetVoiceModalState();
     }
 
-    /* 🌟 जब Listen पर क्लिक करेगा, तो उल्टा गिनकर 0 पर आने के बाद रिकॉर्डिंग सुरक्षित रखते हुए वापस मेन पेज पर आ जाएगा */
+    /* 🌟 Listen पर क्लिक करने पर उल्टा टाइमर चलेगा और 0 पर आते ही रिकॉर्डिंग सुरक्षित रखते हुए वापस मेन पोस्ट-रिकॉर्ड पेज पर आ जाएगा */
     function listenAudioPlayback() {
       document.getElementById("postRecordActions").style.display = "none";
       
@@ -1169,7 +1171,7 @@
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          // 0 पर पहुँचने के बाद रिकॉर्डिंग सुरक्षित रखते हुए वापस (Save, Re-record, Listen) पेज पर ले आएं
+          // 0 पर पहुँचने पर रिकॉर्डिंग सुरक्षित रखते हुए वापस (Save/Listen/Re-record) पेज पर लाएँ
           stopPlaybackAndReset();
         }
       }, 1000);
