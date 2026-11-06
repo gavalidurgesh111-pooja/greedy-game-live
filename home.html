@@ -343,33 +343,6 @@
     }
 
     .nav-item.active svg { stroke: #a18cd1; }
-
-    #copiedToast {
-      visibility: hidden;
-      min-width: 140px;
-      background-color: #ffffff;
-      color: #111;
-      text-align: center;
-      border-radius: 16px;
-      padding: 12px 24px;
-      position: fixed;
-      z-index: 1000;
-      left: 50%;
-      bottom: 50%;
-      transform: translate(-50%, 50%);
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      border: 1px solid #eee;
-      opacity: 0;
-      transition: opacity 0.3s, transform 0.3s;
-    }
-
-    #copiedToast.show {
-      visibility: visible;
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
   </style>
 </head>
 
@@ -383,6 +356,7 @@
       <div class="mesh mesh-blue"></div>
     </div>
 
+    <!-- 🌟 यहाँ दोनों सही आइकॉन (Edit और Settings) साफ-सुथरे तरीके से सेट हैं -->
     <div class="profile-top-bar">
       <button class="top-icon-btn" onclick="openProfilePage()">
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -401,8 +375,7 @@
       
       <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>
       
-      <!-- 🌟 यहाँ onclick जोड़ा गया है जो नीचे दिए गए लॉक फंक्शन को कॉल करेगा -->
-      <div class="profile-id" onclick="copyMyId(event)">
+      <div class="profile-id" onclick="copyMyId()">
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
       </div>
@@ -466,8 +439,6 @@
     </div>
   </div>
 
-  <div id="copiedToast">Copied</div>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -487,7 +458,6 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let rawUserId = "#288630";
-    let isCopyLocked = false; // 🌟 सुपर-स्ट्रिक्ट लॉक जो डबल ट्रिगर को ब्लॉक कर देगा
 
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
@@ -571,27 +541,8 @@
       }
     }
 
-    // 🌟 फुल-प्रूफ लॉक वाला कॉपी फंक्शन (सिर्फ एक बार काम करेगा)
-    function copyMyId(event) {
-      if (event) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-
-      if (isCopyLocked) return; // अगर लॉक लगा है तो दूसरा क्लिक रद्द
-      isCopyLocked = true;
-
+    function copyMyId() {
       navigator.clipboard.writeText(rawUserId);
-      
-      let toast = document.getElementById("copiedToast");
-      toast.className = "show";
-      
-      setTimeout(function(){
-        toast.className = "";
-        setTimeout(function() {
-          isCopyLocked = false; // 1.5 सेकंड बाद लॉक खुलेगा
-        }, 200);
-      }, 1500);
     }
 
     function openProfilePage() {
