@@ -83,6 +83,7 @@
     @keyframes colorScroll3 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-12vw, 5vh, 0) scale(0.95); } 100% { transform: translate(-4vw, 7vh, 0) scale(1.1); } }  
     @keyframes colorScroll4 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(8vw, -4vh, 0) scale(1.2); } 100% { transform: translate(-8vw, 4vh, 0) scale(0.9); } }  
 
+    /* 🌟 टॉप बार: दोनों आइकॉन दाईं तरफ पास-पास और एकदम साफ */  
     .profile-top-bar {  
       display: flex;  
       justify-content: flex-end;  
@@ -105,8 +106,8 @@
     }  
 
     .top-icon-btn svg {  
-      width: 22px;  
-      height: 22px;  
+      width: 20px;  
+      height: 20px;  
       stroke: #ffffff !important;  
       fill: none;  
       stroke-width: 2.2;  
@@ -202,7 +203,7 @@
     }  
 
     .profile-id * {  
-      pointer-events: none; /* 🌟 अंदर के सभी एलिमेंट्स (span, svg) पर अलग से क्लिक होने से पूरी तरह रोकने के लिए */  
+      pointer-events: none;  
     }  
 
     .profile-stats-row {  
@@ -375,12 +376,13 @@
       <div class="mesh mesh-blue"></div>  
     </div>  
 
+    <!-- टॉप बार: एडिट और सेटिंग्स आइकॉन दाईं तरफ पास-पास और सफेद रंग में -->  
     <div class="profile-top-bar">  
       <button class="top-icon-btn" onclick="openProfilePage()">  
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
       </button>  
       <button class="top-icon-btn" onclick="openProfilePage()">  
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"></path></svg>  
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>  
       </button>  
     </div>  
 
@@ -392,7 +394,7 @@
       </div>  
       <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       
-      <!-- 🌟 सिंगल क्लिक आईडी बॉक्स (बिना किसी डबल ट्रिगर के) -->  
+      <!-- 🌟 सुधरा हुआ क्लीन आईडी और कॉपी आइकॉन (बिना किसी काले तीर के) -->  
       <div class="profile-id" id="copyIdBtn">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
@@ -457,7 +459,7 @@
     </div>  
   </div>  
 
-  <!-- 🌟 केवल एक ही 'Copied' टॉस्ट पॉप-अप -->  
+  <!-- 🌟 सिंगल और क्लीन 'Copied' टॉस्ट पॉप-अप -->  
   <div id="copiedToast">Copied</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -485,7 +487,7 @@
       history.replaceState({ page: "home_secure" }, "", window.location.href);
       loadHomeData();
       
-      // 🌟 सुरक्षित क्लिक बाइंडिंग ताकि डबल ट्रिगर कभी न हो
+      // 🌟 सुरक्षित क्लिक बाइंडिंग ताकि कोई डुप्लीकेट बॉक्स न आए
       const copyBtn = document.getElementById("copyIdBtn");
       if (copyBtn) {
         copyBtn.onclick = function(event) {
