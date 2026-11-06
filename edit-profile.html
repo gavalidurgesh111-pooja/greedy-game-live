@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Basic info - Greedy Coin</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page-container {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      padding-bottom: 40px;
+    }
+
+    /* टॉप बार */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f0f0f0;
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .back-btn, .save-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .back-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #333;
+      fill: none;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .save-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #00b09b;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .page-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    /* फॉर्म सेक्शंस */
+    .form-section {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      border-bottom: 1px solid #f5f5f5;
+      padding-bottom: 15px;
+    }
+
+    .input-label {
+      font-size: 13px;
+      color: #888;
+      font-weight: 600;
+    }
+
+    .text-input {
+      font-size: 16px;
+      color: #222;
+      border: none;
+      outline: none;
+      background: transparent;
+      width: 100%;
+    }
+
+    .char-counter {
+      position: absolute;
+      right: 0;
+      bottom: 15px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    /* जेंडर सेलेक्शन */
+    .gender-row {
+      display: flex;
+      gap: 40px;
+      margin-top: 5px;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      color: #444;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .radio-label input[type="radio"] {
+      accent-color: #ff4500;
+      width: 18px;
+      height: 18px;
+    }
+
+    /* नीचे की लिस्ट वाले ऑप्शंस */
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f9f9f9;
+      cursor: pointer;
+      color: #555;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .list-item:active {
+      background: #f8f9fa;
+    }
+
+    .list-item-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .list-item-left svg {
+      width: 20px;
+      height: 20px;
+      stroke: #777;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .section-divider {
+      height: 8px;
+      background: #f7f8fa;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="page-container">
+    <!-- टॉप बार -->
+    <div class="top-bar">
+      <button class="back-btn" onclick="goBack()">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <span class="page-title">Basic info</span>
+      <button class="save-btn" onclick="saveBasicInfo()">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- फॉर्म इनपुट्स -->
+    <div class="form-section">
+      <!-- Nickname -->
+      <div class="input-group">
+        <span class="input-label">Nickname</span>
+        <input type="text" id="inputNickname" class="text-input" maxlength="30" value="User" oninput="updateCounter()">
+        <span class="char-counter" id="nicknameCounter">4/30</span>
+      </div>
+
+      <!-- Age -->
+      <div class="input-group" style="border-bottom: none; padding-bottom: 5px;">
+        <span class="input-label">Age</span>
+        <select id="inputAge" class="text-input" style="padding: 4px 0;">
+          <option value="18">18</option>
+          <option value="20">20</option>
+          <option value="22">22</option>
+          <option value="25" selected>25</option>
+          <option value="30">30</option>
+          <option value="35">35</option>
+        </select>
+      </div>
+
+      <!-- Gender -->
+      <div class="input-group" style="border-bottom: none;">
+        <span class="input-label">Gender</span>
+        <div class="gender-row">
+          <label class="radio-label">
+            <input type="radio" name="gender" value="Male" id="genderMale"> Male
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="gender" value="Female" id="genderFemale" checked> Female
+          </label>
+        </div>
+      </div>
+
+      <!-- What's up (Bio) -->
+      <div class="input-group">
+        <span class="input-label">What's up</span>
+        <input type="text" id="inputBio" class="text-input" maxlength="140" placeholder="Write something about yourself..." oninput="updateBioCounter()">
+        <span class="char-counter" id="bioCounter">0/140</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- नीचे की लिस्ट वाले विकल्प (जो स्क्रीनशॉट में हैं) -->
+    <div class="list-item" onclick="openSubOption('Relationship status')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <span>Relationship status</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+
+    <div class="list-item" onclick="openSubOption('Languages')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        <span>Languages</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+
+    <div class="list-item" onclick="openSubOption('Current locations')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+        <span>Current locations</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+
+    <div class="list-item" onclick="openSubOption('Interests')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <span>Interests</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+
+    <div class="list-item" onclick="openSubOption('Voice show')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <span>Voice show</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="list-item" onclick="openSubOption('Linked Accounts')">
+      <div class="list-item-left">
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>Linked Accounts</span>
+      </div>
+      <span style="color:#bbb; font-size:18px;">›</span>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+
+    // पेज लोड होने पर डेटा लोड करें
+    window.onload = function() {
+      loadUserData();
+    };
+
+    function loadUserData() {
+      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+        if (doc.exists) {
+          let data = doc.data();
+          if (data.name) {
+            document.getElementById("inputNickname").value = data.name;
+            updateCounter();
+          }
+          if (data.age) {
+            document.getElementById("inputAge").value = data.age;
+          }
+          if (data.gender === "Male") {
+            document.getElementById("genderMale").checked = true;
+          } else {
+            document.getElementById("genderFemale").checked = true;
+          }
+          if (data.bio) {
+            document.getElementById("inputBio").value = data.bio;
+            updateBioCounter();
+          }
+        }
+      }).catch((err) => {
+        console.error("Error loading user data:", err);
+      });
+    }
+
+    // निकनेम काउंटर अपडेट करें
+    function updateCounter() {
+      let len = document.getElementById("inputNickname").value.length;
+      document.getElementById("nicknameCounter").innerText = len + "/30";
+    }
+
+    // बायो काउंटर अपडेट करें
+    function updateBioCounter() {
+      let len = document.getElementById("inputBio").value.length;
+      document.getElementById("bioCounter").innerText = len + "/140";
+    }
+
+    // डेटा सेव करें और वापस भेजें
+    function saveBasicInfo() {
+      let name = document.getElementById("inputNickname").value.trim();
+      let age = document.getElementById("inputAge").value;
+      let gender = document.querySelector('input[name="gender"]:checked').value;
+      let bio = document.getElementById("inputBio").value.trim();
+
+      if (!name) {
+        alert("Nickname cannot be empty!");
+        return;
+      }
+
+      // लोकल स्टोरेज में अपडेट करें ताकि तुरंत दिखे
+      localStorage.setItem("prof_name_" + currentIdentifier, name);
+
+      // फायरबेस में अपडेट करें
+      db.collection("users").doc(currentIdentifier).update({
+        name: name,
+        age: age,
+        gender: gender,
+        bio: bio
+      }).then(() => {
+        alert("Basic info updated successfully!");
+        history.back(); // वापस पिछले पेज पर जाने के लिए
+      }).catch((error) => {
+        // अगर डॉक्यूमेंट नहीं है तो सेट करें
+        db.collection("users").doc(currentIdentifier).set({
+          name: name,
+          age: age,
+          gender: gender,
+          bio: bio
+        }, { merge: true }).then(() => {
+          alert("Basic info saved successfully!");
+          history.back();
+        });
+      });
+    }
+
+    function goBack() {
+      history.back();
+    }
+
+    function openSubOption(title) {
+      alert(title + " clicked!");
+    }
+  </script>
+</body>
+</html>
