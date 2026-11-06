@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+.<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -262,33 +262,6 @@
       z-index: 1;
     }
 
-    /* 🌟 फोटो जैसा नीचे आने वाला पॉप-अप स्टाइल[span_2](start_span)[span_2](end_span) */
-    #successToast {
-      display: none;
-      position: fixed;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ffffff;
-      color: #111;
-      padding: 14px 26px;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-      font-size: 14px;
-      font-weight: 600;
-      z-index: 1000;
-      align-items: center;
-      gap: 10px;
-      animation: fadeInOut 1.5s ease;
-    }
-
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, 20px); }
-      20% { opacity: 1; transform: translate(-50%, 0); }
-      80% { opacity: 1; transform: translate(-50%, 0); }
-      100% { opacity: 0; transform: translate(-50%, -10px); }
-    }
-
     .modal-overlay-center {
       display: none;
       position: fixed;
@@ -331,7 +304,6 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
-      <!-- टिक (✔️) बटन जिस पर क्लिक करने पर डेटा सेव होगा और पॉप-अप दिखेगा[span_3](start_span)[span_3](end_span) -->
       <button class="save-btn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
@@ -458,11 +430,6 @@
         <span style="color: #8a2be2;" onclick="confirmRelationship()">CONFIRM</span>
       </div>
     </div>
-  </div>
-
-  <!-- 🌟 फोटो जैसा पॉप-अप नोटिफिकेशन बॉक्स[span_4](start_span)[span_4](end_span) -->
-  <div id="successToast">
-    <span>😺</span> Profile update successfully
   </div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -615,7 +582,6 @@
       closeRelationshipModal();
     }
 
-    // 🌟 टिक (✔️) पर क्लिक करते ही डेटा सेव होगा, पॉप-अप दिखेगा[span_5](start_span)[span_5](end_span) और होम पेज खुलेगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -635,17 +601,8 @@
         bio: bio,
         relationship: currentRelationship
       }, { merge: true }).then(() => {
-        // पॉप-अप दिखाएं[span_6](start_span)[span_6](end_span)
-        let toast = document.getElementById("successToast");
-        if(toast) {
-          toast.style.display = "flex";
-        }
-
-        // 1.2 सेकंड बाद होम पेज पर रीडायरेक्ट करें ताकि पॉप-अप अच्छे से दिख सके[span_7](start_span)[span_7](end_span)
-        setTimeout(() => {
-          window.location.replace("home.html");
-        }, 1200);
-
+        // सेव होने के बाद सीधा होम पेज पर भेजें साथ में ?updated=true सिग्नल के साथ ताकि वहां पॉप-अप दिखे
+        window.location.replace("home.html?updated=true");
       }).catch((error) => {
         alert("Error saving data: " + error.message);
       });
