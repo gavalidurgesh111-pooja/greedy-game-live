@@ -120,18 +120,18 @@
       align-items: center;  
       position: relative;  
       z-index: 20;  
-      margin-top: 10px;  
+      margin-top: 5px;  
     }  
 
     .profile-avatar-container {  
       position: relative;  
       width: 90px;  
       height: 90px;  
-      margin-bottom: 16px;  
+      margin-bottom: 10px;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      cursor: default;  
+      cursor: pointer;  
     }  
 
     .profile-avatar {  
@@ -180,36 +180,33 @@
       display: flex;  
       align-items: center;  
       gap: 6px;  
-      margin-bottom: 10px;  
-      cursor: default;  
+      margin-bottom: 4px;  
+      cursor: pointer;  
     }  
 
-    /* 🌟 पूरा डिब्बा दिखने में वैसा ही है, पर टच/क्लिक से पूरी तरह सुरक्षित कर दिया है */  
     .profile-id {  
       font-size: 12px;  
       color: #555;  
       background: transparent !important;  
-      padding: 4px 8px;  
+      padding: 2px 6px;  
       border-radius: 0;  
       backdrop-filter: none;  
       display: flex;  
       align-items: center;  
-      gap: 6px;  
+      gap: 5px;  
+      cursor: pointer;  
+      box-shadow: none;  
       font-weight: 600;  
-      cursor: default;  
     }  
 
-    /* 🌟 सिर्फ इस आइकॉन पर क्लिक काम करेगा और कोई डबल सिग्नल नहीं जाएगा */  
     .profile-id svg {  
-      width: 16px;  
-      height: 16px;  
+      width: 13px;  
+      height: 13px;  
       stroke: #555;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
       stroke-linejoin: round;  
-      cursor: pointer;  
-      padding: 2px;  
     }  
 
     .profile-stats-row {  
@@ -343,6 +340,7 @@
 
     .nav-item.active svg { stroke: #a18cd1; }  
 
+    /* 🌟 सुंदर 'Copied' पॉप-अप बॉक्स के लिए स्टाइल */  
     #copiedToast {  
       visibility: hidden;  
       min-width: 140px;  
@@ -386,23 +384,21 @@
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
       </button>  
       <button class="top-icon-btn" onclick="openProfilePage()">  
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"></path></svg>  
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>  
       </button>  
     </div>  
 
     <div class="profile-info-section">  
-      <div class="profile-avatar-container">  
+      <div class="profile-avatar-container" onclick="openProfilePage()">  
         <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">  
         <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>  
         <div class="profile-avatar-frame" id="homeAvatarFrame"></div>  
       </div>  
+      <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       
-      <div class="profile-name" id="homeNameDisplay">User</div>  
-      
-      <!-- 🌟 सिंगल डिब्बा, जिसमें टेक्स्ट पर क्लिक बंद है और सिर्फ SVG आइकॉन पर क्लिक से एक बार कॉपी होगा -->  
-      <div class="profile-id">  
+      <div class="profile-id" onclick="copyMyId()">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
-        <svg viewBox="0 0 24 24" onclick="copyMyId(event)"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
+        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
       </div>  
     </div>  
 
@@ -464,6 +460,7 @@
     </div>  
   </div>  
 
+  <!-- 🌟 स्क्रीन पर दिखने वाला 'Copied' पॉप-अप एलिमेंट -->  
   <div id="copiedToast">Copied</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -485,7 +482,6 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let rawUserId = "#288630"; 
-    let isCopyProcessing = false; // 🌟 सुपर स्ट्रिक्ट लॉक ताकि किसी भी हाल में दोबारा कॉल न हो
 
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
@@ -569,28 +565,15 @@
       }
     }
 
-    // 🌟 एकदम पक्का और ठोस तरीका (डबल ट्रिगर का नाम ही मिटा देगा)
-    function copyMyId(event) {
-      if (event) {
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        event.preventDefault();
-      }
-
-      if (isCopyProcessing) return;
-      isCopyProcessing = true;
-
+    // 🌟 आईडी पर टच करते ही क्लिपबोर्ड पर कॉपी होगा और सुंदर 'Copied' पॉप-अप दिखेगा
+    function copyMyId() {
       navigator.clipboard.writeText(rawUserId);
       
       let toast = document.getElementById("copiedToast");
       toast.className = "show";
-      
       setTimeout(function(){ 
-        toast.className = ""; 
-        setTimeout(function() {
-          isCopyProcessing = false;
-        }, 300); // पूरी सुरक्षा के साथ लॉक को रीसेट करना
-      }, 1200); 
+        toast.className = toast.className.replace("show", ""); 
+      }, 1500); // 1.5 सेकंड बाद अपने आप गायब हो जाएगा
     }
 
     function openProfilePage() {  
