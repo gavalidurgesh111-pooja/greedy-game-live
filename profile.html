@@ -94,32 +94,7 @@
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .tags-row { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
     .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 3px 10px; border-radius: 12px; }
-    
-    /* 🌟 ID बॉक्स स्टाइल जिसमें बैकग्राउंड नहीं है और कॉपी आइकॉन है */
-    .tag-id { 
-      background: transparent !important; 
-      color: #555; 
-      font-size: 12px; 
-      font-weight: 600; 
-      padding: 2px 6px; 
-      border-radius: 0; 
-      cursor: pointer; 
-      display: flex; 
-      align-items: center; 
-      gap: 5px; 
-      box-shadow: none;
-    }
-    .tag-id svg { 
-      width: 13px; 
-      height: 13px; 
-      stroke: #555; 
-      fill: none; 
-      stroke-width: 2; 
-      stroke-linecap: round; 
-      stroke-linejoin: round; 
-      pointer-events: none; 
-    }
-
+    .tag-id { background: #e0f7fa; color: #006064; font-size: 12px; font-weight: bold; padding: 3px 10px; border-radius: 12px; cursor: pointer; }
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 20px; }
     .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
@@ -144,33 +119,6 @@
     .modal-box { background: #fff; padding: 20px; border-radius: 16px; width: 92%; max-width: 380px; max-height: 80vh; overflow-y: auto; box-sizing: border-box; }
     .grid-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; width: 100%; }
     .grid-item { padding: 10px; border-radius: 8px; text-align: center; cursor: pointer; font-size: 13px; }
-
-    /* 🌟 सिंगल और क्लीन MIKA स्टाइल 'Copied' टॉस्ट पॉप-अप स्टाइल */
-    #copiedToast {  
-      visibility: hidden;  
-      min-width: 140px;  
-      background-color: #ffffff;  
-      color: #111111;  
-      text-align: center;  
-      border-radius: 24px;  
-      padding: 14px 28px;  
-      position: fixed;  
-      z-index: 99999;  
-      left: 50%;  
-      top: 45%;  
-      transform: translateX(-50%) translateY(20px);  
-      font-size: 16px;  
-      font-weight: 700;  
-      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.2);  
-      border: 1px solid #eaeaea;  
-      opacity: 0;  
-      transition: opacity 0.25s ease, transform 0.25s ease;  
-    }  
-    #copiedToast.show {  
-      visibility: visible;  
-      opacity: 1;  
-      transform: translateX(-50%) translateY(0);  
-    }  
   </style>
 </head>
 <body>
@@ -204,11 +152,7 @@
 
         <div class="tags-row">
           <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
-          <!-- 🌟 GREEDYCOIN ID और कॉपी आइकॉन (सिंगल क्लिक टॉस्ट के साथ) -->
-          <div class="tag-id" onclick="copyMyId(event)">
-            <span id="profId">GREEDYCOIN ID: #288630</span>
-            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          </div>
+          <div class="tag-id" onclick="copyMyId()">🆔 <span id="profId">#288630</span> 📋</div>
         </div>
       </div>
 
@@ -280,7 +224,7 @@
           <h4 style="margin-bottom:8px;">My Unique ID</h4>
           <div style="display:flex; justify-content:space-between; align-items:center; background:#f0f2f5; padding:8px 12px; border-radius:8px;">
             <span id="aboutUserId" style="font-weight:bold;">#288630</span>
-            <button onclick="copyMyId(event)" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
+            <button onclick="copyMyId()" style="padding:4px 10px; background:#8a2be2; color:#fff; border:none; border-radius:6px; font-size:11px; cursor:pointer;">Copy ID</button>
           </div>
         </div>
         <div id="aboutMeContentBox" style="background:#fff; padding:15px; border-radius:12px;">
@@ -352,9 +296,6 @@
     </div>
   </div>
 
-  <!-- 🌟 सिंगल और क्लीन MIKA स्टाइल 'Copied' टॉस्ट पॉप-अप -->
-  <div id="copiedToast">Copied</div>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -377,7 +318,6 @@
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
-    let isCopiedShowing = false; // 🌟 डबल ट्रिगर रोकने के लिए लॉक
 
     history.pushState({page: "profile_secure"}, "", window.location.href);
 
@@ -408,7 +348,7 @@
       document.getElementById("profBalance").innerText = coins;
       document.getElementById("profWon").innerText = totalWon;
       document.getElementById("profLevel").innerText = userLevel;
-      document.getElementById("profId").innerText = "GREEDYCOIN ID: " + userId;
+      document.getElementById("profId").innerText = userId;
       document.getElementById("aboutUserId").innerText = userId;
       
       const avatarImg = document.getElementById("profAvatarImg");
@@ -558,26 +498,9 @@
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
-    // 🌟 सिंगल और क्लीन 'Copied' टॉस्ट पॉप-अप के साथ आईडी कॉपी करने का फंक्शन
-    function copyMyId(event) {
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-      }
-      
-      if (isCopiedShowing) return;
-      isCopiedShowing = true;
-
+    function copyMyId() {
       navigator.clipboard.writeText(userId);
-      
-      let toast = document.getElementById("copiedToast");
-      toast.className = "show";
-      
-      setTimeout(function(){ 
-        toast.className = ""; 
-        isCopiedShowing = false;
-      }, 1200); 
+      showCustomAlert("ID Copied: " + userId);
     }
 
     function openSettingsPage() { 
