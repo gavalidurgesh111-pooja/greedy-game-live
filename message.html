@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 आपका ओरिजिनल .page-container - जिसमें Mesh Background सेट किया गया है */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -34,40 +34,109 @@
       display: flex;  
       flex-direction: column;  
       overflow-x: hidden;  
-        
-      background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
-        linear-gradient(180deg,   
-          rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.3) 100px,   
-          rgba(255,255,255,0.7) 200px,   
-          rgba(255,255,255,0.95) 280px,   
-          #ffffff 350px,   
-          #ffffff 100%  
-        );  
-
-      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 0.8s linear infinite;  
+      isolation: isolate;  
+      background: #ffffff;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
-    @keyframes colorScrollLeftToRight {  
-      0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
-      }  
-      100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
-      }  
+    /* Mesh Background Container (बिना किसी लाइन या कट के, ऊपर रंग और नीचे सफेद में मर्ज) */
+    .background {  
+      position: absolute;  
+      z-index: 1;  
+      inset: 0;  
+      height: 60vh;  
+      min-height: 380px;  
+      overflow: hidden;  
+      background: #ffffff;  
     }  
 
-    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
+    .background::after {  
+      content: "";  
+      position: absolute;  
+      inset: 0;  
+      z-index: 10;  
+      pointer-events: none;  
+      background: linear-gradient(  
+        to bottom,  
+        rgba(255, 255, 255, 0) 30%,  
+        rgba(255, 255, 255, 0.4) 60%,  
+        #ffffff 100%  
+      );  
+    }  
+
+    .mesh {  
+      position: absolute;  
+      width: 50vw;  
+      height: 50vw;  
+      min-width: 280px;  
+      min-height: 280px;  
+      border-radius: 50%;  
+      filter: blur(60px);  
+      opacity: 0.75;  
+      mix-blend-mode: multiply;  
+      will-change: transform;  
+    }  
+
+    .mesh-peach {  
+      top: -20%;  
+      left: -15%;  
+      background: #ff9a8b;  
+      animation: peachMove 12s ease-in-out infinite;  
+    }  
+
+    .mesh-pink {  
+      top: -25%;  
+      left: 25%;  
+      background: #ff6b95;  
+      animation: pinkMove 14s ease-in-out infinite;  
+    }  
+
+    .mesh-purple {  
+      top: -20%;  
+      right: -15%;  
+      background: #a18cd1;  
+      animation: purpleMove 13s ease-in-out infinite;  
+    }  
+
+    .mesh-blue {  
+      width: 35vw;  
+      height: 35vw;  
+      top: 5%;  
+      right: 20%;  
+      background: #84fab0;  
+      opacity: 0.18;  
+      filter: blur(80px);  
+      animation: blueMove 16s ease-in-out infinite;  
+    }  
+
+    @keyframes peachMove {  
+      0% { transform: translate3d(0, 0, 0) scale(1); }  
+      25% { transform: translate3d(4vw, 3vh, 0) scale(1.06); }  
+      50% { transform: translate3d(8vw, -1vh, 0) scale(0.96); }  
+      75% { transform: translate3d(2vw, 4vh, 0) scale(1.04); }  
+      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    }  
+
+    @keyframes pinkMove {  
+      0% { transform: translate3d(0, 0, 0) scale(1); }  
+      30% { transform: translate3d(-3vw, 4vh, 0) scale(1.06); }  
+      60% { transform: translate3d(4vw, 6vh, 0) scale(0.95); }  
+      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    }  
+
+    @keyframes purpleMove {  
+      0% { transform: translate3d(0, 0, 0) scale(1); }  
+      30% { transform: translate3d(-4vw, 3vh, 0) scale(0.95); }  
+      65% { transform: translate3d(-7vw, 7vh, 0) scale(1.08); }  
+      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    }  
+
+    @keyframes blueMove {  
+      0% { transform: translate3d(0, 0, 0) scale(1); }  
+      50% { transform: translate3d(-4vw, 5vh, 0) scale(1.15); }  
+      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    }  
+
+    /* टॉप हेडर - अपनी जगह पर एकदम सुरक्षित */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -75,15 +144,15 @@
       padding: 16px 20px;  
       margin-top: 40px;  
       background: transparent;  
-      color: #ffffff;  
+      color: #333;  
       position: relative;  
-      z-index: 2;  
+      z-index: 20;  
     }  
 
     .sub-header h2 {  
       font-size: 22px;  
       font-weight: 800;  
-      color: #ffffff;  
+      color: #222;  
     }  
 
     .header-icons {  
@@ -108,7 +177,7 @@
     .search-icon-btn svg {  
       width: 25px;  
       height: 25px;  
-      stroke: #ffffff;  
+      stroke: #333;  
       fill: none;  
       stroke-width: 2;  
       stroke-linecap: round;  
@@ -120,7 +189,7 @@
       width: 25px;  
       height: 25px;  
       background: transparent;  
-      border: 3px solid rgba(255, 255, 255, 0.60);  
+      border: 3px solid rgba(0, 0, 0, 0.4);  
       border-radius: 50%;  
       cursor: pointer;  
       display: flex;  
@@ -132,7 +201,7 @@
     .mark-icon-btn svg {  
       width: 14px;  
       height: 14px;  
-      stroke: #ffffff;  
+      stroke: #333;  
       fill: none;  
       stroke-width: 2.5;  
       stroke-linecap: round;  
@@ -157,7 +226,7 @@
       color: #444;  
       cursor: pointer;  
       position: relative;  
-      z-index: 2;  
+      z-index: 20;  
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);  
     }  
 
@@ -182,7 +251,7 @@
       background: transparent;  
       padding-bottom: 70px;  
       position: relative;  
-      z-index: 2;  
+      z-index: 20;  
     }  
 
     .chat-item {  
@@ -351,7 +420,7 @@
       display: flex;  
       justify-content: space-between;  
       align-items: center;  
-      z-index: 10;  
+      z-index: 30;  
     }  
 
     .logout-btn-bottom {  
@@ -369,6 +438,14 @@
 <body>  
 
   <div class="page-container">  
+    <!-- Mesh Background Area -->  
+    <div class="background" aria-hidden="true">  
+      <div class="mesh mesh-peach"></div>  
+      <div class="mesh mesh-pink"></div>  
+      <div class="mesh mesh-purple"></div>  
+      <div class="mesh mesh-blue"></div>  
+    </div>  
+
     <!-- हेडर -->  
     <div class="sub-header">  
       <h2>Messages</h2>  
