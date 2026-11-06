@@ -125,6 +125,7 @@
       margin-top: 5px;
     }
 
+    /* 🌟 सिर्फ अवतार (फोटो) पर क्लिक करने पर profile.html खुलेगा */
     .profile-avatar-container {
       position: relative;
       width: 90px;
@@ -175,6 +176,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
 
+    /* नाम अब नॉर्मल रहेगा और क्लिक करने पर कुछ नहीं खुलेगा */
     .profile-name {
       font-size: 18px;
       font-weight: 800;
@@ -182,15 +184,18 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 4px;
-      cursor: pointer;
+      margin-top: 4px;
+      margin-bottom: 6px;
+      cursor: default;
     }
 
+    /* आईडी नॉर्मल और सही जगह पर */
     .profile-id {
       font-size: 12px;
       color: #555;
       background: transparent !important;
       padding: 2px 6px;
+      margin-top: 2px;
       border-radius: 0;
       backdrop-filter: none;
       display: flex;
@@ -357,28 +362,31 @@
       <div class="mesh mesh-blue"></div>
     </div>
 
-    <!-- 🌟 यहाँ बिल्कुल आपकी भेजी हुई फोटो जैसा सटीक सेटिंग लोगो सेट है -->
+    <!-- टॉप बार जिसमें सेटिंग्स और एडिट प्रोफाइल आइकॉन हैं -->
     <div class="profile-top-bar">
       <button class="top-icon-btn" onclick="openProfilePage()">
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
       </button>
       <button class="top-icon-btn" onclick="openProfilePage()">
         <svg viewBox="0 0 24 24">
-          <path d="M12,15.5C13.933,15.5 15.5,13.933 15.5,12C15.5,10.067 13.933,8.5 12,8.5C10.067,8.5 8.5,10.067 8.5,12C8.5,13.933 10.067,15.5 12,15.5Z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
           <path d="M19.4,13C19.45,12.67 19.5,12.34 19.5,12C19.5,11.66 19.45,11.33 19.4,11L21.52,9.35C21.71,9.2 21.76,8.93 21.64,8.71L19.64,5.25C19.52,5.03 19.26,4.95 19.03,5.03L16.51,6.05C15.98,5.63 15.41,5.28 14.78,5.02L14.41,2.37C14.37,2.13 14.17,1.95 13.93,1.95H9.93C9.69,1.95 9.49,2.13 9.45,2.37L9.08,5.02C8.45,5.28 7.88,5.63 7.35,6.05L4.83,5.03C4.6,4.95 4.34,5.03 4.22,5.25L2.22,8.71C2.1,8.93 2.15,9.2 2.34,9.35L4.46,11C4.41,11.33 4.36,11.66 4.36,12C4.36,12.34 4.41,12.67 4.46,13L2.34,14.65C2.15,14.8 2.1,15.07 2.22,15.29L4.22,18.75C4.34,18.97 4.6,19.05 4.83,18.97L7.35,17.95C7.88,18.37 8.45,18.72 9.08,18.98L9.45,21.63C9.49,21.87 9.69,22.05 9.93,22.05H13.93C14.17,22.05 14.37,21.87 14.41,21.63L14.78,18.98C15.41,18.72 15.98,18.37 16.51,17.95L19.03,18.97C19.26,19.05 19.52,18.97 19.64,18.75L21.64,15.29C21.76,15.07 21.71,14.8 21.52,14.65L19.4,13Z"></path>
         </svg>
       </button>
     </div>
 
     <div class="profile-info-section">
+      <!-- 🌟 यहाँ फोटो/अवतार पर क्लिक करने से profile.html खुलेगा -->
       <div class="profile-avatar-container" onclick="openProfilePage()">
         <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">
         <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>
         <div class="profile-avatar-frame" id="homeAvatarFrame"></div>
       </div>
       
-      <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>
+      <!-- नाम पर क्लिक करने पर कुछ नहीं खुलेगा -->
+      <div class="profile-name" id="homeNameDisplay">User</div>
       
+      <!-- आईडी पर क्लिक करने से सिर्फ आईडी कॉपी होगी -->
       <div class="profile-id" onclick="copyMyId()">
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -409,7 +417,7 @@
         <span>Recharge Coins</span>
         <span>🪙</span>
       </div>
-      <div class="promo-banner banner-streamer" onclick="alert('Live Streamer Center clicked')">
+      <div class="promo-banner banner-streamer" onclick="alert('Live streamer center clicked')">
         <span>Live streamer center</span>
         <span>📹</span>
       </div>
