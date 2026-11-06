@@ -125,7 +125,6 @@
       margin-top: 5px;
     }
 
-    /* 🌟 सिर्फ अवतार (फोटो) पर क्लिक करने पर profile.html खुलेगा */
     .profile-avatar-container {
       position: relative;
       width: 90px;
@@ -176,7 +175,6 @@
     .frame-custom3 { background-image: url('frame3.png') !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
 
-    /* नाम अब नॉर्मल रहेगा और क्लिक करने पर कुछ नहीं खुलेगा */
     .profile-name {
       font-size: 18px;
       font-weight: 800;
@@ -189,7 +187,6 @@
       cursor: default;
     }
 
-    /* आईडी नॉर्मल और सही जगह पर */
     .profile-id {
       font-size: 12px;
       color: #555;
@@ -362,9 +359,10 @@
       <div class="mesh mesh-blue"></div>
     </div>
 
-    <!-- टॉप बार जिसमें सेटिंग्स और एडिट प्रोफाइल आइकॉन हैं -->
+    <!-- टॉप बार जिसमें एडिट और सेटिंग्स आइकॉन हैं -->
     <div class="profile-top-bar">
-      <button class="top-icon-btn" onclick="openProfilePage()">
+      <!-- 🌟 यहाँ एडिट बटन पर क्लिक करने से edit-profile.html खुलेगा -->
+      <button class="top-icon-btn" onclick="location.href='edit-profile.html'">
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
       </button>
       <button class="top-icon-btn" onclick="openProfilePage()">
@@ -376,17 +374,14 @@
     </div>
 
     <div class="profile-info-section">
-      <!-- 🌟 यहाँ फोटो/अवतार पर क्लिक करने से profile.html खुलेगा -->
       <div class="profile-avatar-container" onclick="openProfilePage()">
         <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">
         <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>
         <div class="profile-avatar-frame" id="homeAvatarFrame"></div>
       </div>
       
-      <!-- नाम पर क्लिक करने पर कुछ नहीं खुलेगा -->
       <div class="profile-name" id="homeNameDisplay">User</div>
       
-      <!-- आईडी पर क्लिक करने से सिर्फ आईडी कॉपी होगी -->
       <div class="profile-id" onclick="copyMyId()">
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
