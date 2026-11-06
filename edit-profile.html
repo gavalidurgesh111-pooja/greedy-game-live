@@ -224,15 +224,17 @@
       to { transform: translateY(0); }
     }
 
+    /* स्क्रॉलिंग व्हील - स्पीड और टच स्मूथनेस के साथ */
     .wheel-container {
       height: 200px;
       overflow-y: scroll;
       scroll-snap-type: y mandatory;
+      scroll-snap-stop: normal;
       text-align: center;
       position: relative;
       margin: 10px 0;
       -webkit-overflow-scrolling: touch;
-      z-index: 2; /* अंक हमेशा शैडो बॉक्स के ऊपर रहेंगे */
+      z-index: 2;
     }
     .wheel-container::-webkit-scrollbar { display: none; }
     
@@ -243,11 +245,10 @@
       justify-content: center;
       font-size: 16px;
       font-weight: 700;
-      color: #111; /* सभी अंक डार्क काले रंग में */
+      color: #111;
       scroll-snap-align: center;
     }
 
-    /* अंडाकार हाइलाइट बॉक्स जो बिल्कुल अंको के नीचे रहेगा */
     .wheel-highlight-box {
       position: absolute;
       top: 75px;
@@ -257,7 +258,7 @@
       border-radius: 25px;
       background: #f0f2f5;
       pointer-events: none;
-      z-index: 1; /* अंकों के नीचे रहेगा */
+      z-index: 1;
     }
 
     .modal-overlay-center {
