@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 संतुलित और सीमलेस बैकग्राउंड - बिना किसी लाइन के और एकदम परफेक्ट स्प्रेड */  
+    /* 🌟 अखंड बैकग्राउंड: ऊपर फिक्स, नीचे सफेद में मर्ज, बिना किसी सीम/लाइन के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,13 +36,12 @@
       overflow-x: hidden;  
         
       background:   
-        linear-gradient(90deg,   
-          rgba(186, 85, 211, 0.75) 0%,   
-          rgba(255, 20, 147, 0.75) 25%,   
-          rgba(255, 0, 255, 0.70) 50%,   
-          rgba(255, 140, 0, 0.80) 75%,   
-          rgba(186, 85, 211, 0.75) 100%  
-        ),  
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.75) 0%, transparent 28%),   
+        radial-gradient(circle at 30% 3%, rgba(255, 20, 147, 0.75) 0%, transparent 28%),    
+        radial-gradient(circle at 50% 5%, rgba(255, 0, 255, 0.70) 0%, transparent 28%),     
+        radial-gradient(circle at 70% 4%, rgba(255, 140, 0, 0.80) 0%, transparent 30%),     
+        radial-gradient(circle at 90% 6%, rgba(138, 43, 226, 0.75) 0%, transparent 28%),    
+        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.65) 0%, transparent 30%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
           rgba(255,255,255,0.3) 100px,   
@@ -52,17 +51,18 @@
           #ffffff 100%  
         );  
 
-      background-size: 200% 100%, 100% 100%;  
-      background-repeat: repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 5s linear infinite;  
+      background-size: 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 200% 350px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      animation: colorScrollLeftToRight 4s linear infinite;  
     }  
 
+    /* सीमलेस लेफ्ट-टू-राइट लूप */  
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 200% 0%, 0 0;  
+        background-position: 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 200% 0%, 0 0;  
       }  
     }  
 
@@ -114,7 +114,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - बिल्कुल सुरक्षित और अपनी जगह पर */  
+    /* मार्क/टिक आइकॉन - अपनी जगह पर सुरक्षित */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -507,4 +507,4 @@
     }  
   </script>  
 </body>  
-</html>
+</html>  
