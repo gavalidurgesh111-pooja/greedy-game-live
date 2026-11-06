@@ -195,7 +195,7 @@
       width: 100%;
     }
 
-    /* 🌟 Age Picker Modal */
+    /* Age Picker Modal */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -260,20 +260,17 @@
       z-index: 1;
     }
 
-    /* 🌟 Done बटन के चमकने (Glow) का एनिमेशन */
-    @keyframes buttonGlow {
-      0% { transform: scale(1); box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); }
-      50% { transform: scale(1.05); box-shadow: 0 0 12px rgba(161, 140, 209, 0.8); background-color: #9370db; color: #fff; }
-      100% { transform: scale(1); box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); }
+    /* 🌟 स्थिर चमकने वाला इफ़ेक्ट (बटन अपनी जगह से नहीं हिलेगा) */
+    @keyframes steadyGlow {
+      0% { box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); background: #a18cd1; color: #fff; }
+      50% { box-shadow: 0 0 12px rgba(161, 140, 209, 0.9); background: #9370db; color: #fff; }
+      100% { box-shadow: 0 0 0px rgba(161, 140, 209, 0.4); background: #a18cd1; color: #fff; }
     }
 
     .glow-btn {
-      animation: buttonGlow 1.2s infinite ease-in-out;
+      animation: steadyGlow 1.2s infinite ease-in-out;
       padding: 6px 14px;
       border-radius: 8px;
-      background: #a18cd1;
-      color: #fff !important;
-      transition: all 0.3s ease;
     }
 
     .modal-overlay-center {
@@ -538,6 +535,12 @@
         wheel.scrollTop = targetDiv.offsetTop - 75;
       }
       highlightActiveAge();
+      
+      let doneBtn = document.getElementById("doneAgeBtn");
+      if(doneBtn) {
+        doneBtn.classList.remove("glow-btn");
+        doneBtn.style.color = "#a18cd1";
+      }
     }
 
     function closeAgeModal() {
@@ -560,7 +563,6 @@
         }
       });
 
-      // Done बटन को चमकाने के लिए क्लास जोड़ें
       let doneBtn = document.getElementById("doneAgeBtn");
       if(doneBtn) {
         doneBtn.classList.add("glow-btn");
