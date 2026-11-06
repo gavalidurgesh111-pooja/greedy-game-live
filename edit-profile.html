@@ -504,7 +504,7 @@
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
     }
 
-    /* 🌟 छठी फोटो जैसा लिसनिंग/प्लेबैक लेआउट (Delete, Play/Stop, Pause)[span_2](start_span)[span_2](end_span) */
+    /* छठी फोटो जैसा लिसनिंग मोड (Delete, Play/Stop, Pause)[span_0](start_span)[span_0](end_span) */
     .listening-actions {
       display: none;
       flex-direction: row;
@@ -573,7 +573,7 @@
       margin-bottom: 80px;
     }
 
-    /* पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल[span_3](start_span)[span_3](end_span) */
+    /* पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल[span_1](start_span)[span_1](end_span) */
     .voice-played-badge {
       display: flex;
       align-items: center;
@@ -851,7 +851,7 @@
       </button>
     </div>
 
-    <!-- 🌟 छठी फोटो जैसा लिसनिंग मोड (Delete, Play/Stop, Pause)[span_4](start_span)[span_4](end_span) -->
+    <!-- 🌟 छठी फोटो जैसा लिसनिंग मोड (Delete, Stop/Play, Pause)[span_2](start_span)[span_2](end_span) -->
     <div class="listening-actions" id="listeningActionsSection">
       <button class="listen-sub-btn" onclick="deleteRecordedAudio()">
         <div class="listen-sub-icon">
@@ -860,7 +860,7 @@
         <span class="listen-sub-label">Delete</span>
       </button>
 
-      <button class="listen-main-btn" onclick="togglePlayStopAudio()">
+      <button class="listen-main-btn" onclick="stopPlaybackAndReset()">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
       </button>
 
@@ -966,6 +966,7 @@
     
     let isRecording = false;
     let recordingTimer = null;
+    let playbackTimer = null;
     let secondsElapsed = 0;
     let pendingHoldAction = false;
 
@@ -1000,12 +1001,12 @@
     }
 
     function closeVoiceShowModal() {
-      stopRecordingProcess();
+      stopAllTimers();
       document.getElementById("voiceShowModal").style.display = "none";
     }
 
     function resetVoiceModalState() {
-      stopRecordingProcess();
+      stopAllTimers();
       document.getElementById("voicePromptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
@@ -1129,43 +1130,62 @@
       document.getElementById("postRecordActions").style.display = "flex";
     }
 
-    function stopRecordingProcess() {
+    function stopAllTimers() {
       isRecording = false;
       if (recordingTimer) clearInterval(recordingTimer);
+      if (playbackTimer) clearInterval(playbackTimer);
     }
 
     function reRecordAudio() {
       resetVoiceModalState();
     }
 
-    /* 🌟 जब यूजर Listen पर क्लिक करेगा तो छठी फोटो जैसा पेज आ जाएगा[span_5](start_span)[span_5](end_span) */
+    /* 🌟 जब Listen पर क्लिक करेगा, तो जितने सेकंड्स रिकॉर्ड हुए हैं, वहाँ से 0 की तरफ उल्टा भागेगा */
     function listenAudioPlayback() {
       document.getElementById("postRecordActions").style.display = "none";
       
       let waveDisp = document.getElementById("waveformDisplay");
       waveDisp.style.display = "flex";
-      document.getElementById("recordedSecondsCount").innerText = secondsElapsed > 0 ? secondsElapsed : 7;
+      
+      let playbackSec = secondsElapsed > 0 ? secondsElapsed : 7;
+      let secElem = document.getElementById("recordedSecondsCount");
+      secElem.innerText = playbackSec;
 
       document.getElementById("listeningActionsSection").style.display = "flex";
+
+      if(playbackTimer) clearInterval(playbackTimer);
+
+      // 0 की तरफ उल्टा गिनना शुरू होगा
+      playbackTimer = setInterval(() => {
+        playbackSec--;
+        if (playbackSec >= 0) {
+          secElem.innerText = playbackSec;
+        } else {
+          clearInterval(playbackTimer);
+          // 0 पर पहुँचने के बाद अपने आप पहले जैसे पेज (Save, Re-record, Listen) पर आ जाएगा
+          stopPlaybackAndReset();
+        }
+      }, 1000);
     }
 
     function deleteRecordedAudio() {
       resetVoiceModalState();
     }
 
-    function togglePlayStopAudio() {
-      // सुनने के बाद वापस पहले जैसी स्थिति (Save, Re-record, Listen वाले पेज) पर आ जाएगा
+    function stopPlaybackAndReset() {
+      if(playbackTimer) clearInterval(playbackTimer);
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
     }
 
     function pauseAudioPlayback() {
+      if(playbackTimer) clearInterval(playbackTimer);
       alert("Playback paused");
     }
 
     function saveVoiceRecordingFinal() {
-      stopRecordingProcess();
+      stopAllTimers();
       recordedDurationSeconds = secondsElapsed > 0 ? secondsElapsed : 7;
       recordedAudioUrl = "voice_recorded_" + recordedDurationSeconds + "s";
       
