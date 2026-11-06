@@ -38,7 +38,7 @@
       background: #ffffff;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: सभी रंग अलग-अलग और साफ दिखेंगे, नीचे सफेद में मर्ज */  
+    /* 🌟 बैकग्राउंड एरिया - रंग साफ़ दिखेंगे और लगातार स्क्रॉल होंगे */  
     .background {  
       position: absolute;  
       z-index: 1;  
@@ -49,6 +49,7 @@
       background: #ffffff;  
     }  
 
+    /* नीचे आते-आते बादलों की तरह एकदम सॉफ्ट सफेद में घुलने का नियम */  
     .background::after {  
       content: "";  
       position: absolute;  
@@ -58,82 +59,81 @@
       background: linear-gradient(  
         to bottom,  
         rgba(255, 255, 255, 0) 30%,  
-        rgba(255, 255, 255, 0.5) 60%,  
+        rgba(255, 255, 255, 0.45) 60%,  
         #ffffff 100%  
       );  
     }  
 
     .mesh {  
       position: absolute;  
-      width: 50vw;  
-      height: 50vw;  
-      min-width: 320px;  
-      min-height: 320px;  
+      width: 45vw;  
+      height: 45vw;  
+      min-width: 300px;  
+      min-height: 300px;  
       border-radius: 50%;  
-      filter: blur(55px);  
-      opacity: 0.65; /* रंग अलग-अलग और साफ़ दिखने के लिए बैलेंस्ड ऑपिसिटी */  
-      will-change: transform;  
+      filter: blur(50px);  
+      opacity: 0.85; /* रंग पूरी तरह साफ़ और जीवंत दिखेंगे */  
     }  
 
-    /* चारों अलग-अलग रंगों के ब्लब्स जो स्वतंत्र रूप से घूमते रहेंगे */  
+    /* चारों अलग-अलग रंगों के ब्लब्स जो अलग-अलग दिशाओं में घूमते और स्क्रॉल होते रहेंगे */  
     .mesh-peach {  
       top: -20%;  
-      left: -10%;  
-      background: #ba55d3; /* Purple/Orchid shade */  
-      animation: rotateAndFloat1 9s ease-in-out infinite alternate;  
+      left: -15%;  
+      background: rgba(186, 85, 211, 0.9); /* Purple */  
+      animation: colorScroll1 6s ease-in-out infinite alternate;  
     }  
 
     .mesh-pink {  
       top: -25%;  
       left: 20%;  
-      background: #ff1493; /* Deep Pink */  
-      animation: rotateAndFloat2 11s ease-in-out infinite alternate;  
+      background: rgba(255, 20, 147, 0.9); /* Pink */  
+      animation: colorScroll2 8s ease-in-out infinite alternate;  
     }  
 
     .mesh-purple {  
       top: -15%;  
-      right: -10%;  
-      background: #ff00ff; /* Magenta */  
-      animation: rotateAndFloat3 10s ease-in-out infinite alternate;  
+      right: -15%;  
+      background: rgba(255, 0, 255, 0.85); /* Magenta */  
+      animation: colorScroll3 7s ease-in-out infinite alternate;  
     }  
 
     .mesh-blue {  
-      width: 38vw;  
-      height: 38vw;  
+      width: 35vw;  
+      height: 35vw;  
       top: 5%;  
-      right: 15%;  
-      background: #ff8c00; /* Dark Orange */  
-      opacity: 0.60;  
-      filter: blur(75px);  
-      animation: rotateAndFloat4 12s ease-in-out infinite alternate;  
+      right: 20%;  
+      background: rgba(255, 140, 0, 0.9); /* Orange */  
+      opacity: 0.85;  
+      filter: blur(60px);  
+      animation: colorScroll4 9s ease-in-out infinite alternate;  
     }  
 
-    /* स्मूथ घूमने और तैरने वाले एनिमेशन */  
-    @keyframes rotateAndFloat1 {  
-      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(12vw, 6vh, 0) scale(1.1) rotate(180deg); }  
-      100% { transform: translate3d(4vw, 10vh, 0) scale(0.95) rotate(360deg); }  
+    /* अलग-अलग स्मूथ फ्लो और स्क्रॉलिंग एनिमेशन */  
+    @keyframes colorScroll1 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(15vw, 5vh, 0) scale(1.1); }  
+      100% { transform: translate(8vw, 10vh, 0) scale(0.95); }  
     }  
 
-    @keyframes rotateAndFloat2 {  
-      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(-10vw, 8vh, 0) scale(1.15) rotate(-180deg); }  
-      100% { transform: translate3d(6vw, 4vh, 0) scale(1.0) rotate(-360deg); }  
+    @keyframes colorScroll2 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(-12vw, 8vh, 0) scale(1.15); }  
+      100% { transform: translate(10vw, 4vh, 0) scale(1.0); }  
     }  
 
-    @keyframes rotateAndFloat3 {  
-      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(-12vw, 10vh, 0) scale(0.9) rotate(180deg); }  
-      100% { transform: translate3d(-4vw, 5vh, 0) scale(1.1) rotate(360deg); }  
+    @keyframes colorScroll3 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(-15vw, 6vh, 0) scale(0.95); }  
+      100% { transform: translate(-5vw, 8vh, 0) scale(1.1); }  
     }  
 
-    @keyframes rotateAndFloat4 {  
-      0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(8vw, -6vh, 0) scale(1.2) rotate(-180deg); }  
-      100% { transform: translate3d(-6vw, 6vh, 0) scale(0.95) rotate(-360deg); }  
+    @keyframes colorScroll4 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(10vw, -5vh, 0) scale(1.2); }  
+      100% { transform: translate(-10vw, 5vh, 0) scale(0.9); }  
     }  
 
-    /* टॉप हेडर - अपनी जगह पर सुरक्षित */  
+    /* टॉप हेडर - अपनी जगह पर पूरी तरह सुरक्षित */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -435,7 +435,7 @@
 <body>  
 
   <div class="page-container">  
-    <!-- Mesh Background Area -->  
+    <!-- Background Area with Moving Blobs -->  
     <div class="background" aria-hidden="true">  
       <div class="mesh mesh-peach"></div>  
       <div class="mesh mesh-pink"></div>  
