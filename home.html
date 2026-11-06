@@ -342,7 +342,7 @@
 
     .nav-item.active svg { stroke: #a18cd1; }  
 
-    /* 🌟 केवल एक और एकदम साफ 'Copied' टॉस्ट पॉप-अप स्टाइल */  
+    /* 🌟 सिंगल और क्लीन 'Copied' टॉस्ट पॉप-अप स्टाइल */  
     #copiedToast {  
       visibility: hidden;  
       min-width: 140px;  
@@ -462,7 +462,7 @@
     </div>  
   </div>  
 
-  <!-- 🌟 केवल एक ही 'Copied' टॉस्ट पॉप-अप (डुप्लीकेट हटा दिया गया है) -->  
+  <!-- 🌟 केवल एक ही 'Copied' टॉस्ट पॉप-अप -->  
   <div id="copiedToast">Copied</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -568,11 +568,12 @@
       }
     }
 
-    // 🌟 अब केवल एक ही बार क्लीन 'Copied' बॉक्स दिखेगा
+    // 🌟 क्लिक इवेंट को पूरी तरह से सुरक्षित करके केवल एक बार टॉस्ट दिखाने का फाइनल तरीका
     function copyMyId(event) {
       if (event) {
         event.preventDefault();
         event.stopPropagation();
+        event.stopImmediatePropagation();
       }
       
       if (isCopiedShowing) return;
