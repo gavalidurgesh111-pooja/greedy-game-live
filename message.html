@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 बादलों की तरह सॉफ्ट मर्ज और सीमलेस अखंड बैकग्राउंड */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,35 +36,34 @@
       overflow-x: hidden;  
         
       background:   
-        linear-gradient(90deg,   
-          rgba(186, 85, 211, 0.60) 0%,   
-          rgba(255, 20, 147, 0.60) 25%,   
-          rgba(255, 0, 255, 0.55) 50%,   
-          rgba(255, 140, 0, 0.65) 75%,   
-          rgba(186, 85, 211, 0.60) 100%  
-        ),  
+        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
+        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
+        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
+        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
+        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.15) 80px,   
-          rgba(255,255,255,0.45) 150px,   
-          rgba(255,255,255,0.80) 220px,   
-          rgba(255,255,255,0.98) 280px,   
-          #ffffff 340px,   
+          rgba(255,255,255,0.3) 100px,   
+          rgba(255,255,255,0.7) 200px,   
+          rgba(255,255,255,0.95) 280px,   
+          #ffffff 350px,   
           #ffffff 100%  
         );  
 
-      background-size: 200% 380px, 100% 100%;  
-      background-repeat: repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 5s linear infinite;  
+      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
+      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
+      animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
-    /* परफेक्ट लूप - बिना किसी कट या लाइन के */  
+    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0 0;  
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 200% 0%, 0 0;  
+        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
       }  
     }  
 
@@ -116,7 +115,7 @@
       stroke-linejoin: round;  
     }  
 
-    /* मार्क/टिक आइकॉन - अपनी जगह पर पूरी तरह सुरक्षित */  
+    /* मार्क/टिक आइकॉन - गोल घेरे की साइज़ 25px × 25px, बॉर्डर 3px */  
     .mark-icon-btn {  
       width: 25px;  
       height: 25px;  
@@ -419,7 +418,7 @@
   <div id="notificationModal" class="custom-modal-overlay">  
     <div class="custom-modal-box left-align">  
       <p style="color: #222; font-size: 15px; margin-bottom: 15px;">  
-        You have disabled the notification permissions of this APP in the system. To enable it, turn on, turn on the Allow notification in the Settings - Notifications.  
+        You have disabled the notification permissions of this APP in the system. To enable it, turn on the Allow notification in the Settings - Notifications.  
       </p>  
       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px; font-size: 14px; color: #333;">  
         <input type="checkbox" id="notifCheck" style="width: 16px; height: 16px; accent-color: #7a52b3;">  
@@ -477,7 +476,7 @@
       alert("Redirecting to app info / system settings...");  
       closeNotificationModal();  
     }  
-    
+  
     function searchChats() {  
       alert("Search functionality active.");  
     }  
@@ -495,11 +494,39 @@
       alert("All messages marked as read successfully.");  
     }  
   
-    loadUserChats();  
-
     function loadUserChats() {  
       let container = document.getElementById("chatListContainer");  
-      container.innerHTML = "";  
+      let userChats = [];   
+  
+      if (userChats.length === 0) {  
+        container.innerHTML = "";   
+      } else {  
+        container.innerHTML = "";  
+        userChats.forEach(chat => {  
+          let item = document.createElement("div");  
+          item.className = "chat-item";  
+            
+          item.onclick = () => {  
+            localStorage.setItem("viewing_user_id", chat.id);  
+            window.location.replace("profile.html");  
+          };  
+  
+          item.innerHTML = `  
+            <img src="${chat.avatar}" class="chat-avatar" alt="Avatar">  
+            <div class="chat-info">  
+              <div class="chat-name-row">  
+                <span class="chat-name">${chat.name}</span>  
+                <span class="chat-time">${chat.time}</span>  
+              </div>  
+              <div class="chat-name-row">  
+                <span class="chat-last-msg">${chat.msg}</span>  
+                ${chat.badge ? `<span class="badge-tag">${chat.badge}</span>` : ""}  
+              </div>  
+            </div>  
+          `;  
+          container.appendChild(item);  
+        });  
+      }  
     }  
 
     function secureLogout() {  
@@ -507,6 +534,10 @@
       sessionStorage.clear();  
       window.location.replace("index.html");  
     }  
+
+    window.onload = function() {  
+      loadUserChats();  
+    };  
   </script>  
 </body>  
-</html>  
+</html>
