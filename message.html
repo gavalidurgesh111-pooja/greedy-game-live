@@ -25,10 +25,10 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, Left से Right तेज़ स्क्रॉल */  
     .page-container {  
       width: 100%;  
-      max-width: 480px;  
+      max-width: 680px;  
       min-height: 100vh;  
       position: relative;  
       display: flex;  
@@ -57,7 +57,7 @@
       animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
+    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर. फेलने का नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
