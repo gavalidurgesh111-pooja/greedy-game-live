@@ -294,7 +294,7 @@
       cursor: pointer;
     }
 
-    /* 🌟 Languages List Styling (एक के नीचे एक और बॉक्स के साथ) */
+    /* Languages List Styling */
     .languages-list-container {
       overflow-y: auto;
       max-height: 50vh;
@@ -398,7 +398,6 @@
       </div>
     </div>
 
-    <!-- 🌟 Languages Option -->
     <div class="list-item" onclick="openLanguagesModal()">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
@@ -410,12 +409,16 @@
       </div>
     </div>
 
-    <div class="list-item" onclick="alert('Current locations clicked')">
+    <!-- 🌟 Current locations (अब select-location.html पर जाएगा) -->
+    <div class="list-item" onclick="window.location.href='select-location.html'">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
         <span>Current locations</span>
       </div>
-      <span style="color:#bbb; font-size:18px;">›</span>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span id="selectedLocationDisplay" style="color: #888; font-size: 14px;">India</span>
+        <span style="color:#bbb; font-size:18px;">›</span>
+      </div>
     </div>
 
     <div class="list-item" onclick="alert('Interests clicked')">
@@ -476,13 +479,11 @@
     </div>
   </div>
 
-  <!-- 🌟 Languages Selection Modal (एक के नीचे एक और बॉक्स के साथ) -->
+  <!-- Languages Selection Modal -->
   <div id="languagesModal" class="modal-overlay">
     <div class="modal-content-bottom">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 5px;">Select Languages</h3>
-      <div class="languages-list-container" id="languagesListContainer">
-        <!-- जावास्क्रिप्ट द्वारा भाषाएँ यहाँ लोड होंगी -->
-      </div>
+      <div class="languages-list-container" id="languagesListContainer"></div>
       <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding: 0 10px;">
         <span onclick="closeLanguagesModal()" style="color: #666; font-size: 16px; font-weight: 600; cursor: pointer; padding: 5px;">Cancel</span>
         <span onclick="confirmLanguages()" style="color: #8a2be2; font-size: 16px; font-weight: 700; cursor: pointer; padding: 6px 14px;">Done</span>
@@ -511,8 +512,8 @@
     let tempSelectedAge = 25;
     let currentRelationship = "Single";
     let selectedLanguages = [];
+    let currentLocation = localStorage.getItem("prof_location") || "India";
 
-    // आपकी दी हुई सभी भाषाएँ
     const allLanguagesList = [
       "English", "Hindi", "Marathi", "Gujarati", "Panjabi", "Bhili", "konkani", "kannada", 
       "Telugu", "Tamil", "Malayalam", "Marwari", "Odia", "Bhihari", "bhojpuri", "Rajasthan", 
@@ -530,6 +531,12 @@
       buildAgeWheel();
       buildLanguagesList();
       loadUserData();
+      
+      // लोकल स्टोरेज से चुनी हुई लोकेशन दिखाना
+      if(localStorage.getItem("prof_location")) {
+        currentLocation = localStorage.getItem("prof_location");
+        document.getElementById("selectedLocationDisplay").innerText = currentLocation;
+      }
     };
 
     function buildAgeWheel() {
@@ -545,7 +552,6 @@
       wheel.innerHTML += '<div style="height: 75px;"></div>';
     }
 
-    // 🌟 भाषाओं की लिस्ट और बॉक्स (⬜️ / ✔️) तैयार करना
     function buildLanguagesList() {
       let container = document.getElementById("languagesListContainer");
       container.innerHTML = "";
@@ -560,7 +566,7 @@
         let checkbox = document.createElement("div");
         checkbox.className = "lang-checkbox";
         checkbox.id = "lang_box_" + lang;
-        checkbox.innerText = ""; // शुरुआत में खाली बॉक्स
+        checkbox.innerText = "";
 
         item.appendChild(span);
         item.appendChild(checkbox);
@@ -633,6 +639,11 @@
             if(selectedLanguages.length > 0) {
               document.getElementById("selectedLanguagesDisplay").innerText = selectedLanguages.join(", ");
             }
+          }
+          if (data.location) {
+            currentLocation = data.location;
+            localStorage.setItem("prof_location", currentLocation);
+            document.getElementById("selectedLocationDisplay").innerText = currentLocation;
           }
         }
         document.getElementById("mainContainer").style.opacity = "1";
@@ -722,6 +733,7 @@
       }
 
       localStorage.setItem("prof_name_" + currentIdentifier, name);
+      let finalLocation = localStorage.getItem("prof_location") || currentLocation;
 
       db.collection("users").doc(currentIdentifier).set({
         name: name,
@@ -729,7 +741,8 @@
         gender: gender,
         bio: bio,
         relationship: currentRelationship,
-        languages: selectedLanguages
+        languages: selectedLanguages,
+        location: finalLocation
       }, { merge: true }).then(() => {
         window.location.replace("home.html?updated=true");
       }).catch((error) => {
