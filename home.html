@@ -347,7 +347,7 @@
 
     .nav-item.active svg { stroke: #a18cd1; }
 
-    /* 🌟 पॉप-अप स्टाइल: एक ही लाइन में और बिना लोगो के */
+    /* 🌟 पूरी तरह फिक्स: सिर्फ एक लाइन में दिखने वाला पॉप-अप (बिना किसी लोगो के) */
     #successToast {
       display: none;
       position: fixed;
@@ -363,6 +363,9 @@
       font-weight: 600;
       z-index: 1000;
       white-space: nowrap;
+      width: max-content;
+      max-width: 90vw;
+      text-align: center;
       animation: fadeInOut 1.5s ease;
     }
 
@@ -471,7 +474,7 @@
     </div>
   </div>
 
-  <!-- 🌟 बिना लोगो के, एक लाइन वाला पॉप-अप मेसेज -->
+  <!-- 🌟 एक लाइन में और बिना लोगो के साफ़-सुथरा पॉप-अप मेसेज -->
   <div id="successToast">Profile update successfully</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
