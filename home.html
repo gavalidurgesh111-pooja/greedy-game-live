@@ -347,7 +347,7 @@
 
     .nav-item.active svg { stroke: #a18cd1; }
 
-    /* 🌟 होम पेज पर नीचे आने वाला पॉप-अप स्टाइल (जैसे फोटो में है) */
+    /* 🌟 पॉप-अप स्टाइल: एक ही लाइन में और बिना लोगो के */
     #successToast {
       display: none;
       position: fixed;
@@ -356,14 +356,13 @@
       transform: translateX(-50%);
       background: #ffffff;
       color: #111;
-      padding: 14px 26px;
+      padding: 14px 28px;
       border-radius: 14px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.25);
       font-size: 14px;
       font-weight: 600;
       z-index: 1000;
-      align-items: center;
-      gap: 10px;
+      white-space: nowrap;
       animation: fadeInOut 1.5s ease;
     }
 
@@ -388,7 +387,6 @@
 
     <!-- टॉप बार जिसमें एडिट और सेटिंग्स आइकॉन हैं -->
     <div class="profile-top-bar">
-      <!-- 🌟 यहाँ एडिट बटन पर क्लिक करने से edit-profile.html खुलेगा -->
       <button class="top-icon-btn" onclick="location.href='edit-profile.html'">
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
       </button>
@@ -473,10 +471,8 @@
     </div>
   </div>
 
-  <!-- 🌟 स्क्रीन पर नीचे आने वाला पॉप-अप नोटिफिकेशन बॉक्स -->
-  <div id="successToast">
-    <span>😺</span> Profile update successfully
-  </div>
+  <!-- 🌟 बिना लोगो के, एक लाइन वाला पॉप-अप मेसेज -->
+  <div id="successToast">Profile update successfully</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -508,7 +504,6 @@
       window.location.replace("index.html");
     });
 
-    // 🌟 प्रोफाइल अपडेट होने पर होम पेज पर नीचे पॉप-अप दिखाने का फंक्शन
     function checkUpdateToast() {
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('updated') === 'true') {
