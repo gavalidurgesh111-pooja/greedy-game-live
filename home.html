@@ -1,0 +1,509 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+  <title>Greedy Coin - Home</title>  
+  <style>  
+    * {  
+      box-sizing: border-box;  
+      margin: 0;  
+      padding: 0;  
+      font-family: 'Segoe UI', sans-serif;  
+      -webkit-user-select: none;  
+      user-select: none;  
+      -webkit-touch-callout: none;  
+      -webkit-tap-highlight-color: transparent;  
+    }  
+
+    body {  
+      background: #ffffff;  
+      display: flex;  
+      justify-content: center;  
+      color: #333;  
+      min-height: 100vh;  
+      overflow-x: hidden;  
+    }  
+
+    /* 🌟 मेन पेज कंटेनर */  
+    .page-container {  
+      width: 100%;  
+      max-width: 480px;  
+      min-height: 100vh;  
+      position: relative;  
+      display: flex;  
+      flex-direction: column;  
+      overflow-x: hidden;  
+      isolation: isolate;  
+      background: #ffffff;  
+      padding-bottom: 70px;  
+    }  
+
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर तैरते हुए, नीचे बादलों की तरह एकदम सॉफ्ट सफेद में मर्ज */  
+    .background {  
+      position: absolute;  
+      z-index: 1;  
+      inset: 0;  
+      height: 45vh;  
+      min-height: 350px;  
+      overflow: hidden;  
+      background: #ffffff;  
+    }  
+
+    .background::after {  
+      content: "";  
+      position: absolute;  
+      inset: 0;  
+      z-index: 10;  
+      pointer-events: none;  
+      background: linear-gradient(  
+        to bottom,  
+        rgba(255, 255, 255, 0) 30%,  
+        rgba(255, 255, 255, 0.6) 70%,  
+        #ffffff 100%  
+      );  
+    }  
+
+    .mesh {  
+      position: absolute;  
+      width: 45vw;  
+      height: 45vw;  
+      min-width: 280px;  
+      min-height: 280px;  
+      border-radius: 50%;  
+      filter: blur(50px);  
+      opacity: 0.8;  
+    }  
+
+    .mesh-peach {  
+      top: -15%;  
+      left: -10%;  
+      background: rgba(186, 85, 211, 0.9);  
+      animation: colorScroll1 7s ease-in-out infinite alternate;  
+    }  
+
+    .mesh-pink {  
+      top: -20%;  
+      left: 25%;  
+      background: rgba(255, 20, 147, 0.85);  
+      animation: colorScroll2 9s ease-in-out infinite alternate;  
+    }  
+
+    .mesh-purple {  
+      top: -15%;  
+      right: -10%;  
+      background: rgba(255, 0, 255, 0.8);  
+      animation: colorScroll3 8s ease-in-out infinite alternate;  
+    }  
+
+    .mesh-blue {  
+      width: 35vw;  
+      height: 35vw;  
+      top: 0%;  
+      right: 20%;  
+      background: rgba(255, 140, 0, 0.85);  
+      filter: blur(60px);  
+      animation: colorScroll4 10s ease-in-out infinite alternate;  
+    }  
+
+    @keyframes colorScroll1 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(10vw, 4vh, 0) scale(1.1); }  
+      100% { transform: translate(5vw, 8vh, 0) scale(0.95); }  
+    }  
+
+    @keyframes colorScroll2 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(-10vw, 6vh, 0) scale(1.15); }  
+      100% { transform: translate(6vw, 3vh, 0) scale(1.0); }  
+    }  
+
+    @keyframes colorScroll3 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(-12vw, 5vh, 0) scale(0.95); }  
+      100% { transform: translate(-4vw, 7vh, 0) scale(1.1); }  
+    }  
+
+    @keyframes colorScroll4 {  
+      0% { transform: translate(0, 0) scale(1); }  
+      50% { transform: translate(8vw, -4vh, 0) scale(1.2); }  
+      100% { transform: translate(-8vw, 4vh, 0) scale(0.9); }  
+    }  
+
+    /* टॉप हेडर आइकॉन (फोटो के अनुसार) */  
+    .profile-top-bar {  
+      display: flex;  
+      justify-content: flex-end;  
+      align-items: center;  
+      gap: 15px;  
+      padding: 16px 20px;  
+      position: relative;  
+      z-index: 20;  
+    }  
+
+    .top-icon-btn {  
+      background: transparent;  
+      border: none;  
+      cursor: pointer;  
+      width: 36px;  
+      height: 36px;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+    }  
+
+    .top-icon-btn svg {  
+      width: 22px;  
+      height: 22px;  
+      stroke: #333;  
+      fill: none;  
+      stroke-width: 2;  
+      stroke-linecap: round;  
+      stroke-linejoin: round;  
+    }  
+
+    /* प्रोफाइल विवरण (अवतार, नाम, आईडी) - फोटो की तरह */  
+    .profile-info-section {  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      position: relative;  
+      z-index: 20;  
+      margin-top: 5px;  
+      cursor: pointer;  
+    }  
+
+    .profile-avatar-container {  
+      position: relative;  
+      width: 85px;  
+      height: 85px;  
+      margin-bottom: 10px;  
+    }  
+
+    .profile-avatar {  
+      width: 100%;  
+      height: 100%;  
+      border-radius: 50%;  
+      object-fit: cover;  
+      border: 3px solid #fff;  
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);  
+      background: #ddd;  
+    }  
+
+    .profile-name {  
+      font-size: 18px;  
+      font-weight: 800;  
+      color: #111;  
+      display: flex;  
+      align-items: center;  
+      gap: 6px;  
+      margin-bottom: 4px;  
+    }  
+
+    .profile-id {  
+      font-size: 12px;  
+      color: #666;  
+      background: rgba(255,255,255,0.7);  
+      padding: 2px 10px;  
+      border-radius: 12px;  
+      backdrop-filter: blur(4px);  
+    }  
+
+    /* दोस्तों और फॉलोअर्स की संख्या (फोटो के अनुसार) */  
+    .profile-stats-row {  
+      display: flex;  
+      justify-content: space-around;  
+      width: 100%;  
+      padding: 20px 20px 10px 20px;  
+      position: relative;  
+      z-index: 20;  
+      text-align: center;  
+    }  
+
+    .stat-item {  
+      display: flex;  
+      flex-direction: column;  
+      gap: 2px;  
+      cursor: pointer;  
+    }  
+
+    .stat-num {  
+      font-size: 16px;  
+      font-weight: 700;  
+      color: #111;  
+    }  
+
+    .stat-label {  
+      font-size: 12px;  
+      color: #666;  
+    }  
+
+    /* बैनर बटन (Recharge Coins और Live Streamer Center) - फोटो के अनुसार */  
+    .promo-banners-container {  
+      display: flex;  
+      gap: 12px;  
+      padding: 10px 20px;  
+      position: relative;  
+      z-index: 20;  
+    }  
+
+    .promo-banner {  
+      flex: 1;  
+      padding: 14px;  
+      border-radius: 14px;  
+      color: #fff;  
+      font-weight: 700;  
+      font-size: 13px;  
+      display: flex;  
+      justify-content: space-between;  
+      align-items: center;  
+      cursor: pointer;  
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);  
+    }  
+
+    .banner-coins {  
+      background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);  
+    }  
+
+    .banner-streamer {  
+      background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);  
+    }  
+
+    /* फीचर्स ग्रिड (फोटो में दिए गए सभी ऑप्शंस) */  
+    .features-grid {  
+      display: grid;  
+      grid-template-columns: repeat(3, 1fr);  
+      gap: 15px;  
+      padding: 15px 20px 30px 20px;  
+      position: relative;  
+      z-index: 20;  
+    }  
+
+    .feature-card {  
+      background: #f8f9fa;  
+      border: 1px solid #eee;  
+      border-radius: 16px;  
+      padding: 18px 10px;  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      gap: 8px;  
+      cursor: pointer;  
+      transition: transform 0.2s;  
+    }  
+
+    .feature-card:active {  
+      transform: scale(0.95);  
+      background: #f1f2f3;  
+    }  
+
+    .feature-icon-box {  
+      width: 42px;  
+      height: 42px;  
+      border-radius: 50%;  
+      background: #fff;  
+      display: flex;  
+      align-items: center;  
+      justify-content: center;  
+      box-shadow: 0 3px 8px rgba(0,0,0,0.05);  
+      font-size: 20px;  
+    }  
+
+    .feature-title {  
+      font-size: 11px;  
+      font-weight: 600;  
+      color: #444;  
+      text-align: center;  
+    }  
+
+    /* बॉटम नेविगेशन बार */  
+    .bottom-nav-bar {  
+      position: fixed;  
+      bottom: 0;  
+      left: 50%;  
+      transform: translateX(-50%);  
+      width: 100%;  
+      max-width: 480px;  
+      background: #ffffff;  
+      border-top: 1px solid #eee;  
+      padding: 10px 20px;  
+      display: flex;  
+      justify-content: space-around;  
+      align-items: center;  
+      z-index: 30;  
+    }  
+
+    .nav-item {  
+      background: transparent;  
+      border: none;  
+      cursor: pointer;  
+      display: flex;  
+      flex-direction: column;  
+      align-items: center;  
+      gap: 2px;  
+    }  
+
+    .nav-item svg {  
+      width: 22px;  
+      height: 22px;  
+      stroke: #888;  
+      fill: none;  
+      stroke-width: 2;  
+    }  
+
+    .nav-item.active svg {  
+      stroke: #a18cd1;  
+    }  
+  </style>  
+</head>  
+<body>  
+
+  <div class="page-container">  
+    <!-- Mesh Background Area -->  
+    <div class="background" aria-hidden="true">  
+      <div class="mesh mesh-peach"></div>  
+      <div class="mesh mesh-pink"></div>  
+      <div class="mesh mesh-purple"></div>  
+      <div class="mesh mesh-blue"></div>  
+    </div>  
+
+    <!-- टॉप बार (फोटो के अनुसार सेटिंग्स और एडिट आइकॉन) -->  
+    <div class="profile-top-bar">  
+      <button class="top-icon-btn" onclick="openEditProfile()">  
+        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
+      </button>  
+      <button class="top-icon-btn" onclick="openSettings()">  
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>  
+      </button>  
+    </div>  
+
+    <!-- प्रोफाइल डिटेल्स (इस पर क्लिक करने से प्रोफाइल पेज खुलेगा) -->  
+    <div class="profile-info-section" onclick="openProfilePage()">  
+      <div class="profile-avatar-container">  
+        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80" alt="Avatar" class="profile-avatar">  
+      </div>  
+      <div class="profile-name">  
+        🦋 DURGESH 🦋  
+      </div>  
+      <div class="profile-id">  
+        MIKA ID: 1120022443  
+      </div>  
+    </div>  
+
+    <!-- स्टैट्स (Friends, Followings, Followers, Groups) -->  
+    <div class="profile-stats-row">  
+      <div class="stat-item" onclick="openProfilePage()">  
+        <span class="stat-num">672</span>  
+        <span class="stat-label">Friends</span>  
+      </div>  
+      <div class="stat-item" onclick="openProfilePage()">  
+        <span class="stat-num">1.7K</span>  
+        <span class="stat-label">Followings</span>  
+      </div>  
+      <div class="stat-item" onclick="openProfilePage()">  
+        <span class="stat-num">6.2K</span>  
+        <span class="stat-label">Followers</span>  
+      </div>  
+      <div class="stat-item" onclick="openProfilePage()">  
+        <span class="stat-num">3</span>  
+        <span class="stat-label">Groups</span>  
+      </div>  
+    </div>  
+
+    <!-- प्रोमो बैनर्स -->  
+    <div class="promo-banners-container">  
+      <div class="promo-banner banner-coins" onclick="alert('Recharge Coins clicked')">  
+        <span>Recharge Coins</span>  
+        <span>🪙</span>  
+      </div>  
+      <div class="promo-banner banner-streamer" onclick="alert('Live Streamer Center clicked')">  
+        <span>Live streamer center</span>  
+        <span>📹</span>  
+      </div>  
+    </div>  
+
+    <!-- फीचर्स ग्रिड (फोटो में दिए गए सभी 12 ऑप्शंस) -->  
+    <div class="features-grid">  
+      <div class="feature-card" onclick="openFeature('Recent Visitors')">  
+        <div class="feature-icon-box">👻</div>  
+        <span class="feature-title">Recent Visitors</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('User Level')">  
+        <div class="feature-icon-box">⭐</div>  
+        <span class="feature-title">User Level</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Backpack')">  
+        <div class="feature-icon-box">🎒</div>  
+        <span class="feature-title">Backpack</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Lucky Cat')">  
+        <div class="feature-icon-box">🐱</div>  
+        <span class="feature-title">Lucky cat</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Family')">  
+        <div class="feature-icon-box">🛡️</div>  
+        <span class="feature-title">Family</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Games Lobby')">  
+        <div class="feature-icon-box">🎮</div>  
+        <span class="feature-title">Games Lobby</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('SVIP')">  
+        <div class="feature-icon-box">👑</div>  
+        <span class="feature-title">SVIP</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Activity')">  
+        <div class="feature-icon-box">🎉</div>  
+        <span class="feature-title">Activity</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Aristocracy Center')">  
+        <div class="feature-icon-box">🦁</div>  
+        <span class="feature-title">Aristocracy Center</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Mall')">  
+        <div class="feature-icon-box">🛍️</div>  
+        <span class="feature-title">Mall</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Point Center')">  
+        <span class="feature-icon-box">🟢</span>  
+        <span class="feature-title">Point Center</span>  
+      </div>  
+      <div class="feature-card" onclick="openFeature('Broadcasts watched')">  
+        <div class="feature-icon-box">📺</div>  
+        <span class="feature-title">Broadcasts watched</span>  
+      </div>  
+    </div>  
+
+    <!-- बॉटम नेविगेशन बार -->  
+    <div class="bottom-nav-bar">  
+      <button class="nav-item" onclick="location.href='messages.html'">  
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>  
+      </button>  
+      <button class="nav-item active" onclick="location.href='home.html'">  
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>  
+      </button>  
+      <button class="nav-item" onclick="openProfilePage()">  
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>  
+      </button>  
+    </div>  
+  </div>  
+
+  <script>  
+    function openProfilePage() {  
+      window.location.href = "profile.html";  
+    }  
+
+    function openEditProfile() {  
+      alert("Edit Profile clicked!");  
+    }  
+
+    function openSettings() {  
+      alert("Settings clicked!");  
+    }  
+
+    function openFeature(name) {  
+      alert(name + " clicked!");  
+    }  
+  </script>  
+</body>  
+</html>  
