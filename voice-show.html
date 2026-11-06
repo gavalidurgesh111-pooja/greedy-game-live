@@ -93,8 +93,9 @@
     .waveform-display {
       display: none;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       color: #333;
       margin-bottom: 60px;
@@ -145,14 +146,14 @@
       stroke-linejoin: round;
     }
 
-    /* रिकॉर्डिंग के बाद वाले बटंस (Re-record, Save, Listen) */
+    /* 🌟 आठवीं फोटो जैसा पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen)[span_5](start_span)[span_5](end_span) */
     .post-record-actions {
       display: none;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      padding: 0 30px;
+      padding: 0 20px;
       margin-bottom: 30px;
     }
 
@@ -205,31 +206,26 @@
       font-size: 16px;
       font-weight: 700;
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+      transition: all 0.3s ease;
     }
 
-    /* लिसनिंग मोड (Delete, Stop, Pause) */
+    /* जब सेव बटन OFF (Disabled) होगा (सातवीं फोटो जैसा)[span_6](start_span)[span_6](end_span) */
+    .save-big-btn.disabled-save {
+      background: #e0e0e0 !important;
+      color: #aaa !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+    }
+
+    /* 🌟 सातवीं फोटो जैसा लिसनिंग मोड (Re-record, Save(Grey), Pause)[span_7](start_span)[span_7](end_span) */
     .listening-actions {
       display: none;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
       width: 100%;
-      padding: 0 30px;
+      padding: 0 20px;
       margin-bottom: 30px;
-    }
-
-    .listen-main-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #555;
     }
 
     /* कस्टम परमिशन पॉप-अप */
@@ -324,6 +320,7 @@
 
   <div class="page-container">
     <!-- टॉप बार -->
+    .
     <div class="top-bar">
       <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -331,14 +328,14 @@
       <span class="page-title">Voice show</span>
     </div>
 
-    <!-- बीच का टेक्स्ट और वेवफॉर्म -->
+    <!-- बीच का टेक्स्ट और वेवफॉर्म (जितनी रिकॉर्डिंग, उतने सेकंड) -->
     <div class="content-center">
       <div class="prompt-text" id="promptText">What do you want to say?</div>
       
       <div class="waveform-display" id="waveformDisplay">
-        <span style="letter-spacing: 2px; color: #7b2cbf;">|--|--|--|</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
-        <span style="letter-spacing: 2px; color: #7b2cbf;">|--|--|--|</span>
+        <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
+        <span id="recordedSecondsCount" style="margin: 0 10px;">7</span>
+        <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
       </div>
     </div>
 
@@ -350,7 +347,7 @@
       </button>
     </div>
 
-    <!-- रिकॉर्डिंग पूरी होने के बाद (Re-record, Save, Listen) -->
+    <!-- 🌟 आठवीं फोटो जैसा पोस्ट-रिकॉर्ड लेआउट (Re-record, Save(Active), Listen)[span_8](start_span)[span_8](end_span) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -359,7 +356,7 @@
         <span class="action-sub-label">Re-record</span>
       </button>
 
-      <button class="save-big-btn" onclick="saveVoiceRecordingFinal()">Save</button>
+      <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
       <button class="action-sub-btn" onclick="listenAudioPlayback()">
         <div class="action-sub-icon">
@@ -369,20 +366,19 @@
       </button>
     </div>
 
-    <!-- लिसनिंग मोड (Delete, Stop, Pause) -->
+    <!-- 🌟 सातवीं फोटो जैसा लिसनिंग मोड (Re-record, Save(OFF), Pause)[span_9](start_span)[span_9](end_span) -->
     <div class="listening-actions" id="listeningActionsSection">
-      <button class="action-sub-btn" onclick="deleteRecordedAudio()">
+      <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
         </div>
-        <span class="action-sub-label">Delete</span>
+        <span class="action-sub-label">Re-record</span>
       </button>
 
-      <button class="listen-main-btn" onclick="stopPlaybackAndReset()">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
-      </button>
+      <!-- यहाँ सेव बटन ग्रे (OFF) रहेगा[span_10](start_span)[span_10](end_span) -->
+      <button class="save-big-btn disabled-save" id="disabledSaveBtn" disabled>Save</button>
 
-      <button class="action-sub-btn" onclick="pauseAudioPlayback()">
+      <button class="action-sub-btn" onclick="pausePlaybackManual()">
         <div class="action-sub-icon">
           <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
         </div>
@@ -427,17 +423,12 @@
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
 
-      micBtn.addEventListener("touchstart", function(e) {
+      micBtn.addEventListener("mousedown", function(e) {
         e.preventDefault();
         onHoldStart();
       });
 
-      micBtn.addEventListener("touchend", function(e) {
-        e.preventDefault();
-        onHoldEnd();
-      });
-
-      micBtn.addEventListener("mousedown", function(e) {
+      micBtn.addEventListener("touchstart", function(e) {
         e.preventDefault();
         onHoldStart();
       });
@@ -445,6 +436,17 @@
       micBtn.addEventListener("mouseup", function(e) {
         e.preventDefault();
         onHoldEnd();
+      });
+
+      micBtn.addEventListener("touchend", function(e) {
+        e.preventDefault();
+        onHoldEnd();
+      });
+      
+      micBtn.addEventListener("mouseleave", function(e) {
+        if (isRecording) {
+          onHoldEnd();
+        }
       });
     }
 
@@ -531,6 +533,8 @@
 
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
+      } else {
+        recordedDurationSeconds = 7; // डिफ़ॉल्ट यदि बहुत जल्दी छोड़ दिया हो
       }
 
       document.getElementById("waveformDisplay").style.display = "none";
@@ -540,15 +544,19 @@
     }
 
     function reRecordAudio() {
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
       recordedDurationSeconds = 7;
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
+      document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
       document.getElementById("holdInstructionText").innerText = "Hold to speak";
       secondsElapsed = 0;
     }
 
+    /* 🌟 जब Listen पर क्लिक करेगा, तो सातवीं फोटो जैसा लेआउट आएगा (Save बटन OFF)[span_11](start_span)[span_11](end_span) और सेकंड उल्टे घटकर 0 पर आएंगे */
     function listenAudioPlayback() {
       document.getElementById("postRecordActions").style.display = "none";
       
@@ -559,6 +567,7 @@
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
 
+      // सातवीं फोटो वाला लिसनिंग लेआउट दिखाएं (Save बटन ग्रे/OFF रहेगा)[span_12](start_span)[span_12](end_span)
       document.getElementById("listeningActionsSection").style.display = "flex";
 
       if(playbackTimer) clearInterval(playbackTimer);
@@ -569,25 +578,26 @@
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          stopPlaybackAndReset();
+          // जैसे ही सुनना पूरा हो, वापस आठवीं फोटो जैसी स्थिति (Save बटन ON) में आ जाएगा[span_13](start_span)[span_13](end_span)
+          stopPlaybackAndReset(recordedDurationSeconds);
         }
       }, 1000);
     }
 
-    function deleteRecordedAudio() {
-      reRecordAudio();
+    function pausePlaybackManual() {
+      if(playbackTimer) clearInterval(playbackTimer);
+      stopPlaybackAndReset(recordedDurationSeconds);
     }
 
-    function stopPlaybackAndReset() {
+    /* 🌟 सुनना पूरा होने पर पेज वही रहेगा, रिकॉर्डिंग सुरक्षित रहेगी, और Save बटन फिर से ON हो जाएगा[span_14](start_span)[span_14](end_span) */
+    function stopPlaybackAndReset(originalSec) {
       if(playbackTimer) clearInterval(playbackTimer);
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
-    }
-
-    function pauseAudioPlayback() {
-      if(playbackTimer) clearInterval(playbackTimer);
-      alert("Playback paused");
+      
+      // अंक वापस अपनी सही पोजीशन (जितनी रिकॉर्डिंग की थी) में आ जाएंगे[span_15](start_span)[span_15](end_span)
+      document.getElementById("recordedSecondsCount").innerText = originalSec;
     }
 
     function saveVoiceRecordingFinal() {
@@ -596,7 +606,6 @@
       
       let finalSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       
-      // लोकल स्टोरेज में सेव करें ताकि edit-profile.html इसे आसानी से पकड़ ले
       localStorage.setItem("greedy_voiceshow_duration", finalSec);
       localStorage.setItem("greedy_voiceshow_saved", "true");
       
