@@ -35,7 +35,7 @@
       flex-direction: column;
       background: #ffffff;
       padding-bottom: 40px;
-      opacity: 0; /* पेज लोड होते समय ब्लिंक रोकने के लिए छिपाया गया है */
+      opacity: 0;
       transition: opacity 0.2s ease-in;
     }
 
@@ -300,10 +300,11 @@
 
   <div class="page-container" id="mainContainer">
     <div class="top-bar">
-      <button class="back-btn" onclick="history.back()">
+      <button class="back-btn" onclick="window.location.replace('home.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
+      <!-- टिक (✔️) बटन जिस पर क्लिक करने पर डेटा सेव होकर तुरंत home.html पर जाएगा -->
       <button class="save-btn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
@@ -472,13 +473,11 @@
     }
 
     function loadUserData() {
-      // पहले लोकल स्टोरेज से तुरंत डेटा दिखाएं ताकि ब्लिंक न हो
       if(localStorage.getItem("prof_name_" + currentIdentifier)) {
         document.getElementById("inputNickname").value = localStorage.getItem("prof_name_" + currentIdentifier);
         updateCounter();
       }
 
-      // फिर फायरबेस से डेटा लोड करें और स्क्रीन पर दिखाएं
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
@@ -508,7 +507,6 @@
             });
           }
         }
-        // डेटा लोड होने के बाद पेज को स्मूथली दिखाएं
         document.getElementById("mainContainer").style.opacity = "1";
       }).catch((err) => {
         console.error("Error loading user data:", err);
@@ -585,6 +583,7 @@
       closeRelationshipModal();
     }
 
+    // 🌟 टिक (✔️) बटन पर क्लिक करते ही डेटा सेव होगा और तुरंत home.html पर रीडायरेक्ट हो जाएगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -595,6 +594,7 @@
         return;
       }
 
+      // लोकल स्टोरेज में नाम तुरंत सेट करें ताकि home.html इसे तुरंत लोड कर सके
       localStorage.setItem("prof_name_" + currentIdentifier, name);
 
       db.collection("users").doc(currentIdentifier).set({
@@ -604,8 +604,8 @@
         bio: bio,
         relationship: currentRelationship
       }, { merge: true }).then(() => {
-        alert("Basic info updated successfully!");
-        history.back();
+        // सेव होने के बाद तुरंत home.html पर भेजें ताकि फोटो के नीचे नया नाम दिखे
+        window.location.replace("home.html");
       }).catch((error) => {
         alert("Error saving data: " + error.message);
       });
