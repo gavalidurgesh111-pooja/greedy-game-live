@@ -154,7 +154,8 @@
     
     <div id="screenProfile">
       
-      <div class="profile-back-btn" onclick="window.location.replace('photo-gateway.html')">❮</div>
+      <!-- 🌟 यहाँ photo-gateway.html की जगह सीधा home.html पर जाने का लिंक जोड़ दिया गया है -->
+      <div class="profile-back-btn" onclick="window.location.replace('home.html')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
         <div class="icon-circle" onclick="openSettingsModal()">⚙️</div>
@@ -191,7 +192,6 @@
         </div>
         <div class="profile-action-btns">
           <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <!-- 🌟 यहाँ Inbox message की जगह सीधा message.html पर जाने का बटन जोड़ दिया गया है -->
           <button class="btn-action" onclick="window.location.replace('message.html')">Messages</button>
         </div>
       </div>
@@ -381,7 +381,8 @@
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
 
-      window.location.replace("photo-gateway.html");
+      // 🌟 बैक बटन प्रेस करने पर सीधा home.html पर ले जाने के लिए
+      window.location.replace("home.html");
     });
 
     function renderProfileData() {
