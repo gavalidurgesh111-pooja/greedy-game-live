@@ -22,27 +22,20 @@
       justify-content: center;  
       color: #333;  
       min-height: 100vh;  
-      overflow-x: open;  
+      overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
     .page-container {  
       width: 100%;  
-      max-width: 680px;  
+      max-width: 480px;  
       min-height: 100vh;  
       position: relative;  
       display: flex;  
       flex-direction: column;  
-      overflow-x: open;  
+      overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
         radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
         radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
         radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
@@ -64,7 +57,7 @@
       animation: colorScrollLeftToRight 0.8s linear infinite;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए अंदर जाते हुए लेफ्ट site से बाहर आते हुए . फेलने का नियम */  
+    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
     @keyframes colorScrollLeftToRight {  
       0% {  
         background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
