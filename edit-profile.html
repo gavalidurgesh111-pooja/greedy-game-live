@@ -198,7 +198,7 @@
       width: 100%;
     }
 
-    /* 🌟 पॉपअप मॉडल्स (Age और Relationship status के लिए) */
+    /* 🌟 Age Picker Modal (तस्वीर जैसा हूबहू डिज़ाइन) */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -213,12 +213,13 @@
       background: #fff;
       width: 100%;
       max-width: 480px;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      padding: 20px;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 25px 20px 20px 20px;
       display: flex;
       flex-direction: column;
-      animation: slideUp 0.3s ease-out;
+      animation: slideUp 0.25s ease-out;
+      box-shadow: 0 -5px 25px rgba(0,0,0,0.1);
     }
 
     @keyframes slideUp {
@@ -226,7 +227,44 @@
       to { transform: translateY(0); }
     }
 
-    /* सेंटर वाला पॉपअप (जैसे फोटो 2 में है) */
+    /* स्क्रॉलिंग व्हील कंटेनर */
+    .wheel-container {
+      height: 200px;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      text-align: center;
+      position: relative;
+      margin: 10px 0;
+      -webkit-overflow-scrolling: touch;
+    }
+    .wheel-container::-webkit-scrollbar { display: none; }
+    
+    .wheel-item {
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: #999;
+      scroll-snap-align: center;
+      transition: color 0.15s ease, font-size 0.15s ease;
+    }
+
+    /* तस्वीर जैसा अंडाकार (Pill-shaped) हाइलाइट बॉक्स जो चुने हुए अंक के पीछे रहेगा[span_0](start_span)[span_0](end_span) */
+    .wheel-highlight-box {
+      position: absolute;
+      top: 75px;
+      left: 15px;
+      right: 15px;
+      height: 50px;
+      border-radius: 25px;
+      background: #f4f5f7;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Relationship Status Modal */
     .modal-overlay-center {
       display: none;
       position: fixed;
@@ -249,50 +287,11 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
 
-    /* स्क्रॉलिंग व्हील (Age के लिए) */
-    .wheel-container {
-      height: 180px;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      text-align: center;
-      position: relative;
-      margin: 15px 0;
-    }
-    .wheel-container::-webkit-scrollbar { display: none; }
-    
-    .wheel-item {
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: 700;
-      color: #888;
-      scroll-snap-align: center;
-    }
-
-    .wheel-highlight-bar {
-      position: absolute;
-      top: 65px;
-      left: 10%;
-      right: 10%;
-      height: 50px;
-      border-radius: 25px;
-      background: #f0f2f5;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .wheel-selected-text {
-      color: #111 !important;
-      font-size: 24px !important;
-    }
-
     .modal-btns-row {
       display: flex;
       justify-content: flex-end;
       gap: 25px;
-      margin-top: 15px;
+      margin-top: 20px;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
@@ -355,7 +354,7 @@
 
     <div class="section-divider"></div>
 
-    <!-- Relationship status (पॉपअप खोलने के लिए) -->
+    <!-- Relationship status -->
     <div class="list-item" onclick="openRelationshipModal()">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
@@ -410,21 +409,23 @@
     </div>
   </div>
 
-  <!-- 🌟 1. Age Picker Modal (फोटो 1 जैसा स्क्रॉल व्हील) -->
+  <!-- 🌟 Age Picker Modal (तस्वीर जैसा हूबहू व्हील और पिल बॉक्स) -->
   <div id="ageModal" class="modal-overlay">
     <div class="modal-content-bottom">
-      <div class="wheel-highlight-bar"></div>
-      <div class="wheel-container" id="ageWheel">
-        <!-- 18 से 80 तक के नंबर्स जनरेट होंगे -->
+      <div style="position: relative;">
+        <div class="wheel-highlight-box"></div>
+        <div class="wheel-container" id="ageWheel" onscroll="highlightActiveAge()">
+          <!-- 18 से 80 तक के नंबर्स -->
+        </div>
       </div>
-      <div style="display: flex; justify-content: space-between; margin-top: 15px;">
-        <span onclick="closeAgeModal()" style="color: #666; font-size: 16px; font-weight: 600; cursor: pointer; padding: 10px;">Cancel</span>
-        <span onclick="confirmAge()" style="color: #8a2be2; font-size: 16px; font-weight: 700; cursor: pointer; padding: 10px;">Done</span>
+      <div style="display: flex; justify-content: space-between; margin-top: 20px; padding: 0 10px;">
+        <span onclick="closeAgeModal()" style="color: #666; font-size: 16px; font-weight: 600; cursor: pointer; padding: 5px;">Cancel</span>
+        <span onclick="confirmAge()" style="color: #a18cd1; font-size: 16px; font-weight: 700; cursor: pointer; padding: 5px;">Done</span>
       </div>
     </div>
   </div>
 
-  <!-- 🌟 2. Relationship Status Modal (फोटो 2 जैसा पॉपअप) -->
+  <!-- Relationship Status Modal -->
   <div id="relationshipModal" class="modal-overlay-center">
     <div class="modal-content-center">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 20px;">Relationship status</h3>
@@ -436,7 +437,7 @@
       </div>
       <div class="modal-btns-row">
         <span style="color: #888;" onclick="closeRelationshipModal()">CANCEL</span>
-        <span style="color: #8a2be2;" onclick="confirmRelationship()">CONFIRM</span>
+        <span style="color: #a18cd1;" onclick="confirmRelationship()">CONFIRM</span>
       </div>
     </div>
   </div>
@@ -468,10 +469,9 @@
       loadUserData();
     };
 
-    // 18 से 80 तक व्हील आइटम्स बनाना
     function buildAgeWheel() {
       let wheel = document.getElementById("ageWheel");
-      wheel.innerHTML = '<div style="height: 65px;"></div>'; // ऊपर स्पेस
+      wheel.innerHTML = '<div style="height: 75px;"></div>'; // ऊपर पैडिंग ताकि पहला आइटम बीच में आ सके
       for(let i = 18; i <= 80; i++) {
         let div = document.createElement("div");
         div.className = "wheel-item";
@@ -479,7 +479,7 @@
         div.setAttribute("data-val", i);
         wheel.appendChild(div);
       }
-      wheel.innerHTML += '<div style="height: 65px;"></div>'; // नीचे स्पेस
+      wheel.innerHTML += '<div style="height: 75px;"></div>'; // नीचे पैडिंग
     }
 
     function loadUserData() {
@@ -527,18 +527,38 @@
       document.getElementById("bioCounter").innerText = len + "/140";
     }
 
-    // Age Modal Functions
     function openAgeModal() {
       document.getElementById("ageModal").style.display = "flex";
       let wheel = document.getElementById("ageWheel");
       let targetDiv = wheel.querySelector(`[data-val='${tempSelectedAge}']`);
       if(targetDiv) {
-        wheel.scrollTop = targetDiv.offsetTop - 65;
+        wheel.scrollTop = targetDiv.offsetTop - 75;
       }
+      highlightActiveAge();
     }
 
     function closeAgeModal() {
       document.getElementById("ageModal").style.display = "none";
+    }
+
+    // स्क्रॉल करते समय एक्टिव नंबर को बड़ा और डार्क दिखाना, बाकी को धुंधला करना
+    function highlightActiveAge() {
+      let wheel = document.getElementById("ageWheel");
+      let items = wheel.querySelectorAll(".wheel-item");
+      let scrollTop = wheel.scrollTop;
+      let centerIndex = Math.round(scrollTop / 50);
+
+      items.forEach((item, index) => {
+        if(index === centerIndex) {
+          item.style.color = "#111";
+          item.style.fontSize = "22px";
+          item.style.fontWeight = "700";
+        } else {
+          item.style.color = "#bbb";
+          item.style.fontSize = "16px";
+          item.style.fontWeight = "500";
+        }
+      });
     }
 
     function confirmAge() {
@@ -552,7 +572,6 @@
       closeAgeModal();
     }
 
-    // Relationship Modal Functions
     function openRelationshipModal() {
       document.getElementById("relationshipModal").style.display = "flex";
     }
@@ -570,7 +589,6 @@
       closeRelationshipModal();
     }
 
-    // डेटा सेव करना (फायरबेस और लोकल स्टोरेज दोनों जगह ताकि profile.html और home.html पर तुरंत दिखे)
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -581,7 +599,6 @@
         return;
       }
 
-      // लोकल स्टोरेज अपडेट करें ताकि होम और प्रोफाइल पेज पर तुरंत नाम बदल जाए
       localStorage.setItem("prof_name_" + currentIdentifier, name);
 
       db.collection("users").doc(currentIdentifier).set({
