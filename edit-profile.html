@@ -504,7 +504,7 @@
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
     }
 
-    /* छठी फोटो जैसा लिसनिंग मोड (Delete, Play/Stop, Pause)[span_0](start_span)[span_0](end_span) */
+    /* छठी फोटो जैसा लिसनिंग मोड (Delete, Stop/Play, Pause)[span_0](start_span)[span_0](end_span) */
     .listening-actions {
       display: none;
       flex-direction: row;
@@ -851,7 +851,7 @@
       </button>
     </div>
 
-    <!-- 🌟 छठी फोटो जैसा लिसनिंग मोड (Delete, Stop/Play, Pause)[span_2](start_span)[span_2](end_span) -->
+    <!-- 🌟 लिसनिंग मोड (Delete, Stop/Play, Pause)[span_2](start_span)[span_2](end_span) -->
     <div class="listening-actions" id="listeningActionsSection">
       <button class="listen-sub-btn" onclick="deleteRecordedAudio()">
         <div class="listen-sub-icon">
@@ -997,16 +997,25 @@
 
     function openVoiceShowModal() {
       document.getElementById("voiceShowModal").style.display = "flex";
-      resetVoiceModalState();
+      if (recordedDurationSeconds > 0) {
+        // अगर पहले से रिकॉर्डिंग मौजूद है, तो सीधे पोस्ट-रिकॉर्डिंग पेज दिखाएं
+        document.getElementById("voicePromptText").style.display = "none";
+        document.getElementById("initialRecordSection").style.display = "none";
+        document.getElementById("postRecordActions").style.display = "flex";
+      } else {
+        resetVoiceModalState();
+      }
     }
 
     function closeVoiceShowModal() {
-      stopAllTimers();
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
       document.getElementById("voiceShowModal").style.display = "none";
     }
 
     function resetVoiceModalState() {
-      stopAllTimers();
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
       document.getElementById("voicePromptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
@@ -1014,6 +1023,7 @@
       document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("holdInstructionText").innerText = "Hold to speak";
       secondsElapsed = 0;
+      recordedDurationSeconds = 0;
       pendingHoldAction = false;
     }
 
@@ -1124,30 +1134,28 @@
       isRecording = false;
       if (recordingTimer) clearInterval(recordingTimer);
 
+      if (secondsElapsed > 0) {
+        recordedDurationSeconds = secondsElapsed;
+      }
+
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "none";
       document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
     }
 
-    function stopAllTimers() {
-      isRecording = false;
-      if (recordingTimer) clearInterval(recordingTimer);
-      if (playbackTimer) clearInterval(playbackTimer);
-    }
-
     function reRecordAudio() {
       resetVoiceModalState();
     }
 
-    /* 🌟 जब Listen पर क्लिक करेगा, तो जितने सेकंड्स रिकॉर्ड हुए हैं, वहाँ से 0 की तरफ उल्टा भागेगा */
+    /* 🌟 जब Listen पर क्लिक करेगा, तो उल्टा गिनकर 0 पर आने के बाद रिकॉर्डिंग सुरक्षित रखते हुए वापस मेन पेज पर आ जाएगा */
     function listenAudioPlayback() {
       document.getElementById("postRecordActions").style.display = "none";
       
       let waveDisp = document.getElementById("waveformDisplay");
       waveDisp.style.display = "flex";
       
-      let playbackSec = secondsElapsed > 0 ? secondsElapsed : 7;
+      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
 
@@ -1155,20 +1163,20 @@
 
       if(playbackTimer) clearInterval(playbackTimer);
 
-      // 0 की तरफ उल्टा गिनना शुरू होगा
       playbackTimer = setInterval(() => {
         playbackSec--;
         if (playbackSec >= 0) {
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          // 0 पर पहुँचने के बाद अपने आप पहले जैसे पेज (Save, Re-record, Listen) पर आ जाएगा
+          // 0 पर पहुँचने के बाद रिकॉर्डिंग सुरक्षित रखते हुए वापस (Save, Re-record, Listen) पेज पर ले आएं
           stopPlaybackAndReset();
         }
       }, 1000);
     }
 
     function deleteRecordedAudio() {
+      recordedDurationSeconds = 0;
       resetVoiceModalState();
     }
 
@@ -1185,11 +1193,13 @@
     }
 
     function saveVoiceRecordingFinal() {
-      stopAllTimers();
-      recordedDurationSeconds = secondsElapsed > 0 ? secondsElapsed : 7;
-      recordedAudioUrl = "voice_recorded_" + recordedDurationSeconds + "s";
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
       
-      updateVoiceStatusUI(recordedDurationSeconds);
+      let finalSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
+      recordedAudioUrl = "voice_recorded_" + finalSec + "s";
+      
+      updateVoiceStatusUI(finalSec);
       alert("Voice show saved successfully!");
       closeVoiceShowModal();
     }
@@ -1316,8 +1326,8 @@
           if (data.voiceShow) {
             recordedAudioUrl = data.voiceShow;
             let matchSec = recordedAudioUrl.match(/_(\d+)s/);
-            let secVal = matchSec ? matchSec[1] : "7";
-            updateVoiceStatusUI(secVal);
+            recordedDurationSeconds = matchSec ? parseInt(matchSec[1]) : 7;
+            updateVoiceStatusUI(recordedDurationSeconds);
           }
         }
         document.getElementById("mainContainer").style.opacity = "1";
