@@ -336,244 +336,7 @@
       font-weight: bold;
     }
 
-    /* 🎙️ Voice Show Modal Styling */
-    .voice-modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      z-index: 200;
-      flex-direction: column;
-      justify-content: space-between;
-      padding-bottom: 50px;
-    }
-
-    .voice-top-bar {
-      display: flex;
-      align-items: center;
-      padding: 16px 20px;
-      gap: 20px;
-      background: #ffffff;
-    }
-
-    .voice-back-btn {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .voice-back-btn svg {
-      width: 24px;
-      height: 24px;
-      stroke: #111;
-      fill: none;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .voice-page-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #111;
-    }
-
-    .voice-content-center {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      text-align: center;
-      padding: 0 20px;
-    }
-
-    .voice-prompt-text {
-      font-size: 20px;
-      font-weight: 500;
-      color: #111;
-      margin-bottom: 80px;
-    }
-
-    .voice-record-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      margin-bottom: 30px;
-    }
-
-    .voice-hold-text {
-      font-size: 14px;
-      color: #999;
-      font-weight: 500;
-    }
-
-    .voice-mic-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-      transition: transform 0.1s ease;
-    }
-
-    .voice-mic-btn:active {
-      transform: scale(0.92);
-    }
-
-    .voice-mic-btn svg {
-      width: 32px;
-      height: 32px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    /* पोस्ट-रिकॉर्डिंग लेआउट: Save, Re-record, Listen */
-    .post-record-actions {
-      display: none;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      width: 100%;
-      padding: 0 30px;
-      margin-bottom: 30px;
-    }
-
-    .action-sub-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      gap: 6px;
-    }
-
-    .action-sub-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #f0f2f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .action-sub-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke: #444;
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .action-sub-label {
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
-    }
-
-    .save-big-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 700;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-    }
-
-    /* लिसनिंग मोड (Delete, Stop/Play, Pause)[span_0](start_span)[span_0](end_span) */
-    .listening-actions {
-      display: none;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      width: 100%;
-      padding: 0 30px;
-      margin-bottom: 30px;
-    }
-
-    .listen-sub-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      gap: 6px;
-    }
-
-    .listen-sub-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: #f0f2f5;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .listen-sub-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke: #444;
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .listen-sub-label {
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
-    }
-
-    .listen-main-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: #e0e0e0;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #555;
-    }
-
-    .waveform-display {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      font-size: 18px;
-      font-weight: 700;
-      color: #333;
-      margin-bottom: 80px;
-    }
-
-    /* पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल[span_1](start_span)[span_1](end_span) */
+    /* 🌟 पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल (नीला प्ले आइकॉन और सेकंड्स)[span_1](start_span)[span_1](end_span) */
     .voice-played-badge {
       display: flex;
       align-items: center;
@@ -601,92 +364,6 @@
       font-size: 15px;
       color: #007aff;
       font-weight: 600;
-    }
-
-    /* कस्टम परमिशन डायलॉग */
-    .custom-perm-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 250;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .custom-perm-dialog {
-      background: #ffffff;
-      width: 100%;
-      max-width: 340px;
-      border-radius: 20px;
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .perm-dialog-icon {
-      margin-bottom: 16px;
-    }
-
-    .perm-dialog-icon svg {
-      width: 28px;
-      height: 28px;
-      stroke: #555;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .perm-dialog-message {
-      font-size: 15px;
-      color: #222;
-      line-height: 1.5;
-      font-weight: 500;
-      margin-bottom: 24px;
-    }
-
-    .perm-options-list {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .perm-opt-btn {
-      background: transparent;
-      border: none;
-      font-size: 15px;
-      color: #3b82f6;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 4px;
-    }
-
-    .perm-opt-cancel {
-      color: #666;
-    }
-
-    .auth-action-btn {
-      background: transparent;
-      border: none;
-      font-size: 15px;
-      color: #3b82f6;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px 0;
-      width: 100%;
-      border-top: 1px solid #f0f0f0;
-    }
-
-    .auth-cancel-btn {
-      color: #3b82f6;
-      border-top: none;
     }
   </style>
 </head>
@@ -781,8 +458,8 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <!-- 🎙️ Voice show ऑप्शन -->
-    <div class="list-item" onclick="openVoiceShowModal()">
+    <!-- 🎙️ Voice show ऑप्शन - क्लिक करते ही voice-show.html पर जाएगा -->
+    <div class="list-item" onclick="location.href='voice-show.html'">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
         <span>Voice show</span>
@@ -801,96 +478,6 @@
         <span>Linked Accounts</span>
       </div>
       <span style="color:#bbb; font-size:18px;">›</span>
-    </div>
-  </div>
-
-  <!-- 🎙️ Voice Show Modal -->
-  <div id="voiceShowModal" class="voice-modal-overlay">
-    <div class="voice-top-bar">
-      <button class="voice-back-btn" onclick="closeVoiceShowModal()">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-      </button>
-      <span class="voice-page-title">Voice show</span>
-    </div>
-
-    <div class="voice-content-center">
-      <div class="voice-prompt-text" id="voicePromptText">What do you want to say?</div>
-      
-      <!-- वेवफॉर्म और सेकंड काउंटर -->
-      <div class="waveform-display" id="waveformDisplay">
-        <span style="letter-spacing: 2px; color: #7b2cbf;">|--|--|--|</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
-        <span style="letter-spacing: 2px; color: #7b2cbf;">|--|--|--|</span>
-      </div>
-    </div>
-
-    <!-- शुरुआती माइक बटन -->
-    <div class="voice-record-section" id="initialRecordSection">
-      <span class="voice-hold-text" id="holdInstructionText">Hold to speak</span>
-      <button class="voice-mic-btn" id="micButton">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-      </button>
-    </div>
-
-    <!-- रिकॉर्डिंग पूरी होने के बाद दिखने वाले बटंस (Re-record, Save, Listen) -->
-    <div class="post-record-actions" id="postRecordActions">
-      <button class="action-sub-btn" onclick="reRecordAudio()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-        </div>
-        <span class="action-sub-label">Re-record</span>
-      </button>
-
-      <button class="save-big-btn" onclick="saveVoiceRecordingFinal()">Save</button>
-
-      <button class="action-sub-btn" onclick="listenAudioPlayback()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        </div>
-        <span class="action-sub-label">Listen</span>
-      </button>
-    </div>
-
-    <!-- 🌟 लिसनिंग मोड (Delete, Stop/Play, Pause)[span_2](start_span)[span_2](end_span) -->
-    <div class="listening-actions" id="listeningActionsSection">
-      <button class="listen-sub-btn" onclick="deleteRecordedAudio()">
-        <div class="listen-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-        </div>
-        <span class="listen-sub-label">Delete</span>
-      </button>
-
-      <button class="listen-main-btn" onclick="stopPlaybackAndReset()">
-        <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><rect x="6" y="6" width="12" height="12"></rect></svg>
-      </button>
-
-      <button class="listen-sub-btn" onclick="pauseAudioPlayback()">
-        <div class="listen-sub-icon">
-          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-        </div>
-        <span class="listen-sub-label">Pause</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- 🛡️ Custom Permission Modal -->
-  <div id="customPermModal" class="custom-perm-overlay">
-    <div class="custom-perm-dialog">
-      <div class="perm-dialog-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-      </div>
-      <div class="perm-dialog-message" id="permDialogMsg">Allow GREEDYCOIN to record audio?</div>
-      
-      <div class="perm-options-list" id="permOptionsFirst">
-        <button class="perm-opt-btn" onclick="grantMicPermission()">While using the app</button>
-        <button class="perm-opt-btn" onclick="grantMicPermission()">Only this time</button>
-        <button class="perm-opt-btn perm-opt-cancel" onclick="denyMicPermission()">Don't allow</button>
-      </div>
-
-      <div id="permOptionsDenied" style="display:none; width:100%; flex-direction:column; gap:4px;">
-        <button class="auth-action-btn" onclick="grantMicPermission()">Authorize immediately</button>
-        <button class="auth-action-btn auth-cancel-btn" onclick="closePermModal()">Cancel</button>
-      </div>
     </div>
   </div>
 
@@ -959,16 +546,7 @@
     let currentRelationship = "Single";
     let selectedLanguages = [];
     let currentLocation = localStorage.getItem("prof_location") || "India";
-    let hasMicPermission = false;
-    let isMicDenied = false;
     let recordedAudioUrl = "";
-    let recordedDurationSeconds = 0;
-    
-    let isRecording = false;
-    let recordingTimer = null;
-    let playbackTimer = null;
-    let secondsElapsed = 0;
-    let pendingHoldAction = false;
 
     const allLanguagesList = [
       "English", "Hindi", "Marathi", "Gujarati", "Panjabi", "Bhili", "konkani", "kannada", 
@@ -987,224 +565,21 @@
       buildAgeWheel();
       buildLanguagesList();
       loadUserData();
-      setupHoldToSpeakListeners();
       
+      // चेक करें कि क्या voice-show.html से वॉयस शो सेव होकर आया है
+      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+      
+      if (isSaved === "true" && savedDuration) {
+        recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
+        updateVoiceStatusUI(savedDuration);
+      }
+
       if(localStorage.getItem("prof_location")) {
         currentLocation = localStorage.getItem("prof_location");
         document.getElementById("selectedLocationDisplay").innerText = currentLocation;
       }
     };
-
-    function openVoiceShowModal() {
-      document.getElementById("voiceShowModal").style.display = "flex";
-      if (recordedDurationSeconds > 0) {
-        // यदि पहले से रिकॉर्डिंग मौजूद है, तो सीधे पोस्ट-रिकॉर्डिंग पेज (Save/Listen/Re-record) दिखाएं
-        document.getElementById("voicePromptText").style.display = "none";
-        document.getElementById("initialRecordSection").style.display = "none";
-        document.getElementById("listeningActionsSection").style.display = "none";
-        document.getElementById("postRecordActions").style.display = "flex";
-      } else {
-        resetVoiceModalState();
-      }
-    }
-
-    function closeVoiceShowModal() {
-      if(recordingTimer) clearInterval(recordingTimer);
-      if(playbackTimer) clearInterval(playbackTimer);
-      document.getElementById("voiceShowModal").style.display = "none";
-    }
-
-    function resetVoiceModalState() {
-      if(recordingTimer) clearInterval(recordingTimer);
-      if(playbackTimer) clearInterval(playbackTimer);
-      document.getElementById("voicePromptText").style.display = "block";
-      document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("initialRecordSection").style.display = "flex";
-      document.getElementById("postRecordActions").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
-      document.getElementById("holdInstructionText").innerText = "Hold to speak";
-      secondsElapsed = 0;
-      recordedDurationSeconds = 0;
-      pendingHoldAction = false;
-    }
-
-    function setupHoldToSpeakListeners() {
-      let micBtn = document.getElementById("micButton");
-
-      micBtn.addEventListener("touchstart", function(e) {
-        e.preventDefault();
-        onHoldStart();
-      });
-
-      micBtn.addEventListener("touchend", function(e) {
-        e.preventDefault();
-        onHoldEnd();
-      });
-
-      micBtn.addEventListener("mousedown", function(e) {
-        e.preventDefault();
-        onHoldStart();
-      });
-
-      micBtn.addEventListener("mouseup", function(e) {
-        e.preventDefault();
-        onHoldEnd();
-      });
-    }
-
-    function onHoldStart() {
-      if (!hasMicPermission) {
-        pendingHoldAction = true;
-        if (isMicDenied) {
-          showDeniedPermDialog();
-        } else {
-          document.getElementById("permDialogMsg").innerText = "Allow GREEDYCOIN to record audio?";
-          document.getElementById("permOptionsFirst").style.display = "flex";
-          let deniedDiv = document.getElementById("permOptionsDenied");
-          if(deniedDiv) deniedDiv.style.display = "none";
-          document.getElementById("customPermModal").style.display = "flex";
-        }
-        return;
-      }
-
-      startActualRecording();
-    }
-
-    function onHoldEnd() {
-      if (hasMicPermission && isRecording) {
-        stopActualRecording();
-      }
-    }
-
-    function grantMicPermission() {
-      hasMicPermission = true;
-      isMicDenied = false;
-      closePermModal();
-      
-      if (pendingHoldAction) {
-        pendingHoldAction = false;
-        startActualRecording();
-      }
-    }
-
-    function denyMicPermission() {
-      hasMicPermission = false;
-      isMicDenied = true;
-      pendingHoldAction = false;
-      closePermModal();
-      showDeniedPermDialog();
-    }
-
-    function showDeniedPermDialog() {
-      document.getElementById("permDialogMsg").innerHTML = "Following permissions for GREEDYCOIN is disabled: [android.permission.RECORD_AUDIO] Enable these permissions for GREEDYCOIN in App Info > Permission.<br><br>🎙️ Microphone";
-      document.getElementById("permOptionsFirst").style.display = "none";
-      let deniedDiv = document.getElementById("permOptionsDenied");
-      deniedDiv.style.display = "flex";
-      document.getElementById("customPermModal").style.display = "flex";
-    }
-
-    function closePermModal() {
-      document.getElementById("customPermModal").style.display = "none";
-    }
-
-    function startActualRecording() {
-      if (isRecording) return;
-      isRecording = true;
-      secondsElapsed = 0;
-
-      document.getElementById("voicePromptText").style.display = "none";
-      let waveDisp = document.getElementById("waveformDisplay");
-      waveDisp.style.display = "flex";
-      document.getElementById("recordedSecondsCount").innerText = secondsElapsed;
-      document.getElementById("holdInstructionText").innerText = "Recording... Release to stop";
-
-      if(recordingTimer) clearInterval(recordingTimer);
-
-      recordingTimer = setInterval(() => {
-        secondsElapsed++;
-        if (secondsElapsed <= 20) {
-          document.getElementById("recordedSecondsCount").innerText = secondsElapsed;
-        } else {
-          stopActualRecording();
-        }
-      }, 1000);
-    }
-
-    function stopActualRecording() {
-      if (!isRecording) return;
-      isRecording = false;
-      if (recordingTimer) clearInterval(recordingTimer);
-
-      if (secondsElapsed > 0) {
-        recordedDurationSeconds = secondsElapsed;
-      }
-
-      document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("initialRecordSection").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "flex";
-    }
-
-    function reRecordAudio() {
-      recordedDurationSeconds = 0;
-      resetVoiceModalState();
-    }
-
-    /* 🌟 Listen पर क्लिक करने पर उल्टा टाइमर चलेगा और 0 पर आते ही रिकॉर्डिंग सुरक्षित रखते हुए वापस मेन पोस्ट-रिकॉर्ड पेज पर आ जाएगा */
-    function listenAudioPlayback() {
-      document.getElementById("postRecordActions").style.display = "none";
-      
-      let waveDisp = document.getElementById("waveformDisplay");
-      waveDisp.style.display = "flex";
-      
-      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
-      let secElem = document.getElementById("recordedSecondsCount");
-      secElem.innerText = playbackSec;
-
-      document.getElementById("listeningActionsSection").style.display = "flex";
-
-      if(playbackTimer) clearInterval(playbackTimer);
-
-      playbackTimer = setInterval(() => {
-        playbackSec--;
-        if (playbackSec >= 0) {
-          secElem.innerText = playbackSec;
-        } else {
-          clearInterval(playbackTimer);
-          // 0 पर पहुँचने पर रिकॉर्डिंग सुरक्षित रखते हुए वापस (Save/Listen/Re-record) पेज पर लाएँ
-          stopPlaybackAndReset();
-        }
-      }, 1000);
-    }
-
-    function deleteRecordedAudio() {
-      recordedDurationSeconds = 0;
-      resetVoiceModalState();
-    }
-
-    function stopPlaybackAndReset() {
-      if(playbackTimer) clearInterval(playbackTimer);
-      document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "flex";
-    }
-
-    function pauseAudioPlayback() {
-      if(playbackTimer) clearInterval(playbackTimer);
-      alert("Playback paused");
-    }
-
-    function saveVoiceRecordingFinal() {
-      if(recordingTimer) clearInterval(recordingTimer);
-      if(playbackTimer) clearInterval(playbackTimer);
-      
-      let finalSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
-      recordedAudioUrl = "voice_recorded_" + finalSec + "s";
-      
-      updateVoiceStatusUI(finalSec);
-      alert("Voice show saved successfully!");
-      closeVoiceShowModal();
-    }
 
     function updateVoiceStatusUI(duration) {
       let statusContainer = document.getElementById("voiceStatusDisplay");
@@ -1218,7 +593,6 @@
       `;
     }
 
-    // बाकी बेसिक फंक्शन्स
     function buildAgeWheel() {
       let wheel = document.getElementById("ageWheel");
       wheel.innerHTML = '<div style="height: 75px;"></div>';
@@ -1328,8 +702,8 @@
           if (data.voiceShow) {
             recordedAudioUrl = data.voiceShow;
             let matchSec = recordedAudioUrl.match(/_(\d+)s/);
-            recordedDurationSeconds = matchSec ? parseInt(matchSec[1]) : 7;
-            updateVoiceStatusUI(recordedDurationSeconds);
+            let secVal = matchSec ? matchSec[1] : "7";
+            updateVoiceStatusUI(secVal);
           }
         }
         document.getElementById("mainContainer").style.opacity = "1";
@@ -1420,6 +794,12 @@
 
       localStorage.setItem("prof_name_" + currentIdentifier, name);
       let finalLocation = localStorage.getItem("prof_location") || currentLocation;
+      
+      // यदि लोकल स्टोरेज में नया वॉयस शो सेव है, तो उसे फाइनल वेरिएबल में ले लें
+      let savedDur = localStorage.getItem("greedy_voiceshow_duration");
+      if (savedDur) {
+        recordedAudioUrl = "voice_recorded_" + savedDur + "s";
+      }
 
       db.collection("users").doc(currentIdentifier).set({
         name: name,
