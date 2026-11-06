@@ -114,6 +114,7 @@
       stroke-linejoin: round;  
     }  
 
+    /* प्रोफाइल सेक्शन - सिर्फ इस पर या अवतार पर क्लिक करने पर ही प्रोफाइल खुलेगी */  
     .profile-info-section {  
       display: flex;  
       flex-direction: column;  
@@ -121,10 +122,8 @@
       position: relative;  
       z-index: 20;  
       margin-top: 5px;  
-      cursor: pointer;  
     }  
 
-    /* 🌟 अवतार और फ्रेम के लिए परफेक्ट स्टाइल */  
     .profile-avatar-container {  
       position: relative;  
       width: 90px;  
@@ -133,6 +132,7 @@
       display: flex;  
       align-items: center;  
       justify-content: center;  
+      cursor: pointer; /* सिर्फ अवतार पर हाथ का निशान आएगा */  
     }  
 
     .profile-avatar {  
@@ -182,6 +182,7 @@
       align-items: center;  
       gap: 6px;  
       margin-bottom: 4px;  
+      cursor: pointer;  
     }  
 
     .profile-id {  
@@ -207,7 +208,6 @@
       display: flex;  
       flex-direction: column;  
       gap: 2px;  
-      cursor: pointer;  
     }  
 
     .stat-num {  
@@ -337,40 +337,37 @@
     </div>  
 
     <div class="profile-top-bar">  
-      <button class="top-icon-btn" onclick="openProfilePage()">  
-        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
-      </button>  
       <button class="top-icon-btn" onclick="openSettings()">  
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>  
       </button>  
     </div>  
 
-    <!-- प्रोफाइल डिटेल्स -->  
-    <div class="profile-info-section" onclick="openProfilePage()">  
-      <div class="profile-avatar-container">  
+    <!-- प्रोफाइल डिटेल्स: केवल अवतार और नाम पर क्लिक करने पर ही profile.html खुलेगा -->  
+    <div class="profile-info-section">  
+      <div class="profile-avatar-container" onclick="openProfilePage()">  
         <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">  
         <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>  
         <div class="profile-avatar-frame" id="homeAvatarFrame"></div>  
       </div>  
-      <div class="profile-name" id="homeNameDisplay">User</div>  
+      <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       <div class="profile-id" id="homeIdDisplay">ID: #288630</div>  
     </div>  
 
-    <!-- स्टैट्स (Friends, Followings, Followers, Groups - डिफॉल्ट 0) -->  
+    <!-- स्टैट्स (डिफ़ॉल्ट 0) -->  
     <div class="profile-stats-row">  
-      <div class="stat-item" onclick="openProfilePage()">  
+      <div class="stat-item">  
         <span class="stat-num" id="homeFriends">0</span>  
         <span class="stat-label">Friends</span>  
       </div>  
-      <div class="stat-item" onclick="openProfilePage()">  
+      <div class="stat-item">  
         <span class="stat-num" id="homeFollowings">0</span>  
         <span class="stat-label">Followings</span>  
       </div>  
-      <div class="stat-item" onclick="openProfilePage()">  
+      <div class="stat-item">  
         <span class="stat-num" id="homeFollowers">0</span>  
         <span class="stat-label">Followers</span>  
       </div>  
-      <div class="stat-item" onclick="openProfilePage()">  
+      <div class="stat-item">  
         <span class="stat-num" id="homeGroups">0</span>  
         <span class="stat-label">Groups</span>  
       </div>  
@@ -448,7 +445,6 @@
 
     // 🌟 प्रोफाइल और Firebase से डेटा सिंक करके होम पेज पर दिखाना
     function loadHomeData() {
-      // पहले लोकल स्टोरेज से तुरंत डेटा दिखाना ताकि लोडिंग न लगे
       let savedName = localStorage.getItem("prof_name_" + currentIdentifier) || "User";
       let savedId = localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630";
       let savedAvatar = localStorage.getItem("prof_avatar_" + currentIdentifier) || "";
@@ -460,7 +456,6 @@
 
       updateHomeUI(savedName, savedId, savedAvatar, savedFrame, savedFriends, savedFollowings, savedFollowers, savedGroups);
 
-      // फिर Firebase से लेटेस्ट डेटा फैच करना
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
@@ -473,7 +468,6 @@
           let followers = data.followers || 0;
           let groups = data.groups || 0;
 
-          // लोकल स्टोरेज में अपडेट करना
           localStorage.setItem("prof_name_" + currentIdentifier, name);
           localStorage.setItem("prof_userid_" + currentIdentifier, userId);
           localStorage.setItem("prof_avatar_" + currentIdentifier, avatar);
@@ -521,11 +515,8 @@
       }
     }
 
+    // 🌟 सिर्फ अवतार, नाम या बॉटम नेविगेशन के प्रोफाइल बटन पर क्लिक करने पर ही profile.html खुलेगा
     function openProfilePage() {  
-      window.location.replace("profile.html");  
-    }  
-
-    function openEditProfile() {  
       window.location.replace("profile.html");  
     }  
 
