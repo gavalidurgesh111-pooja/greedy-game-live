@@ -38,7 +38,7 @@
       background: #ffffff;  
     }  
 
-    /* 🌟 Mesh Background Area - अब यह लेफ्ट से राइट लगातार स्क्रॉल होगा */  
+    /* 🌟 Background Area - रंग और ब्लब्स लगातार घूमते और तैरते रहेंगे */  
     .background {  
       position: absolute;  
       z-index: 1;  
@@ -47,17 +47,6 @@
       min-height: 430px;  
       overflow: hidden;  
       background: #f8f8f8;  
-      width: 200%; /* चौड़ाई दोगुनी ताकि लूप स्मूथ हो सके */  
-      animation: meshScrollLeftToRight 8s linear infinite;  
-    }  
-
-    @keyframes meshScrollLeftToRight {  
-      0% {  
-        transform: translateX(0%);  
-      }  
-      100% {  
-        transform: translateX(-50%);  
-      }  
     }  
 
     .background::after {  
@@ -76,79 +65,97 @@
 
     .mesh {  
       position: absolute;  
-      width: 42vw;  
-      height: 42vw;  
-      min-width: 360px;  
-      min-height: 360px;  
-      max-width: 700px;  
-      max-height: 700px;  
+      width: 50vw;  
+      height: 50vw;  
+      min-width: 320px;  
+      min-height: 320px;  
       border-radius: 50%;  
-      filter: blur(70px);  
-      opacity: 0.92;  
+      filter: blur(65px);  
+      opacity: 0.88;  
       mix-blend-mode: multiply;  
       will-change: transform;  
     }  
 
+    /* चारों रंगों के ब्लब्स जो लगातार घूमते और तैरते रहेंगे */  
     .mesh-peach {  
-      top: -24%;  
-      left: -13%;  
+      top: -20%;  
+      left: -10%;  
       background: #ff9a8b;  
-      animation: peachMove 12s ease-in-out infinite;  
+      animation: rotateAndFloat1 8s ease-in-out infinite alternate;  
     }  
 
     .mesh-pink {  
-      top: -30%;  
-      left: 28%;  
+      top: -25%;  
+      left: 20%;  
       background: #ff6b95;  
-      animation: pinkMove 14s ease-in-out infinite;  
+      animation: rotateAndFloat2 10s ease-in-out infinite alternate;  
     }  
 
     .mesh-purple {  
-      top: -25%;  
-      right: -15%;  
+      top: -15%;  
+      right: -10%;  
       background: #a18cd1;  
-      animation: purpleMove 13s ease-in-out infinite;  
+      animation: rotateAndFloat3 9s ease-in-out infinite alternate;  
     }  
 
     .mesh-blue {  
-      width: 28vw;  
-      height: 28vw;  
-      min-width: 270px;  
-      min-height: 270px;  
-      top: 3%;  
-      right: 25%;  
+      width: 35vw;  
+      height: 35vw;  
+      top: 5%;  
+      right: 15%;  
       background: #84fab0;  
-      opacity: 0.22;  
-      filter: blur(90px);  
-      animation: blueMove 16s ease-in-out infinite;  
+      opacity: 0.25;  
+      filter: blur(80px);  
+      animation: rotateAndFloat4 11s ease-in-out infinite alternate;  
     }  
 
-    @keyframes peachMove {  
-      0% { transform: translate3d(0, 0, 0) scale(1); }  
-      25% { transform: translate3d(5vw, 3vh, 0) scale(1.08); }  
-      50% { transform: translate3d(10vw, -1vh, 0) scale(0.95); }  
-      75% { transform: translate3d(3vw, 5vh, 0) scale(1.05); }  
-      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    /* स्मूथ घूमने और तैरने वाले एनिमेशन */  
+    @keyframes rotateAndFloat1 {  
+      0% {  
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
+      }  
+      50% {  
+        transform: translate3d(15vw, 8vh, 0) scale(1.15) rotate(180deg);  
+      }  
+      100% {  
+        transform: translate3d(5vw, 12vh, 0) scale(0.95) rotate(360deg);  
+      }  
     }  
 
-    @keyframes pinkMove {  
-      0% { transform: translate3d(0, 0, 0) scale(1); }  
-      30% { transform: translate3d(-4vw, 4vh, 0) scale(1.08); }  
-      60% { transform: translate3d(5vw, 7vh, 0) scale(0.94); }  
-      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    @keyframes rotateAndFloat2 {  
+      0% {  
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
+      }  
+      50% {  
+        transform: translate3d(-12vw, 10vh, 0) scale(1.1) rotate(-180deg);  
+      }  
+      100% {  
+        transform: translate3d(8vw, 5vh, 0) scale(1.05) rotate(-360deg);  
+      }  
     }  
 
-    @keyframes purpleMove {  
-      0% { transform: translate3d(0, 0, 0) scale(1); }  
-      30% { transform: translate3d(-5vw, 3vh, 0) scale(0.94); }  
-      65% { transform: translate3d(-9vw, 8vh, 0) scale(1.1); }  
-      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    @keyframes rotateAndFloat3 {  
+      0% {  
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
+      }  
+      50% {  
+        transform: translate3d(-15vw, 12vh, 0) scale(0.9) rotate(180deg);  
+      }  
+      100% {  
+        transform: translate3d(-5vw, 6vh, 0) scale(1.2) rotate(360deg);  
+      }  
     }  
 
-    @keyframes blueMove {  
-      0% { transform: translate3d(0, 0, 0) scale(1); }  
-      50% { transform: translate3d(-5vw, 6vh, 0) scale(1.2); }  
-      100% { transform: translate3d(0, 0, 0) scale(1); }  
+    @keyframes rotateAndFloat4 {  
+      0% {  
+        transform: translate3d(0, 0, 0) scale(1) rotate(0deg);  
+      }  
+      50% {  
+        transform: translate3d(10vw, -8vh, 0) scale(1.25) rotate(-180deg);  
+      }  
+      100% {  
+        transform: translate3d(-8vw, 8vh, 0) scale(0.95) rotate(-360deg);  
+      }  
     }  
 
     /* टॉप हेडर - अपनी जगह पर सुरक्षित */  
@@ -453,7 +460,7 @@
 <body>  
 
   <div class="page-container">  
-    <!-- Mesh Background Area with Scroll Animation -->  
+    <!-- Mesh Background Area with continuous rotating animation -->  
     <div class="background" aria-hidden="true">  
       <div class="mesh mesh-peach"></div>  
       <div class="mesh mesh-pink"></div>  
