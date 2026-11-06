@@ -127,7 +127,7 @@
       position: relative;  
       width: 90px;  
       height: 90px;  
-      margin-bottom: 16px; /* 🌟 फोटो और नाम के बीच बढ़िया गैप */  
+      margin-bottom: 16px;  
       display: flex;  
       align-items: center;  
       justify-content: center;  
@@ -180,7 +180,7 @@
       display: flex;  
       align-items: center;  
       gap: 6px;  
-      margin-bottom: 10px; /* 🌟 नाम और आईडी के बीच बढ़िया गैप */  
+      margin-bottom: 10px;  
       cursor: default;  
     }  
 
@@ -195,7 +195,7 @@
       align-items: center;  
       gap: 6px;  
       font-weight: 600;  
-      cursor: default;   
+      pointer-events: none; /* 🌟 पूरे आईडी डिब्बे पर टच/क्लिक बंद */  
     }  
 
     .profile-id svg {  
@@ -207,6 +207,7 @@
       stroke-linecap: round;  
       stroke-linejoin: round;  
       cursor: pointer;  
+      pointer-events: auto; /* 🌟 सिर्फ इस SVG आइकॉन पर ही टच चालू रहेगा */  
     }  
 
     .profile-stats-row {  
@@ -383,7 +384,7 @@
         <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>  
       </button>  
       <button class="top-icon-btn" onclick="openProfilePage()">  
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l-.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"></path></svg>  
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09A1.65 1.65 0 0 0-1.51 1z"></path></svg>  
       </button>  
     </div>  
 
@@ -398,7 +399,8 @@
       
       <div class="profile-id">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
-        <svg viewBox="0 0 24 24" onclick="copyMyId(event)"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
+        <!-- 🌟 आईडी दी गई है ताकि JavaScript से सुरक्षित रूप से इवेंट जोड़ा जा सके -->  
+        <svg id="copyIconSvg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
       </div>  
     </div>  
 
@@ -486,6 +488,7 @@
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
       loadHomeData();
+      setupCopyEvent();
     };
 
     window.addEventListener('popstate', function(event) {
@@ -565,23 +568,27 @@
       }
     }
 
-    function copyMyId(event) {
-      if (event) {
-        event.stopPropagation();
-        event.stopImmediatePropagation();
+    // 🌟 मोबाइल के दोहरे टच और क्लिक को पूरी तरह रोकने के लिए सुरक्षित तरीका
+    function setupCopyEvent() {
+      const copyIcon = document.getElementById("copyIconSvg");
+      if (copyIcon) {
+        copyIcon.addEventListener("click", function(event) {
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          if (isCopiedShowing) return;
+          isCopiedShowing = true;
+
+          navigator.clipboard.writeText(rawUserId);
+          
+          let toast = document.getElementById("copiedToast");
+          toast.className = "show";
+          setTimeout(function(){ 
+            toast.className = ""; 
+            isCopiedShowing = false;
+          }, 1200); 
+        });
       }
-
-      if (isCopiedShowing) return;
-      isCopiedShowing = true;
-
-      navigator.clipboard.writeText(rawUserId);
-      
-      let toast = document.getElementById("copiedToast");
-      toast.className = "show";
-      setTimeout(function(){ 
-        toast.className = ""; 
-        isCopiedShowing = false;
-      }, 1200); 
     }
 
     function openProfilePage() {  
