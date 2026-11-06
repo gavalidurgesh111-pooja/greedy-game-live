@@ -25,7 +25,7 @@
       overflow-x: hidden;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर पूरी तरह फिक्स, नीचे नहीं फैलेंगे, Left से Right तेज़ स्क्रॉल */  
+    /* 🌟 अखंड और सीमलेस बैकग्राउंड: बादल की तरह सॉफ्ट और बिना किसी लाइन के */  
     .page-container {  
       width: 100%;  
       max-width: 480px;  
@@ -36,34 +36,35 @@
       overflow-x: hidden;  
         
       background:   
-        radial-gradient(circle at 10% 4%, rgba(186, 85, 211, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 25% 3%, rgba(255, 20, 147, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 40% 5%, rgba(255, 0, 255, 0.80) 0%, transparent 28%),     
-        radial-gradient(circle at 55% 4%, rgba(255, 140, 0, 0.90) 0%, transparent 30%),     
-        radial-gradient(circle at 70% 6%, rgba(138, 43, 226, 0.85) 0%, transparent 28%),    
-        radial-gradient(circle at 85% 3%, rgba(135, 206, 235, 0.85) 0%, transparent 28%),   
-        radial-gradient(circle at 50% 7%, rgba(255, 215, 0, 0.75) 0%, transparent 30%),     
+        linear-gradient(90deg,   
+          rgba(186, 85, 211, 0.65) 0%,   
+          rgba(255, 20, 147, 0.65) 25%,   
+          rgba(255, 0, 255, 0.60) 50%,   
+          rgba(255, 140, 0, 0.70) 75%,   
+          rgba(186, 85, 211, 0.65) 100%  
+        ),  
         linear-gradient(180deg,   
           rgba(255,255,255,0.0) 0%,   
-          rgba(255,255,255,0.3) 100px,   
-          rgba(255,255,255,0.7) 200px,   
-          rgba(255,255,255,0.95) 280px,   
-          #ffffff 350px,   
+          rgba(255,255,255,0.2) 70px,   
+          rgba(255,255,255,0.5) 140px,   
+          rgba(255,255,255,0.85) 210px,   
+          rgba(255,255,255,0.98) 270px,   
+          #ffffff 330px,   
           #ffffff 100%  
         );  
 
-      background-size: 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 150% 350px, 100% 100%;  
-      background-repeat: repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, repeat-x, no-repeat;  
-      animation: colorScrollLeftToRight 0.8s linear infinite;  
+      background-size: 200% 330px, 100% 100%;  
+      background-repeat: repeat-x, no-repeat;  
+      animation: colorScrollLeftToRight 4s linear infinite;  
     }  
 
-    /* रंग Left से Right तेज़ी से बहते हुए किनारों पर छुपने का नियम */  
+    /* परफेक्ट लूप - बिना किसी कट या लाइन के */  
     @keyframes colorScrollLeftToRight {  
       0% {  
-        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0 0;  
+        background-position: 0% 0%, 0 0;  
       }  
       100% {  
-        background-position: 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 100% 0%, 0 0;  
+        background-position: 200% 0%, 0 0;  
       }  
     }  
 
