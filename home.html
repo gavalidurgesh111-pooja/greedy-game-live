@@ -201,14 +201,8 @@
       user-select: none;  
     }  
 
-    .profile-id svg {  
-      width: 13px;  
-      height: 13px;  
-      stroke: #555;  
-      fill: none;  
-      stroke-width: 2;  
-      stroke-linecap: round;  
-      stroke-linejoin: round;  
+    .profile-id * {  
+      pointer-events: none; /* 🌟 अंदर के सभी एलिमेंट्स (span, svg) पर अलग से क्लिक होने से पूरी तरह रोकने के लिए */  
     }  
 
     .profile-stats-row {  
@@ -398,7 +392,8 @@
       </div>  
       <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       
-      <div class="profile-id" onclick="copyMyId(event)">  
+      <!-- 🌟 सिंगल क्लिक आईडी बॉक्स (बिना किसी डबल ट्रिगर के) -->  
+      <div class="profile-id" id="copyIdBtn">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
       </div>  
@@ -489,6 +484,29 @@
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
       loadHomeData();
+      
+      // 🌟 सुरक्षित क्लिक बाइंडिंग ताकि डबल ट्रिगर कभी न हो
+      const copyBtn = document.getElementById("copyIdBtn");
+      if (copyBtn) {
+        copyBtn.onclick = function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          if (isCopiedShowing) return;
+          isCopiedShowing = true;
+
+          navigator.clipboard.writeText(rawUserId);
+          
+          let toast = document.getElementById("copiedToast");
+          toast.className = "show";
+          
+          setTimeout(function(){ 
+            toast.className = ""; 
+            isCopiedShowing = false;
+          }, 1200); 
+        };
+      }
     };
 
     window.addEventListener('popstate', function(event) {
@@ -566,28 +584,6 @@
       } else {
         frameEl.style.display = "none";
       }
-    }
-
-    // 🌟 क्लिक इवेंट को पूरी तरह से सुरक्षित करके केवल एक बार टॉस्ट दिखाने का फाइनल तरीका
-    function copyMyId(event) {
-      if (event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-      }
-      
-      if (isCopiedShowing) return;
-      isCopiedShowing = true;
-
-      navigator.clipboard.writeText(rawUserId);
-      
-      let toast = document.getElementById("copiedToast");
-      toast.className = "show";
-      
-      setTimeout(function(){ 
-        toast.className = ""; 
-        isCopiedShowing = false;
-      }, 1200); 
     }
 
     function openProfilePage() {  
