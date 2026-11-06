@@ -38,7 +38,7 @@
       background: #ffffff;  
     }  
 
-    /* 🌟 अखंड बैकग्राउंड: रंग ऊपर फिक्स, घूमते-तैरते हुए, और नीचे बादलों की तरह सफेद में मर्ज */  
+    /* 🌟 अखंड बैकग्राउंड: सभी रंग अलग-अलग और साफ दिखेंगे, नीचे सफेद में मर्ज */  
     .background {  
       position: absolute;  
       z-index: 1;  
@@ -58,7 +58,7 @@
       background: linear-gradient(  
         to bottom,  
         rgba(255, 255, 255, 0) 30%,  
-        rgba(255, 255, 255, 0.4) 55%,  
+        rgba(255, 255, 255, 0.5) 60%,  
         #ffffff 100%  
       );  
     }  
@@ -70,71 +70,70 @@
       min-width: 320px;  
       min-height: 320px;  
       border-radius: 50%;  
-      filter: blur(65px);  
-      opacity: 0.88;  
-      mix-blend-mode: multiply;  
+      filter: blur(55px);  
+      opacity: 0.65; /* रंग अलग-अलग और साफ़ दिखने के लिए बैलेंस्ड ऑपिसिटी */  
       will-change: transform;  
     }  
 
-    /* चारों रंगों के ब्लब्स जो लगातार घूमते और तैरते रहेंगे */  
+    /* चारों अलग-अलग रंगों के ब्लब्स जो स्वतंत्र रूप से घूमते रहेंगे */  
     .mesh-peach {  
       top: -20%;  
       left: -10%;  
-      background: rgba(186, 85, 211, 0.85);  
-      animation: rotateAndFloat1 8s ease-in-out infinite alternate;  
+      background: #ba55d3; /* Purple/Orchid shade */  
+      animation: rotateAndFloat1 9s ease-in-out infinite alternate;  
     }  
 
     .mesh-pink {  
       top: -25%;  
       left: 20%;  
-      background: rgba(255, 20, 147, 0.85);  
-      animation: rotateAndFloat2 10s ease-in-out infinite alternate;  
+      background: #ff1493; /* Deep Pink */  
+      animation: rotateAndFloat2 11s ease-in-out infinite alternate;  
     }  
 
     .mesh-purple {  
       top: -15%;  
       right: -10%;  
-      background: rgba(255, 0, 255, 0.80);  
-      animation: rotateAndFloat3 9s ease-in-out infinite alternate;  
+      background: #ff00ff; /* Magenta */  
+      animation: rotateAndFloat3 10s ease-in-out infinite alternate;  
     }  
 
     .mesh-blue {  
-      width: 35vw;  
-      height: 35vw;  
+      width: 38vw;  
+      height: 38vw;  
       top: 5%;  
       right: 15%;  
-      background: rgba(255, 140, 0, 0.85);  
-      opacity: 0.85;  
-      filter: blur(80px);  
-      animation: rotateAndFloat4 11s ease-in-out infinite alternate;  
+      background: #ff8c00; /* Dark Orange */  
+      opacity: 0.60;  
+      filter: blur(75px);  
+      animation: rotateAndFloat4 12s ease-in-out infinite alternate;  
     }  
 
     /* स्मूथ घूमने और तैरने वाले एनिमेशन */  
     @keyframes rotateAndFloat1 {  
       0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(15vw, 8vh, 0) scale(1.15) rotate(180deg); }  
-      100% { transform: translate3d(5vw, 12vh, 0) scale(0.95) rotate(360deg); }  
+      50% { transform: translate3d(12vw, 6vh, 0) scale(1.1) rotate(180deg); }  
+      100% { transform: translate3d(4vw, 10vh, 0) scale(0.95) rotate(360deg); }  
     }  
 
     @keyframes rotateAndFloat2 {  
       0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(-12vw, 10vh, 0) scale(1.1) rotate(-180deg); }  
-      100% { transform: translate3d(8vw, 5vh, 0) scale(1.05) rotate(-360deg); }  
+      50% { transform: translate3d(-10vw, 8vh, 0) scale(1.15) rotate(-180deg); }  
+      100% { transform: translate3d(6vw, 4vh, 0) scale(1.0) rotate(-360deg); }  
     }  
 
     @keyframes rotateAndFloat3 {  
       0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(-15vw, 12vh, 0) scale(0.9) rotate(180deg); }  
-      100% { transform: translate3d(-5vw, 6vh, 0) scale(1.2) rotate(360deg); }  
+      50% { transform: translate3d(-12vw, 10vh, 0) scale(0.9) rotate(180deg); }  
+      100% { transform: translate3d(-4vw, 5vh, 0) scale(1.1) rotate(360deg); }  
     }  
 
     @keyframes rotateAndFloat4 {  
       0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }  
-      50% { transform: translate3d(10vw, -8vh, 0) scale(1.25) rotate(-180deg); }  
-      100% { transform: translate3d(-8vw, 8vh, 0) scale(0.95) rotate(-360deg); }  
+      50% { transform: translate3d(8vw, -6vh, 0) scale(1.2) rotate(-180deg); }  
+      100% { transform: translate3d(-6vw, 6vh, 0) scale(0.95) rotate(-360deg); }  
     }  
 
-    /* टॉप हेडर - 1 इंच नीचे और सफेद नाम */  
+    /* टॉप हेडर - अपनी जगह पर सुरक्षित */  
     .sub-header {  
       display: flex;  
       align-items: center;  
@@ -436,7 +435,7 @@
 <body>  
 
   <div class="page-container">  
-    <!-- Mesh Background Area with continuous rotating animation -->  
+    <!-- Mesh Background Area -->  
     <div class="background" aria-hidden="true">  
       <div class="mesh mesh-peach"></div>  
       <div class="mesh mesh-pink"></div>  
