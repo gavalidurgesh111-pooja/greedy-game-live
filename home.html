@@ -74,60 +74,15 @@
       opacity: 0.85;
     }
 
-    .mesh-peach {
-      top: -15%;
-      left: -10%;
-      background: rgba(186, 85, 211, 0.9);
-      animation: colorScroll1 7s ease-in-out infinite alternate;
-    }
+    .mesh-peach { top: -15%; left: -10%; background: rgba(186, 85, 211, 0.9); animation: colorScroll1 7s ease-in-out infinite alternate; }
+    .mesh-pink { top: -20%; left: 25%; background: rgba(255, 20, 147, 0.85); animation: colorScroll2 9s ease-in-out infinite alternate; }
+    .mesh-purple { top: -15%; right: -10%; background: rgba(255, 0, 255, 0.8); animation: colorScroll3 8s ease-in-out infinite alternate; }
+    .mesh-blue { width: 35vw; height: 35vw; top: 0%; right: 20%; background: rgba(255, 140, 0, 0.85); filter: blur(60px); animation: colorScroll4 10s ease-in-out infinite alternate; }
 
-    .mesh-pink {
-      top: -20%;
-      left: 25%;
-      background: rgba(255, 20, 147, 0.85);
-      animation: colorScroll2 9s ease-in-out infinite alternate;
-    }
-
-    .mesh-purple {
-      top: -15%;
-      right: -10%;
-      background: rgba(255, 0, 255, 0.8);
-      animation: colorScroll3 8s ease-in-out infinite alternate;
-    }
-
-    .mesh-blue {
-      width: 35vw;
-      height: 35vw;
-      top: 0%;
-      right: 20%;
-      background: rgba(255, 140, 0, 0.85);
-      filter: blur(60px);
-      animation: colorScroll4 10s ease-in-out infinite alternate;
-    }
-
-    @keyframes colorScroll1 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(10vw, 4vh) scale(1.1); }
-      100% { transform: translate(5vw, 8vh) scale(0.95); }
-    }
-
-    @keyframes colorScroll2 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-10vw, 6vh) scale(1.15); }
-      100% { transform: translate(6vw, 3vh) scale(1); }
-    }
-
-    @keyframes colorScroll3 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(-12vw, 5vh) scale(0.95); }
-      100% { transform: translate(-4vw, 7vh) scale(1.1); }
-    }
-
-    @keyframes colorScroll4 {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(8vw, -4vh) scale(1.2); }
-      100% { transform: translate(-8vw, 4vh) scale(0.9); }
-    }
+    @keyframes colorScroll1 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(10vw, 4vh) scale(1.1); } 100% { transform: translate(5vw, 8vh) scale(0.95); } }
+    @keyframes colorScroll2 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-10vw, 6vh) scale(1.15); } 100% { transform: translate(6vw, 3vh) scale(1); } }
+    @keyframes colorScroll3 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-12vw, 5vh) scale(0.95); } 100% { transform: translate(-4vw, 7vh) scale(1.1); } }
+    @keyframes colorScroll4 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(8vw, -4vh) scale(1.2); } 100% { transform: translate(-8vw, 4vh) scale(0.9); } }
 
     .profile-top-bar {
       display: flex;
@@ -446,7 +401,8 @@
       
       <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>
       
-      <div class="profile-id" onclick="copyMyId()">
+      <!-- 🌟 यहाँ onclick जोड़ा गया है जो नीचे दिए गए लॉक फंक्शन को कॉल करेगा -->
+      <div class="profile-id" onclick="copyMyId(event)">
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>
         <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
       </div>
@@ -531,6 +487,7 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let rawUserId = "#288630";
+    let isCopyLocked = false; // 🌟 सुपर-स्ट्रिक्ट लॉक जो डबल ट्रिगर को ब्लॉक कर देगा
 
     window.onload = function() {
       history.replaceState({ page: "home_secure" }, "", window.location.href);
@@ -614,12 +571,26 @@
       }
     }
 
-    function copyMyId() {
+    // 🌟 फुल-प्रूफ लॉक वाला कॉपी फंक्शन (सिर्फ एक बार काम करेगा)
+    function copyMyId(event) {
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
+
+      if (isCopyLocked) return; // अगर लॉक लगा है तो दूसरा क्लिक रद्द
+      isCopyLocked = true;
+
       navigator.clipboard.writeText(rawUserId);
+      
       let toast = document.getElementById("copiedToast");
       toast.className = "show";
+      
       setTimeout(function(){
-        toast.className = toast.className.replace("show", "");
+        toast.className = "";
+        setTimeout(function() {
+          isCopyLocked = false; // 1.5 सेकंड बाद लॉक खुलेगा
+        }, 200);
       }, 1500);
     }
 
