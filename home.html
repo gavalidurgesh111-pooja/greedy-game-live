@@ -120,18 +120,18 @@
       align-items: center;  
       position: relative;  
       z-index: 20;  
-      margin-top: 5px;  
+      margin-top: 10px;  
     }  
 
     .profile-avatar-container {  
       position: relative;  
       width: 90px;  
       height: 90px;  
-      margin-bottom: 10px;  
+      margin-bottom: 16px; /* 🌟 फोटो और नाम के बीच बढ़िया गैप */  
       display: flex;  
       align-items: center;  
       justify-content: center;  
-      cursor: pointer;  
+      cursor: default;  
     }  
 
     .profile-avatar {  
@@ -180,22 +180,22 @@
       display: flex;  
       align-items: center;  
       gap: 6px;  
-      margin-bottom: 4px;  
-      cursor: pointer;  
+      margin-bottom: 10px; /* 🌟 नाम और आईडी के बीच बढ़िया गैप */  
+      cursor: default;  
     }  
 
     .profile-id {  
       font-size: 12px;  
       color: #555;  
       background: transparent !important;  
-      padding: 2px 6px;  
+      padding: 4px 8px;  
       border-radius: 0;  
       backdrop-filter: none;  
       display: flex;  
       align-items: center;  
-      gap: 5px;  
+      gap: 6px;  
       font-weight: 600;  
-      cursor: default;  
+      cursor: default;   
     }  
 
     .profile-id svg {  
@@ -388,14 +388,14 @@
     </div>  
 
     <div class="profile-info-section">  
-      <div class="profile-avatar-container" onclick="openProfilePage()">  
+      <div class="profile-avatar-container">  
         <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">  
         <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>  
         <div class="profile-avatar-frame" id="homeAvatarFrame"></div>  
       </div>  
-      <div class="profile-name" id="homeNameDisplay" onclick="openProfilePage()">User</div>  
       
-      <!-- 🌟 आईडी टेक्स्ट पर क्लिक बंद, सिर्फ SVG आइकॉन पर क्लिक से कॉपी -->  
+      <div class="profile-name" id="homeNameDisplay">User</div>  
+      
       <div class="profile-id">  
         <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>  
         <svg viewBox="0 0 24 24" onclick="copyMyId(event)"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>  
