@@ -126,7 +126,7 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- 🌟 बैक बटन सीधे home.html पर ले जाएगा -->
+      <!-- बैक बटन सीधा home.html पर ले जाएगा -->
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">❮</div>
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="openCoinSendModal()">💸</div>
@@ -443,9 +443,9 @@
       }).catch((error) => { console.error("Error loading profile: ", error); });
     }
 
-    // 🌟 फोटो अपलोड करने के लिए गेटवे पर जाना
+    // 🌟 फोटो अपलोड करने के लिए सीधा profile-photo.html पर जाना
     function openPhotoGridScreen() {
-      window.location.replace("photo-gateway.html");
+      window.location.replace("profile-photo.html");
     }
 
     function triggerAvatarUpload() {
