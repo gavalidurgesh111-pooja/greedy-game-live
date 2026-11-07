@@ -36,7 +36,7 @@
       background: #ffffff;
       justify-content: space-between;
       padding-bottom: 40px;
-      transition: opacity 0.3s ease-out; /* 🌟 सफेद फ्लैश रोकने के लिए स्मूथ ट्रांज़िशन */
+      opacity: 1; /* 🌟 बिना किसी डिले या सफेद फ्लैश के तुरंत दिखेगा */
     }
 
     .top-bar {
@@ -219,7 +219,7 @@
       pointer-events: none;
     }
 
-    /* 🌟 पॉप-अप के रंग उल्टे: सफेद बैकग्राउंड, काले अक्षर और प्यारा शैडो */
+    /* 🌟 टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड और काले अक्षर */
     .toast-popup {
       display: none;
       position: fixed;
@@ -299,9 +299,9 @@
 
 <body>
 
-  <div class="page-container" id="pageContainer">
+  <div class="page-container">
     <div class="top-bar">
-      <button class="back-btn" onclick="smoothNavigate('edit-profile.html')">
+      <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Voice show</span>
@@ -366,7 +366,7 @@
     </div>
   </div>
 
-  <!-- टोस्ट पॉप-अप (सफेद बैकग्राउंड और काले अक्षर) -->
+  <!-- टोस्ट पॉप-अप -->
   <div id="toastPopup" class="toast-popup">Delete successfully</div>
 
   <!-- परमिशन पॉप-अप -->
@@ -416,14 +416,6 @@
         document.getElementById("freshRecordSection").style.display = "flex";
       }
     };
-
-    // 🌟 सफेद फ्लैश रोकने के लिए स्मूथ नेविगेशन
-    function smoothNavigate(url) {
-      document.getElementById("pageContainer").style.opacity = "0";
-      setTimeout(() => {
-        window.location.replace(url);
-      }, 250);
-    }
 
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
@@ -565,22 +557,16 @@
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
+    // 🌟 SAVE करते ही बिना किसी सफेद फ्लैश के तुरंत बाहर जाकर पॉप-अप दिखाएगा
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
       
-      let saveBtn = document.getElementById("mainSaveBtn");
-      saveBtn.innerText = "Saving...";
-      saveBtn.classList.add("disabled-save");
-
       localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
       localStorage.setItem("greedy_voiceshow_saved", "true");
       localStorage.setItem("show_toast_message", "Upload successfully");
 
-      // सफेद फ्लैश से बचने के लिए स्मूथ नेविगेशन
-      setTimeout(() => {
-        smoothNavigate("edit-profile.html");
-      }, 600);
+      window.location.replace("edit-profile.html");
     }
 
     function previewNewRecording() {
