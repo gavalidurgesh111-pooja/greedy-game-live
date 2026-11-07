@@ -35,7 +35,7 @@
       flex-direction: column;
       background: #ffffff;
       justify-content: space-between;
-      padding-bottom: 70px; /* 🌟 बटनों को थोड़ा ऊपर करने के लिए नीचे पैडिंग बढ़ाई गई है */
+      padding-bottom: 90px;
       opacity: 1;
     }
 
@@ -86,7 +86,7 @@
       font-size: 20px;
       font-weight: 500;
       color: #111;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
 
     .waveform-display {
@@ -97,7 +97,7 @@
       font-size: 20px;
       font-weight: 700;
       color: #333;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
 
     .record-section {
@@ -106,7 +106,7 @@
       align-items: center;
       gap: 12px;
       width: 100%;
-      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
+      margin-bottom: 10px;
     }
 
     .hold-text {
@@ -115,27 +115,26 @@
       font-weight: 500;
     }
 
-    /* 🌟 माइक बटन को थोड़ा बड़ा और शानदार बनाया गया (88px) */
     .mic-btn {
-      width: 88px;
-      height: 88px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
+      background: linear-gradient(135deg, #5a189a 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
       outline: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
+      box-shadow: 0 10px 25px rgba(90, 24, 154, 0.45);
     }
 
     .mic-btn svg {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       stroke: #ffffff;
       fill: none;
-      stroke-width: 2;
+      stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -147,7 +146,7 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
+      margin-bottom: 10px;
     }
 
     .action-sub-btn {
@@ -160,7 +159,6 @@
       gap: 6px;
     }
 
-    /* 🌟 साइड वाले आइकॉन बटनों को भी थोड़ा बड़ा किया गया (48px) */
     .action-sub-icon {
       width: 48px;
       height: 48px;
@@ -192,15 +190,14 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
+      margin-bottom: 10px;
     }
 
-    /* 🌟 मुख्य SAVE बटन को बड़ा किया गया (88px) */
     .save-big-btn {
-      width: 88px;
-      height: 88px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
+      background: linear-gradient(135deg, #5a189a 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
       outline: none;
       cursor: pointer;
@@ -208,9 +205,9 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
-      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
+      box-shadow: 0 10px 25px rgba(90, 24, 154, 0.45);
       transition: all 0.3s ease;
     }
 
@@ -371,7 +368,7 @@
   <!-- टोस्ट पॉप-अप -->
   <div id="toastPopup" class="toast-popup">Delete successfully</div>
 
-  <!-- परमिशन पॉप-अप -->
+  <!-- परमिशन पॉप-अप (केवल नए यूजर के लिए पहली बार दिखेगा) -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
       <div class="dialog-message">Allow Mika to record audio?</div>
@@ -393,6 +390,7 @@
     let isPlaying = false;
 
     window.onload = function() {
+      // चेक करें कि क्या यूजर ने पहले कभी परमिशन दी है या नहीं
       let permGranted = localStorage.getItem("greedy_mic_permission");
       if (permGranted === "true") {
         hasPermission = true;
@@ -437,10 +435,19 @@
         return;
       }
 
+      // 🌟 यदि परमिशन पहले से नहीं मिली है, तभी पॉप-अप दिखाएं (सिर्फ नए यूजर के लिए)
       if (!hasPermission) {
-        document.getElementById("permissionModal").style.display = "flex";
-        return;
+        let permAlreadyAsked = localStorage.getItem("greedy_mic_permission_asked");
+        if (!permAlreadyAsked) {
+          localStorage.setItem("greedy_mic_permission_asked", "true");
+          document.getElementById("permissionModal").style.display = "flex";
+          return;
+        } else {
+          // अगर पहले पूछ चुका है और यूजर ने मना किया था या बंद किया था, तो परमिशन मानकर आगे बढ़ें या दोबारा चेक करें
+          hasPermission = true;
+        }
       }
+
       startActualRecording();
     }
 
@@ -452,8 +459,9 @@
 
     function grantPermission() {
       hasPermission = true;
-      localStorage.setItem("greedy_mic_permission", "true");
+      localStorage.setItem("greedy_mic_permission", "true"); // हमेशा के लिए परमिशन सेव कर ली
       closeModal();
+      startActualRecording(); // परमिशन मिलते ही तुरंत रिकॉर्डिंग शुरू हो जाएगी
     }
 
     function closeModal() {
