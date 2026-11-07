@@ -127,10 +127,6 @@
       color: #333;
     }
 
-    .location-item:active {
-      background: #f1f2f3;
-    }
-
     .country-info {
       display: flex;
       align-items: center;
@@ -178,7 +174,6 @@
     </div>
   </div>
 
-  <!-- 🌟 फायरबेस स्क्रिप्ट्स जोड़ दी गई हैं ताकि डेटा सीधा सिंक हो -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -289,7 +284,7 @@
       { name: "Zimbabwe", flag: "🇿🇼" }
     ];
 
-    let selectedCountry = localStorage.getItem("prof_location") || "India";
+    let selectedCountry = localStorage.getItem("prof_location_" + currentIdentifier) || "India";
 
     window.onload = function() {
       renderCountries(countriesList);
@@ -350,9 +345,8 @@
       if(newCb) newCb.innerText = "✔";
     }
 
-    // 🌟 अब यह देश चुनते ही लोकल स्टोरेज और फायरबेस दोनों में सेव करके वापस भेजेगा
     function saveSelectedLocation() {
-      localStorage.setItem("prof_location", selectedCountry);
+      localStorage.setItem("prof_location_" + currentIdentifier, selectedCountry);
 
       db.collection("users").doc(currentIdentifier).set({
         location: selectedCountry
