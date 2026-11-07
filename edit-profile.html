@@ -9,12 +9,13 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही खाली न दिखे, इसके लिए सबसे पहले लोकल डेटा इनपुट में सेट करने की स्क्रिप्ट -->
+  <!-- 🌟 पेज खुलते ही तुरंत लोकल डेटा (नाम, लोकेशन, उम्र) दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
       let cachedName = localStorage.getItem("prof_name_" + currentId);
       let cachedLoc = localStorage.getItem("prof_location");
+      let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18"; // 🌟 नए यूजर के लिए डिफ़ॉल्ट 18
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -30,6 +31,12 @@
         document.addEventListener("DOMContentLoaded", function() {
           let locField = document.getElementById("selectedLocationDisplay");
           if(locField) locField.innerText = cachedLoc;
+        });
+      }
+      if (cachedAge) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let ageField = document.getElementById("selectedAgeDisplay");
+          if(ageField) ageField.innerText = cachedAge;
         });
       }
     })();
@@ -446,7 +453,7 @@
       <div class="input-group" onclick="openAgeModal()" style="cursor: pointer;">
         <span class="input-label">Age</span>
         <div class="age-selector-box">
-          <span id="selectedAgeDisplay">25</span>
+          <span id="selectedAgeDisplay">18</span> <!-- 🌟 डिफ़ॉल्ट 18 शो होगा -->
           <span style="color:#aaa; font-size:14px;">▼</span>
         </div>
       </div>
@@ -597,7 +604,7 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let tempSelectedAge = 25;
+    let tempSelectedAge = parseInt(localStorage.getItem("prof_age_" + currentIdentifier)) || 18; // 🌟 डिफ़ॉल्ट 18
     let currentRelationship = "Single";
     let selectedLanguages = [];
     let currentLocation = localStorage.getItem("prof_location") || "India";
@@ -630,6 +637,14 @@
       if (cachedName) {
         document.getElementById("inputNickname").value = cachedName;
         updateCounter();
+      }
+
+      let cachedAge = localStorage.getItem("prof_age_" + currentIdentifier);
+      if (cachedAge) {
+        tempSelectedAge = parseInt(cachedAge);
+        document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
+      } else {
+        document.getElementById("selectedAgeDisplay").innerText = "18";
       }
 
       if (localStorage.getItem("prof_location")) {
@@ -751,6 +766,7 @@
           }
           if (data.age) {
             tempSelectedAge = data.age;
+            localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
             document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
           }
           if (data.gender === "Male") {
@@ -842,6 +858,7 @@
       let items = wheel.querySelectorAll(".wheel-item");
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
+        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge); // 🌟 लोकल स्टोरेज में उम्र सेव करें
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
       }
       closeAgeModal();
@@ -876,6 +893,7 @@
       }
 
       localStorage.setItem("prof_name_" + currentIdentifier, name);
+      localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
       let finalLocation = localStorage.getItem("prof_location") || currentLocation;
       
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
