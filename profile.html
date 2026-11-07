@@ -162,7 +162,7 @@
       flex-shrink: 0;
     }
 
-    /* 🌟 दूसरा लोगो: एकदम सीधा और परफेक्ट चौकोर नीला बॉक्स, मुड़े हुए कोने (Border-radius: 6px), और सीधा सफेद ग्रह आइकॉन[span_1](start_span)[span_1](end_span) */
+    /* 🌟 दूसरा लोगो: एकदम फोटो जैसा नीला बॉक्स और अंदर आर-पार दिखने वाला सफेद ग्रह और रिंग (क्लिक बंद)[span_0](start_span)[span_0](end_span) */
     .planet-badge {
       width: 32px;
       height: 20px;
@@ -172,18 +172,13 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      pointer-events: none; /* क्लिक बंद, सिर्फ शो होगा[span_2](start_span)[span_2](end_span) */
+      pointer-events: none;
       overflow: hidden;
       flex-shrink: 0;
     }
     .planet-badge svg {
-      width: 16px;
-      height: 16px;
-      fill: none;
-      stroke: #ffffff;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+      width: 18px;
+      height: 18px;
     }
 
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
@@ -242,17 +237,18 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 🌟 दोनों लोगो एकदम सीधे और परफेक्ट[span_3](start_span)[span_3](end_span) -->
+        <!-- 🌟 एकदम फोटो जैसा ग्रह और रिंग वाला लोगो[span_1](start_span)[span_1](end_span) -->
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
             <svg class="web-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             Lv.<span id="profLevel">1</span>
           </div>
           <div class="planet-badge" title="Planet Badge">
-            <svg viewBox="0 0 24 24">
-              <!-- एकदम सीधा और साफ़ ग्रह/रिंग आइकॉन -->
-              <ellipse cx="12" cy="12" rx="3.2" ry="6" transform="rotate(-25 12 12)"/>
-              <path d="M4 12c0 3 3.5 5 8 5s8-2 8-5-3.5-5-8-5-8 2-8 5z"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <!-- ग्रह (गोला) -->
+              <circle cx="12" cy="12" r="3.5" fill="#ffffff" stroke="none"/>
+              <!-- रिंग (वलय) जो नीचे से शुरू होकर ऊपर नॉर्मल जाती है और आर-पार बैकग्राउंड दिखता है -->
+              <ellipse cx="12" cy="12" rx="8" ry="3" transform="rotate(-25 12 12)"/>
             </svg>
           </div>
         </div>
