@@ -138,7 +138,6 @@
       stroke-linejoin: round;
     }
 
-    /* पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -201,7 +200,7 @@
       transition: all 0.3s ease;
     }
 
-    /* जब सेव बटन OFF (धुंधला और असक्षम) रहेगा */
+    /* जब सेव बटन OFF (धुंधला) रहेगा */
     .save-big-btn.disabled-save {
       background: #e0e0e0 !important;
       color: #aaa !important;
@@ -277,7 +276,7 @@
       
       <div class="waveform-display" id="waveformDisplay">
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
+        <span id="recordedSecondsCount" style="margin: 0 10px;">7</span>
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
       </div>
     </div>
@@ -299,12 +298,13 @@
         <span class="action-sub-label">Re-record</span>
       </button>
 
-      <!-- मुख्य Save बटन (सुनते समय OFF हो जाएगा) -->
+      <!-- मुख्य Save बटन -->
       <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
-      <button class="action-sub-btn" id="listenBtn" onclick="listenAudioPlayback()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <!-- Listen बटन (क्लिक करने पर अंदर ◼️ आइकॉन हो जाएगा) -->
+      <button class="action-sub-btn" id="listenActionBtn" onclick="togglePlayPauseAudio()">
+        <div class="action-sub-icon" id="listenIconContainer">
+          <svg viewBox="0 0 24 24" id="listenSvgIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
         <span class="action-sub-label" id="listenLabel">Listen</span>
       </button>
@@ -329,14 +329,13 @@
     let recordingTimer = null;
     let playbackTimer = null;
     let secondsElapsed = 0;
-    let recordedDurationSeconds = 0;
+    let recordedDurationSeconds = 7;
     let isPlaying = false;
     let pendingHoldAction = false;
 
     window.onload = function() {
       setupHoldToSpeakListeners();
       
-      // यदि पहले से कोई रिकॉर्डिंग सेव है तो उसे लोड करें
       let savedSec = localStorage.getItem("greedy_voiceshow_temp_sec");
       if (savedSec && parseInt(savedSec) > 0) {
         recordedDurationSeconds = parseInt(savedSec);
@@ -417,7 +416,7 @@
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
       } else {
-        recordedDurationSeconds = 5;
+        recordedDurationSeconds = 7;
       }
 
       localStorage.setItem("greedy_voiceshow_temp_sec", recordedDurationSeconds);
@@ -431,9 +430,13 @@
     function reRecordAudio() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
-      recordedDurationSeconds = 0;
+      recordedDurationSeconds = 7;
       localStorage.removeItem("greedy_voiceshow_temp_sec");
       
+      document.getElementById("promptText").style.display = "block";
+      document.getElementById("waveformDisplay").style.display = "none";
+      document.getElementById("postRecordActions").style.display = "flex";
+      document.getElementById("initialRecordSection").style.display = "flex";
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("postRecordActions").style.display = "none";
@@ -441,19 +444,31 @@
       document.getElementById("holdInstructionText").innerText = "Hold to speak";
       secondsElapsed = 0;
       isPlaying = false;
+      resetPlayButtonUI();
     }
 
-    /* 🌟 Listen पर क्लिक करने पर: Save बटन OFF होगा, और सेकंड उल्टे घटकर 0 पर आएंगे */
-    function listenAudioPlayback() {
-      if (isPlaying) return; // अगर पहले से बज रहा है तो डबल क्लिक न हो
+    /* 🌟 जब Listen बटन पर क्लिक होगा: प्ले से स्टॉप (◼️) होगा, Save बटन OFF होगा, और सेकंड उल्टे घटेंगे */
+    function togglePlayPauseAudio() {
+      if (isPlaying) {
+        // यदि पहले से चल रहा है और यूजर ने रोक दिया (Pause/Stop)
+        if(playbackTimer) clearInterval(playbackTimer);
+        resetPlayButtonUI();
+        return;
+      }
+
       isPlaying = true;
 
+      // 1. Save बटन को OFF (धुंधला) करें
       let saveBtn = document.getElementById("mainSaveBtn");
-      saveBtn.classList.add("disabled-save"); // Save बटन OFF
+      saveBtn.classList.add("disabled-save");
 
-      let listenLabel = document.getElementById("listenLabel");
-      listenLabel.innerText = "Pause"; // Listen बदलकर Pause हो जाएगा
+      // 2. Listen आइकॉन को बदलकर चौकोर (◼️) स्टॉप आइकॉन करें और नीचे लेबल 'Pause' करें
+      let svgIcon = document.getElementById("listenSvgIcon");
+      svgIcon.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
+      document.getElementById("listenLabel").innerText = "Pause";
 
+      // 3. वेवफॉर्म दिखाएं और उल्टी गिनती शुरू करें
+      document.getElementById("waveformDisplay").style.display = "flex";
       let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
@@ -466,28 +481,31 @@
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          // 0 पर पहुँचने पर: Save बटन फिर से ON होगा, Listen वापस आएगा, और सेकंड्स अपनी सही पोजीशन में आ जाएंगे
-          resetAfterPlayback();
+          // सुनना पूरा होने पर सब कुछ अपनी पोजीशन पर वापस आ जाएगा
+          resetPlayButtonUI();
         }
       }, 1000);
     }
 
-    function resetAfterPlayback() {
+    function resetPlayButtonUI() {
       if(playbackTimer) clearInterval(playbackTimer);
       isPlaying = false;
 
+      // Save बटन को फिर से ON करें
       let saveBtn = document.getElementById("mainSaveBtn");
-      saveBtn.classList.remove("disabled-save"); // Save बटन फिर से ON
+      saveBtn.classList.remove("disabled-save");
 
-      let listenLabel = document.getElementById("listenLabel");
-      listenLabel.innerText = "Listen"; // वापस Listen हो जाएगा
+      // आइकॉन वापस प्ले (▶️) पर और लेबल 'Listen' पर लाएं
+      let svgIcon = document.getElementById("listenSvgIcon");
+      svgIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      document.getElementById("listenLabel").innerText = "Listen";
 
-      // अंक वापस अपनी असली पोजीशन (जितनी रिकॉर्डिंग की थी) पर आ जाएंगे
+      // अंक वापस अपनी असली रिकॉर्डिंग पोजीशन पर आ जाएंगे
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
     function saveVoiceRecordingFinal() {
-      if (isPlaying) return; // यदि सुन रहे हैं तो सेव न हो
+      if (isPlaying) return; 
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
       
