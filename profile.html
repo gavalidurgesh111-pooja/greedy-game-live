@@ -139,23 +139,32 @@
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     
-    .tags-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+    .tags-row { display: flex; gap: 10px; margin-top: 14px; align-items: center; }
     
-    /* 👑 Lv.1 टैग: लोगो ऑरेंज, साइज छोटी, टेक्स्ट सफेद */
-    .tag-lv { background: #333; color: #ffffff; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; }
-    .tag-lv span.crown { font-size: 11px; color: #ff8c00; }
+    /* 👑Lv.1 एक ही लाइन में, ताज ऑरेंज रंग में */
+    .tag-lv { 
+      background: linear-gradient(45deg, #ff9a9e, #fecfef); 
+      color: #b70000; 
+      font-size: 12px; 
+      font-weight: 900; 
+      padding: 3px 10px; 
+      border-radius: 12px; 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 3px; 
+    }
+    .tag-lv span.crown { 
+      color: #ff8c00; 
+    }
 
-    /* 🪙 sent कॉइन्स: बिना लोगो के, काले अक्षर */
     .tag-sent-text { font-size: 13px; font-weight: bold; color: #111; }
 
-    /* 0 Followers और sent कॉइन्स की एक ही लाइन */
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 25px; align-items: center; }
     .f-count-item { display: flex; gap: 6px; align-items: baseline; }
     .f-num { font-size: 15px; font-weight: 900; color: #111; }
     .f-lbl { font-size: 13px; color: #555; font-weight: 600; }
 
-    /* Profile हेडिंग और छोटी लाइन */
     .profile-section-title-box { padding: 25px 20px 10px 20px; display: flex; flex-direction: column; gap: 6px; }
     .profile-heading-text { font-size: 16px; font-weight: 800; color: #111; }
     .profile-heading-line { width: 35px; height: 3px; background: #8a2be2; border-radius: 2px; }
@@ -197,19 +206,17 @@
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
-        <!-- सिर्फ नाम, पेंसिल हटाई गई और क्लिक बंद -->
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- Lv.1 (सफेद टेक्स्ट, ऑरेंज छोटा लोगो) -->
+        <!-- 👑Lv.1 एक ही लाइन में, ताज ऑरेंज रंग -->
         <div class="tags-row">
-          <div class="tag-lv"><span class="crown">👑</span> Lv.<span id="profLevel">1</span></div>
+          <div class="tag-lv"><span class="crown">👑</span>Lv.<span id="profLevel">1</span></div>
         </div>
       </div>
 
-      <!-- 0 Followers और 00.0 sent की एक ही लाइन -->
       <div class="follow-stats-row">
         <div class="follow-counts">
           <div class="f-count-item">
@@ -222,7 +229,6 @@
         </div>
       </div>
 
-      <!-- Profile और छोटी लाइन -->
       <div class="profile-section-title-box">
         <div class="profile-heading-text">Profile</div>
         <div class="profile-heading-line"></div>
