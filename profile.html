@@ -141,30 +141,29 @@
     
     .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (बैकग्राउंड डाइनैमिक: 1-10 हरा, 11-30 नीला, 31-100 ऑरेंज) */
+    /* 🌟 पहला लोगो: लेवल टैग (कैप्सूल शेप, सफेद स्टार और अंक, डायनेमिक बैकग्राउंड) */
     .tag-lv { 
       color: #ffffff; 
       font-size: 11px; 
       font-weight: 800; 
-      padding: 2px 8px; 
-      border-radius: 8px; 
+      padding: 3px 10px; 
+      border-radius: 12px; 
       display: inline-flex; 
       align-items: center; 
-      gap: 3px; 
+      gap: 5px; 
     }
-    
-    /* 🌟 सिर्फ स्टार (⭐) एकदम पक्का सफेद, बिना किसी बॉर्डर के */
     .tag-lv span.star { 
       color: #ffffff !important; 
       text-shadow: none !important; 
+      font-size: 12px; 
     }
 
-    /* 🌟 देश का झंडा लोगो (क्लिक बंद, सिर्फ शो होगा)[span_0](start_span)[span_0](end_span) */
+    /* 🌟 दूसरा लोगो: बिल्कुल फोटो जैसा नीला बॉक्स, मुड़े हुए कोने और सफेद ग्रह आइकॉन (क्लिक बंद)[span_0](start_span)[span_0](end_span) */
     .country-flag-badge {
-      width: 24px;
-      height: 18px;
+      width: 32px;
+      height: 20px;
       background-color: #2196f3;
-      border-radius: 4px;
+      border-radius: 6px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -176,7 +175,11 @@
     .country-flag-badge svg {
       width: 14px;
       height: 14px;
-      fill: #ffffff;
+      fill: none;
+      stroke: #ffffff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
@@ -235,14 +238,15 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
+        <!-- 🌟 दोनों लोगो बिल्कुल फोटो जैसे (लेवल टैग और नीला ग्रह लोगो)[span_1](start_span)[span_1](end_span) -->
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
             <span class="star">⭐</span> Lv.<span id="profLevel">1</span>
           </div>
-          <!-- देश का झंडा लोगो (क्लिक बंद)[span_1](start_span)[span_1](end_span) -->
-          <div class="country-flag-badge" title="Country Flag">
+          <div class="country-flag-badge" title="Planet Logo">
             <svg viewBox="0 0 24 24">
-              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93a8 8 0 0 1-6-7.43h6zM13 11h7a8 8 0 0 1-7 7.43zm7-2h-7V4.07a8 8 0 0 1 7 7.43zM6 4.07V9H4a8 8 0 0 1 2-4.93zM4 11h2v5H4a8 8 0 0 1 0-5zm2 7h7v4.93A8 8 0 0 1 6 18z"></path>
+              <ellipse cx="12" cy="12" rx="4" ry="7" transform="rotate(-30 12 12)"/>
+              <path d="M3 12c0 3.5 4 6 9 6s9-2.5 9-6-4-6-9-6-9 2.5-9 6z"/>
             </svg>
           </div>
         </div>
