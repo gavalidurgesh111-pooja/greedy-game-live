@@ -5,63 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Basic info - Greedy Coin</title>
 
-  <!-- 🌟 फायरबेस की स्क्रिप्ट्स हेड में सबसे ऊपर -->
+  <!-- फायरबेस स्क्रिप्ट्स -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स और लोकेशन दिखाने के लिए -->
+  <!-- 🌟 पेज खुलते ही बिना एक सेकंड गंवाए तुरंत लोकल स्टोरेज से पक्का डेटा दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
-      let cachedName = localStorage.getItem("prof_name_" + currentId);
-      let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
-      let cachedGender = localStorage.getItem("prof_gender_" + currentId);
-      let cachedBio = localStorage.getItem("prof_bio_" + currentId);
-      let cachedLoc = localStorage.getItem("prof_location") || "India";
       
-      if (cachedName) {
-        document.addEventListener("DOMContentLoaded", function() {
+      // तुरंत लोकल स्टोरेज से वैल्यू उठाएं ताकि डेटा कभी गायब न दिखे
+      let cachedName = localStorage.getItem("prof_name_" + currentId) || "";
+      let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
+      let cachedGender = localStorage.getItem("prof_gender_" + currentId) || "";
+      let cachedBio = localStorage.getItem("prof_bio_" + currentId) || "";
+      let cachedRel = localStorage.getItem("prof_rel_" + currentId) || "Single";
+      let cachedLoc = localStorage.getItem("prof_location_" + currentId) || "India";
+      let cachedLangs = localStorage.getItem("prof_langs_" + currentId) || "Select";
+
+      document.addEventListener("DOMContentLoaded", function() {
+        if(cachedName) {
           let inputField = document.getElementById("inputNickname");
           if(inputField) {
             inputField.value = cachedName;
             let counter = document.getElementById("nicknameCounter");
             if(counter) counter.innerText = cachedName.length + "/30";
           }
-        });
-      }
-      if (cachedAge) {
-        document.addEventListener("DOMContentLoaded", function() {
-          let ageField = document.getElementById("selectedAgeDisplay");
-          if(ageField) ageField.innerText = cachedAge;
-        });
-      }
-      if (cachedGender) {
-        document.addEventListener("DOMContentLoaded", function() {
-          if (cachedGender === "Male") {
-            let mRadio = document.getElementById("genderMale");
-            if(mRadio) mRadio.checked = true;
-          } else if (cachedGender === "Female") {
-            let fRadio = document.getElementById("genderFemale");
-            if(fRadio) fRadio.checked = true;
-          }
-        });
-      }
-      if (cachedBio) {
-        document.addEventListener("DOMContentLoaded", function() {
+        }
+        let ageField = document.getElementById("selectedAgeDisplay");
+        if(ageField) ageField.innerText = cachedAge;
+
+        if(cachedGender === "Male") {
+          let mRadio = document.getElementById("genderMale");
+          if(mRadio) mRadio.checked = true;
+        } else if(cachedGender === "Female") {
+          let fRadio = document.getElementById("genderFemale");
+          if(fRadio) fRadio.checked = true;
+        }
+
+        if(cachedBio) {
           let bioField = document.getElementById("inputBio");
           if(bioField) {
             bioField.value = cachedBio;
             let bioCnt = document.getElementById("bioCounter");
             if(bioCnt) bioCnt.innerText = cachedBio.length + "/140";
           }
-        });
-      }
-      if (cachedLoc) {
-        document.addEventListener("DOMContentLoaded", function() {
-          let locField = document.getElementById("selectedLocationDisplay");
-          if(locField) locField.innerText = cachedLoc;
-        });
-      }
+        }
+
+        let relField = document.getElementById("selectedStatusDisplay");
+        if(relField) relField.innerText = cachedRel;
+
+        let locField = document.getElementById("selectedLocationDisplay");
+        if(locField) locField.innerText = cachedLoc;
+
+        let langField = document.getElementById("selectedLanguagesDisplay");
+        if(langField) langField.innerText = cachedLangs;
+      });
     })();
   </script>
 
@@ -95,10 +94,8 @@
       flex-direction: column;
       background: #ffffff;
       padding-bottom: 40px;
-      opacity: 1;
     }
 
-    /* टॉप बार */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -132,7 +129,6 @@
       stroke-linejoin: round;
     }
 
-    /* मास्टर सेव बटन (OFF/ON स्टेट) */
     .save-btn svg {
       width: 24px;
       height: 24px;
@@ -164,7 +160,6 @@
       color: #111;
     }
 
-    /* फॉर्म सेक्शंस */
     .form-section {
       padding: 20px;
       display: flex;
@@ -272,7 +267,6 @@
       width: 100%;
     }
 
-    /* Modals सामान्य */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -369,7 +363,6 @@
       cursor: pointer;
     }
 
-    /* Languages List Styling */
     .languages-list-container {
       overflow-y: auto;
       max-height: 50vh;
@@ -393,10 +386,6 @@
       color: #333;
     }
 
-    .language-item:active {
-      background: #f1f2f3;
-    }
-
     .lang-checkbox {
       width: 22px;
       height: 22px;
@@ -411,7 +400,6 @@
       font-weight: bold;
     }
 
-    /* वॉयस शो का डिस्प्ले स्टाइल */
     .voice-played-badge {
       display: flex;
       align-items: center;
@@ -441,7 +429,6 @@
       font-weight: 600;
     }
 
-    /* टोस्ट पॉप-अप स्टाइल */
     .toast-popup-profile {
       display: none;
       position: fixed;
@@ -457,14 +444,6 @@
       z-index: 2000;
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
       border: 1px solid #eaeaea;
-      animation: fadeInOutProfile 2s ease;
-    }
-
-    @keyframes fadeInOutProfile {
-      0% { opacity: 0; transform: translate(-50%, 20px); }
-      15% { opacity: 1; transform: translate(-50%, 0); }
-      85% { opacity: 1; transform: translate(-50%, 0); }
-      100% { opacity: 0; transform: translate(-50%, -10px); }
     }
   </style>
 </head>
@@ -477,7 +456,6 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
-      <!-- 🌟 मास्टर सेव बटन -->
       <button class="save-btn" id="masterSaveBtn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
@@ -560,7 +538,6 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <!-- 🎙️ Voice show ऑप्शन -->
     <div class="list-item" onclick="location.href='voice-show.html'">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
@@ -626,7 +603,6 @@
     </div>
   </div>
 
-  <!-- टोस्ट पॉप-अप एलिमेंट -->
   <div id="profileToast" class="toast-popup-profile">Upload successfully</div>
 
   <script>
@@ -644,7 +620,7 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let tempSelectedAge = 18;
+    let tempSelectedAge = parseInt(localStorage.getItem("prof_age_" + currentIdentifier)) || 18;
     let selectedLanguages = [];
     let allLanguagesList = [
       "English", "Hindi", "Marathi", "Gujarati", "Panjabi", "Bhili", "konkani", "kannada", 
@@ -673,7 +649,6 @@
         let toast = document.getElementById("profileToast");
         toast.innerText = msg;
         toast.style.display = "block";
-        
         setTimeout(() => {
           toast.style.display = "none";
           localStorage.removeItem("show_toast_message");
@@ -687,7 +662,6 @@
       let statusContainer = document.getElementById("voiceStatusDisplay");
 
       if (isSaved === "true" && savedDuration) {
-        let recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
         statusContainer.innerHTML = `
           <div class="voice-played-badge">
             <div class="play-circle-icon">
@@ -725,7 +699,7 @@
       allLanguagesList.forEach(lang => {
         let item = document.createElement("div");
         item.className = "language-item";
-        item.onclick = () => toggleLanguageSelection(lang, item);
+        item.onclick = () => toggleLanguageSelection(lang);
         
         let span = document.createElement("span");
         span.innerText = lang;
@@ -733,7 +707,7 @@
         let checkbox = document.createElement("div");
         checkbox.className = "lang-checkbox";
         checkbox.id = "lang_box_" + lang;
-        checkbox.innerText = "";
+        checkbox.innerText = selectedLanguages.includes(lang) ? "✔" : "";
 
         item.appendChild(span);
         item.appendChild(checkbox);
@@ -741,15 +715,15 @@
       });
     }
 
-    function toggleLanguageSelection(lang, element) {
+    function toggleLanguageSelection(lang) {
       let index = selectedLanguages.indexOf(lang);
       let checkbox = document.getElementById("lang_box_" + lang);
       if(index > -1) {
         selectedLanguages.splice(index, 1);
-        checkbox.innerText = "";
+        if(checkbox) checkbox.innerText = "";
       } else {
         selectedLanguages.push(lang);
-        checkbox.innerText = "✔";
+        if(checkbox) checkbox.innerText = "✔";
       }
     }
 
@@ -764,6 +738,7 @@
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
+      localStorage.setItem("prof_langs_" + currentIdentifier, displayTxt);
       closeLanguagesModal();
 
       db.collection("users").doc(currentIdentifier).set({
@@ -777,50 +752,48 @@
     }
 
     function loadUserDataFromFirebase() {
-      // 🌟 तुरंत लोकल स्टोरेज से लोकेशन सेट करें ताकि डिले न हो
-      let localLoc = localStorage.getItem("prof_location");
-      if (localLoc) {
-        document.getElementById("selectedLocationDisplay").innerText = localLoc;
-      }
-
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
           if (data.name) {
             document.getElementById("inputNickname").value = data.name;
+            localStorage.setItem("prof_name_" + currentIdentifier, data.name);
             updateCounter();
           }
           if (data.age) {
             tempSelectedAge = data.age;
             document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
-          } else {
-            document.getElementById("selectedAgeDisplay").innerText = "18";
+            localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
           }
-          if (data.gender === "Male") {
-            document.getElementById("genderMale").checked = true;
-          } else if (data.gender === "Female") {
-            document.getElementById("genderFemale").checked = true;
+          if (data.gender) {
+            localStorage.setItem("prof_gender_" + currentIdentifier, data.gender);
+            if (data.gender === "Male") document.getElementById("genderMale").checked = true;
+            else if (data.gender === "Female") document.getElementById("genderFemale").checked = true;
           }
           if (data.bio) {
             document.getElementById("inputBio").value = data.bio;
+            localStorage.setItem("prof_bio_" + currentIdentifier, data.bio);
             updateBioCounter();
           }
           if (data.relationship) {
+            localStorage.setItem("prof_rel_" + currentIdentifier, data.relationship);
             document.getElementById("selectedStatusDisplay").innerText = data.relationship;
           }
           if (data.languages && Array.isArray(data.languages)) {
             selectedLanguages = data.languages;
+            let langStr = selectedLanguages.join(", ");
+            localStorage.setItem("prof_langs_" + currentIdentifier, langStr);
             selectedLanguages.forEach(lang => {
               let cb = document.getElementById("lang_box_" + lang);
               if(cb) cb.innerText = "✔";
             });
             if(selectedLanguages.length > 0) {
-              document.getElementById("selectedLanguagesDisplay").innerText = selectedLanguages.join(", ");
+              document.getElementById("selectedLanguagesDisplay").innerText = langStr;
             }
           }
           if (data.location) {
+            localStorage.setItem("prof_location_" + currentIdentifier, data.location);
             document.getElementById("selectedLocationDisplay").innerText = data.location;
-            localStorage.setItem("prof_location", data.location);
           }
         }
       }).catch((err) => {
@@ -836,12 +809,14 @@
     function updateCounter() {
       let len = document.getElementById("inputNickname").value.length;
       document.getElementById("nicknameCounter").innerText = len + "/30";
+      localStorage.setItem("prof_name_" + currentIdentifier, document.getElementById("inputNickname").value);
       onFieldChanged();
     }
 
     function updateBioCounter() {
       let len = document.getElementById("inputBio").value.length;
       document.getElementById("bioCounter").innerText = len + "/140";
+      localStorage.setItem("prof_bio_" + currentIdentifier, document.getElementById("inputBio").value);
       onFieldChanged();
     }
 
@@ -883,6 +858,7 @@
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
+        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
         onFieldChanged();
       }
       closeAgeModal();
@@ -901,6 +877,7 @@
       if(selected) {
         let relVal = selected.value;
         document.getElementById("selectedStatusDisplay").innerText = relVal;
+        localStorage.setItem("prof_rel_" + currentIdentifier, relVal);
         closeRelationshipModal();
 
         db.collection("users").doc(currentIdentifier).set({
@@ -914,7 +891,6 @@
       }
     }
 
-    // 🌟 मास्टर सेव बटन (✔): यह केवल Nickname, Age, Gender और What's up को सेव करेगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -925,6 +901,11 @@
         alert("Nickname cannot be empty!");
         return;
       }
+
+      localStorage.setItem("prof_name_" + currentIdentifier, name);
+      localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
+      localStorage.setItem("prof_bio_" + currentIdentifier, bio);
+      localStorage.setItem("prof_gender_" + currentIdentifier, gender);
 
       db.collection("users").doc(currentIdentifier).set({
         name: name,
