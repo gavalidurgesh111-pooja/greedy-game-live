@@ -208,7 +208,7 @@
       pointer-events: none;
     }
 
-    /* 🌟 ग्यारवीं फोटो जैसा अनसेव्ड वार्निंग पॉप-अप स्टाइल[span_1](start_span)[span_1](end_span) */
+    /* Unsaved Changes वार्निंग पॉप-अप स्टाइल[span_0](start_span)[span_0](end_span) */
     .unsaved-modal-overlay {
       display: none;
       position: fixed;
@@ -269,7 +269,7 @@
       color: #7b2cbf;
     }
 
-    /* सामान्य परमिशन पॉप-अप */
+    /* परमिशन पॉप-अप स्टाइल */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -326,7 +326,6 @@
 
   <div class="page-container">
     <div class="top-bar">
-      <!-- बैक बटन दबाने पर वार्निंग चेक होगी -->
       <button class="back-btn" onclick="attemptExit()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
@@ -338,7 +337,7 @@
       
       <div class="waveform-display" id="waveformDisplay">
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">7</span>
+        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
       </div>
     </div>
@@ -373,7 +372,7 @@
     </div>
   </div>
 
-  <!-- 🌟 ग्यारवीं फोटो जैसा Unsaved Changes वार्निंग पॉप-अप[span_2](start_span)[span_2](end_span) -->
+  <!-- Unsaved Changes वार्निंग पॉप-अप[span_1](start_span)[span_1](end_span) -->
   <div id="unsavedModal" class="unsaved-modal-overlay">
     <div class="unsaved-dialog">
       <div class="unsaved-title">Tips</div>
@@ -405,28 +404,20 @@
     let secondsElapsed = 0;
     let recordedDurationSeconds = 0;
     let isPlaying = false;
-    let hasUnsavedChanges = false; // यह ट्रैक करेगा कि रिकॉर्डिंग हुई है पर सेव नहीं हुई
+    let hasUnsavedChanges = false;
 
     window.onload = function() {
+      // हर बार पेज खुलने पर पुराना अस्थायी डेटा साफ़ कर दें ताकि हमेशा फ्रेश पेज मिले
+      localStorage.removeItem("greedy_voiceshow_temp_sec");
+
       let permGranted = localStorage.getItem("greedy_mic_permission");
       if (permGranted === "true") {
         hasPermission = true;
       }
 
       setupHoldToSpeakListeners();
-      
-      let savedSec = localStorage.getItem("greedy_voiceshow_temp_sec");
-      if (savedSec && parseInt(savedSec) > 0) {
-        recordedDurationSeconds = parseInt(savedSec);
-        hasUnsavedChanges = true;
-        document.getElementById("promptText").style.display = "none";
-        document.getElementById("initialRecordSection").style.display = "none";
-        document.getElementById("postRecordActions").style.display = "flex";
-        document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
-        document.getElementById("waveformDisplay").style.display = "flex";
-      }
 
-      // 🌟 मोबाइल फोन का असली बैक बटन (Physical Back Button) दबाने पर रोककर पॉप-अप दिखाने के लिए
+      // मोबाइल का असली बैक बटन दबाने पर वार्निंग दिखाने का नियम
       window.history.pushState(null, "", window.location.href);
       window.onpopstate = function() {
         if (hasUnsavedChanges) {
@@ -503,11 +494,10 @@
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
       } else {
-        recordedDurationSeconds = 7;
+        recordedDurationSeconds = 5;
       }
 
-      hasUnsavedChanges = true; // रिकॉर्डिंग हो गई है, अब अनसेव्ड बदलाव मौजूद हैं
-      localStorage.setItem("greedy_voiceshow_temp_sec", recordedDurationSeconds);
+      hasUnsavedChanges = true; // रिकॉर्डिंग हो चुकी है पर सेव नहीं हुई
 
       document.getElementById("initialRecordSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
@@ -520,7 +510,6 @@
       if(playbackTimer) clearInterval(playbackTimer);
       recordedDurationSeconds = 0;
       hasUnsavedChanges = false;
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
@@ -580,7 +569,6 @@
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
-    // स्क्रीन पर ऊपर दिया गया बैक एरो दबाने पर
     function attemptExit() {
       if (hasUnsavedChanges) {
         showUnsavedPopup();
@@ -593,15 +581,14 @@
       document.getElementById("unsavedModal").style.display = "flex";
     }
 
-    // अगर यूजर 'NO, THANKS' चुनेगा
+    // अगर यूजर 'NO, THANKS' चुनेगा तो रिकॉर्डिंग सेव नहीं होगी और वह बाहर चला जाएगा
     function exitWithoutSaving() {
       hasUnsavedChanges = false;
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
       document.getElementById("unsavedModal").style.display = "none";
       window.location.replace("edit-profile.html");
     }
 
-    // अगर यूजर 'SAVE' चुनेगा
+    // अगर यूजर 'SAVE' चुनेगा तो रिकॉर्डिंग सेव हो जाएगी और वह बाहर चला जाएगा
     function saveAndExit() {
       saveVoiceRecordingFinal();
     }
@@ -616,7 +603,6 @@
       hasUnsavedChanges = false;
       localStorage.setItem("greedy_voiceshow_duration", finalSec);
       localStorage.setItem("greedy_voiceshow_saved", "true");
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("unsavedModal").style.display = "none";
       alert("Voice show saved successfully!");
