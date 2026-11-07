@@ -17,7 +17,7 @@
       let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
       let cachedGender = localStorage.getItem("prof_gender_" + currentId);
       let cachedBio = localStorage.getItem("prof_bio_" + currentId);
-      let cachedLoc = localStorage.getItem("prof_location") || localStorage.getItem("prof_location_" + currentId) || "India";
+      let cachedLoc = localStorage.getItem("prof_location") || "India";
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -761,7 +761,6 @@
       document.getElementById("languagesModal").style.display = "none";
     }
 
-    // 🌟 Languages अपने अलग 'Done' बटन से सेव होगी
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
@@ -778,6 +777,12 @@
     }
 
     function loadUserDataFromFirebase() {
+      // 🌟 तुरंत लोकल स्टोरेज से लोकेशन सेट करें ताकि डिले न हो
+      let localLoc = localStorage.getItem("prof_location");
+      if (localLoc) {
+        document.getElementById("selectedLocationDisplay").innerText = localLoc;
+      }
+
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
@@ -815,6 +820,7 @@
           }
           if (data.location) {
             document.getElementById("selectedLocationDisplay").innerText = data.location;
+            localStorage.setItem("prof_location", data.location);
           }
         }
       }).catch((err) => {
@@ -890,7 +896,6 @@
       document.getElementById("relationshipModal").style.display = "none";
     }
 
-    // 🌟 Relationship status अपने अलग 'CONFIRM' बटन से सेव होगी
     function confirmRelationship() {
       let selected = document.querySelector('input[name="relStatus"]:checked');
       if(selected) {
