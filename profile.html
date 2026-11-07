@@ -141,9 +141,9 @@
     
     .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (1-10: हल्का फीका हरा, 11-30: नीला, 31-100: ऑरेंज) */
+    /* 🌟 लेवल टैग (बैकग्राउंड डाइनैमिक: 1-10 हरा, 11-30 नीला, 31-100 ऑरेंज) */
     .tag-lv { 
-      color: #ffffff; 
+      color: #ffffff !important; 
       font-size: 11px; 
       font-weight: 800; 
       padding: 2px 8px; 
@@ -153,12 +153,13 @@
       gap: 3px; 
     }
     
-    /* 🌟 स्टार (⭐): सफेद, बिना किसी बॉर्डर या शैडो के */
-    .tag-lv span.star { 
-      color: #ffffff; 
+    /* 🌟 स्टार और पूरा टेक्स्ट एकदम पक्का सफेद */
+    .tag-lv span, .tag-lv { 
+      color: #ffffff !important; 
+      text-shadow: none !important; 
     }
 
-    /* 🌟 देश का झंडा लोगो (क्लिक बंद, सिर्फ शो होगा)[span_0](start_span)[span_0](end_span) */
+    /* 🌟 देश का झंडा लोगो (क्लिक बंद)[span_0](start_span)[span_0](end_span) */
     .country-flag-badge {
       width: 24px;
       height: 18px;
@@ -236,7 +237,7 @@
 
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
-            <span class="star">⭐</span> Lv.<span id="profLevel">1</span>
+            <span>⭐</span> Lv.<span id="profLevel">1</span>
           </div>
           <!-- देश का झंडा लोगो (क्लिक बंद)[span_1](start_span)[span_1](end_span) -->
           <div class="country-flag-badge" title="Country Flag">
@@ -390,11 +391,11 @@
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#81c784"; // हल्का फीका हरा (Light/Pastel Green)
+        lvTag.style.backgroundColor = "#81c784"; // हल्का फीका हरा
       } else if (lvl <= 30) {
-        lvTag.style.backgroundColor = "#2196f3"; // नीला (Blue)
+        lvTag.style.backgroundColor = "#2196f3"; // नीला
       } else {
-        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज (Orange)
+        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज
       }
     }
 
