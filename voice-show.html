@@ -23,7 +23,7 @@
       justify-content: center;
       color: #333;
       height: 100vh;
-      overflow: hidden; /* 🌟 पेज को पूरी तरह स्थिर रखने के लिए स्क्रॉल बंद किया गया है */
+      overflow: hidden;
     }
 
     .page-container {
@@ -36,17 +36,17 @@
       background: #ffffff;
       justify-content: space-between;
       padding-bottom: 50px;
-      overflow: hidden; /* 🌟 अंदर का कोई भी कंटेट पेज को हिलाएगा नहीं */
+      overflow: hidden;
     }
 
-    /* 🌟 टॉप बार और नीचे केस जैसी लाइन (Border-bottom) */
+    /* टॉप बार और केस जैसी लाइन */
     .top-bar {
       display: flex;
       align-items: center;
       padding: 16px 20px;
       gap: 20px;
       background: #ffffff;
-      border-bottom: 1px solid #f0f0f0; /* 🌟 लेफ्ट से राइट तक केस जैसी लाइन */
+      border-bottom: 1px solid #f0f0f0;
       position: sticky;
       top: 0;
       z-index: 50;
@@ -111,7 +111,7 @@
       align-items: center;
       gap: 12px;
       width: 100%;
-      margin-bottom: 40px; /* 🌟 अपनी जगह पर एकदम स्थिर */
+      margin-bottom: 40px;
     }
 
     .hold-text {
@@ -120,13 +120,13 @@
       font-weight: 500;
     }
 
-    /* माइक बटन */
+    /* 🌟 माइक बटन: बाहर की सफेद बॉर्डर को पतला किया गया और लोगो बड़ा किया गया */
     .mic-btn {
       width: 92px;
       height: 92px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
-      border: none;
+      border: 3px solid rgba(255, 255, 255, 0.35); /* 🌟 बॉर्डर को पतला (3px) कर दिया गया है */
       outline: none;
       cursor: pointer;
       display: flex;
@@ -135,12 +135,13 @@
       box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
     }
 
+    /* 🌟 माइक के अंदर का लोगो (SVG) थोड़ा और बड़ा किया गया */
     .mic-btn svg {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       stroke: #ffffff;
       fill: none;
-      stroke-width: 1.8;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -204,7 +205,7 @@
       height: 92px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
-      border: none;
+      border: 3px solid rgba(255, 255, 255, 0.35); /* 🌟 सेव बटन की बॉर्डर भी पतली की गई */
       outline: none;
       cursor: pointer;
       display: flex;
@@ -221,6 +222,7 @@
       background: #dcd6e4 !important;
       color: #a095b0 !important;
       box-shadow: none !important;
+      border: 3px solid transparent !important;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -326,6 +328,7 @@
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
+        <!-- 🌟 बड़ा और सुंदर माइक लोगो -->
         <svg viewBox="0 0 24 24">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
