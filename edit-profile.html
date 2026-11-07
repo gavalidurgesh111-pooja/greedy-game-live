@@ -35,8 +35,8 @@
       flex-direction: column;
       background: #ffffff;
       padding-bottom: 40px;
-      opacity: 0;
-      transition: opacity 0.2s ease-in;
+      /* 🌟 अब पेज बिना किसी डिले के तुरंत सामने दिखेगा */
+      opacity: 1;
     }
 
     /* टॉप बार */
@@ -366,7 +366,7 @@
       font-weight: 600;
     }
 
-    /* 🌟 टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड, काले अक्षर और सुंदर शैडो */
+    /* टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड, काले अक्षर और सुंदर शैडो */
     .toast-popup-profile {
       display: none;
       position: fixed;
@@ -550,7 +550,7 @@
     </div>
   </div>
 
-  <!-- 🌟 टोस्ट पॉप-अप एलिमेंट (सफेद बैकग्राउंड और काले अक्षर) -->
+  <!-- टोस्ट पॉप-अप एलिमेंट -->
   <div id="profileToast" class="toast-popup-profile">Upload successfully</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -603,7 +603,6 @@
       }
     };
 
-    // 🌟 यह फंक्शन चेक करेगा कि कौन सा पॉप-अप (Upload या Delete) दिखाना है
     function checkAndShowToast() {
       let msg = localStorage.getItem("show_toast_message");
       if (msg) {
@@ -618,7 +617,6 @@
       }
     }
 
-    // यह फंक्शन चेक करेगा कि वॉयस शो सेव है या डिलीट हो चुका है
     function checkVoiceStatus() {
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
@@ -640,7 +638,6 @@
       }
     }
 
-    // जब यूजर ब्राउज़र में वापस इस पेज पर आएगा, तब भी यह तुरंत चेक कर लेगा
     window.addEventListener('pageshow', function() {
       checkVoiceStatus();
       checkAndShowToast();
@@ -761,10 +758,8 @@
             checkVoiceStatus();
           }
         }
-        document.getElementById("mainContainer").style.opacity = "1";
       }).catch((err) => {
         console.error("Error loading user data:", err);
-        document.getElementById("mainContainer").style.opacity = "1";
       });
     }
 
