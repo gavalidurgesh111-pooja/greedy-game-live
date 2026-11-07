@@ -141,7 +141,7 @@
     
     .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (डायनेमिक बैकग्राउंड: 1-10 पोपटी हरा, 11-30 नीला, 31-100 ऑरेंज) */
+    /* 🌟 लेवल टैग (1-10: हल्का फीका हरा, 11-30: नीला, 31-100: ऑरेंज) */
     .tag-lv { 
       color: #ffffff; 
       font-size: 11px; 
@@ -153,30 +153,29 @@
       gap: 3px; 
     }
     
-    /* 🌟 स्टार (⭐): सफेद रंग, अंदर-बाहर से सफेद, हल्का काला बॉर्डर घेरा */
+    /* 🌟 स्टार (⭐): सफेद, बिना किसी बॉर्डर या शैडो के */
     .tag-lv span.star { 
       color: #ffffff; 
-      text-shadow: 0 0 2px rgba(0,0,0,0.7), 0 0 1px rgba(0,0,0,0.7); 
     }
 
-    /* 🌟 नया देश का झंडा वाला लोगो (जैसा आपने इमेज में भेजा है, क्लिक नहीं होगा, सिर्फ शो होगा) */
+    /* 🌟 देश का झंडा लोगो (क्लिक बंद, सिर्फ शो होगा)[span_0](start_span)[span_0](end_span) */
     .country-flag-badge {
       width: 24px;
       height: 18px;
-      background-color: #2196f3; /* नीला बैकग्राउंड जैसा इमेज में है */
+      background-color: #2196f3;
       border-radius: 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      pointer-events: none; /* क्लिक बंद */
+      pointer-events: none;
       overflow: hidden;
       flex-shrink: 0;
     }
-    .country-flag-badge img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    .country-flag-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: #ffffff;
     }
 
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
@@ -235,15 +234,13 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 🌟 Lv.1 टैग (लेवल के रंग के साथ) और देश का झंडा लोगो ठीक इसके सामने -->
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
             <span class="star">⭐</span> Lv.<span id="profLevel">1</span>
           </div>
-          <!-- देश का झंडा लोगो (क्लिक बंद, सिर्फ शो होगा) -->
+          <!-- देश का झंडा लोगो (क्लिक बंद)[span_1](start_span)[span_1](end_span) -->
           <div class="country-flag-badge" title="Country Flag">
-            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #ffffff;">
-              <!-- देश के झंडे या प्रतीक का आइकॉन (या आप यहाँ <img> टैग से अपनी झंडे की इमेज डाल सकते हैं) -->
+            <svg viewBox="0 0 24 24">
               <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93a8 8 0 0 1-6-7.43h6zM13 11h7a8 8 0 0 1-7 7.43zm7-2h-7V4.07a8 8 0 0 1 7 7.43zM6 4.07V9H4a8 8 0 0 1 2-4.93zM4 11h2v5H4a8 8 0 0 1 0-5zm2 7h7v4.93A8 8 0 0 1 6 18z"></path>
             </svg>
           </div>
@@ -387,13 +384,13 @@
       window.location.replace("home.html");
     });
 
-    // 🌟 लेवल के हिसाब से बैकग्राउंड रंग बदलने वाला फंक्शन (1-10: पोपटी हरा, 11-30: नीला, 31-100: ऑरेंज)
+    // 🌟 लेवल के हिसाब से बैकग्राउंड रंग (1-10: हल्का फीका हरा, 11-30: नीला, 31-100: ऑरेंज)
     function updateLevelBackground(lvl) {
       const lvTag = document.getElementById("profLevelTag");
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#4caf50"; // पोपटी हरा (Lime/Light Green)
+        lvTag.style.backgroundColor = "#81c784"; // हल्का फीका हरा (Light/Pastel Green)
       } else if (lvl <= 30) {
         lvTag.style.backgroundColor = "#2196f3"; // नीला (Blue)
       } else {
@@ -406,7 +403,6 @@
       document.getElementById("profLevel").innerText = userLevel;
       document.getElementById("aboutUserId").innerText = userId;
       
-      // लेवल के आधार पर रंग सेट करें
       updateLevelBackground(userLevel);
       
       const avatarImg = document.getElementById("profAvatarImg");
