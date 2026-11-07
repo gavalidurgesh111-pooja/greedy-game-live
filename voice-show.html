@@ -99,7 +99,6 @@
       margin-bottom: 60px;
     }
 
-    /* रिकॉर्डिंग सेक्शन (चौदहवीं फोटो जैसा: Delete, Mic, Listen)[span_4](start_span)[span_4](end_span) */
     .record-actions-row {
       display: flex;
       flex-direction: row;
@@ -168,7 +167,39 @@
       stroke-linejoin: round;
     }
 
-    /* परमिशन पॉप-अप स्टाइल */
+    .disabled-action {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .post-record-actions {
+      display: none;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      width: 100%;
+      padding: 0 20px;
+      margin-bottom: 30px;
+    }
+
+    .save-big-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+    }
+
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -232,7 +263,6 @@
     </div>
 
     <div class="content-center">
-      <!-- अगर रिकॉर्डिंग नहीं है तो टेक्स्ट दिखेगा, रिकॉर्ड होने पर वेवफॉर्म और सेकंड दिखेंगे -->
       <div class="prompt-text" id="promptText">What do you want to say?</div>
       
       <div class="waveform-display" id="waveformDisplay">
@@ -242,8 +272,8 @@
       </div>
     </div>
 
-    <!-- 🌟 चौदहवीं फोटो जैसा निचला लेआउट: Delete, Mic (Hold to speak वाला), Listen[span_5](start_span)[span_5](end_span) -->
-    <div class="record-actions-row">
+    <!-- सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete, Mic, Listen)[span_1](start_span)[span_1](end_span) -->
+    <div class="record-actions-row" id="savedRecordActions" style="display: none;">
       <button class="action-sub-btn" onclick="deleteExistingRecording()">
         <div class="action-sub-icon">
           <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -251,16 +281,55 @@
         <span class="action-sub-label">Delete</span>
       </button>
 
-      <!-- माइक बटन (इसे दबाकर रखने पर ही नई रिकॉर्डिंग होगी) -->
-      <button class="mic-btn-center" id="micButton">
+      <button class="mic-btn-center" id="micButtonSaved">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
       </button>
 
-      <button class="action-sub-btn" id="listenActionBtn" onclick="togglePlayPauseAudio()">
+      <button class="action-sub-btn" onclick="togglePlayPauseAudio()">
         <div class="action-sub-icon" id="listenIconContainer">
           <svg viewBox="0 0 24 24" id="listenSvgIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
         <span class="action-sub-label" id="listenLabel">Listen</span>
+      </button>
+    </div>
+
+    <!-- एकदम फ्रेश रिकॉर्डिंग मोड (नया यूजर या डिलीट करने के बाद) -->
+    <div class="record-actions-row" id="freshRecordSection" style="display: none;">
+      <button class="action-sub-btn disabled-action">
+        <div class="action-sub-icon">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </div>
+        <span class="action-sub-label">Delete</span>
+      </button>
+
+      <button class="mic-btn-center" id="micButtonFresh">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+      </button>
+
+      <button class="action-sub-btn disabled-action">
+        <div class="action-sub-icon">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+        <span class="action-sub-label">Listen</span>
+      </button>
+    </div>
+
+    <!-- नई रिकॉर्डिंग पूरी होने के बाद दिखने वाला मोड (Re-record, Save, Listen) -->
+    <div class="post-record-actions" id="postRecordActions">
+      <button class="action-sub-btn" onclick="reRecordAudio()">
+        <div class="action-sub-icon">
+          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+        </div>
+        <span class="action-sub-label">Re-record</span>
+      </button>
+
+      <button class="save-big-btn" onclick="saveVoiceRecordingFinal()">Save</button>
+
+      <button class="action-sub-btn" onclick="previewNewRecording()">
+        <div class="action-sub-icon">
+          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        </div>
+        <span class="action-sub-label">Listen</span>
       </button>
     </div>
   </div>
@@ -283,7 +352,7 @@
     let recordingTimer = null;
     let playbackTimer = null;
     let secondsElapsed = 0;
-    let recordedDurationSeconds = 0;
+    let recordedDurationSeconds = 7;
     let isPlaying = false;
 
     window.onload = function() {
@@ -294,35 +363,39 @@
 
       setupHoldToSpeakListeners();
 
-      // चेक करें कि क्या पहले से कोई वॉयस शो सेव है (तेरहवीं फोटो वाला स्टेट)[span_6](start_span)[span_6](end_span)
-      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
 
       if (isSaved === "true" && savedDuration) {
         recordedDurationSeconds = parseInt(savedDuration);
-        // चौदहवीं फोटो जैसा डिस्प्ले दिखाएं: पुरानी रिकॉर्डिंग सामने होगी[span_7](start_span)[span_7](end_span)
         document.getElementById("promptText").style.display = "none";
         document.getElementById("waveformDisplay").style.display = "flex";
         document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
+        
+        document.getElementById("savedRecordActions").style.display = "flex";
+        document.getElementById("freshRecordSection").style.display = "none";
       } else {
-        // अगर रिकॉर्डिंग नहीं है, तो फ्रेश पेज
         document.getElementById("promptText").style.display = "block";
         document.getElementById("waveformDisplay").style.display = "none";
+        document.getElementById("savedRecordActions").style.display = "none";
+        document.getElementById("freshRecordSection").style.display = "flex";
       }
     };
 
     function setupHoldToSpeakListeners() {
-      let micBtn = document.getElementById("micButton");
+      let micSaved = document.getElementById("micButtonSaved");
+      let micFresh = document.getElementById("micButtonFresh");
 
-      micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
-      micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
-      micBtn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
-      micBtn.addEventListener("touchend", function(e) { e.preventDefault(); onHoldEnd(); });
-      micBtn.addEventListener("mouseleave", function(e) { if (isRecording) { onHoldEnd(); } });
+      [micSaved, micFresh].forEach(btn => {
+        btn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
+        btn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
+        btn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
+        btn.addEventListener("touchend", function(e) { e.preventDefault(); onHoldEnd(); });
+        btn.addEventListener("mouseleave", function(e) { if (isRecording) { onHoldEnd(); } });
+      });
     }
 
     function onHoldStart() {
-      // नियम: अगर पहले से रिकॉर्डिंग मौजूद है और डिलीट नहीं की गई है, तो नई रिकॉर्डिंग शुरू न हो
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       if (isSaved === "true") {
         alert("Please delete the existing recording before recording a new one.");
@@ -382,20 +455,43 @@
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
       } else {
-        recordedDurationSeconds = 6;
+        recordedDurationSeconds = 7;
       }
 
-      // रिकॉर्डिंग पूरी होते ही तुरंत सेव करके प्रोफाइल पर अपडेट कर दें
-      localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
-      localStorage.setItem("greedy_voiceshow_saved", "true");
-
+      document.getElementById("freshRecordSection").style.display = "none";
+      document.getElementById("savedRecordActions").style.display = "none";
+      document.getElementById("postRecordActions").style.display = "flex";
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
       document.getElementById("waveformDisplay").style.display = "flex";
+    }
+
+    function reRecordAudio() {
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
+      
+      document.getElementById("postRecordActions").style.display = "none";
+      document.getElementById("promptText").style.display = "block";
+      document.getElementById("waveformDisplay").style.display = "none";
+      document.getElementById("freshRecordSection").style.display = "flex";
+      secondsElapsed = 0;
+    }
+
+    function saveVoiceRecordingFinal() {
+      if(recordingTimer) clearInterval(recordingTimer);
+      if(playbackTimer) clearInterval(playbackTimer);
+      
+      localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
+      localStorage.setItem("greedy_voiceshow_saved", "true");
+      
       alert("Voice show saved successfully!");
       window.location.replace("edit-profile.html");
     }
 
-    // 🌟 जब यूजर Delete बटन दबाएगा, तभी पुरानी रिकॉर्डिंग डिलीट होगी और नया रिकॉर्ड कर सकेगा
+    function previewNewRecording() {
+      alert("Duration: " + recordedDurationSeconds + " seconds");
+    }
+
+    // 🌟 डिलीट बटन दबाते ही पुरानी रिकॉर्डिंग, डिलीट और Listen बटन तुरंत हट जाएंगे और फ्रेश पेज आ जाएगा
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -403,25 +499,17 @@
       localStorage.removeItem("greedy_voiceshow_duration");
       localStorage.removeItem("greedy_voiceshow_saved");
 
-      recordedDurationSeconds = 0;
+      recordedDurationSeconds = 7;
       isPlaying = false;
 
-      // पेज को फ्रेश रिकॉर्डिंग मोड में लाएं
+      // पुराने सेव्ड बटंस और वेवफॉर्म को तुरंत छुपाकर फ्रेश पेज दिखाएं
+      document.getElementById("savedRecordActions").style.display = "none";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("promptText").style.display = "block";
-      document.getElementById("listenSvgIcon").innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
-      document.getElementById("listenLabel").innerText = "Listen";
-      
-      alert("Recording deleted. You can record a new one now.");
+      document.getElementById("freshRecordSection").style.display = "flex";
     }
 
     function togglePlayPauseAudio() {
-      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
-      if (isSaved !== "true") {
-        alert("No recording to listen!");
-        return;
-      }
-
       if (isPlaying) {
         if(playbackTimer) clearInterval(playbackTimer);
         resetPlayButtonUI();
@@ -429,13 +517,12 @@
       }
 
       isPlaying = true;
-
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
       document.getElementById("listenLabel").innerText = "Pause";
 
       document.getElementById("waveformDisplay").style.display = "flex";
-      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 6;
+      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
 
@@ -459,7 +546,6 @@
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
       document.getElementById("listenLabel").innerText = "Listen";
-
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
   </script>
