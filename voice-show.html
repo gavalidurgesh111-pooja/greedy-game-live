@@ -120,13 +120,13 @@
       font-weight: 500;
     }
 
-    /* 🌟 माइक बटन: बाहर की सफेद बॉर्डर को पतला किया गया और लोगो बड़ा किया गया */
+    /* 🌟 माइक बटन: कोई सफेद बॉर्डर नहीं, एकदम साफ़ और सुंदर पर्पल ग्रेडिएंट */
     .mic-btn {
       width: 92px;
       height: 92px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
-      border: 3px solid rgba(255, 255, 255, 0.35); /* 🌟 बॉर्डर को पतला (3px) कर दिया गया है */
+      border: none; /* 🌟 सफेद बॉर्डर पूरी तरह हटा दी गई है */
       outline: none;
       cursor: pointer;
       display: flex;
@@ -135,15 +135,16 @@
       box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
     }
 
-    /* 🌟 माइक के अंदर का लोगो (SVG) थोड़ा और बड़ा किया गया */
+    /* 🌟 माइक के अंदर का लोगो (SVG): पतला, सामान्य बड़ा और थोड़ा ऊपर सेट किया गया */
     .mic-btn svg {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       stroke: #ffffff;
       fill: none;
-      stroke-width: 2;
+      stroke-width: 1.6; /* 🌟 रेखाओं को पतला किया गया */
       stroke-linecap: round;
       stroke-linejoin: round;
+      transform: translateY(-2px); /* 🌟 लोगो को थोड़ा ऊपर शिफ्ट किया गया */
     }
 
     .saved-actions-row {
@@ -205,7 +206,7 @@
       height: 92px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
-      border: 3px solid rgba(255, 255, 255, 0.35); /* 🌟 सेव बटन की बॉर्डर भी पतली की गई */
+      border: none; /* 🌟 बॉर्डर हटाई गई */
       outline: none;
       cursor: pointer;
       display: flex;
@@ -222,7 +223,6 @@
       background: #dcd6e4 !important;
       color: #a095b0 !important;
       box-shadow: none !important;
-      border: 3px solid transparent !important;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -328,7 +328,7 @@
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
-        <!-- 🌟 बड़ा और सुंदर माइक लोगो -->
+        <!-- 🌟 पतला और ऊपर शिफ्ट किया गया माइक लोगो -->
         <svg viewBox="0 0 24 24">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
