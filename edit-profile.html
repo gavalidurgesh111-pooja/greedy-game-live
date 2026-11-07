@@ -17,6 +17,9 @@
       let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
       let cachedGender = localStorage.getItem("prof_gender_" + currentId);
       let cachedBio = localStorage.getItem("prof_bio_" + currentId);
+      let cachedRel = localStorage.getItem("prof_rel_" + currentId);
+      let cachedLoc = localStorage.getItem("prof_location_" + currentId);
+      let cachedLangs = localStorage.getItem("prof_langs_" + currentId);
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -53,6 +56,24 @@
             let bioCnt = document.getElementById("bioCounter");
             if(bioCnt) bioCnt.innerText = cachedBio.length + "/140";
           }
+        });
+      }
+      if (cachedRel) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let relField = document.getElementById("selectedStatusDisplay");
+          if(relField) relField.innerText = cachedRel;
+        });
+      }
+      if (cachedLoc) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let locField = document.getElementById("selectedLocationDisplay");
+          if(locField) locField.innerText = cachedLoc;
+        });
+      }
+      if (cachedLangs) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let langField = document.getElementById("selectedLanguagesDisplay");
+          if(langField) langField.innerText = cachedLangs;
         });
       }
     })();
@@ -125,7 +146,7 @@
       stroke-linejoin: round;
     }
 
-    /* 🌟 सेव बटन का डिफ़ॉल्ट (OFF/शांत) स्टेट - धुंधला और इनएक्टिव */
+    /* 🌟 मास्टर सेव बटन (डिफ़ॉल्ट रूप से बंद/इनएक्टिव) */
     .save-btn svg {
       width: 24px;
       height: 24px;
@@ -138,18 +159,17 @@
     }
 
     .save-btn {
-      pointer-events: none; /* जब तक बदलाव न हो, क्लिक बंद रहेगा */
+      pointer-events: none;
       cursor: default;
     }
 
-    /* 🌟 जब यूजर बदलाव करेगा, तब बटन (ON/चमकदार) हो जाएगा */
     .save-btn.active-save {
       pointer-events: auto;
       cursor: pointer;
     }
 
     .save-btn.active-save svg {
-      stroke: #00b09b; /* चमकदार हरा रंग */
+      stroke: #00b09b;
     }
 
     .page-title {
@@ -471,7 +491,7 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
-      <!-- 🌟 सेव बटन (डिफ़ॉल्ट रूप से बंद/इनएक्टिव) -->
+      <!-- 🌟 मास्टर सेव बटन: यह सिर्फ ऊपर के 4 ऑप्शंस के लिए काम करेगा -->
       <button class="save-btn" id="masterSaveBtn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
@@ -591,7 +611,7 @@
     </div>
   </div>
 
-  <!-- Relationship Status Modal -->
+  <!-- Relationship Status Modal (अपनी खुद की CONFIRM/CANCEL बटन से सेव होगी) -->
   <div id="relationshipModal" class="modal-overlay-center">
     <div class="modal-content-center">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 20px;">Relationship status</h3>
@@ -608,7 +628,7 @@
     </div>
   </div>
 
-  <!-- Languages Selection Modal -->
+  <!-- Languages Selection Modal (अपनी खुद की Done बटन से सेव होगी) -->
   <div id="languagesModal" class="modal-overlay">
     <div class="modal-content-bottom">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 5px;">Select Languages</h3>
@@ -639,11 +659,8 @@
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
     let tempSelectedAge = 18;
-    let currentRelationship = "Single";
     let selectedLanguages = [];
-    let recordedAudioUrl = "";
-
-    const allLanguagesList = [
+    let allLanguagesList = [
       "English", "Hindi", "Marathi", "Gujarati", "Panjabi", "Bhili", "konkani", "kannada", 
       "Telugu", "Tamil", "Malayalam", "Marwari", "Odia", "Bhihari", "bhojpuri", "Rajasthan", 
       "kashmiri", "Ladakhi", "Nepali", "Maithili", "Bengali", "khasi", "Assamese", "Nissi", 
@@ -684,7 +701,7 @@
       let statusContainer = document.getElementById("voiceStatusDisplay");
 
       if (isSaved === "true" && savedDuration) {
-        recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
+        let recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
         statusContainer.innerHTML = `
           <div class="voice-played-badge">
             <div class="play-circle-icon">
@@ -694,7 +711,6 @@
           </div>
         `;
       } else {
-        recordedAudioUrl = "";
         statusContainer.innerHTML = "Not recorded";
       }
     }
@@ -759,10 +775,20 @@
       document.getElementById("languagesModal").style.display = "none";
     }
 
+    // 🌟 Languages अपने अलग 'Done' बटन से तुरंत फायरबेस में सेव होगी
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
       closeLanguagesModal();
+
+      db.collection("users").doc(currentIdentifier).set({
+        languages: selectedLanguages
+      }, { merge: true }).then(() => {
+        let toast = document.getElementById("profileToast");
+        toast.innerText = "Upload successfully";
+        toast.style.display = "block";
+        setTimeout(() => { toast.style.display = "none"; }, 2000);
+      });
     }
 
     function loadUserDataFromFirebase() {
@@ -789,8 +815,7 @@
             updateBioCounter();
           }
           if (data.relationship) {
-            currentRelationship = data.relationship;
-            document.getElementById("selectedStatusDisplay").innerText = currentRelationship;
+            document.getElementById("selectedStatusDisplay").innerText = data.relationship;
           }
           if (data.languages && Array.isArray(data.languages)) {
             selectedLanguages = data.languages;
@@ -805,21 +830,12 @@
           if (data.location) {
             document.getElementById("selectedLocationDisplay").innerText = data.location;
           }
-          if (data.voiceShow && !localStorage.getItem("greedy_voiceshow_saved")) {
-            let recordedAudioUrl = data.voiceShow;
-            let matchSec = recordedAudioUrl.match(/_(\d+)s/);
-            let secVal = matchSec ? matchSec[1] : "7";
-            localStorage.setItem("greedy_voiceshow_saved", "true");
-            localStorage.setItem("greedy_voiceshow_duration", secVal);
-            checkVoiceStatus();
-          }
         }
       }).catch((err) => {
         console.error("Error loading user data:", err);
       });
     }
 
-    // 🌟 जब भी ऊपर के 4 ऑप्शन (Nickname, Age, Gender, What's up) में बदलाव होगा, बटन ON हो जाएगा
     function onFieldChanged() {
       let saveBtn = document.getElementById("masterSaveBtn");
       saveBtn.classList.add("active-save");
@@ -875,7 +891,7 @@
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
-        onFieldChanged(); // उम्र बदलने पर भी बटन ON होगा
+        onFieldChanged();
       }
       closeAgeModal();
     }
@@ -888,16 +904,26 @@
       document.getElementById("relationshipModal").style.display = "none";
     }
 
+    // 🌟 Relationship status अपने अलग 'CONFIRM' बटन से तुरंत फायरबेस में सेव होगी
     function confirmRelationship() {
       let selected = document.querySelector('input[name="relStatus"]:checked');
       if(selected) {
-        currentRelationship = selected.value;
-        document.getElementById("selectedStatusDisplay").innerText = currentRelationship;
+        let relVal = selected.value;
+        document.getElementById("selectedStatusDisplay").innerText = relVal;
+        closeRelationshipModal();
+
+        db.collection("users").doc(currentIdentifier).set({
+          relationship: relVal
+        }, { merge: true }).then(() => {
+          let toast = document.getElementById("profileToast");
+          toast.innerText = "Upload successfully";
+          toast.style.display = "block";
+          setTimeout(() => { toast.style.display = "none"; }, 2000);
+        });
       }
-      closeRelationshipModal();
     }
 
-    // 🌟 मास्टर सेव बटन (✔): यह सिर्फ Nickname, Age, Gender और What's up को डेटाबेस में सेव करेगा और बटन वापस OFF हो जाएगा
+    // 🌟 मास्टर सेव बटन (✔): यह केवल Nickname, Age, Gender और What's up को सेव करेगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -915,7 +941,6 @@
         gender: gender,
         bio: bio
       }, { merge: true }).then(() => {
-        // बटन वापस OFF करें
         let saveBtn = document.getElementById("masterSaveBtn");
         saveBtn.classList.remove("active-save");
 
