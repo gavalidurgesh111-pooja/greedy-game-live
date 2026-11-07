@@ -38,7 +38,6 @@
       padding-bottom: 40px;
     }
 
-    /* टॉप बार */
     .top-bar {
       display: flex;
       align-items: center;
@@ -72,7 +71,6 @@
       color: #111;
     }
 
-    /* बीच का हिस्सा */
     .content-center {
       display: flex;
       flex-direction: column;
@@ -101,7 +99,6 @@
       margin-bottom: 60px;
     }
 
-    /* नीचे रिकॉर्डिंग बटन सेक्शन */
     .record-section {
       display: flex;
       flex-direction: column;
@@ -129,11 +126,6 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-      transition: transform 0.1s ease;
-    }
-
-    .mic-btn:active {
-      transform: scale(0.92);
     }
 
     .mic-btn svg {
@@ -146,7 +138,7 @@
       stroke-linejoin: round;
     }
 
-    /* पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen)[span_0](start_span)[span_0](end_span) */
+    /* पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -209,25 +201,15 @@
       transition: all 0.3s ease;
     }
 
+    /* जब सेव बटन OFF (धुंधला और असक्षम) रहेगा */
     .save-big-btn.disabled-save {
       background: #e0e0e0 !important;
       color: #aaa !important;
       box-shadow: none !important;
       cursor: not-allowed;
+      pointer-events: none;
     }
 
-    /* लिसनिंग मोड (Re-record, Save(OFF), Pause)[span_1](start_span)[span_1](end_span) */
-    .listening-actions {
-      display: none;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-around;
-      width: 100%;
-      padding: 0 20px;
-      margin-bottom: 30px;
-    }
-
-    /* कस्टम परमिशन पॉप-अप */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -250,20 +232,6 @@
       align-items: center;
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .dialog-icon {
-      margin-bottom: 16px;
-    }
-
-    .dialog-icon svg {
-      width: 28px;
-      height: 28px;
-      stroke: #555;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
     }
 
     .dialog-message {
@@ -291,34 +259,12 @@
       cursor: pointer;
       padding: 4px;
     }
-
-    .perm-option-cancel {
-      color: #666;
-    }
-
-    .auth-action-btn {
-      background: transparent;
-      border: none;
-      font-size: 15px;
-      color: #3b82f6;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 8px 0;
-      width: 100%;
-      border-top: 1px solid #f0f0f0;
-    }
-
-    .auth-cancel-btn {
-      color: #3b82f6;
-      border-top: none;
-    }
   </style>
 </head>
 
 <body>
 
   <div class="page-container">
-    <!-- टॉप बार -->
     <div class="top-bar">
       <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -326,18 +272,17 @@
       <span class="page-title">Voice show</span>
     </div>
 
-    <!-- बीच का टेक्स्ट और वेवफॉर्म -->
     <div class="content-center">
       <div class="prompt-text" id="promptText">What do you want to say?</div>
       
       <div class="waveform-display" id="waveformDisplay">
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">7</span>
+        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
       </div>
     </div>
 
-    <!-- शुरुआती होल्ड टू स्पीक माइक बटन -->
+    <!-- रिकॉर्डिंग शुरू करने वाला बटन -->
     <div class="record-section" id="initialRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
@@ -345,7 +290,7 @@
       </button>
     </div>
 
-    <!-- पोस्ट-रिकॉर्ड लेआउट (Re-record, Save(Active), Listen)[span_2](start_span)[span_2](end_span) -->
+    <!-- पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -354,32 +299,14 @@
         <span class="action-sub-label">Re-record</span>
       </button>
 
+      <!-- मुख्य Save बटन (सुनते समय OFF हो जाएगा) -->
       <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
-      <button class="action-sub-btn" onclick="listenAudioPlayback()">
+      <button class="action-sub-btn" id="listenBtn" onclick="listenAudioPlayback()">
         <div class="action-sub-icon">
           <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
-        <span class="action-sub-label">Listen</span>
-      </button>
-    </div>
-
-    <!-- लिसनिंग मोड (Re-record, Save(OFF), Pause)[span_3](start_span)[span_3](end_span) -->
-    <div class="listening-actions" id="listeningActionsSection">
-      <button class="action-sub-btn" onclick="reRecordAudio()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-        </div>
-        <span class="action-sub-label">Re-record</span>
-      </button>
-
-      <button class="save-big-btn disabled-save" id="disabledSaveBtn" disabled>Save</button>
-
-      <button class="action-sub-btn" onclick="pausePlaybackManual()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
-        </div>
-        <span class="action-sub-label">Pause</span>
+        <span class="action-sub-label" id="listenLabel">Listen</span>
       </button>
     </div>
   </div>
@@ -387,88 +314,54 @@
   <!-- परमिशन पॉप-अप -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
-      <div class="dialog-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-      </div>
-      <div class="dialog-message" id="permModalText">Allow GREEDYCOIN to record audio?</div>
-      <div class="permission-options" id="firstTimeOptions">
+      <div class="dialog-message">Allow GREEDYCOIN to record audio?</div>
+      <div class="permission-options">
         <button class="perm-option-btn" onclick="grantPermission()">While using the app</button>
         <button class="perm-option-btn" onclick="grantPermission()">Only this time</button>
-        <button class="perm-option-btn perm-option-cancel" onclick="denyPermission()">Don't allow</button>
-      </div>
-      <div id="deniedOptions" style="display:none; width:100%; flex-direction:column; gap:4px;">
-        <button class="auth-action-btn" onclick="grantPermission()">Authorize immediately</button>
-        <button class="auth-action-btn auth-cancel-btn" onclick="closeModal()">Cancel</button>
+        <button class="perm-option-btn" onclick="closeModal()">Don't allow</button>
       </div>
     </div>
   </div>
 
   <script>
     let hasPermission = false;
-    let isDenied = false;
     let isRecording = false;
     let recordingTimer = null;
     let playbackTimer = null;
     let secondsElapsed = 0;
-    let recordedDurationSeconds = 7;
+    let recordedDurationSeconds = 0;
+    let isPlaying = false;
     let pendingHoldAction = false;
 
     window.onload = function() {
       setupHoldToSpeakListeners();
       
-      // चेक करें कि क्या पहले से कोई रिकॉर्डिंग लोकल स्टोरेज में सुरक्षित है
+      // यदि पहले से कोई रिकॉर्डिंग सेव है तो उसे लोड करें
       let savedSec = localStorage.getItem("greedy_voiceshow_temp_sec");
       if (savedSec && parseInt(savedSec) > 0) {
         recordedDurationSeconds = parseInt(savedSec);
         document.getElementById("promptText").style.display = "none";
         document.getElementById("initialRecordSection").style.display = "none";
-        document.getElementById("listeningActionsSection").style.display = "none";
         document.getElementById("postRecordActions").style.display = "flex";
+        document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
+        document.getElementById("waveformDisplay").style.display = "flex";
       }
     };
 
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
 
-      micBtn.addEventListener("mousedown", function(e) {
-        e.preventDefault();
-        onHoldStart();
-      });
-
-      micBtn.addEventListener("touchstart", function(e) {
-        e.preventDefault();
-        onHoldStart();
-      });
-
-      micBtn.addEventListener("mouseup", function(e) {
-        e.preventDefault();
-        onHoldEnd();
-      });
-
-      micBtn.addEventListener("touchend", function(e) {
-        e.preventDefault();
-        onHoldEnd();
-      });
-      
-      micBtn.addEventListener("mouseleave", function(e) {
-        if (isRecording) {
-          onHoldEnd();
-        }
-      });
+      micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
+      micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
+      micBtn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
+      micBtn.addEventListener("touchend", function(e) { e.preventDefault(); onHoldEnd(); });
+      micBtn.addEventListener("mouseleave", function(e) { if (isRecording) { onHoldEnd(); } });
     }
 
     function onHoldStart() {
       if (!hasPermission) {
         pendingHoldAction = true;
-        if (isDenied) {
-          showDeniedDialog();
-        } else {
-          document.getElementById("permModalText").innerText = "Allow GREEDYCOIN to record audio?";
-          document.getElementById("firstTimeOptions").style.display = "flex";
-          let deniedDiv = document.getElementById("deniedOptions");
-          if(deniedDiv) deniedDiv.style.display = "none";
-          document.getElementById("permissionModal").style.display = "flex";
-        }
+        document.getElementById("permissionModal").style.display = "flex";
         return;
       }
       startActualRecording();
@@ -482,28 +375,11 @@
 
     function grantPermission() {
       hasPermission = true;
-      isDenied = false;
       closeModal();
       if (pendingHoldAction) {
         pendingHoldAction = false;
         startActualRecording();
       }
-    }
-
-    function denyPermission() {
-      hasPermission = false;
-      isDenied = true;
-      pendingHoldAction = false;
-      closeModal();
-      showDeniedDialog();
-    }
-
-    function showDeniedDialog() {
-      document.getElementById("permModalText").innerHTML = "Following permissions for GREEDYCOIN is disabled: [android.permission.RECORD_AUDIO] Enable these permissions for GREEDYCOIN in App Info > Permission.<br><br>🎙️ Microphone";
-      document.getElementById("firstTimeOptions").style.display = "none";
-      let deniedDiv = document.getElementById("deniedOptions");
-      deniedDiv.style.display = "flex";
-      document.getElementById("permissionModal").style.display = "flex";
     }
 
     function closeModal() {
@@ -541,44 +417,46 @@
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
       } else {
-        recordedDurationSeconds = 7;
+        recordedDurationSeconds = 5;
       }
 
-      // तुरंत लोकल स्टोरेज में सुरक्षित करें ताकि गायब न हो
       localStorage.setItem("greedy_voiceshow_temp_sec", recordedDurationSeconds);
 
-      document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "flex";
+      document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
+      document.getElementById("waveformDisplay").style.display = "flex";
     }
 
     function reRecordAudio() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
-      recordedDurationSeconds = 7;
+      recordedDurationSeconds = 0;
       localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
       document.getElementById("postRecordActions").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
       document.getElementById("holdInstructionText").innerText = "Hold to speak";
       secondsElapsed = 0;
+      isPlaying = false;
     }
 
+    /* 🌟 Listen पर क्लिक करने पर: Save बटन OFF होगा, और सेकंड उल्टे घटकर 0 पर आएंगे */
     function listenAudioPlayback() {
-      document.getElementById("postRecordActions").style.display = "none";
-      
-      let waveDisp = document.getElementById("waveformDisplay");
-      waveDisp.style.display = "flex";
-      
+      if (isPlaying) return; // अगर पहले से बज रहा है तो डबल क्लिक न हो
+      isPlaying = true;
+
+      let saveBtn = document.getElementById("mainSaveBtn");
+      saveBtn.classList.add("disabled-save"); // Save बटन OFF
+
+      let listenLabel = document.getElementById("listenLabel");
+      listenLabel.innerText = "Pause"; // Listen बदलकर Pause हो जाएगा
+
       let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
-
-      document.getElementById("listeningActionsSection").style.display = "flex";
 
       if(playbackTimer) clearInterval(playbackTimer);
 
@@ -588,26 +466,28 @@
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          stopPlaybackAndReset(recordedDurationSeconds);
+          // 0 पर पहुँचने पर: Save बटन फिर से ON होगा, Listen वापस आएगा, और सेकंड्स अपनी सही पोजीशन में आ जाएंगे
+          resetAfterPlayback();
         }
       }, 1000);
     }
 
-    function pausePlaybackManual() {
+    function resetAfterPlayback() {
       if(playbackTimer) clearInterval(playbackTimer);
-      stopPlaybackAndReset(recordedDurationSeconds);
-    }
+      isPlaying = false;
 
-    function stopPlaybackAndReset(originalSec) {
-      if(playbackTimer) clearInterval(playbackTimer);
-      document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("listeningActionsSection").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "flex";
-      
-      document.getElementById("recordedSecondsCount").innerText = originalSec;
+      let saveBtn = document.getElementById("mainSaveBtn");
+      saveBtn.classList.remove("disabled-save"); // Save बटन फिर से ON
+
+      let listenLabel = document.getElementById("listenLabel");
+      listenLabel.innerText = "Listen"; // वापस Listen हो जाएगा
+
+      // अंक वापस अपनी असली पोजीशन (जितनी रिकॉर्डिंग की थी) पर आ जाएंगे
+      document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
     function saveVoiceRecordingFinal() {
+      if (isPlaying) return; // यदि सुन रहे हैं तो सेव न हो
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
       
