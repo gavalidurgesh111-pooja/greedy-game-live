@@ -37,7 +37,6 @@
       padding-bottom: 40px;
     }
 
-    /* टॉप बार */
     .top-bar {
       display: flex;
       justify-content: space-between;
@@ -87,7 +86,6 @@
       color: #111;
     }
 
-    /* सर्च बार */
     .search-container {
       padding: 12px 20px;
       background: #fff;
@@ -108,7 +106,6 @@
       color: #333;
     }
 
-    /* देशों की लिस्ट का कंटेनर */
     .location-list-container {
       padding: 10px 20px 20px 20px;
       display: flex;
@@ -173,19 +170,33 @@
       </button>
     </div>
 
-    <!-- सर्च बार ताकि इतने सारे देशों में से तुरंत ढूंढ सकें -->
     <div class="search-container">
       <input type="text" id="searchCountryInput" class="search-input" placeholder="Search country..." oninput="filterCountries()">
     </div>
 
-    <!-- देशों की लिस्ट -->
     <div class="location-list-container" id="locationListContainer">
-      <!-- जावास्क्रिप्ट द्वारा देश यहाँ लोड होंगे -->
     </div>
   </div>
 
+  <!-- 🌟 फायरबेस स्क्रिप्ट्स जोड़ दी गई हैं ताकि डेटा सीधा सिंक हो -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script>
-    // दुनिया के प्रमुख और सभी महत्वपूर्ण देशों की सूची (झंडों के साथ)
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+
     const countriesList = [
       { name: "India", flag: "🇮🇳" },
       { name: "United States", flag: "🇺🇸" },
@@ -339,9 +350,19 @@
       if(newCb) newCb.innerText = "✔";
     }
 
+    // 🌟 अब यह देश चुनते ही लोकल स्टोरेज और फायरबेस दोनों में सेव करके वापस भेजेगा
     function saveSelectedLocation() {
       localStorage.setItem("prof_location", selectedCountry);
-      window.location.replace("edit-profile.html");
+
+      db.collection("users").doc(currentIdentifier).set({
+        location: selectedCountry
+      }, { merge: true }).then(() => {
+        localStorage.setItem("show_toast_message", "Upload successfully");
+        window.location.replace("edit-profile.html");
+      }).catch((error) => {
+        console.error("Error saving location:", error);
+        window.location.replace("edit-profile.html");
+      });
     }
   </script>
 </body>
