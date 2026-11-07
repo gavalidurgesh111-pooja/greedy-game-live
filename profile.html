@@ -141,7 +141,6 @@
     
     .tags-row { display: flex; gap: 10px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 Lv.1 बॉक्स का आकार और छोटा किया गया, बैकग्राउंड डार्क ऑरेंज */
     .tag-lv { 
       background: #ff6f00; 
       color: #ffffff; 
@@ -154,11 +153,13 @@
       gap: 3px; 
     }
 
-    /* 🌟 Followers और sent का रंग और स्टाइल एक जैसा रखा गया है */
+    /* 🌟 छोटा सिक्का (🪙) और sent टेक्स्ट एक ही लाइन में */
+    .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
+    .tag-sent-text span { font-size: 13px; }
+
     .f-count-item { display: flex; gap: 6px; align-items: baseline; }
     .f-num { font-size: 14px; font-weight: 800; color: #555; }
     .f-lbl { font-size: 14px; font-weight: 800; color: #555; }
-    .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; }
 
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 25px; align-items: center; }
@@ -209,13 +210,12 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- छोटा Lv.1 बॉक्स -->
         <div class="tags-row">
           <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
         </div>
       </div>
 
-      <!-- Followers और sent एक जैसे रंग में -->
+      <!-- Followers और छोटा सिक्का 🪙 sent -->
       <div class="follow-stats-row">
         <div class="follow-counts">
           <div class="f-count-item">
@@ -223,7 +223,7 @@
             <span class="f-lbl">Followers</span>
           </div>
           <div class="f-count-item">
-            <span class="tag-sent-text">00.0 sent</span>
+            <span class="tag-sent-text"><span>🪙</span> 00.0 sent</span>
           </div>
         </div>
       </div>
