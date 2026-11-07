@@ -366,21 +366,22 @@
       font-weight: 600;
     }
 
-    /* 🌟 Upload successfully टोस्ट पॉप-अप स्टाइल */
+    /* 🌟 टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड, काले अक्षर और सुंदर शैडो */
     .toast-popup-profile {
       display: none;
       position: fixed;
       bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(30, 30, 30, 0.9);
-      color: #fff;
-      padding: 12px 24px;
+      background: #ffffff;
+      color: #111111;
+      padding: 14px 28px;
       border-radius: 30px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       z-index: 2000;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      border: 1px solid #eaeaea;
       animation: fadeInOutProfile 2s ease;
     }
 
@@ -549,7 +550,7 @@
     </div>
   </div>
 
-  <!-- 🌟 Upload successfully टोस्ट पॉप-अप एलिमेंट -->
+  <!-- 🌟 टोस्ट पॉप-अप एलिमेंट (सफेद बैकग्राउंड और काले अक्षर) -->
   <div id="profileToast" class="toast-popup-profile">Upload successfully</div>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -602,7 +603,7 @@
       }
     };
 
-    // 🌟 यह फंक्शन चेक करेगा कि voice-show से 'Upload successfully' दिखाना है या नहीं
+    // 🌟 यह फंक्शन चेक करेगा कि कौन सा पॉप-अप (Upload या Delete) दिखाना है
     function checkAndShowToast() {
       let msg = localStorage.getItem("show_toast_message");
       if (msg) {
