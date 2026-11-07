@@ -35,8 +35,8 @@
       flex-direction: column;
       background: #ffffff;
       justify-content: space-between;
-      padding-bottom: 40px;
-      opacity: 1; /* 🌟 बिना किसी डिले या सफेद फ्लैश के तुरंत दिखेगा */
+      padding-bottom: 70px; /* 🌟 बटनों को थोड़ा ऊपर करने के लिए नीचे पैडिंग बढ़ाई गई है */
+      opacity: 1;
     }
 
     .top-bar {
@@ -86,7 +86,7 @@
       font-size: 20px;
       font-weight: 500;
       color: #111;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
 
     .waveform-display {
@@ -97,7 +97,7 @@
       font-size: 20px;
       font-weight: 700;
       color: #333;
-      margin-bottom: 60px;
+      margin-bottom: 40px;
     }
 
     .record-section {
@@ -106,7 +106,7 @@
       align-items: center;
       gap: 12px;
       width: 100%;
-      margin-bottom: 40px;
+      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
     }
 
     .hold-text {
@@ -115,9 +115,10 @@
       font-weight: 500;
     }
 
+    /* 🌟 माइक बटन को थोड़ा बड़ा और शानदार बनाया गया (88px) */
     .mic-btn {
-      width: 80px;
-      height: 80px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
       border: none;
@@ -126,12 +127,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
     }
 
     .mic-btn svg {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       stroke: #ffffff;
       fill: none;
       stroke-width: 2;
@@ -146,7 +147,7 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 40px;
+      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
     }
 
     .action-sub-btn {
@@ -159,9 +160,10 @@
       gap: 6px;
     }
 
+    /* 🌟 साइड वाले आइकॉन बटनों को भी थोड़ा बड़ा किया गया (48px) */
     .action-sub-icon {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background: #f0f2f5;
       display: flex;
@@ -170,17 +172,17 @@
     }
 
     .action-sub-icon svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       stroke: #444;
       fill: none;
       stroke-width: 2;
     }
 
     .action-sub-label {
-      font-size: 12px;
-      color: #666;
-      font-weight: 500;
+      font-size: 13px;
+      color: #555;
+      font-weight: 600;
     }
 
     .post-record-actions {
@@ -190,12 +192,13 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 30px;
+      margin-bottom: 20px; /* 🌟 थोड़ा ऊपर शिफ्ट किया गया */
     }
 
+    /* 🌟 मुख्य SAVE बटन को बड़ा किया गया (88px) */
     .save-big-btn {
-      width: 80px;
-      height: 80px;
+      width: 88px;
+      height: 88px;
       border-radius: 50%;
       background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
       border: none;
@@ -205,9 +208,9 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 700;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
       transition: all 0.3s ease;
     }
 
@@ -219,7 +222,6 @@
       pointer-events: none;
     }
 
-    /* 🌟 टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड और काले अक्षर */
     .toast-popup {
       display: none;
       position: fixed;
@@ -557,7 +559,6 @@
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
-    // 🌟 SAVE करते ही बिना किसी सफेद फ्लैश के तुरंत बाहर जाकर पॉप-अप दिखाएगा
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
