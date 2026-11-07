@@ -9,7 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स दिखाने के लिए -->
+  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स और लोकेशन दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
@@ -17,9 +17,7 @@
       let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
       let cachedGender = localStorage.getItem("prof_gender_" + currentId);
       let cachedBio = localStorage.getItem("prof_bio_" + currentId);
-      let cachedRel = localStorage.getItem("prof_rel_" + currentId);
-      let cachedLoc = localStorage.getItem("prof_location_" + currentId);
-      let cachedLangs = localStorage.getItem("prof_langs_" + currentId);
+      let cachedLoc = localStorage.getItem("prof_location") || localStorage.getItem("prof_location_" + currentId) || "India";
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -58,22 +56,10 @@
           }
         });
       }
-      if (cachedRel) {
-        document.addEventListener("DOMContentLoaded", function() {
-          let relField = document.getElementById("selectedStatusDisplay");
-          if(relField) relField.innerText = cachedRel;
-        });
-      }
       if (cachedLoc) {
         document.addEventListener("DOMContentLoaded", function() {
           let locField = document.getElementById("selectedLocationDisplay");
           if(locField) locField.innerText = cachedLoc;
-        });
-      }
-      if (cachedLangs) {
-        document.addEventListener("DOMContentLoaded", function() {
-          let langField = document.getElementById("selectedLanguagesDisplay");
-          if(langField) langField.innerText = cachedLangs;
         });
       }
     })();
@@ -146,7 +132,7 @@
       stroke-linejoin: round;
     }
 
-    /* 🌟 मास्टर सेव बटन (डिफ़ॉल्ट रूप से बंद/इनएक्टिव) */
+    /* मास्टर सेव बटन (OFF/ON स्टेट) */
     .save-btn svg {
       width: 24px;
       height: 24px;
@@ -455,7 +441,7 @@
       font-weight: 600;
     }
 
-    /* टोस्ट पॉप-अप स्टाइल: सफेद बैकग्राउंड, काले अक्षर और सुंदर शैडो */
+    /* टोस्ट पॉप-अप स्टाइल */
     .toast-popup-profile {
       display: none;
       position: fixed;
@@ -491,7 +477,7 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
-      <!-- 🌟 मास्टर सेव बटन: यह सिर्फ ऊपर के 4 ऑप्शंस के लिए काम करेगा -->
+      <!-- 🌟 मास्टर सेव बटन -->
       <button class="save-btn" id="masterSaveBtn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
@@ -611,7 +597,7 @@
     </div>
   </div>
 
-  <!-- Relationship Status Modal (अपनी खुद की CONFIRM/CANCEL बटन से सेव होगी) -->
+  <!-- Relationship Status Modal -->
   <div id="relationshipModal" class="modal-overlay-center">
     <div class="modal-content-center">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 20px;">Relationship status</h3>
@@ -628,7 +614,7 @@
     </div>
   </div>
 
-  <!-- Languages Selection Modal (अपनी खुद की Done बटन से सेव होगी) -->
+  <!-- Languages Selection Modal -->
   <div id="languagesModal" class="modal-overlay">
     <div class="modal-content-bottom">
       <h3 style="font-size: 18px; font-weight: 700; color: #111; margin-bottom: 5px;">Select Languages</h3>
@@ -775,7 +761,7 @@
       document.getElementById("languagesModal").style.display = "none";
     }
 
-    // 🌟 Languages अपने अलग 'Done' बटन से तुरंत फायरबेस में सेव होगी
+    // 🌟 Languages अपने अलग 'Done' बटन से सेव होगी
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
@@ -904,7 +890,7 @@
       document.getElementById("relationshipModal").style.display = "none";
     }
 
-    // 🌟 Relationship status अपने अलग 'CONFIRM' बटन से तुरंत फायरबेस में सेव होगी
+    // 🌟 Relationship status अपने अलग 'CONFIRM' बटन से सेव होगी
     function confirmRelationship() {
       let selected = document.querySelector('input[name="relStatus"]:checked');
       if(selected) {
