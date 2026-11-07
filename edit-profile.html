@@ -9,13 +9,15 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही तुरंत लोकल डेटा (नाम, लोकेशन, उम्र) दिखाने के लिए -->
+  <!-- 🌟 पेज खुलते ही बिना 1 सेकंड रुके तुरंत लोकल डेटा (नाम, उम्र, जेंडर, भाषा, लोकेशन) दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
       let cachedName = localStorage.getItem("prof_name_" + currentId);
-      let cachedLoc = localStorage.getItem("prof_location");
-      let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18"; // 🌟 नए यूजर के लिए डिफ़ॉल्ट 18
+      let cachedLoc = localStorage.getItem("prof_location_" + currentId);
+      let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
+      let cachedGender = localStorage.getItem("prof_gender_" + currentId);
+      let cachedLangs = localStorage.getItem("prof_langs_" + currentId);
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -37,6 +39,23 @@
         document.addEventListener("DOMContentLoaded", function() {
           let ageField = document.getElementById("selectedAgeDisplay");
           if(ageField) ageField.innerText = cachedAge;
+        });
+      }
+      if (cachedGender) {
+        document.addEventListener("DOMContentLoaded", function() {
+          if (cachedGender === "Male") {
+            let mRadio = document.getElementById("genderMale");
+            if(mRadio) mRadio.checked = true;
+          } else if (cachedGender === "Female") {
+            let fRadio = document.getElementById("genderFemale");
+            if(fRadio) fRadio.checked = true;
+          }
+        });
+      }
+      if (cachedLangs) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let langDisp = document.getElementById("selectedLanguagesDisplay");
+          if(langDisp) langDisp.innerText = cachedLangs;
         });
       }
     })();
@@ -453,7 +472,7 @@
       <div class="input-group" onclick="openAgeModal()" style="cursor: pointer;">
         <span class="input-label">Age</span>
         <div class="age-selector-box">
-          <span id="selectedAgeDisplay">18</span> <!-- 🌟 डिफ़ॉल्ट 18 शो होगा -->
+          <span id="selectedAgeDisplay">18</span>
           <span style="color:#aaa; font-size:14px;">▼</span>
         </div>
       </div>
@@ -604,10 +623,10 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let tempSelectedAge = parseInt(localStorage.getItem("prof_age_" + currentIdentifier)) || 18; // 🌟 डिफ़ॉल्ट 18
+    let tempSelectedAge = parseInt(localStorage.getItem("prof_age_" + currentIdentifier)) || 18;
     let currentRelationship = "Single";
     let selectedLanguages = [];
-    let currentLocation = localStorage.getItem("prof_location") || "India";
+    let currentLocation = localStorage.getItem("prof_location_" + currentIdentifier) || "India";
     let recordedAudioUrl = "";
 
     const allLanguagesList = [
@@ -647,9 +666,27 @@
         document.getElementById("selectedAgeDisplay").innerText = "18";
       }
 
-      if (localStorage.getItem("prof_location")) {
-        currentLocation = localStorage.getItem("prof_location");
+      let cachedGender = localStorage.getItem("prof_gender_" + currentIdentifier);
+      if (cachedGender === "Male") {
+        document.getElementById("genderMale").checked = true;
+      } else if (cachedGender === "Female") {
+        document.getElementById("genderFemale").checked = true;
+      }
+
+      let cachedLoc = localStorage.getItem("prof_location_" + currentIdentifier);
+      if (cachedLoc) {
+        currentLocation = cachedLoc;
         document.getElementById("selectedLocationDisplay").innerText = currentLocation;
+      }
+
+      let cachedLangs = localStorage.getItem("prof_langs_" + currentIdentifier);
+      if (cachedLangs) {
+        selectedLanguages = cachedLangs.split(", ");
+        selectedLanguages.forEach(lang => {
+          let cb = document.getElementById("lang_box_" + lang);
+          if(cb) cb.innerText = "✔";
+        });
+        document.getElementById("selectedLanguagesDisplay").innerText = cachedLangs;
       }
     }
 
@@ -752,6 +789,7 @@
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
+      localStorage.setItem("prof_langs_" + currentIdentifier, displayTxt);
       closeLanguagesModal();
     }
 
@@ -769,10 +807,10 @@
             localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
             document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
           }
-          if (data.gender === "Male") {
-            document.getElementById("genderMale").checked = true;
-          } else if (data.gender === "Female") {
-            document.getElementById("genderFemale").checked = true;
+          if (data.gender) {
+            localStorage.setItem("prof_gender_" + currentIdentifier, data.gender);
+            if (data.gender === "Male") document.getElementById("genderMale").checked = true;
+            else if (data.gender === "Female") document.getElementById("genderFemale").checked = true;
           }
           if (data.bio) {
             document.getElementById("inputBio").value = data.bio;
@@ -784,17 +822,19 @@
           }
           if (data.languages && Array.isArray(data.languages)) {
             selectedLanguages = data.languages;
+            let langStr = selectedLanguages.join(", ");
+            localStorage.setItem("prof_langs_" + currentIdentifier, langStr);
             selectedLanguages.forEach(lang => {
               let cb = document.getElementById("lang_box_" + lang);
               if(cb) cb.innerText = "✔";
             });
             if(selectedLanguages.length > 0) {
-              document.getElementById("selectedLanguagesDisplay").innerText = selectedLanguages.join(", ");
+              document.getElementById("selectedLanguagesDisplay").innerText = langStr;
             }
           }
           if (data.location) {
             currentLocation = data.location;
-            localStorage.setItem("prof_location", currentLocation);
+            localStorage.setItem("prof_location_" + currentIdentifier, currentLocation);
             document.getElementById("selectedLocationDisplay").innerText = currentLocation;
           }
           if (data.voiceShow && !localStorage.getItem("greedy_voiceshow_saved")) {
@@ -858,7 +898,7 @@
       let items = wheel.querySelectorAll(".wheel-item");
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
-        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge); // 🌟 लोकल स्टोरेज में उम्र सेव करें
+        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
       }
       closeAgeModal();
@@ -892,9 +932,15 @@
         return;
       }
 
+      // लोकल स्टोरेज में तुरंत सेव करें ताकि वापस आने पर गायब न हो
       localStorage.setItem("prof_name_" + currentIdentifier, name);
       localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
+      localStorage.setItem("prof_gender_" + currentIdentifier, gender);
       let finalLocation = localStorage.getItem("prof_location") || currentLocation;
+      localStorage.setItem("prof_location_" + currentIdentifier, finalLocation);
+      
+      let langStr = selectedLanguages.join(", ");
+      localStorage.setItem("prof_langs_" + currentIdentifier, langStr);
       
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDur = localStorage.getItem("greedy_voiceshow_duration");
