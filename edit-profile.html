@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Basic info - Greedy Coin</title>
 
-  <!-- 🌟 पेज लोड होते ही सबसे पहले बिना 1 सेकंड रुके तुरंत डेटा दिखाने के लिए -->
+  <!-- 🌟 फायरबेस की स्क्रिप्ट्स हेड में सबसे ऊपर -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+  <!-- 🌟 पेज खुलते ही खाली न दिखे, इसके लिए सबसे पहले लोकल डेटा इनपुट में सेट करने की स्क्रिप्ट -->
   <script>
     (function() {
-      let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-      let cachedName = localStorage.getItem("prof_name_" + currentIdentifier);
+      let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
+      let cachedName = localStorage.getItem("prof_name_" + currentId);
       let cachedLoc = localStorage.getItem("prof_location");
       
       if (cachedName) {
@@ -577,9 +581,6 @@
 
   <!-- टोस्ट पॉप-अप एलिमेंट -->
   <div id="profileToast" class="toast-popup-profile">Upload successfully</div>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
     const firebaseConfig = {
