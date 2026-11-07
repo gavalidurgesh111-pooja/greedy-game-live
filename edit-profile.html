@@ -9,15 +9,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही बिना 1 सेकंड रुके तुरंत लोकल डेटा (नाम, उम्र, जेंडर, भाषा, लोकेशन) दिखाने के लिए -->
+  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स (नाम, उम्र, जेंडर, वॉट्ज़ अप) दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
       let cachedName = localStorage.getItem("prof_name_" + currentId);
-      let cachedLoc = localStorage.getItem("prof_location_" + currentId);
       let cachedAge = localStorage.getItem("prof_age_" + currentId) || "18";
       let cachedGender = localStorage.getItem("prof_gender_" + currentId);
-      let cachedLangs = localStorage.getItem("prof_langs_" + currentId);
+      let cachedBio = localStorage.getItem("prof_bio_" + currentId);
       
       if (cachedName) {
         document.addEventListener("DOMContentLoaded", function() {
@@ -27,12 +26,6 @@
             let counter = document.getElementById("nicknameCounter");
             if(counter) counter.innerText = cachedName.length + "/30";
           }
-        });
-      }
-      if (cachedLoc) {
-        document.addEventListener("DOMContentLoaded", function() {
-          let locField = document.getElementById("selectedLocationDisplay");
-          if(locField) locField.innerText = cachedLoc;
         });
       }
       if (cachedAge) {
@@ -52,10 +45,14 @@
           }
         });
       }
-      if (cachedLangs) {
+      if (cachedBio) {
         document.addEventListener("DOMContentLoaded", function() {
-          let langDisp = document.getElementById("selectedLanguagesDisplay");
-          if(langDisp) langDisp.innerText = cachedLangs;
+          let bioField = document.getElementById("inputBio");
+          if(bioField) {
+            bioField.value = cachedBio;
+            let bioCnt = document.getElementById("bioCounter");
+            if(bioCnt) bioCnt.innerText = cachedBio.length + "/140";
+          }
         });
       }
     })();
@@ -623,10 +620,10 @@
     const db = firebase.firestore();
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let tempSelectedAge = parseInt(localStorage.getItem("prof_age_" + currentIdentifier)) || 18;
+    let tempSelectedAge = 18;
     let currentRelationship = "Single";
     let selectedLanguages = [];
-    let currentLocation = localStorage.getItem("prof_location_" + currentIdentifier) || "India";
+    let currentLocation = "India";
     let recordedAudioUrl = "";
 
     const allLanguagesList = [
@@ -645,50 +642,10 @@
     window.onload = function() {
       buildAgeWheel();
       buildLanguagesList();
-      loadInstantLocalStorageData();
       checkVoiceStatus();
       checkAndShowToast();
       loadUserDataFromFirebase();
     };
-
-    function loadInstantLocalStorageData() {
-      let cachedName = localStorage.getItem("prof_name_" + currentIdentifier);
-      if (cachedName) {
-        document.getElementById("inputNickname").value = cachedName;
-        updateCounter();
-      }
-
-      let cachedAge = localStorage.getItem("prof_age_" + currentIdentifier);
-      if (cachedAge) {
-        tempSelectedAge = parseInt(cachedAge);
-        document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
-      } else {
-        document.getElementById("selectedAgeDisplay").innerText = "18";
-      }
-
-      let cachedGender = localStorage.getItem("prof_gender_" + currentIdentifier);
-      if (cachedGender === "Male") {
-        document.getElementById("genderMale").checked = true;
-      } else if (cachedGender === "Female") {
-        document.getElementById("genderFemale").checked = true;
-      }
-
-      let cachedLoc = localStorage.getItem("prof_location_" + currentIdentifier);
-      if (cachedLoc) {
-        currentLocation = cachedLoc;
-        document.getElementById("selectedLocationDisplay").innerText = currentLocation;
-      }
-
-      let cachedLangs = localStorage.getItem("prof_langs_" + currentIdentifier);
-      if (cachedLangs) {
-        selectedLanguages = cachedLangs.split(", ");
-        selectedLanguages.forEach(lang => {
-          let cb = document.getElementById("lang_box_" + lang);
-          if(cb) cb.innerText = "✔";
-        });
-        document.getElementById("selectedLanguagesDisplay").innerText = cachedLangs;
-      }
-    }
 
     function checkAndShowToast() {
       let msg = localStorage.getItem("show_toast_message");
@@ -728,7 +685,6 @@
     window.addEventListener('pageshow', function() {
       checkVoiceStatus();
       checkAndShowToast();
-      loadInstantLocalStorageData();
     });
 
     function buildAgeWheel() {
@@ -789,31 +745,34 @@
     function confirmLanguages() {
       let displayTxt = selectedLanguages.length > 0 ? selectedLanguages.join(", ") : "Select";
       document.getElementById("selectedLanguagesDisplay").innerText = displayTxt;
-      localStorage.setItem("prof_langs_" + currentIdentifier, displayTxt);
       closeLanguagesModal();
     }
 
+    // 🌟 फायरबेस से डेटा लोड होगा
     function loadUserDataFromFirebase() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          if (data.name && !document.getElementById("inputNickname").value) {
+          if (data.name) {
             document.getElementById("inputNickname").value = data.name;
             localStorage.setItem("prof_name_" + currentIdentifier, data.name);
             updateCounter();
           }
           if (data.age) {
             tempSelectedAge = data.age;
-            localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
             document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
+            localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
+          } else {
+            document.getElementById("selectedAgeDisplay").innerText = "18";
           }
-          if (data.gender) {
-            localStorage.setItem("prof_gender_" + currentIdentifier, data.gender);
-            if (data.gender === "Male") document.getElementById("genderMale").checked = true;
-            else if (data.gender === "Female") document.getElementById("genderFemale").checked = true;
+          if (data.gender === "Male") {
+            document.getElementById("genderMale").checked = true;
+          } else if (data.gender === "Female") {
+            document.getElementById("genderFemale").checked = true;
           }
           if (data.bio) {
             document.getElementById("inputBio").value = data.bio;
+            localStorage.setItem("prof_bio_" + currentIdentifier, data.bio);
             updateBioCounter();
           }
           if (data.relationship) {
@@ -822,19 +781,16 @@
           }
           if (data.languages && Array.isArray(data.languages)) {
             selectedLanguages = data.languages;
-            let langStr = selectedLanguages.join(", ");
-            localStorage.setItem("prof_langs_" + currentIdentifier, langStr);
             selectedLanguages.forEach(lang => {
               let cb = document.getElementById("lang_box_" + lang);
               if(cb) cb.innerText = "✔";
             });
             if(selectedLanguages.length > 0) {
-              document.getElementById("selectedLanguagesDisplay").innerText = langStr;
+              document.getElementById("selectedLanguagesDisplay").innerText = selectedLanguages.join(", ");
             }
           }
           if (data.location) {
             currentLocation = data.location;
-            localStorage.setItem("prof_location_" + currentIdentifier, currentLocation);
             document.getElementById("selectedLocationDisplay").innerText = currentLocation;
           }
           if (data.voiceShow && !localStorage.getItem("greedy_voiceshow_saved")) {
@@ -854,11 +810,15 @@
     function updateCounter() {
       let len = document.getElementById("inputNickname").value.length;
       document.getElementById("nicknameCounter").innerText = len + "/30";
+      let nameVal = document.getElementById("inputNickname").value;
+      localStorage.setItem("prof_name_" + currentIdentifier, nameVal);
     }
 
     function updateBioCounter() {
       let len = document.getElementById("inputBio").value.length;
       document.getElementById("bioCounter").innerText = len + "/140";
+      let bioVal = document.getElementById("inputBio").value;
+      localStorage.setItem("prof_bio_" + currentIdentifier, bioVal);
     }
 
     function openAgeModal() {
@@ -898,8 +858,8 @@
       let items = wheel.querySelectorAll(".wheel-item");
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
-        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
+        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
       }
       closeAgeModal();
     }
@@ -921,6 +881,7 @@
       closeRelationshipModal();
     }
 
+    // 🌟 मास्टर सेव बटन (✔): यह सिर्फ Nickname, Age, Gender और What's up को डेटाबेस में सेव करेगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -932,35 +893,18 @@
         return;
       }
 
-      // लोकल स्टोरेज में तुरंत सेव करें ताकि वापस आने पर गायब न हो
       localStorage.setItem("prof_name_" + currentIdentifier, name);
       localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
+      localStorage.setItem("prof_bio_" + currentIdentifier, bio);
       localStorage.setItem("prof_gender_" + currentIdentifier, gender);
-      let finalLocation = localStorage.getItem("prof_location") || currentLocation;
-      localStorage.setItem("prof_location_" + currentIdentifier, finalLocation);
-      
-      let langStr = selectedLanguages.join(", ");
-      localStorage.setItem("prof_langs_" + currentIdentifier, langStr);
-      
-      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
-      let savedDur = localStorage.getItem("greedy_voiceshow_duration");
-      
-      if (isSaved === "true" && savedDur) {
-        recordedAudioUrl = "voice_recorded_" + savedDur + "s";
-      } else {
-        recordedAudioUrl = "";
-      }
 
       db.collection("users").doc(currentIdentifier).set({
         name: name,
         age: tempSelectedAge,
         gender: gender,
-        bio: bio,
-        relationship: currentRelationship,
-        languages: selectedLanguages,
-        location: finalLocation,
-        voiceShow: recordedAudioUrl
+        bio: bio
       }, { merge: true }).then(() => {
+        localStorage.setItem("show_toast_message", "Upload successfully");
         window.location.replace("home.html?updated=true");
       }).catch((error) => {
         alert("Error saving data: " + error.message);
