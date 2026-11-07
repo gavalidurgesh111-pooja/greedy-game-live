@@ -141,25 +141,26 @@
     
     .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 पहला लोगो: लेवल टैग (कैप्सूल शेप, सफेद स्टार और अंक, डायनेमिक बैकग्राउंड) */
+    /* 🌟 लेवल टैग: एकदम परफेक्ट पिलर/कैप्सूल शेप, टेक्स्ट और स्टार पूरी तरह सफेद */
     .tag-lv { 
-      color: #ffffff; 
-      font-size: 11px; 
+      background-color: #81c784; /* डिफ़ॉल्ट हल्का हरा (1-10 लेवल) */
+      color: #ffffff !important; 
+      font-size: 12px; 
       font-weight: 800; 
-      padding: 3px 10px; 
-      border-radius: 12px; 
+      padding: 3px 12px; 
+      border-radius: 14px; 
       display: inline-flex; 
       align-items: center; 
       gap: 5px; 
+      letter-spacing: 0.5px;
     }
-    .tag-lv span.star { 
+    .tag-lv span { 
       color: #ffffff !important; 
       text-shadow: none !important; 
-      font-size: 12px; 
     }
 
-    /* 🌟 दूसरा लोगो: बिल्कुल फोटो जैसा नीला बॉक्स, मुड़े हुए कोने और सफेद ग्रह आइकॉन (क्लिक बंद)[span_0](start_span)[span_0](end_span) */
-    .country-flag-badge {
+    /* 🌟 दूसरा लोगो: बिल्कुल फोटो जैसा नीला चौकोर बॉक्स, मुड़े हुए कोने (Border-radius: 6px), और सफेद ग्रह आइकॉन[span_4](start_span)[span_4](end_span) */
+    .planet-badge {
       width: 32px;
       height: 20px;
       background-color: #2196f3;
@@ -168,13 +169,13 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      pointer-events: none;
+      pointer-events: none; /* क्लिक बंद, सिर्फ शो होगा[span_5](start_span)[span_5](end_span) */
       overflow: hidden;
       flex-shrink: 0;
     }
-    .country-flag-badge svg {
-      width: 14px;
-      height: 14px;
+    .planet-badge svg {
+      width: 16px;
+      height: 16px;
       fill: none;
       stroke: #ffffff;
       stroke-width: 2;
@@ -238,15 +239,15 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 🌟 दोनों लोगो बिल्कुल फोटो जैसे (लेवल टैग और नीला ग्रह लोगो)[span_1](start_span)[span_1](end_span) -->
+        <!-- 🌟 दोनों लोगो बिल्कुल फोटो जैसे[span_6](start_span)[span_6](end_span) -->
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
-            <span class="star">⭐</span> Lv.<span id="profLevel">1</span>
+            <span>⭐</span> Lv.<span id="profLevel">1</span>
           </div>
-          <div class="country-flag-badge" title="Planet Logo">
+          <div class="planet-badge" title="Planet Badge">
             <svg viewBox="0 0 24 24">
-              <ellipse cx="12" cy="12" rx="4" ry="7" transform="rotate(-30 12 12)"/>
-              <path d="M3 12c0 3.5 4 6 9 6s9-2.5 9-6-4-6-9-6-9 2.5-9 6z"/>
+              <ellipse cx="12" cy="12" rx="3.5" ry="6.5" transform="rotate(-30 12 12)"/>
+              <path d="M3 12c0 3.5 4 5.5 9 5.5s9-2 9-5.5-4-5.5-9-5.5-9 2-9 5.5z"/>
             </svg>
           </div>
         </div>
@@ -389,17 +390,17 @@
       window.location.replace("home.html");
     });
 
-    // 🌟 लेवल के हिसाब से बैकग्राउंड रंग (1-10: हल्का फीका हरा, 11-30: नीला, 31-100: ऑरेंज)
+    // 🌟 लेवल के नियमों के अनुसार बैकग्राउंड रंग सेट करने वाला फंक्शन (1-10: हल्का हरा, 11-30: नीला, 31-100: ऑरेंज)
     function updateLevelBackground(lvl) {
       const lvTag = document.getElementById("profLevelTag");
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#81c784"; // हल्का फीका हरा
+        lvTag.style.backgroundColor = "#81c784"; // हल्का हरा (Pastel Green)
       } else if (lvl <= 30) {
-        lvTag.style.backgroundColor = "#2196f3"; // नीला
+        lvTag.style.backgroundColor = "#2196f3"; // नीला (Blue)
       } else {
-        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज
+        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज (Orange)
       }
     }
 
