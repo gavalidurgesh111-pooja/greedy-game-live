@@ -139,12 +139,12 @@
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     
-    .tags-row { display: flex; gap: 10px; margin-top: 14px; align-items: center; }
+    .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
+    /* 🌟 लेवल टैग (डायनेमिक बैकग्राउंड: 1-10 पोपटी हरा, 11-30 नीला, 31-100 ऑरेंज) */
     .tag-lv { 
-      background: #ff6f00; 
       color: #ffffff; 
-      font-size: 10px; 
+      font-size: 11px; 
       font-weight: 800; 
       padding: 2px 8px; 
       border-radius: 8px; 
@@ -152,8 +152,33 @@
       align-items: center; 
       gap: 3px; 
     }
+    
+    /* 🌟 स्टार (⭐): सफेद रंग, अंदर-बाहर से सफेद, हल्का काला बॉर्डर घेरा */
+    .tag-lv span.star { 
+      color: #ffffff; 
+      text-shadow: 0 0 2px rgba(0,0,0,0.7), 0 0 1px rgba(0,0,0,0.7); 
+    }
 
-    /* 🌟 छोटा सिक्का (🪙) और sent टेक्स्ट एक ही लाइन में */
+    /* 🌟 नया देश का झंडा वाला लोगो (जैसा आपने इमेज में भेजा है, क्लिक नहीं होगा, सिर्फ शो होगा) */
+    .country-flag-badge {
+      width: 24px;
+      height: 18px;
+      background-color: #2196f3; /* नीला बैकग्राउंड जैसा इमेज में है */
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      pointer-events: none; /* क्लिक बंद */
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .country-flag-badge img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
     .tag-sent-text span { font-size: 13px; }
 
@@ -210,12 +235,21 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
+        <!-- 🌟 Lv.1 टैग (लेवल के रंग के साथ) और देश का झंडा लोगो ठीक इसके सामने -->
         <div class="tags-row">
-          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
+          <div class="tag-lv" id="profLevelTag">
+            <span class="star">⭐</span> Lv.<span id="profLevel">1</span>
+          </div>
+          <!-- देश का झंडा लोगो (क्लिक बंद, सिर्फ शो होगा) -->
+          <div class="country-flag-badge" title="Country Flag">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; fill: #ffffff;">
+              <!-- देश के झंडे या प्रतीक का आइकॉन (या आप यहाँ <img> टैग से अपनी झंडे की इमेज डाल सकते हैं) -->
+              <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93a8 8 0 0 1-6-7.43h6zM13 11h7a8 8 0 0 1-7 7.43zm7-2h-7V4.07a8 8 0 0 1 7 7.43zM6 4.07V9H4a8 8 0 0 1 2-4.93zM4 11h2v5H4a8 8 0 0 1 0-5zm2 7h7v4.93A8 8 0 0 1 6 18z"></path>
+            </svg>
+          </div>
         </div>
       </div>
 
-      <!-- Followers और छोटा सिक्का 🪙 sent -->
       <div class="follow-stats-row">
         <div class="follow-counts">
           <div class="f-count-item">
@@ -353,10 +387,27 @@
       window.location.replace("home.html");
     });
 
+    // 🌟 लेवल के हिसाब से बैकग्राउंड रंग बदलने वाला फंक्शन (1-10: पोपटी हरा, 11-30: नीला, 31-100: ऑरेंज)
+    function updateLevelBackground(lvl) {
+      const lvTag = document.getElementById("profLevelTag");
+      if (!lvTag) return;
+      
+      if (lvl <= 10) {
+        lvTag.style.backgroundColor = "#4caf50"; // पोपटी हरा (Lime/Light Green)
+      } else if (lvl <= 30) {
+        lvTag.style.backgroundColor = "#2196f3"; // नीला (Blue)
+      } else {
+        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज (Orange)
+      }
+    }
+
     function renderProfileData() {
       document.getElementById("profNameDisplay").innerText = userName;
       document.getElementById("profLevel").innerText = userLevel;
       document.getElementById("aboutUserId").innerText = userId;
+      
+      // लेवल के आधार पर रंग सेट करें
+      updateLevelBackground(userLevel);
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
