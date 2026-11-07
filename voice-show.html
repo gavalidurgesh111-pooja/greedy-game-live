@@ -99,6 +99,7 @@
       margin-bottom: 60px;
     }
 
+    /* एक्शन रो (Fresh और Saved दोनों के लिए एक जैसी साफ़ बनावट) */
     .record-actions-row {
       display: flex;
       flex-direction: row;
@@ -168,11 +169,12 @@
     }
 
     .disabled-action {
-      opacity: 0.4;
+      opacity: 0.3;
       cursor: not-allowed;
       pointer-events: none;
     }
 
+    /* रिकॉर्डिंग पूरी होने के बाद (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -272,7 +274,7 @@
       </div>
     </div>
 
-    <!-- 1. सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete, Mic, Listen सब ON) -->
+    <!-- 1. सेव की गई रिकॉर्डिंग वाला मोड (सातवीं फोटो जैसा: Delete और Listen चालू रहेंगे) -->
     <div class="record-actions-row" id="savedRecordActions" style="display: none;">
       <button class="action-sub-btn" onclick="deleteExistingRecording()">
         <div class="action-sub-icon">
@@ -293,7 +295,7 @@
       </button>
     </div>
 
-    <!-- 2. एकदम फ्रेश रिकॉर्डिंग मोड (नया यूजर या डिलीट करने के बाद) -->
+    <!-- 2. एकदम फ्रेश पेज मोड (पहली फोटो जैसा: Delete और Listen बंद रहेंगे)[span_7](start_span)[span_7](end_span) -->
     <div class="record-actions-row" id="freshRecordSection" style="display: none;">
       <button class="action-sub-btn disabled-action">
         <div class="action-sub-icon">
@@ -314,7 +316,7 @@
       </button>
     </div>
 
-    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद दिखने वाला मोड (Re-record, Save, Listen) -->
+    <!-- 3. रिकॉर्डिंग पूरी होने के बाद मोड (चौथी/पाँचवीं फोटो जैसा: Re-record, Save, Listen)[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -334,10 +336,10 @@
     </div>
   </div>
 
-  <!-- परमिशन पॉप-अप -->
+  <!-- परमिशन पॉप-अप (दूसरी फोटो जैसा)[span_10](start_span)[span_10](end_span) -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
-      <div class="dialog-message">Allow GREEDYCOIN to record audio?</div>
+      <div class="dialog-message">Allow Mika to record audio?</div>
       <div class="permission-options">
         <button class="perm-option-btn" onclick="grantPermission()">While using the app</button>
         <button class="perm-option-btn" onclick="grantPermission()">Only this time</button>
@@ -366,6 +368,7 @@
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
 
+      // अगर रिकॉर्डिंग पक्की सेव है (सातवीं फोटो जैसा)
       if (isSaved === "true" && savedDuration) {
         recordedDurationSeconds = parseInt(savedDuration);
         
@@ -376,6 +379,7 @@
         document.getElementById("savedRecordActions").style.display = "flex";
         document.getElementById("freshRecordSection").style.display = "none";
       } else {
+        // नया यूजर या डिलीट करने के बाद एकदम फ्रेश पेज (पहली फोटो जैसा)[span_11](start_span)[span_11](end_span)
         document.getElementById("promptText").style.display = "block";
         document.getElementById("waveformDisplay").style.display = "none";
         document.getElementById("savedRecordActions").style.display = "none";
@@ -437,7 +441,7 @@
 
       if(recordingTimer) clearInterval(recordingTimer);
 
-      // 🌟 अधिकतम सीमा 20 सेकंड सेट की गई है
+      // अधिकतम सीमा 20 सेकंड
       recordingTimer = setInterval(() => {
         secondsElapsed++;
         if (secondsElapsed <= 20) {
@@ -466,6 +470,7 @@
       document.getElementById("waveformDisplay").style.display = "flex";
     }
 
+    // अगर यूजर Re-record दबाएगा तो रिकॉर्डिंग हट जाएगी और फ्रेश पेज आ जाएगा
     function reRecordAudio() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -477,6 +482,7 @@
       secondsElapsed = 0;
     }
 
+    // अगर यूजर SAVE दबाएगा तो वह छठी फोटो जैसा सेव होकर प्रोफाइल पर जाएगा[span_12](start_span)[span_12](end_span)
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -492,6 +498,7 @@
       alert("Duration: " + recordedDurationSeconds + " seconds");
     }
 
+    // पुरानी रिकॉर्डिंग डिलीट करते ही सब हट जाएगा और तुरंत पहली फोटो जैसा नया पेज आ जाएगा[span_13](start_span)[span_13](end_span)
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
