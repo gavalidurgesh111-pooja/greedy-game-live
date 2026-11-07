@@ -99,53 +99,15 @@
       margin-bottom: 60px;
     }
 
-    .record-section {
+    /* रिकॉर्डिंग सेक्शन (चौदहवीं फोटो जैसा: Delete, Mic, Listen)[span_4](start_span)[span_4](end_span) */
+    .record-actions-row {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      width: 100%;
-      margin-bottom: 40px;
-    }
-
-    .hold-text {
-      font-size: 14px;
-      color: #999;
-      font-weight: 500;
-    }
-
-    .mic-btn {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-    }
-
-    .mic-btn svg {
-      width: 32px;
-      height: 32px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .post-record-actions {
-      display: none;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
 
     .action-sub-btn {
@@ -182,7 +144,7 @@
       font-weight: 500;
     }
 
-    .save-big-btn {
+    .mic-btn-center {
       width: 80px;
       height: 80px;
       border-radius: 50%;
@@ -193,80 +155,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 700;
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-      transition: all 0.3s ease;
     }
 
-    .save-big-btn.disabled-save {
-      background: #e0e0e0 !important;
-      color: #aaa !important;
-      box-shadow: none !important;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* Unsaved Changes वार्निंग पॉप-अप स्टाइल */
-    .unsaved-modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-
-    .unsaved-dialog {
-      background: #ffffff;
-      width: 100%;
-      max-width: 330px;
-      border-radius: 6px;
-      padding: 22px 20px;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    }
-
-    .unsaved-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #222;
-      margin-bottom: 12px;
-    }
-
-    .unsaved-message {
-      font-size: 14px;
-      color: #555;
-      line-height: 1.5;
-      margin-bottom: 24px;
-    }
-
-    .unsaved-btns-row {
-      display: flex;
-      justify-content: flex-end;
-      gap: 20px;
-    }
-
-    .unsaved-btn {
-      background: transparent;
-      border: none;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      padding: 6px 10px;
-      letter-spacing: 0.5px;
-    }
-
-    .btn-no-thanks {
-      color: #7b2cbf;
-    }
-
-    .btn-save-pop {
-      color: #7b2cbf;
+    .mic-btn-center svg {
+      width: 32px;
+      height: 32px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
     /* परमिशन पॉप-अप स्टाइल */
@@ -326,61 +225,43 @@
 
   <div class="page-container">
     <div class="top-bar">
-      <button class="back-btn" onclick="attemptExit()">
+      <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Voice show</span>
     </div>
 
     <div class="content-center">
+      <!-- अगर रिकॉर्डिंग नहीं है तो टेक्स्ट दिखेगा, रिकॉर्ड होने पर वेवफॉर्म और सेकंड दिखेंगे -->
       <div class="prompt-text" id="promptText">What do you want to say?</div>
       
       <div class="waveform-display" id="waveformDisplay">
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
-        <span id="recordedSecondsCount" style="margin: 0 10px;">0</span>
+        <span id="recordedSecondsCount" style="margin: 0 10px;">7</span>
         <span style="letter-spacing: 2px; color: #7b2cbf;">••••••••••</span>
       </div>
     </div>
 
-    <!-- रिकॉर्डिंग शुरू करने वाला बटन -->
-    <div class="record-section" id="initialRecordSection">
-      <span class="hold-text" id="holdInstructionText">Hold to speak</span>
-      <button class="mic-btn" id="micButton">
+    <!-- 🌟 चौदहवीं फोटो जैसा निचला लेआउट: Delete, Mic (Hold to speak वाला), Listen[span_5](start_span)[span_5](end_span) -->
+    <div class="record-actions-row">
+      <button class="action-sub-btn" onclick="deleteExistingRecording()">
+        <div class="action-sub-icon">
+          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        </div>
+        <span class="action-sub-label">Delete</span>
+      </button>
+
+      <!-- माइक बटन (इसे दबाकर रखने पर ही नई रिकॉर्डिंग होगी) -->
+      <button class="mic-btn-center" id="micButton">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
       </button>
-    </div>
 
-    <!-- पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) -->
-    <div class="post-record-actions" id="postRecordActions">
-      <button class="action-sub-btn" onclick="reRecordAudio()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
-        </div>
-        <span class="action-sub-label">Re-record</span>
-      </button>
-
-      <!-- मुख्य Save बटन -->
-      <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
-
-      <!-- Listen बटन -->
       <button class="action-sub-btn" id="listenActionBtn" onclick="togglePlayPauseAudio()">
         <div class="action-sub-icon" id="listenIconContainer">
           <svg viewBox="0 0 24 24" id="listenSvgIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
         <span class="action-sub-label" id="listenLabel">Listen</span>
       </button>
-    </div>
-  </div>
-
-  <!-- Unsaved Changes वार्निंग पॉप-अप[span_0](start_span)[span_0](end_span) -->
-  <div id="unsavedModal" class="unsaved-modal-overlay">
-    <div class="unsaved-dialog">
-      <div class="unsaved-title">Tips</div>
-      <div class="unsaved-message">You have unsaved changes, do you want to save it?</div>
-      <div class="unsaved-btns-row">
-        <button class="unsaved-btn btn-no-thanks" onclick="exitWithoutSaving()">NO, THANKS</button>
-        <button class="unsaved-btn btn-save-pop" onclick="saveAndExit()">SAVE</button>
-      </div>
     </div>
   </div>
 
@@ -404,12 +285,8 @@
     let secondsElapsed = 0;
     let recordedDurationSeconds = 0;
     let isPlaying = false;
-    let hasUnsavedChanges = false;
 
     window.onload = function() {
-      // 🌟 हर बार पेज खुलते ही पुराना सारा अस्थायी डेटा पूरी तरह मिटा दें ताकि कोई पुरानी हिस्ट्री न दिखे
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
-
       let permGranted = localStorage.getItem("greedy_mic_permission");
       if (permGranted === "true") {
         hasPermission = true;
@@ -417,22 +294,26 @@
 
       setupHoldToSpeakListeners();
 
-      // मोबाइल का असली बैक बटन दबाने पर वार्निंग दिखाने का नियम
-      window.history.pushState(null, "", window.location.href);
-      window.onpopstate = function() {
-        if (hasUnsavedChanges) {
-          window.history.pushState(null, "", window.location.href);
-          showUnsavedPopup();
-        } else {
-          window.location.replace("edit-profile.html");
-        }
-      };
+      // चेक करें कि क्या पहले से कोई वॉयस शो सेव है (तेरहवीं फोटो वाला स्टेट)[span_6](start_span)[span_6](end_span)
+      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+
+      if (isSaved === "true" && savedDuration) {
+        recordedDurationSeconds = parseInt(savedDuration);
+        // चौदहवीं फोटो जैसा डिस्प्ले दिखाएं: पुरानी रिकॉर्डिंग सामने होगी[span_7](start_span)[span_7](end_span)
+        document.getElementById("promptText").style.display = "none";
+        document.getElementById("waveformDisplay").style.display = "flex";
+        document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
+      } else {
+        // अगर रिकॉर्डिंग नहीं है, तो फ्रेश पेज
+        document.getElementById("promptText").style.display = "block";
+        document.getElementById("waveformDisplay").style.display = "none";
+      }
     };
 
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
 
-      // 🌟 केवल माउस क्लिक या टच करने पर होल्ड प्रोसेस शुरू होगा (टच करते ही ऑटोमैटिक रिकॉर्डिंग नहीं होगी)
       micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
       micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
       micBtn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
@@ -441,11 +322,17 @@
     }
 
     function onHoldStart() {
+      // नियम: अगर पहले से रिकॉर्डिंग मौजूद है और डिलीट नहीं की गई है, तो नई रिकॉर्डिंग शुरू न हो
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+      if (isSaved === "true") {
+        alert("Please delete the existing recording before recording a new one.");
+        return;
+      }
+
       if (!hasPermission) {
         document.getElementById("permissionModal").style.display = "flex";
         return;
       }
-      // यूजर ने बटन दबाकर रखा है, अब रिकॉर्डिंग शुरू होगी
       startActualRecording();
     }
 
@@ -459,7 +346,6 @@
       hasPermission = true;
       localStorage.setItem("greedy_mic_permission", "true");
       closeModal();
-      // 🌟 परमिशन मिलने के बाद रिकॉर्डिंग अपने आप चालू नहीं होगी, जब तक यूजर दोबारा बटन दबाकर न रखे
     }
 
     function closeModal() {
@@ -475,7 +361,6 @@
       let waveDisp = document.getElementById("waveformDisplay");
       waveDisp.style.display = "flex";
       document.getElementById("recordedSecondsCount").innerText = secondsElapsed;
-      document.getElementById("holdInstructionText").innerText = "Recording... Release to stop";
 
       if(recordingTimer) clearInterval(recordingTimer);
 
@@ -497,35 +382,46 @@
       if (secondsElapsed > 0) {
         recordedDurationSeconds = secondsElapsed;
       } else {
-        recordedDurationSeconds = 5;
+        recordedDurationSeconds = 6;
       }
 
-      hasUnsavedChanges = true; // रिकॉर्डिंग हो चुकी है पर सेव नहीं हुई
+      // रिकॉर्डिंग पूरी होते ही तुरंत सेव करके प्रोफाइल पर अपडेट कर दें
+      localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
+      localStorage.setItem("greedy_voiceshow_saved", "true");
 
-      document.getElementById("initialRecordSection").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "flex";
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
       document.getElementById("waveformDisplay").style.display = "flex";
+      alert("Voice show saved successfully!");
+      window.location.replace("edit-profile.html");
     }
 
-    function reRecordAudio() {
+    // 🌟 जब यूजर Delete बटन दबाएगा, तभी पुरानी रिकॉर्डिंग डिलीट होगी और नया रिकॉर्ड कर सकेगा
+    function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
+
+      localStorage.removeItem("greedy_voiceshow_duration");
+      localStorage.removeItem("greedy_voiceshow_saved");
+
       recordedDurationSeconds = 0;
-      hasUnsavedChanges = false;
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
-      
-      document.getElementById("promptText").style.display = "block";
-      document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "none";
-      document.getElementById("initialRecordSection").style.display = "flex";
-      document.getElementById("holdInstructionText").innerText = "Hold to speak";
-      secondsElapsed = 0;
       isPlaying = false;
-      resetPlayButtonUI();
+
+      // पेज को फ्रेश रिकॉर्डिंग मोड में लाएं
+      document.getElementById("waveformDisplay").style.display = "none";
+      document.getElementById("promptText").style.display = "block";
+      document.getElementById("listenSvgIcon").innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      document.getElementById("listenLabel").innerText = "Listen";
+      
+      alert("Recording deleted. You can record a new one now.");
     }
 
     function togglePlayPauseAudio() {
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+      if (isSaved !== "true") {
+        alert("No recording to listen!");
+        return;
+      }
+
       if (isPlaying) {
         if(playbackTimer) clearInterval(playbackTimer);
         resetPlayButtonUI();
@@ -534,15 +430,12 @@
 
       isPlaying = true;
 
-      let saveBtn = document.getElementById("mainSaveBtn");
-      saveBtn.classList.add("disabled-save");
-
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
       document.getElementById("listenLabel").innerText = "Pause";
 
       document.getElementById("waveformDisplay").style.display = "flex";
-      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
+      let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 6;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = playbackSec;
 
@@ -563,54 +456,11 @@
       if(playbackTimer) clearInterval(playbackTimer);
       isPlaying = false;
 
-      let saveBtn = document.getElementById("mainSaveBtn");
-      saveBtn.classList.remove("disabled-save");
-
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
       document.getElementById("listenLabel").innerText = "Listen";
 
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
-    }
-
-    function attemptExit() {
-      if (hasUnsavedChanges) {
-        showUnsavedPopup();
-      } else {
-        window.location.replace("edit-profile.html");
-      }
-    }
-
-    function showUnsavedPopup() {
-      document.getElementById("unsavedModal").style.display = "flex";
-    }
-
-    function exitWithoutSaving() {
-      hasUnsavedChanges = false;
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
-      document.getElementById("unsavedModal").style.display = "none";
-      window.location.replace("edit-profile.html");
-    }
-
-    function saveAndExit() {
-      saveVoiceRecordingFinal();
-    }
-
-    function saveVoiceRecordingFinal() {
-      if (isPlaying) return; 
-      if(recordingTimer) clearInterval(recordingTimer);
-      if(playbackTimer) clearInterval(playbackTimer);
-      
-      let finalSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
-      
-      hasUnsavedChanges = false;
-      localStorage.setItem("greedy_voiceshow_duration", finalSec);
-      localStorage.setItem("greedy_voiceshow_saved", "true");
-      localStorage.removeItem("greedy_voiceshow_temp_sec");
-      
-      document.getElementById("unsavedModal").style.display = "none";
-      alert("Voice show saved successfully!");
-      window.location.replace("edit-profile.html");
     }
   </script>
 </body>
