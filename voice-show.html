@@ -138,7 +138,6 @@
       stroke-linejoin: round;
     }
 
-    /* सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete और Listen बटन ON) */
     .saved-actions-row {
       display: none;
       flex-direction: row;
@@ -183,7 +182,6 @@
       font-weight: 500;
     }
 
-    /* रिकॉर्डिंग पूरी होने के बाद दिखने वाला मोड (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -283,7 +281,7 @@
       </div>
     </div>
 
-    <!-- 1. एकदम फ्रेश पेज मोड (पहली फोटो जैसा: केवल होल्ड टू स्पीक और माइक बटन)[span_2](start_span)[span_2](end_span) -->
+    <!-- 1. एकदम फ्रेश पेज मोड -->
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
@@ -291,7 +289,7 @@
       </button>
     </div>
 
-    <!-- 2. सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete और Listen बटन ON) -->
+    <!-- 2. सेव की गई रिकॉर्डिंग देखने वाला मोड -->
     <div class="saved-actions-row" id="savedRecordActions">
       <button class="action-sub-btn" onclick="deleteExistingRecording()">
         <div class="action-sub-icon">
@@ -312,7 +310,7 @@
       </button>
     </div>
 
-    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड (Re-record, Save, Listen) -->
+    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -364,7 +362,6 @@
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
 
-      // अगर रिकॉर्डिंग सेव है, तो सेव्ड मोड दिखाएं (Delete और Listen दिखेंगे)
       if (isSaved === "true" && savedDuration) {
         recordedDurationSeconds = parseInt(savedDuration);
         
@@ -375,7 +372,6 @@
         document.getElementById("savedRecordActions").style.display = "flex";
         document.getElementById("freshRecordSection").style.display = "none";
       } else {
-        // नया यूजर या डिलीट करने के बाद एकदम फ्रेश पेज (केवल माइक बटन दिखेगा)[span_3](start_span)[span_3](end_span)
         document.getElementById("promptText").style.display = "block";
         document.getElementById("waveformDisplay").style.display = "none";
         document.getElementById("savedRecordActions").style.display = "none";
@@ -491,7 +487,7 @@
       alert("Duration: " + recordedDurationSeconds + " seconds");
     }
 
-    // डिलीट करते ही पुरानी रिकॉर्डिंग हटेगी और तुरंत पहली फोटो जैसा नया फ्रेश पेज आ जाएगा[span_4](start_span)[span_4](end_span)
+    // 🌟 डिलीट करते ही localStorage से डेटा पूरी तरह साफ़ हो जाएगा और प्रोफाइल पेज पर भी तुरंत हट जाएगा
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -502,6 +498,7 @@
       recordedDurationSeconds = 0;
       isPlaying = false;
 
+      // तुरंत स्क्रीन से सब हटाकर फ्रेश पेज दिखाएं
       document.getElementById("savedRecordActions").style.display = "none";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("promptText").style.display = "block";
