@@ -208,6 +208,68 @@
       pointer-events: none;
     }
 
+    /* 🌟 ग्यारवीं फोटो जैसा अनसेव्ड वार्निंग पॉप-अप स्टाइल[span_1](start_span)[span_1](end_span) */
+    .unsaved-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .unsaved-dialog {
+      background: #ffffff;
+      width: 100%;
+      max-width: 330px;
+      border-radius: 6px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .unsaved-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 12px;
+    }
+
+    .unsaved-message {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .unsaved-btns-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+    }
+
+    .unsaved-btn {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-no-thanks {
+      color: #7b2cbf;
+    }
+
+    .btn-save-pop {
+      color: #7b2cbf;
+    }
+
+    /* सामान्य परमिशन पॉप-अप */
     .custom-modal-overlay {
       display: none;
       position: fixed;
@@ -264,7 +326,8 @@
 
   <div class="page-container">
     <div class="top-bar">
-      <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
+      <!-- बैक बटन दबाने पर वार्निंग चेक होगी -->
+      <button class="back-btn" onclick="attemptExit()">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Voice show</span>
@@ -310,7 +373,19 @@
     </div>
   </div>
 
-  <!-- परमिशन पॉप-अप (यह केवल पहली बार या ब्राउज़र रिसेट होने पर दिखेगा) -->
+  <!-- 🌟 ग्यारवीं फोटो जैसा Unsaved Changes वार्निंग पॉप-अप[span_2](start_span)[span_2](end_span) -->
+  <div id="unsavedModal" class="unsaved-modal-overlay">
+    <div class="unsaved-dialog">
+      <div class="unsaved-title">Tips</div>
+      <div class="unsaved-message">You have unsaved changes, do you want to save it?</div>
+      <div class="unsaved-btns-row">
+        <button class="unsaved-btn btn-no-thanks" onclick="exitWithoutSaving()">NO, THANKS</button>
+        <button class="unsaved-btn btn-save-pop" onclick="saveAndExit()">SAVE</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- परमिशन पॉप-अप -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
       <div class="dialog-message">Allow GREEDYCOIN to record audio?</div>
@@ -328,11 +403,11 @@
     let recordingTimer = null;
     let playbackTimer = null;
     let secondsElapsed = 0;
-    let recordedDurationSeconds = 7;
+    let recordedDurationSeconds = 0;
     let isPlaying = false;
+    let hasUnsavedChanges = false; // यह ट्रैक करेगा कि रिकॉर्डिंग हुई है पर सेव नहीं हुई
 
     window.onload = function() {
-      // चेक करें कि क्या परमिशन पहले से दी जा चुकी है
       let permGranted = localStorage.getItem("greedy_mic_permission");
       if (permGranted === "true") {
         hasPermission = true;
@@ -343,12 +418,24 @@
       let savedSec = localStorage.getItem("greedy_voiceshow_temp_sec");
       if (savedSec && parseInt(savedSec) > 0) {
         recordedDurationSeconds = parseInt(savedSec);
+        hasUnsavedChanges = true;
         document.getElementById("promptText").style.display = "none";
         document.getElementById("initialRecordSection").style.display = "none";
         document.getElementById("postRecordActions").style.display = "flex";
         document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
         document.getElementById("waveformDisplay").style.display = "flex";
       }
+
+      // 🌟 मोबाइल फोन का असली बैक बटन (Physical Back Button) दबाने पर रोककर पॉप-अप दिखाने के लिए
+      window.history.pushState(null, "", window.location.href);
+      window.onpopstate = function() {
+        if (hasUnsavedChanges) {
+          window.history.pushState(null, "", window.location.href);
+          showUnsavedPopup();
+        } else {
+          window.location.replace("edit-profile.html");
+        }
+      };
     };
 
     function setupHoldToSpeakListeners() {
@@ -363,7 +450,6 @@
 
     function onHoldStart() {
       if (!hasPermission) {
-        // अगर परमिशन नहीं है, तो पॉप-अप दिखाएं लेकिन ऑटोमैटिक रिकॉर्डिंग बिल्कुल शुरू न करें
         document.getElementById("permissionModal").style.display = "flex";
         return;
       }
@@ -378,9 +464,8 @@
 
     function grantPermission() {
       hasPermission = true;
-      localStorage.setItem("greedy_mic_permission", "true"); // परमिशन को याद रखें ताकि बार-बार न पूछे
+      localStorage.setItem("greedy_mic_permission", "true");
       closeModal();
-      // परमिशन मिलने के बाद रिकॉर्डिंग अपने आप चालू नहीं होगी, यूजर जब दोबारा बटन दबाएगा तभी होगी
     }
 
     function closeModal() {
@@ -421,6 +506,7 @@
         recordedDurationSeconds = 7;
       }
 
+      hasUnsavedChanges = true; // रिकॉर्डिंग हो गई है, अब अनसेव्ड बदलाव मौजूद हैं
       localStorage.setItem("greedy_voiceshow_temp_sec", recordedDurationSeconds);
 
       document.getElementById("initialRecordSection").style.display = "none";
@@ -432,7 +518,8 @@
     function reRecordAudio() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
-      recordedDurationSeconds = 7;
+      recordedDurationSeconds = 0;
+      hasUnsavedChanges = false;
       localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("promptText").style.display = "block";
@@ -493,6 +580,32 @@
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
+    // स्क्रीन पर ऊपर दिया गया बैक एरो दबाने पर
+    function attemptExit() {
+      if (hasUnsavedChanges) {
+        showUnsavedPopup();
+      } else {
+        window.location.replace("edit-profile.html");
+      }
+    }
+
+    function showUnsavedPopup() {
+      document.getElementById("unsavedModal").style.display = "flex";
+    }
+
+    // अगर यूजर 'NO, THANKS' चुनेगा
+    function exitWithoutSaving() {
+      hasUnsavedChanges = false;
+      localStorage.removeItem("greedy_voiceshow_temp_sec");
+      document.getElementById("unsavedModal").style.display = "none";
+      window.location.replace("edit-profile.html");
+    }
+
+    // अगर यूजर 'SAVE' चुनेगा
+    function saveAndExit() {
+      saveVoiceRecordingFinal();
+    }
+
     function saveVoiceRecordingFinal() {
       if (isPlaying) return; 
       if(recordingTimer) clearInterval(recordingTimer);
@@ -500,10 +613,12 @@
       
       let finalSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       
+      hasUnsavedChanges = false;
       localStorage.setItem("greedy_voiceshow_duration", finalSec);
       localStorage.setItem("greedy_voiceshow_saved", "true");
       localStorage.removeItem("greedy_voiceshow_temp_sec");
       
+      document.getElementById("unsavedModal").style.display = "none";
       alert("Voice show saved successfully!");
       window.location.replace("edit-profile.html");
     }
