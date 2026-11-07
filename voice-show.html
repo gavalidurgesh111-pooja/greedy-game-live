@@ -99,9 +99,48 @@
       margin-bottom: 60px;
     }
 
-    /* एक्शन रो (Fresh और Saved दोनों के लिए एक जैसी साफ़ बनावट) */
-    .record-actions-row {
+    .record-section {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .hold-text {
+      font-size: 14px;
+      color: #999;
+      font-weight: 500;
+    }
+
+    .mic-btn {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+    }
+
+    .mic-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete और Listen बटन ON) */
+    .saved-actions-row {
+      display: none;
       flex-direction: row;
       align-items: center;
       justify-content: space-around;
@@ -144,37 +183,7 @@
       font-weight: 500;
     }
 
-    .mic-btn-center {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 50%, #c77dff 100%);
-      border: none;
-      outline: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
-    }
-
-    .mic-btn-center svg {
-      width: 32px;
-      height: 32px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .disabled-action {
-      opacity: 0.3;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
-    /* रिकॉर्डिंग पूरी होने के बाद (Re-record, Save, Listen) */
+    /* रिकॉर्डिंग पूरी होने के बाद दिखने वाला मोड (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -274,8 +283,16 @@
       </div>
     </div>
 
-    <!-- 1. सेव की गई रिकॉर्डिंग वाला मोड (सातवीं फोटो जैसा: Delete और Listen चालू रहेंगे) -->
-    <div class="record-actions-row" id="savedRecordActions" style="display: none;">
+    <!-- 1. एकदम फ्रेश पेज मोड (पहली फोटो जैसा: केवल होल्ड टू स्पीक और माइक बटन)[span_2](start_span)[span_2](end_span) -->
+    <div class="record-section" id="freshRecordSection">
+      <span class="hold-text" id="holdInstructionText">Hold to speak</span>
+      <button class="mic-btn" id="micButton">
+        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+      </button>
+    </div>
+
+    <!-- 2. सेव की गई रिकॉर्डिंग देखने वाला मोड (Delete और Listen बटन ON) -->
+    <div class="saved-actions-row" id="savedRecordActions">
       <button class="action-sub-btn" onclick="deleteExistingRecording()">
         <div class="action-sub-icon">
           <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -283,7 +300,7 @@
         <span class="action-sub-label">Delete</span>
       </button>
 
-      <button class="mic-btn-center" onclick="alert('Please delete the existing recording before recording a new one.')">
+      <button class="mic-btn" onclick="alert('Please delete the existing recording before recording a new one.')">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
       </button>
 
@@ -295,28 +312,7 @@
       </button>
     </div>
 
-    <!-- 2. एकदम फ्रेश पेज मोड (पहली फोटो जैसा: Delete और Listen बंद रहेंगे)[span_7](start_span)[span_7](end_span) -->
-    <div class="record-actions-row" id="freshRecordSection" style="display: none;">
-      <button class="action-sub-btn disabled-action">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-        </div>
-        <span class="action-sub-label">Delete</span>
-      </button>
-
-      <button class="mic-btn-center" id="micButtonFresh">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
-      </button>
-
-      <button class="action-sub-btn disabled-action">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        </div>
-        <span class="action-sub-label">Listen</span>
-      </button>
-    </div>
-
-    <!-- 3. रिकॉर्डिंग पूरी होने के बाद मोड (चौथी/पाँचवीं फोटो जैसा: Re-record, Save, Listen)[span_8](start_span)[span_8](end_span)[span_9](start_span)[span_9](end_span) -->
+    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड (Re-record, Save, Listen) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -336,7 +332,7 @@
     </div>
   </div>
 
-  <!-- परमिशन पॉप-अप (दूसरी फोटो जैसा)[span_10](start_span)[span_10](end_span) -->
+  <!-- परमिशन पॉप-अप -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
       <div class="dialog-message">Allow Mika to record audio?</div>
@@ -368,7 +364,7 @@
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
 
-      // अगर रिकॉर्डिंग पक्की सेव है (सातवीं फोटो जैसा)
+      // अगर रिकॉर्डिंग सेव है, तो सेव्ड मोड दिखाएं (Delete और Listen दिखेंगे)
       if (isSaved === "true" && savedDuration) {
         recordedDurationSeconds = parseInt(savedDuration);
         
@@ -379,7 +375,7 @@
         document.getElementById("savedRecordActions").style.display = "flex";
         document.getElementById("freshRecordSection").style.display = "none";
       } else {
-        // नया यूजर या डिलीट करने के बाद एकदम फ्रेश पेज (पहली फोटो जैसा)[span_11](start_span)[span_11](end_span)
+        // नया यूजर या डिलीट करने के बाद एकदम फ्रेश पेज (केवल माइक बटन दिखेगा)[span_3](start_span)[span_3](end_span)
         document.getElementById("promptText").style.display = "block";
         document.getElementById("waveformDisplay").style.display = "none";
         document.getElementById("savedRecordActions").style.display = "none";
@@ -388,14 +384,14 @@
     };
 
     function setupHoldToSpeakListeners() {
-      let micFresh = document.getElementById("micButtonFresh");
+      let micBtn = document.getElementById("micButton");
 
-      if (micFresh) {
-        micFresh.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
-        micFresh.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
-        micFresh.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
-        micFresh.addEventListener("touchend", function(e) { e.preventDefault(); onHoldEnd(); });
-        micFresh.addEventListener("mouseleave", function(e) { if (isRecording) { onHoldEnd(); } });
+      if (micBtn) {
+        micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
+        micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
+        micBtn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
+        micBtn.addEventListener("touchend", function(e) { e.preventDefault(); onHoldEnd(); });
+        micBtn.addEventListener("mouseleave", function(e) { if (isRecording) { onHoldEnd(); } });
       }
     }
 
@@ -441,7 +437,6 @@
 
       if(recordingTimer) clearInterval(recordingTimer);
 
-      // अधिकतम सीमा 20 सेकंड
       recordingTimer = setInterval(() => {
         secondsElapsed++;
         if (secondsElapsed <= 20) {
@@ -470,7 +465,6 @@
       document.getElementById("waveformDisplay").style.display = "flex";
     }
 
-    // अगर यूजर Re-record दबाएगा तो रिकॉर्डिंग हट जाएगी और फ्रेश पेज आ जाएगा
     function reRecordAudio() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -482,7 +476,6 @@
       secondsElapsed = 0;
     }
 
-    // अगर यूजर SAVE दबाएगा तो वह छठी फोटो जैसा सेव होकर प्रोफाइल पर जाएगा[span_12](start_span)[span_12](end_span)
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -498,7 +491,7 @@
       alert("Duration: " + recordedDurationSeconds + " seconds");
     }
 
-    // पुरानी रिकॉर्डिंग डिलीट करते ही सब हट जाएगा और तुरंत पहली फोटो जैसा नया पेज आ जाएगा[span_13](start_span)[span_13](end_span)
+    // डिलीट करते ही पुरानी रिकॉर्डिंग हटेगी और तुरंत पहली फोटो जैसा नया फ्रेश पेज आ जाएगा[span_4](start_span)[span_4](end_span)
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
