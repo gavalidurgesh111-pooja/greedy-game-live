@@ -141,9 +141,8 @@
     
     .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग: कैप्सूल शेप और डायनेमिक बैकग्राउंड रंग */
     .tag-lv { 
-      background-color: #81c784; /* डिफ़ॉल्ट हल्का हरा (1-10 लेवल) */
+      background-color: #81c784; 
       color: #ffffff; 
       font-size: 12px; 
       font-weight: 800; 
@@ -154,7 +153,6 @@
       gap: 5px; 
     }
     
-    /* 🌟 असली वेब वेक्टर SVG स्टार */
     .web-star-icon {
       width: 14px;
       height: 14px;
@@ -162,7 +160,7 @@
       flex-shrink: 0;
     }
 
-    /* 🌟 ग्रह और सिंगल रिंग लोगो (रिंग अब पूरी साफ दिख रही है - जैसा पिछली फोटो में था) */
+    /* 🌟 ग्रह लोगो: पीछे की लाइन छुपी हुई और आगे की रिंग बिल्कुल सही */
     .planet-badge {
       width: 32px;
       height: 20px;
@@ -237,7 +235,6 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 🌟 बड़ा ग्रह और पूरी दिखने वाली सिंगल रिंग वाला लोगो (पिछली फोटो जैसा) -->
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
             <svg class="web-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -245,10 +242,10 @@
           </div>
           <div class="planet-badge" title="Planet Badge">
             <svg viewBox="0 0 24 24" fill="none">
-              <!-- बड़ा नीला ग्रह (सफेद बॉर्डर के साथ) -->
-              <circle cx="12" cy="12" r="4.2" fill="#2196f3" stroke="#ffffff" stroke-width="1.6"/>
-              <!-- पूरी गोल दिखने वाली सिंगल रिंग (वलय): जो अब ग्रह के आगे-पीछे दोनों तरफ से साफ दिखेगी, जैसा आपने मांगा है -->
-              <ellipse cx="12" cy="12" rx="8.5" ry="2.6" stroke="#ffffff" stroke-width="1.6" transform="rotate(-25 12 12)"/>
+              <!-- 1. बड़ा नीला ग्रह (जो पीछे की रिंग को पूरी तरह छुपा देगा) -->
+              <circle cx="12" cy="12" r="4.5" fill="#2196f3" stroke="#ffffff" stroke-width="1.6"/>
+              <!-- 2. सिर्फ सामने वाली रिंग (जो नीचे से शुरू होकर ऊपर नॉर्मल जाएगी) -->
+              <path d="M4.5 14.8 C7.5 17.5 16.5 17.5 19.5 14.8" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
@@ -383,7 +380,7 @@
       let groupsScreen = document.getElementById("screenGroups");
 
       if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
-      if (modalFrame && modalFrame.style.display === "flex") { customAlert.style.display = "none"; return; }
+      if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
 
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
@@ -391,17 +388,16 @@
       window.location.replace("home.html");
     });
 
-    // 🌟 लेवल के नियमों के अनुसार बैकग्राउंड रंग सेट करने वाला फंक्शन (1-10: हल्का हरा, 11-30: नीला, 31-100: ऑरेंज)
     function updateLevelBackground(lvl) {
       const lvTag = document.getElementById("profLevelTag");
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#81c784"; // हल्का हरा (Pastel Green)
+        lvTag.style.backgroundColor = "#81c784"; 
       } else if (lvl <= 30) {
-        lvTag.style.backgroundColor = "#2196f3"; // नीला (Blue)
+        lvTag.style.backgroundColor = "#2196f3"; 
       } else {
-        lvTag.style.backgroundColor = "#ff9800"; // ऑरेंज (Orange)
+        lvTag.style.backgroundColor = "#ff9800"; 
       }
     }
 
@@ -514,4 +510,86 @@
     }
     function closeCustomAlert() { document.getElementById("customAlertModal").style.display = "none"; }
 
-    function apply
+    function applyFrameClass(frameName) {
+      currentFrame = frameName;
+      localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
+      db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
+      const frameEl = document.getElementById("profAvatarFrame");
+      frameEl.className = "avatar-frame";
+      frameEl.style.display = "block";
+      frameEl.style.backgroundImage = "";
+      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
+      if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
+      else frameEl.style.display = "none";
+      closeFrameModal();
+    }
+
+    function removeFrame() {
+      currentFrame = "none";
+      localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
+      db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
+      document.getElementById("profAvatarFrame").style.display = "none";
+      closeFrameModal();
+    }
+
+    function openFrameModal() { 
+      document.getElementById("modalFrame").style.display = "flex"; 
+      history.pushState({modal: "frame"}, "", window.location.href);
+    }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
+
+    function copyMyId() {
+      navigator.clipboard.writeText(userId);
+      showCustomAlert("ID Copied: " + userId);
+    }
+
+    function openAboutMeScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenAboutMe").style.display = "flex"; 
+      history.pushState({screen: "about"}, "", window.location.href);
+    }
+    function closeAboutMeScreen() { 
+      document.getElementById("screenAboutMe").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
+    
+    function togglePrivacy() {
+      isPrivate = !isPrivate;
+      localStorage.setItem("prof_private_" + currentIdentifier, isPrivate);
+      db.collection("users").doc(currentIdentifier).update({ privacy: isPrivate }).catch((err) => console.error(err));
+      updatePrivacyHeart();
+    }
+    
+    function updatePrivacyHeart() {
+      const heart = document.getElementById("privacyHeart");
+      const bioBox = document.getElementById("aboutMeContentBox");
+      if(isPrivate) {
+        heart.innerText = "❤️";
+        if(bioBox) {
+          bioBox.style.background = "#ffe6e6";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
+        }
+      } else {
+        heart.innerText = "🤍";
+        if(bioBox) {
+          bioBox.style.background = "#fff";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
+        }
+      }
+    }
+
+    function openGroupsScreen() { 
+      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenGroups").style.display = "flex"; 
+      history.pushState({screen: "groups"}, "", window.location.href);
+    }
+    function closeGroupsScreen() { 
+      document.getElementById("screenGroups").style.display = "none"; 
+      document.getElementById("screenProfile").style.display = "block";
+    }
+
+    window.onpageshow = function(event) { initProfile(); };
+    window.onload = () => { initProfile(); };
+  </script>
+</body>
+</html>
