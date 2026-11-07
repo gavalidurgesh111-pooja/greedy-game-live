@@ -9,7 +9,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स (नाम, उम्र, जेंडर, वॉट्ज़ अप) दिखाने के लिए -->
+  <!-- 🌟 पेज खुलते ही तुरंत बेसिक डिटेल्स दिखाने के लिए -->
   <script>
     (function() {
       let currentId = localStorage.getItem("greedy_login_identifier") || "default_user";
@@ -125,14 +125,31 @@
       stroke-linejoin: round;
     }
 
+    /* 🌟 सेव बटन का डिफ़ॉल्ट (OFF/शांत) स्टेट - धुंधला और इनएक्टिव */
     .save-btn svg {
       width: 24px;
       height: 24px;
-      stroke: #00b09b;
+      stroke: #d0d0d0;
       fill: none;
       stroke-width: 2.5;
       stroke-linecap: round;
       stroke-linejoin: round;
+      transition: stroke 0.2s ease;
+    }
+
+    .save-btn {
+      pointer-events: none; /* जब तक बदलाव न हो, क्लिक बंद रहेगा */
+      cursor: default;
+    }
+
+    /* 🌟 जब यूजर बदलाव करेगा, तब बटन (ON/चमकदार) हो जाएगा */
+    .save-btn.active-save {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .save-btn.active-save svg {
+      stroke: #00b09b; /* चमकदार हरा रंग */
     }
 
     .page-title {
@@ -454,7 +471,8 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Basic info</span>
-      <button class="save-btn" onclick="saveBasicInfo()">
+      <!-- 🌟 सेव बटन (डिफ़ॉल्ट रूप से बंद/इनएक्टिव) -->
+      <button class="save-btn" id="masterSaveBtn" onclick="saveBasicInfo()">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </button>
     </div>
@@ -462,7 +480,7 @@
     <div class="form-section">
       <div class="input-group">
         <span class="input-label">Nickname</span>
-        <input type="text" id="inputNickname" class="text-input" maxlength="30" value="" oninput="updateCounter()">
+        <input type="text" id="inputNickname" class="text-input" maxlength="30" value="" oninput="onFieldChanged()">
         <span class="char-counter" id="nicknameCounter">0/30</span>
       </div>
 
@@ -478,17 +496,17 @@
         <span class="input-label">Gender</span>
         <div class="gender-row">
           <label class="radio-label">
-            <input type="radio" name="gender" value="Male" id="genderMale"> Male
+            <input type="radio" name="gender" value="Male" id="genderMale" onclick="onFieldChanged()"> Male
           </label>
           <label class="radio-label">
-            <input type="radio" name="gender" value="Female" id="genderFemale"> Female
+            <input type="radio" name="gender" value="Female" id="genderFemale" onclick="onFieldChanged()"> Female
           </label>
         </div>
       </div>
 
       <div class="input-group">
         <span class="input-label">What's up</span>
-        <input type="text" id="inputBio" class="text-input" maxlength="140" placeholder="Write something about yourself..." oninput="updateBioCounter()">
+        <input type="text" id="inputBio" class="text-input" maxlength="140" placeholder="Write something about yourself..." oninput="onFieldChanged()">
         <span class="char-counter" id="bioCounter">0/140</span>
       </div>
     </div>
@@ -623,7 +641,6 @@
     let tempSelectedAge = 18;
     let currentRelationship = "Single";
     let selectedLanguages = [];
-    let currentLocation = "India";
     let recordedAudioUrl = "";
 
     const allLanguagesList = [
@@ -748,20 +765,17 @@
       closeLanguagesModal();
     }
 
-    // 🌟 फायरबेस से डेटा लोड होगा
     function loadUserDataFromFirebase() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
           if (data.name) {
             document.getElementById("inputNickname").value = data.name;
-            localStorage.setItem("prof_name_" + currentIdentifier, data.name);
             updateCounter();
           }
           if (data.age) {
             tempSelectedAge = data.age;
             document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
-            localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
           } else {
             document.getElementById("selectedAgeDisplay").innerText = "18";
           }
@@ -772,7 +786,6 @@
           }
           if (data.bio) {
             document.getElementById("inputBio").value = data.bio;
-            localStorage.setItem("prof_bio_" + currentIdentifier, data.bio);
             updateBioCounter();
           }
           if (data.relationship) {
@@ -790,11 +803,10 @@
             }
           }
           if (data.location) {
-            currentLocation = data.location;
-            document.getElementById("selectedLocationDisplay").innerText = currentLocation;
+            document.getElementById("selectedLocationDisplay").innerText = data.location;
           }
           if (data.voiceShow && !localStorage.getItem("greedy_voiceshow_saved")) {
-            recordedAudioUrl = data.voiceShow;
+            let recordedAudioUrl = data.voiceShow;
             let matchSec = recordedAudioUrl.match(/_(\d+)s/);
             let secVal = matchSec ? matchSec[1] : "7";
             localStorage.setItem("greedy_voiceshow_saved", "true");
@@ -807,18 +819,22 @@
       });
     }
 
+    // 🌟 जब भी ऊपर के 4 ऑप्शन (Nickname, Age, Gender, What's up) में बदलाव होगा, बटन ON हो जाएगा
+    function onFieldChanged() {
+      let saveBtn = document.getElementById("masterSaveBtn");
+      saveBtn.classList.add("active-save");
+    }
+
     function updateCounter() {
       let len = document.getElementById("inputNickname").value.length;
       document.getElementById("nicknameCounter").innerText = len + "/30";
-      let nameVal = document.getElementById("inputNickname").value;
-      localStorage.setItem("prof_name_" + currentIdentifier, nameVal);
+      onFieldChanged();
     }
 
     function updateBioCounter() {
       let len = document.getElementById("inputBio").value.length;
       document.getElementById("bioCounter").innerText = len + "/140";
-      let bioVal = document.getElementById("inputBio").value;
-      localStorage.setItem("prof_bio_" + currentIdentifier, bioVal);
+      onFieldChanged();
     }
 
     function openAgeModal() {
@@ -859,7 +875,7 @@
       if(items[index]) {
         tempSelectedAge = items[index].innerText;
         document.getElementById("selectedAgeDisplay").innerText = tempSelectedAge;
-        localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
+        onFieldChanged(); // उम्र बदलने पर भी बटन ON होगा
       }
       closeAgeModal();
     }
@@ -881,7 +897,7 @@
       closeRelationshipModal();
     }
 
-    // 🌟 मास्टर सेव बटन (✔): यह सिर्फ Nickname, Age, Gender और What's up को डेटाबेस में सेव करेगा
+    // 🌟 मास्टर सेव बटन (✔): यह सिर्फ Nickname, Age, Gender और What's up को डेटाबेस में सेव करेगा और बटन वापस OFF हो जाएगा
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
@@ -893,17 +909,16 @@
         return;
       }
 
-      localStorage.setItem("prof_name_" + currentIdentifier, name);
-      localStorage.setItem("prof_age_" + currentIdentifier, tempSelectedAge);
-      localStorage.setItem("prof_bio_" + currentIdentifier, bio);
-      localStorage.setItem("prof_gender_" + currentIdentifier, gender);
-
       db.collection("users").doc(currentIdentifier).set({
         name: name,
         age: tempSelectedAge,
         gender: gender,
         bio: bio
       }, { merge: true }).then(() => {
+        // बटन वापस OFF करें
+        let saveBtn = document.getElementById("masterSaveBtn");
+        saveBtn.classList.remove("active-save");
+
         localStorage.setItem("show_toast_message", "Upload successfully");
         window.location.replace("home.html?updated=true");
       }).catch((error) => {
