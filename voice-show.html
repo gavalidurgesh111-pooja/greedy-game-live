@@ -182,6 +182,7 @@
       font-weight: 500;
     }
 
+    /* पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -207,6 +208,16 @@
       font-size: 16px;
       font-weight: 700;
       box-shadow: 0 6px 20px rgba(123, 44, 191, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    /* जब Listen क्लिक हो, तो Save बटन OFF (धुंधला) हो जाएगा[span_8](start_span)[span_8](end_span) */
+    .save-big-btn.disabled-save {
+      background: #dcd6e4 !important;
+      color: #a095b0 !important;
+      box-shadow: none !important;
+      cursor: not-allowed;
+      pointer-events: none;
     }
 
     .custom-modal-overlay {
@@ -281,7 +292,7 @@
       </div>
     </div>
 
-    <!-- 1. एकदम फ्रेश पेज मोड -->
+    <!-- 1. फ्रेश पेज मोड -->
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
@@ -310,7 +321,7 @@
       </button>
     </div>
 
-    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड -->
+    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड (Re-record, Save, Listen)[span_9](start_span)[span_9](end_span)[span_10](start_span)[span_10](end_span) -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -319,13 +330,15 @@
         <span class="action-sub-label">Re-record</span>
       </button>
 
-      <button class="save-big-btn" onclick="saveVoiceRecordingFinal()">Save</button>
+      <!-- मुख्य SAVE बटन[span_11](start_span)[span_11](end_span) -->
+      <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
-      <button class="action-sub-btn" onclick="previewNewRecording()">
-        <div class="action-sub-icon">
-          <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      <!-- Listen बटन[span_12](start_span)[span_12](end_span)[span_13](start_span)[span_13](end_span) -->
+      <button class="action-sub-btn" id="postListenBtn" onclick="togglePreviewPlayback()">
+        <div class="action-sub-icon" id="postListenIconContainer">
+          <svg viewBox="0 0 24 24" id="postListenSvg"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
         </div>
-        <span class="action-sub-label">Listen</span>
+        <span class="action-sub-label" id="postListenLabel">Listen</span>
       </button>
     </div>
   </div>
@@ -364,7 +377,6 @@
 
       if (isSaved === "true" && savedDuration) {
         recordedDurationSeconds = parseInt(savedDuration);
-        
         document.getElementById("promptText").style.display = "none";
         document.getElementById("waveformDisplay").style.display = "flex";
         document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
@@ -470,6 +482,66 @@
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("freshRecordSection").style.display = "flex";
       secondsElapsed = 0;
+      isPlaying = false;
+      resetPostListenUI();
+    }
+
+    // 🌟 नई रिकॉर्डिंग सुनने के लिए (जब Save करने से पहले Listen दबाया जाए)[span_14](start_span)[span_14](end_span)[span_15](start_span)[span_15](end_span)
+    function togglePreviewPlayback() {
+      if (isPlaying) {
+        if(playbackTimer) clearInterval(playbackTimer);
+        resetPostListenUI();
+        return;
+      }
+
+      isPlaying = true;
+
+      // 1. Save बटन को OFF कर दें[span_16](start_span)[span_16](end_span)
+      let saveBtn = document.getElementById("mainSaveBtn");
+      saveBtn.classList.add("disabled-save");
+
+      // 2. Listen आइकॉन को Pause में बदलें[span_17](start_span)[span_17](end_span)
+      let postListenSvg = document.getElementById("postListenSvg");
+      postListenSvg.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
+      document.getElementById("postListenLabel").innerText = "Pause";
+
+      document.getElementById("waveformDisplay").style.display = "flex";
+      
+      // 3. अंक उल्टे चलेंगे (Countdown)[span_18](start_span)[span_18](end_span)
+      let remainingSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 5;
+      let secElem = document.getElementById("recordedSecondsCount");
+      secElem.innerText = remainingSec;
+
+      if(playbackTimer) clearInterval(playbackTimer);
+
+      playbackTimer = setInterval(() => {
+        remainingSec--;
+        if (remainingSec >= 0) {
+          secElem.innerText = remainingSec;
+        } else {
+          // 4. जब रिकॉर्डिंग पूरी होगी, पेज फिर से अपनी ओरिजिनल पोजीशन में आ जाएगा[span_19](start_span)[span_19](end_span)
+          clearInterval(playbackTimer);
+          resetPostListenUI();
+        }
+      }, 1000);
+    }
+
+    // जब प्लेबैक पूरा हो जाए या रोका जाए, तो पेज ओरिजिनल पोजीशन में लौट आए[span_20](start_span)[span_20](end_span)
+    function resetPostListenUI() {
+      if(playbackTimer) clearInterval(playbackTimer);
+      isPlaying = false;
+
+      // Save बटन को वापस ON करें[span_21](start_span)[span_21](end_span)
+      let saveBtn = document.getElementById("mainSaveBtn");
+      saveBtn.classList.remove("disabled-save");
+
+      // Listen बटन को उसकी पुरानी पोजीशन पर लाएं[span_22](start_span)[span_22](end_span)
+      let postListenSvg = document.getElementById("postListenSvg");
+      postListenSvg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
+      document.getElementById("postListenLabel").innerText = "Listen";
+
+      // सेकंड्स अपने पूरे अंक पर वापस आ जाएंगे[span_23](start_span)[span_23](end_span)
+      document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
     function saveVoiceRecordingFinal() {
@@ -483,11 +555,6 @@
       window.location.replace("edit-profile.html");
     }
 
-    function previewNewRecording() {
-      alert("Duration: " + recordedDurationSeconds + " seconds");
-    }
-
-    // 🌟 डिलीट करते ही localStorage से डेटा पूरी तरह साफ़ हो जाएगा और प्रोफाइल पेज पर भी तुरंत हट जाएगा
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -498,7 +565,6 @@
       recordedDurationSeconds = 0;
       isPlaying = false;
 
-      // तुरंत स्क्रीन से सब हटाकर फ्रेश पेज दिखाएं
       document.getElementById("savedRecordActions").style.display = "none";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("promptText").style.display = "block";
