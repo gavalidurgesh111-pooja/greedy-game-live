@@ -35,7 +35,7 @@
       flex-direction: column;
       background: #ffffff;
       justify-content: space-between;
-      padding-bottom: 90px;
+      padding-bottom: 120px; /* 🌟 बटनों को नीचे से थोड़ा और ऊपर ले लिया गया है */
       opacity: 1;
     }
 
@@ -104,9 +104,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       width: 100%;
-      margin-bottom: 10px;
     }
 
     .hold-text {
@@ -115,26 +114,28 @@
       font-weight: 500;
     }
 
+    /* 🌟 माइक बटन का रंग और डिज़ाइन बिल्कुल आपकी फोटो जैसा सटीक पर्पल ग्रेडिएंट */
     .mic-btn {
-      width: 100px;
-      height: 100px;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #5a189a 0%, #7b2cbf 50%, #9d4edd 100%);
+      background: linear-gradient(135deg, #6236ff 0%, #7b2cbf 50%, #8f3985 100%);
       border: none;
       outline: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 10px 25px rgba(90, 24, 154, 0.45);
+      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
     }
 
+    /* 🌟 माइक का अंदर वाला SVG लोगो बिल्कुल आपकी फोटो जैसा */
     .mic-btn svg {
-      width: 42px;
-      height: 42px;
+      width: 36px;
+      height: 36px;
       stroke: #ffffff;
       fill: none;
-      stroke-width: 2.2;
+      stroke-width: 1.8;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -146,7 +147,6 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 10px;
     }
 
     .action-sub-btn {
@@ -190,14 +190,13 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 10px;
     }
 
     .save-big-btn {
-      width: 100px;
-      height: 100px;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #5a189a 0%, #7b2cbf 50%, #9d4edd 100%);
+      background: linear-gradient(135deg, #6236ff 0%, #7b2cbf 50%, #8f3985 100%);
       border: none;
       outline: none;
       cursor: pointer;
@@ -207,7 +206,7 @@
       color: #ffffff;
       font-size: 18px;
       font-weight: 700;
-      box-shadow: 0 10px 25px rgba(90, 24, 154, 0.45);
+      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
       transition: all 0.3s ease;
     }
 
@@ -320,7 +319,13 @@
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <!-- 🌟 बिल्कुल आपकी फोटो जैसा सटीक माइक SVG लोगो -->
+        <svg viewBox="0 0 24 24">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
       </button>
     </div>
 
@@ -334,7 +339,12 @@
       </button>
 
       <button class="mic-btn" onclick="alert('Please delete the existing recording before recording a new one.')">
-        <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+          <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
+          <line x1="12" y1="19" x2="12" y2="23"></line>
+          <line x1="8" y1="23" x2="16" y2="23"></line>
+        </svg>
       </button>
 
       <button class="action-sub-btn" onclick="togglePlayPauseAudio()">
@@ -368,7 +378,7 @@
   <!-- टोस्ट पॉप-अप -->
   <div id="toastPopup" class="toast-popup">Delete successfully</div>
 
-  <!-- परमिशन पॉप-अप (केवल नए यूजर के लिए पहली बार दिखेगा) -->
+  <!-- परमिशन पॉप-अप -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
       <div class="dialog-message">Allow Mika to record audio?</div>
@@ -390,7 +400,6 @@
     let isPlaying = false;
 
     window.onload = function() {
-      // चेक करें कि क्या यूजर ने पहले कभी परमिशन दी है या नहीं
       let permGranted = localStorage.getItem("greedy_mic_permission");
       if (permGranted === "true") {
         hasPermission = true;
@@ -435,7 +444,6 @@
         return;
       }
 
-      // 🌟 यदि परमिशन पहले से नहीं मिली है, तभी पॉप-अप दिखाएं (सिर्फ नए यूजर के लिए)
       if (!hasPermission) {
         let permAlreadyAsked = localStorage.getItem("greedy_mic_permission_asked");
         if (!permAlreadyAsked) {
@@ -443,7 +451,6 @@
           document.getElementById("permissionModal").style.display = "flex";
           return;
         } else {
-          // अगर पहले पूछ चुका है और यूजर ने मना किया था या बंद किया था, तो परमिशन मानकर आगे बढ़ें या दोबारा चेक करें
           hasPermission = true;
         }
       }
@@ -459,9 +466,9 @@
 
     function grantPermission() {
       hasPermission = true;
-      localStorage.setItem("greedy_mic_permission", "true"); // हमेशा के लिए परमिशन सेव कर ली
+      localStorage.setItem("greedy_mic_permission", "true");
       closeModal();
-      startActualRecording(); // परमिशन मिलते ही तुरंत रिकॉर्डिंग शुरू हो जाएगी
+      startActualRecording();
     }
 
     function closeModal() {
