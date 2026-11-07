@@ -68,7 +68,6 @@
       cursor: pointer;
     }
     
-    /* 🌟 बैक बटन और एडिट बटन के नीचे से काला हिस्सा (background/shadow) पूरी तरह हटा दिया गया है */
     .profile-back-btn { 
       position: absolute; 
       top: 15px; 
@@ -136,35 +135,37 @@
     .frame-custom3 { background-image: url('frame3.png') !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
     
-    /* 🌟 Nickname को थोड़ा नीचे करने के लिए margin-top बढ़ाया गया है */
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
-    .user-name { font-size: 22px; font-weight: 900; color: #111; cursor: pointer; }
+    .user-name { font-size: 22px; font-weight: 900; color: #111; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     
-    /* 🌟 👑 Lv.1 और sent टैग को थोड़ा नीचे करने के लिए margin-top बढ़ाया गया है */
     .tags-row { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
-    .tag-lv { background: linear-gradient(45deg, #ff9a9e, #fecfef); color: #b70000; font-size: 12px; font-weight: 900; padding: 4px 12px; border-radius: 12px; }
     
-    /* 🌟 ID की जगह सेंट कॉइन्स का डिस्प्ले (इस पर क्लिक नहीं होगा) */
-    .tag-sent-coins { background: #fff8e1; color: #f57c00; font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid #ffe0b2; }
+    /* 👑 Lv.1 टैग: लोगो ऑरेंज, साइज छोटी, टेक्स्ट सफेद */
+    .tag-lv { background: #333; color: #ffffff; font-size: 11px; font-weight: bold; padding: 3px 10px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; }
+    .tag-lv span.crown { font-size: 11px; color: #ff8c00; }
 
+    /* 🪙 sent कॉइन्स: बिना लोगो के, काले अक्षर */
+    .tag-sent-text { font-size: 13px; font-weight: bold; color: #111; }
+
+    /* 0 Followers और sent कॉइन्स की एक ही लाइन */
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
-    .follow-counts { display: flex; gap: 20px; }
-    .f-count-item { display: flex; flex-direction: column; align-items: flex-start; cursor: pointer; }
-    .f-num { font-size: 16px; font-weight: 900; color: #111; }
-    .f-lbl { font-size: 12px; color: #777; font-weight: 600; }
-    .profile-action-btns { display: flex; gap: 8px; }
-    .btn-action { background: #f0f0f5; color: #333; border: 1px solid #ccc; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 12px; cursor: pointer; }
-    .stats-container { display: flex; justify-content: space-around; margin: 25px 20px 15px 20px; padding: 14px; background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); border: 1px solid #edf2f7; }
-    .stat-item-balance { text-align: center; cursor: pointer; }
-    .stat-item-won { text-align: center; }
-    .stat-val { font-size: 16px; font-weight: 900; color: #222; }
-    .stat-label { font-size: 11px; color: #718096; margin-top: 4px; font-weight: bold; }
-    .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 35px; }
+    .follow-counts { display: flex; gap: 25px; align-items: center; }
+    .f-count-item { display: flex; gap: 6px; align-items: baseline; }
+    .f-num { font-size: 15px; font-weight: 900; color: #111; }
+    .f-lbl { font-size: 13px; color: #555; font-weight: 600; }
+
+    /* Profile हेडिंग और छोटी लाइन */
+    .profile-section-title-box { padding: 25px 20px 10px 20px; display: flex; flex-direction: column; gap: 6px; }
+    .profile-heading-text { font-size: 16px; font-weight: 800; color: #111; }
+    .profile-heading-line { width: 35px; height: 3px; background: #8a2be2; border-radius: 2px; }
+
+    .cards-wrapper { padding: 0 20px; display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
     .action-card { width: 100%; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; color: #fff; }
     .card-play { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); }
     .card-about { background: linear-gradient(135deg, #8a2be2 0%, #4a00e0 100%); }
     .card-group { background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%); }
+    
     .sub-screen { display: none; position: absolute; inset: 0; background: #f8f9fa; z-index: 50; flex-direction: column; }
     .sub-header { display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #fff; color: #111; border-bottom: 1px solid #ddd; }
     .sub-header h2 { font-size: 18px; font-weight: 900; }
@@ -179,10 +180,8 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- बैक बटन (काला हिस्सा हटाया गया) -->
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">❮</div>
       
-      <!-- टॉप राइट एडिट आइकॉन (काला हिस्सा हटाया गया) -->
       <div class="profile-top-icons">
         <div class="icon-circle" onclick="location.href='edit-profile.html'">
           <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -198,42 +197,35 @@
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
         
-        <!-- निकनेम थोड़ा नीचे किया गया -->
+        <!-- सिर्फ नाम, पेंसिल हटाई गई और क्लिक बंद -->
         <div class="user-name-row">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <div class="user-name" id="profNameDisplay" onclick="promptEditName()">User</div>
-            <div id="editNameBtn" style="font-size:14px; cursor:pointer;" onclick="promptEditName()">✏️</div>
-          </div>
+          <div class="user-name" id="profNameDisplay">User</div>
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 👑 Lv.1 थोड़ा नीचे किया गया और आईडी की जगह 🪙 00.0 sent जोड़ दिया गया -->
+        <!-- Lv.1 (सफेद टेक्स्ट, ऑरेंज छोटा लोगो) -->
         <div class="tags-row">
-          <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
-          <div class="tag-sent-coins">🪙 00.0 sent</div>
+          <div class="tag-lv"><span class="crown">👑</span> Lv.<span id="profLevel">1</span></div>
         </div>
       </div>
 
+      <!-- 0 Followers और 00.0 sent की एक ही लाइन -->
       <div class="follow-stats-row">
         <div class="follow-counts">
-          <div class="f-count-item" onclick="showCustomAlert('Followers list')"><span class="f-num" id="followersCount">0</span><span class="f-lbl">Followers</span></div>
-          <div class="f-count-item" onclick="showCustomAlert('Following list')"><span class="f-num" id="followingCount">0</span><span class="f-lbl">Following</span></div>
-        </div>
-        <div class="profile-action-btns">
-          <button class="btn-action" onclick="openCoinSendModal()">Coin Send</button>
-          <button class="btn-action" onclick="window.location.replace('message.html')">Messages</button>
+          <div class="f-count-item">
+            <span class="f-num" id="followersCount">0</span>
+            <span class="f-lbl">Followers</span>
+          </div>
+          <div class="f-count-item">
+            <span class="tag-sent-text">00.0 sent</span>
+          </div>
         </div>
       </div>
 
-      <div class="stats-container">
-        <div class="stat-item-balance" onclick="openCoinSendModal()">
-          <div class="stat-val">🪙 <span id="profBalance">1000</span></div>
-          <div class="stat-label">Wallet Balance</div>
-        </div>
-        <div class="stat-item-won">
-          <div class="stat-val">🏆 <span id="profWon">0</span></div>
-          <div class="stat-label">Total Won Coins</div>
-        </div>
+      <!-- Profile और छोटी लाइन -->
+      <div class="profile-section-title-box">
+        <div class="profile-heading-text">Profile</div>
+        <div class="profile-heading-line"></div>
       </div>
 
       <div class="cards-wrapper">
@@ -307,18 +299,6 @@
       </div>
     </div>
 
-    <div id="modalCoinSend" class="modal-overlay">
-      <div class="modal-box">
-        <h3>Send Coins to User</h3>
-        <form onsubmit="handleCoinSendFormSubmit(event)">
-          <input type="text" id="targetUserId" placeholder="Enter Receiver ID" style="width:100%; padding:10px; margin:12px 0; border:1px solid #ccc; border-radius:8px;">
-          <input type="number" id="sendCoinAmount" placeholder="Enter Coin Amount" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ccc; border-radius:8px;">
-          <button type="submit" style="width:100%; padding:10px; background:#f5af19; color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">Send Now</button>
-        </form>
-        <button onclick="closeCoinSendModal()" style="width:100%; padding:10px; background:#ddd; border:none; border-radius:8px; margin-top:8px; cursor:pointer;">Cancel</button>
-      </div>
-    </div>
-
     <div id="customAlertModal" class="modal-overlay">
       <div class="modal-box" style="text-align:center;">
         <h3 id="customAlertTitle" style="margin-bottom:10px;">Notice</h3>
@@ -348,7 +328,7 @@
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
     let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let coins = 0, userName = "", userId = "", userLevel = 1, totalWon = 0, isPrivate = false, currentFrame = "none", currentAvatar = "";
+    let userName = "", userId = "", userLevel = 1, isPrivate = false, currentFrame = "none", currentAvatar = "";
     let dbPhotos = []; 
 
     history.pushState({page: "profile_secure"}, "", window.location.href);
@@ -356,13 +336,11 @@
     window.addEventListener('popstate', function (event) {
       let customAlert = document.getElementById("customAlertModal");
       let modalFrame = document.getElementById("modalFrame");
-      let modalCoinSend = document.getElementById("modalCoinSend");
       let aboutScreen = document.getElementById("screenAboutMe");
       let groupsScreen = document.getElementById("screenGroups");
 
       if (customAlert && customAlert.style.display === "flex") { customAlert.style.display = "none"; return; }
       if (modalFrame && modalFrame.style.display === "flex") { modalFrame.style.display = "none"; return; }
-      if (modalCoinSend && modalCoinSend.style.display === "flex") { modalCoinSend.style.display = "none"; return; }
 
       if (aboutScreen && aboutScreen.style.display === "flex") { closeAboutMeScreen(); return; }
       if (groupsScreen && groupsScreen.style.display === "flex") { closeGroupsScreen(); return; }
@@ -372,8 +350,6 @@
 
     function renderProfileData() {
       document.getElementById("profNameDisplay").innerText = userName;
-      document.getElementById("profBalance").innerText = coins;
-      document.getElementById("profWon").innerText = totalWon;
       document.getElementById("profLevel").innerText = userLevel;
       document.getElementById("aboutUserId").innerText = userId;
       
@@ -427,10 +403,8 @@
 
     if(localStorage.getItem("prof_name_" + currentIdentifier)) {
       userName = localStorage.getItem("prof_name_" + currentIdentifier);
-      coins = parseInt(localStorage.getItem("prof_coins_" + currentIdentifier) || "1000");
       userId = localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630";
       userLevel = parseInt(localStorage.getItem("prof_level_" + currentIdentifier) || "1");
-      totalWon = parseInt(localStorage.getItem("prof_won_" + currentIdentifier) || "0");
       isPrivate = localStorage.getItem("prof_private_" + currentIdentifier) === "true";
       currentFrame = localStorage.getItem("prof_frame_" + currentIdentifier) || "none";
       currentAvatar = localStorage.getItem("prof_avatar_" + currentIdentifier) || "";
@@ -443,27 +417,23 @@
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          coins = data.coins || 1000;
           userName = data.name || "User";
           userId = data.uniqueId || "#288630";
           userLevel = data.level || 1;
-          totalWon = data.won || 0;
           isPrivate = data.privacy || false;
           currentFrame = data.frame || "none";
           dbPhotos = data.photos || []; 
           currentAvatar = data.avatar || (dbPhotos.length > 0 ? dbPhotos[0] : "");
 
           localStorage.setItem("prof_name_" + currentIdentifier, userName);
-          localStorage.setItem("prof_coins_" + currentIdentifier, coins);
           localStorage.setItem("prof_userid_" + currentIdentifier, userId);
           localStorage.setItem("prof_level_" + currentIdentifier, userLevel);
-          localStorage.setItem("prof_won_" + currentIdentifier, totalWon);
           localStorage.setItem("prof_private_" + currentIdentifier, isPrivate);
           localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
           localStorage.setItem("prof_avatar_" + currentIdentifier, currentAvatar);
           localStorage.setItem("prof_photos_" + currentIdentifier, JSON.stringify(dbPhotos));
         } else {
-          coins = 1000; userName = "User"; userId = "#288630"; userLevel = 1; totalWon = 0; dbPhotos = []; currentAvatar = "";
+          userName = "User"; userId = "#288630"; userLevel = 1; dbPhotos = []; currentAvatar = "";
         }
         renderProfileData();
       }).catch((error) => { console.error("Error loading profile: ", error); });
@@ -476,16 +446,6 @@
     function triggerAvatarUpload() {
       closeFrameModal();
       openPhotoGridScreen();
-    }
-
-    function promptEditName() {
-      let newName = prompt("Enter your name:", userName);
-      if(newName && newName.trim() !== "") {
-        userName = newName.trim();
-        localStorage.setItem("prof_name_" + currentIdentifier, userName);
-        document.getElementById("profNameDisplay").innerText = userName;
-        db.collection("users").doc(currentIdentifier).update({ name: userName }).catch((err) => console.error(err));
-      }
     }
 
     function showCustomAlert(text) {
@@ -567,32 +527,6 @@
     function closeGroupsScreen() { 
       document.getElementById("screenGroups").style.display = "none"; 
       document.getElementById("screenProfile").style.display = "block";
-    }
-
-    function openCoinSendModal() { 
-      document.getElementById("modalCoinSend").style.display = "flex"; 
-      history.pushState({modal: "coinsend"}, "", window.location.href);
-    }
-    function closeCoinSendModal() { document.getElementById("modalCoinSend").style.display = "none"; }
-    
-    function handleCoinSendFormSubmit(event) {
-      event.preventDefault();
-      processCoinSend();
-    }
-
-    function processCoinSend() {
-      let targetId = document.getElementById("targetUserId").value.trim();
-      let amt = parseInt(document.getElementById("sendCoinAmount").value);
-      if(!targetId) { showCustomAlert("Please enter receiver ID"); return; }
-      if(!amt || amt <= 0 || amt > coins) { showCustomAlert("Invalid coin amount!"); return; }
-      
-      coins -= amt;
-      localStorage.setItem("prof_coins_" + currentIdentifier, coins);
-      db.collection("users").doc(currentIdentifier).update({ coins: coins }).then(() => {
-        initProfile();
-        closeCoinSendModal();
-        showCustomAlert(`Successfully sent ${amt} coins!`);
-      }).catch((err) => { showCustomAlert("Error updating coins: " + err.message); });
     }
 
     window.onpageshow = function(event) { initProfile(); };
