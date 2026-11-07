@@ -182,7 +182,6 @@
       font-weight: 500;
     }
 
-    /* पोस्ट-रिकॉर्ड लेआउट (Re-record, Save, Listen) */
     .post-record-actions {
       display: none;
       flex-direction: row;
@@ -211,13 +210,37 @@
       transition: all 0.3s ease;
     }
 
-    /* जब Listen क्लिक हो, तो Save बटन OFF (धुंधला) हो जाएगा[span_8](start_span)[span_8](end_span) */
     .save-big-btn.disabled-save {
       background: #dcd6e4 !important;
       color: #a095b0 !important;
       box-shadow: none !important;
       cursor: not-allowed;
       pointer-events: none;
+    }
+
+    /* नीचे आने वाला खूबसूरत टोस्ट पॉप-अप स्टाइल */
+    .toast-popup {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 30, 30, 0.9);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: fadeInOut 2s ease;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, 20px); }
+      15% { opacity: 1; transform: translate(-50%, 0); }
+      85% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -10px); }
     }
 
     .custom-modal-overlay {
@@ -292,7 +315,7 @@
       </div>
     </div>
 
-    <!-- 1. फ्रेश पेज मोड -->
+    <!-- फ्रेश पेज मोड -->
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
@@ -300,7 +323,7 @@
       </button>
     </div>
 
-    <!-- 2. सेव की गई रिकॉर्डिंग देखने वाला मोड -->
+    <!-- सेव की गई रिकॉर्डिंग मोड -->
     <div class="saved-actions-row" id="savedRecordActions">
       <button class="action-sub-btn" onclick="deleteExistingRecording()">
         <div class="action-sub-icon">
@@ -321,7 +344,7 @@
       </button>
     </div>
 
-    <!-- 3. नई रिकॉर्डिंग पूरी होने के बाद मोड (Re-record, Save, Listen)[span_9](start_span)[span_9](end_span)[span_10](start_span)[span_10](end_span) -->
+    <!-- नई रिकॉर्डिंग पूरी होने के बाद मोड -->
     <div class="post-record-actions" id="postRecordActions">
       <button class="action-sub-btn" onclick="reRecordAudio()">
         <div class="action-sub-icon">
@@ -330,10 +353,8 @@
         <span class="action-sub-label">Re-record</span>
       </button>
 
-      <!-- मुख्य SAVE बटन[span_11](start_span)[span_11](end_span) -->
       <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
-      <!-- Listen बटन[span_12](start_span)[span_12](end_span)[span_13](start_span)[span_13](end_span) -->
       <button class="action-sub-btn" id="postListenBtn" onclick="togglePreviewPlayback()">
         <div class="action-sub-icon" id="postListenIconContainer">
           <svg viewBox="0 0 24 24" id="postListenSvg"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -342,6 +363,9 @@
       </button>
     </div>
   </div>
+
+  <!-- नीचे आने वाला टोस्ट पॉप-अप (Delete successfully के लिए) -->
+  <div id="toastPopup" class="toast-popup">Delete successfully</div>
 
   <!-- परमिशन पॉप-अप -->
   <div id="permissionModal" class="custom-modal-overlay">
@@ -393,7 +417,6 @@
 
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
-
       if (micBtn) {
         micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
         micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
@@ -486,7 +509,6 @@
       resetPostListenUI();
     }
 
-    // 🌟 नई रिकॉर्डिंग सुनने के लिए (जब Save करने से पहले Listen दबाया जाए)[span_14](start_span)[span_14](end_span)[span_15](start_span)[span_15](end_span)
     function togglePreviewPlayback() {
       if (isPlaying) {
         if(playbackTimer) clearInterval(playbackTimer);
@@ -495,19 +517,14 @@
       }
 
       isPlaying = true;
-
-      // 1. Save बटन को OFF कर दें[span_16](start_span)[span_16](end_span)
       let saveBtn = document.getElementById("mainSaveBtn");
       saveBtn.classList.add("disabled-save");
 
-      // 2. Listen आइकॉन को Pause में बदलें[span_17](start_span)[span_17](end_span)
       let postListenSvg = document.getElementById("postListenSvg");
       postListenSvg.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
       document.getElementById("postListenLabel").innerText = "Pause";
 
       document.getElementById("waveformDisplay").style.display = "flex";
-      
-      // 3. अंक उल्टे चलेंगे (Countdown)[span_18](start_span)[span_18](end_span)
       let remainingSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 5;
       let secElem = document.getElementById("recordedSecondsCount");
       secElem.innerText = remainingSec;
@@ -519,42 +536,50 @@
         if (remainingSec >= 0) {
           secElem.innerText = remainingSec;
         } else {
-          // 4. जब रिकॉर्डिंग पूरी होगी, पेज फिर से अपनी ओरिजिनल पोजीशन में आ जाएगा[span_19](start_span)[span_19](end_span)
           clearInterval(playbackTimer);
           resetPostListenUI();
         }
       }, 1000);
     }
 
-    // जब प्लेबैक पूरा हो जाए या रोका जाए, तो पेज ओरिजिनल पोजीशन में लौट आए[span_20](start_span)[span_20](end_span)
     function resetPostListenUI() {
       if(playbackTimer) clearInterval(playbackTimer);
       isPlaying = false;
 
-      // Save बटन को वापस ON करें[span_21](start_span)[span_21](end_span)
       let saveBtn = document.getElementById("mainSaveBtn");
       saveBtn.classList.remove("disabled-save");
 
-      // Listen बटन को उसकी पुरानी पोजीशन पर लाएं[span_22](start_span)[span_22](end_span)
       let postListenSvg = document.getElementById("postListenSvg");
       postListenSvg.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
       document.getElementById("postListenLabel").innerText = "Listen";
-
-      // सेकंड्स अपने पूरे अंक पर वापस आ जाएंगे[span_23](start_span)[span_23](end_span)
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
+    // 🌟 SAVE बटन दबाने पर लोडिंग का नाटक और प्रोफाइल पर 'Upload successfully' भेजने का सिग्नल
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
       
+      let saveBtn = document.getElementById("mainSaveBtn");
+      saveBtn.innerText = "Saving...";
+      saveBtn.classList.add("disabled-save");
+
       localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
       localStorage.setItem("greedy_voiceshow_saved", "true");
       
-      alert("Voice show saved successfully!");
-      window.location.replace("edit-profile.html");
+      // प्रोफाइल पेज पर पॉप-अप दिखाने के लिए फ्लैग सेट करें
+      localStorage.setItem("show_toast_message", "Upload successfully");
+
+      setTimeout(() => {
+        window.location.replace("edit-profile.html");
+      }, 600); // 0.6 सेकंड का लोडिंग नाटक
     }
 
+    function previewNewRecording() {
+      alert("Duration: " + recordedDurationSeconds + " seconds");
+    }
+
+    // 🌟 पुरानी रिकॉर्डिंग डिलीट करते ही तुरंत पेज हटेगा और नीचे 'Delete successfully' पॉप-अप आएगा
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -565,12 +590,19 @@
       recordedDurationSeconds = 0;
       isPlaying = false;
 
+      // तुरंत स्क्रीन से सब हटाकर फ्रेश पेज दिखाएं
       document.getElementById("savedRecordActions").style.display = "none";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("promptText").style.display = "block";
       document.getElementById("freshRecordSection").style.display = "flex";
       
-      alert("Recording deleted successfully. You can start a new recording now.");
+      // नीचे टोस्ट पॉप-अप दिखाएं
+      let toast = document.getElementById("toastPopup");
+      toast.innerText = "Delete successfully";
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2000);
     }
 
     function togglePlayPauseAudio() {
