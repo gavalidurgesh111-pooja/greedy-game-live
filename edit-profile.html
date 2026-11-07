@@ -336,7 +336,7 @@
       font-weight: bold;
     }
 
-    /* 🌟 पाँचवीं फोटो जैसा वॉयस शो का डिस्प्ले स्टाइल (नीला प्ले आइकॉन और सेकंड्स)[span_1](start_span)[span_1](end_span) */
+    /* वॉयस शो का डिस्प्ले स्टाइल */
     .voice-played-badge {
       display: flex;
       align-items: center;
@@ -458,7 +458,7 @@
       <span style="color:#bbb; font-size:18px;">›</span>
     </div>
 
-    <!-- 🎙️ Voice show ऑप्शन - क्लिक करते ही voice-show.html पर जाएगा -->
+    <!-- 🎙️ Voice show ऑप्शन -->
     <div class="list-item" onclick="location.href='voice-show.html'">
       <div class="list-item-left">
         <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v1a7 7 0 0 1-14 0v-1"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
@@ -565,15 +565,7 @@
       buildAgeWheel();
       buildLanguagesList();
       loadUserData();
-      
-      // चेक करें कि क्या voice-show.html से वॉयस शो सेव होकर आया है
-      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
-      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
-      
-      if (isSaved === "true" && savedDuration) {
-        recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
-        updateVoiceStatusUI(savedDuration);
-      }
+      checkVoiceStatus();
 
       if(localStorage.getItem("prof_location")) {
         currentLocation = localStorage.getItem("prof_location");
@@ -581,17 +573,32 @@
       }
     };
 
-    function updateVoiceStatusUI(duration) {
+    // 🌟 यह फंक्शन चेक करेगा कि वॉयस शो सेव है या डिलीट हो चुका है
+    function checkVoiceStatus() {
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
+      let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
       let statusContainer = document.getElementById("voiceStatusDisplay");
-      statusContainer.innerHTML = `
-        <div class="voice-played-badge">
-          <div class="play-circle-icon">
-            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+
+      if (isSaved === "true" && savedDuration) {
+        recordedAudioUrl = "voice_recorded_" + savedDuration + "s";
+        statusContainer.innerHTML = `
+          <div class="voice-played-badge">
+            <div class="play-circle-icon">
+              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+            <span class="voice-time-text">${savedDuration}"</span>
           </div>
-          <span class="voice-time-text">${duration}"</span>
-        </div>
-      `;
+        `;
+      } else {
+        recordedAudioUrl = "";
+        statusContainer.innerHTML = "Not recorded";
+      }
     }
+
+    // जब यूजर ब्राउज़र में वापस इस पेज पर आएगा, तब भी यह तुरंत चेक कर लेगा
+    window.addEventListener('pageshow', function() {
+      checkVoiceStatus();
+    });
 
     function buildAgeWheel() {
       let wheel = document.getElementById("ageWheel");
@@ -699,11 +706,13 @@
             localStorage.setItem("prof_location", currentLocation);
             document.getElementById("selectedLocationDisplay").innerText = currentLocation;
           }
-          if (data.voiceShow) {
+          if (data.voiceShow && !localStorage.getItem("greedy_voiceshow_saved")) {
             recordedAudioUrl = data.voiceShow;
             let matchSec = recordedAudioUrl.match(/_(\d+)s/);
             let secVal = matchSec ? matchSec[1] : "7";
-            updateVoiceStatusUI(secVal);
+            localStorage.setItem("greedy_voiceshow_saved", "true");
+            localStorage.setItem("greedy_voiceshow_duration", secVal);
+            checkVoiceStatus();
           }
         }
         document.getElementById("mainContainer").style.opacity = "1";
@@ -795,10 +804,13 @@
       localStorage.setItem("prof_name_" + currentIdentifier, name);
       let finalLocation = localStorage.getItem("prof_location") || currentLocation;
       
-      // यदि लोकल स्टोरेज में नया वॉयस शो सेव है, तो उसे फाइनल वेरिएबल में ले लें
+      let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDur = localStorage.getItem("greedy_voiceshow_duration");
-      if (savedDur) {
+      
+      if (isSaved === "true" && savedDur) {
         recordedAudioUrl = "voice_recorded_" + savedDur + "s";
+      } else {
+        recordedAudioUrl = "";
       }
 
       db.collection("users").doc(currentIdentifier).set({
