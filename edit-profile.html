@@ -35,7 +35,6 @@
       flex-direction: column;
       background: #ffffff;
       padding-bottom: 40px;
-      /* 🌟 अब पेज बिना किसी डिले के तुरंत सामने दिखेगा */
       opacity: 1;
     }
 
@@ -593,15 +592,24 @@
     window.onload = function() {
       buildAgeWheel();
       buildLanguagesList();
-      loadUserData();
+      loadInstantLocalStorageData();
       checkVoiceStatus();
       checkAndShowToast();
+      loadUserDataFromFirebase();
+    };
 
-      if(localStorage.getItem("prof_location")) {
+    function loadInstantLocalStorageData() {
+      let cachedName = localStorage.getItem("prof_name_" + currentIdentifier);
+      if (cachedName) {
+        document.getElementById("inputNickname").value = cachedName;
+        updateCounter();
+      }
+
+      if (localStorage.getItem("prof_location")) {
         currentLocation = localStorage.getItem("prof_location");
         document.getElementById("selectedLocationDisplay").innerText = currentLocation;
       }
-    };
+    }
 
     function checkAndShowToast() {
       let msg = localStorage.getItem("show_toast_message");
@@ -641,6 +649,7 @@
     window.addEventListener('pageshow', function() {
       checkVoiceStatus();
       checkAndShowToast();
+      loadInstantLocalStorageData();
     });
 
     function buildAgeWheel() {
@@ -704,17 +713,13 @@
       closeLanguagesModal();
     }
 
-    function loadUserData() {
-      if(localStorage.getItem("prof_name_" + currentIdentifier)) {
-        document.getElementById("inputNickname").value = localStorage.getItem("prof_name_" + currentIdentifier);
-        updateCounter();
-      }
-
+    function loadUserDataFromFirebase() {
       db.collection("users").doc(currentIdentifier).get().then((doc) => {
         if (doc.exists) {
           let data = doc.data();
-          if (data.name) {
+          if (data.name && !document.getElementById("inputNickname").value) {
             document.getElementById("inputNickname").value = data.name;
+            localStorage.setItem("prof_name_" + currentIdentifier, data.name);
             updateCounter();
           }
           if (data.age) {
@@ -723,7 +728,7 @@
           }
           if (data.gender === "Male") {
             document.getElementById("genderMale").checked = true;
-          } else {
+          } else if (data.gender === "Female") {
             document.getElementById("genderFemale").checked = true;
           }
           if (data.bio) {
@@ -835,7 +840,8 @@
     function saveBasicInfo() {
       let name = document.getElementById("inputNickname").value.trim();
       let bio = document.getElementById("inputBio").value.trim();
-      let gender = document.querySelector('input[name="gender"]:checked').value;
+      let genderElem = document.querySelector('input[name="gender"]:checked');
+      let gender = genderElem ? genderElem.value : "Male";
 
       if (!name) {
         alert("Nickname cannot be empty!");
