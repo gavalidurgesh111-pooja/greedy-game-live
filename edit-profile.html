@@ -365,6 +365,31 @@
       color: #007aff;
       font-weight: 600;
     }
+
+    /* 🌟 Upload successfully टोस्ट पॉप-अप स्टाइल */
+    .toast-popup-profile {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(30, 30, 30, 0.9);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 2000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      animation: fadeInOutProfile 2s ease;
+    }
+
+    @keyframes fadeInOutProfile {
+      0% { opacity: 0; transform: translate(-50%, 20px); }
+      15% { opacity: 1; transform: translate(-50%, 0); }
+      85% { opacity: 1; transform: translate(-50%, 0); }
+      100% { opacity: 0; transform: translate(-50%, -10px); }
+    }
   </style>
 </head>
 
@@ -524,6 +549,9 @@
     </div>
   </div>
 
+  <!-- 🌟 Upload successfully टोस्ट पॉप-अप एलिमेंट -->
+  <div id="profileToast" class="toast-popup-profile">Upload successfully</div>
+
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -566,6 +594,7 @@
       buildLanguagesList();
       loadUserData();
       checkVoiceStatus();
+      checkAndShowToast();
 
       if(localStorage.getItem("prof_location")) {
         currentLocation = localStorage.getItem("prof_location");
@@ -573,7 +602,22 @@
       }
     };
 
-    // 🌟 यह फंक्शन चेक करेगा कि वॉयस शो सेव है या डिलीट हो चुका है
+    // 🌟 यह फंक्शन चेक करेगा कि voice-show से 'Upload successfully' दिखाना है या नहीं
+    function checkAndShowToast() {
+      let msg = localStorage.getItem("show_toast_message");
+      if (msg) {
+        let toast = document.getElementById("profileToast");
+        toast.innerText = msg;
+        toast.style.display = "block";
+        
+        setTimeout(() => {
+          toast.style.display = "none";
+          localStorage.removeItem("show_toast_message");
+        }, 2000);
+      }
+    }
+
+    // यह फंक्शन चेक करेगा कि वॉयस शो सेव है या डिलीट हो चुका है
     function checkVoiceStatus() {
       let isSaved = localStorage.getItem("greedy_voiceshow_saved");
       let savedDuration = localStorage.getItem("greedy_voiceshow_duration");
@@ -598,6 +642,7 @@
     // जब यूजर ब्राउज़र में वापस इस पेज पर आएगा, तब भी यह तुरंत चेक कर लेगा
     window.addEventListener('pageshow', function() {
       checkVoiceStatus();
+      checkAndShowToast();
     });
 
     function buildAgeWheel() {
