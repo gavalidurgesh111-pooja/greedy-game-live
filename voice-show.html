@@ -208,7 +208,7 @@
       pointer-events: none;
     }
 
-    /* Unsaved Changes वार्निंग पॉप-अप स्टाइल[span_0](start_span)[span_0](end_span) */
+    /* Unsaved Changes वार्निंग पॉप-अप स्टाइल */
     .unsaved-modal-overlay {
       display: none;
       position: fixed;
@@ -372,7 +372,7 @@
     </div>
   </div>
 
-  <!-- Unsaved Changes वार्निंग पॉप-अप[span_1](start_span)[span_1](end_span) -->
+  <!-- Unsaved Changes वार्निंग पॉप-अप[span_0](start_span)[span_0](end_span) -->
   <div id="unsavedModal" class="unsaved-modal-overlay">
     <div class="unsaved-dialog">
       <div class="unsaved-title">Tips</div>
@@ -407,7 +407,7 @@
     let hasUnsavedChanges = false;
 
     window.onload = function() {
-      // हर बार पेज खुलने पर पुराना अस्थायी डेटा साफ़ कर दें ताकि हमेशा फ्रेश पेज मिले
+      // 🌟 हर बार पेज खुलते ही पुराना सारा अस्थायी डेटा पूरी तरह मिटा दें ताकि कोई पुरानी हिस्ट्री न दिखे
       localStorage.removeItem("greedy_voiceshow_temp_sec");
 
       let permGranted = localStorage.getItem("greedy_mic_permission");
@@ -432,6 +432,7 @@
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
 
+      // 🌟 केवल माउस क्लिक या टच करने पर होल्ड प्रोसेस शुरू होगा (टच करते ही ऑटोमैटिक रिकॉर्डिंग नहीं होगी)
       micBtn.addEventListener("mousedown", function(e) { e.preventDefault(); onHoldStart(); });
       micBtn.addEventListener("touchstart", function(e) { e.preventDefault(); onHoldStart(); });
       micBtn.addEventListener("mouseup", function(e) { e.preventDefault(); onHoldEnd(); });
@@ -444,6 +445,7 @@
         document.getElementById("permissionModal").style.display = "flex";
         return;
       }
+      // यूजर ने बटन दबाकर रखा है, अब रिकॉर्डिंग शुरू होगी
       startActualRecording();
     }
 
@@ -457,6 +459,7 @@
       hasPermission = true;
       localStorage.setItem("greedy_mic_permission", "true");
       closeModal();
+      // 🌟 परमिशन मिलने के बाद रिकॉर्डिंग अपने आप चालू नहीं होगी, जब तक यूजर दोबारा बटन दबाकर न रखे
     }
 
     function closeModal() {
@@ -510,6 +513,7 @@
       if(playbackTimer) clearInterval(playbackTimer);
       recordedDurationSeconds = 0;
       hasUnsavedChanges = false;
+      localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
@@ -581,14 +585,13 @@
       document.getElementById("unsavedModal").style.display = "flex";
     }
 
-    // अगर यूजर 'NO, THANKS' चुनेगा तो रिकॉर्डिंग सेव नहीं होगी और वह बाहर चला जाएगा
     function exitWithoutSaving() {
       hasUnsavedChanges = false;
+      localStorage.removeItem("greedy_voiceshow_temp_sec");
       document.getElementById("unsavedModal").style.display = "none";
       window.location.replace("edit-profile.html");
     }
 
-    // अगर यूजर 'SAVE' चुनेगा तो रिकॉर्डिंग सेव हो जाएगी और वह बाहर चला जाएगा
     function saveAndExit() {
       saveVoiceRecordingFinal();
     }
@@ -603,6 +606,7 @@
       hasUnsavedChanges = false;
       localStorage.setItem("greedy_voiceshow_duration", finalSec);
       localStorage.setItem("greedy_voiceshow_saved", "true");
+      localStorage.removeItem("greedy_voiceshow_temp_sec");
       
       document.getElementById("unsavedModal").style.display = "none";
       alert("Voice show saved successfully!");
