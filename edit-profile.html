@@ -5,6 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Basic info - Greedy Coin</title>
 
+  <!-- 🌟 पेज लोड होते ही सबसे पहले बिना 1 सेकंड रुके तुरंत डेटा दिखाने के लिए -->
+  <script>
+    (function() {
+      let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
+      let cachedName = localStorage.getItem("prof_name_" + currentIdentifier);
+      let cachedLoc = localStorage.getItem("prof_location");
+      
+      if (cachedName) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let inputField = document.getElementById("inputNickname");
+          if(inputField) {
+            inputField.value = cachedName;
+            let counter = document.getElementById("nicknameCounter");
+            if(counter) counter.innerText = cachedName.length + "/30";
+          }
+        });
+      }
+      if (cachedLoc) {
+        document.addEventListener("DOMContentLoaded", function() {
+          let locField = document.getElementById("selectedLocationDisplay");
+          if(locField) locField.innerText = cachedLoc;
+        });
+      }
+    })();
+  </script>
+
   <style>
     * {
       box-sizing: border-box;
