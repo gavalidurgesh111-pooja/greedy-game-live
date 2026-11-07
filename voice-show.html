@@ -35,7 +35,7 @@
       flex-direction: column;
       background: #ffffff;
       justify-content: space-between;
-      padding-bottom: 20px; /* 🌟 पैडिंग कम कर दी ताकि सब कुछ ऊपर खिसक जाए */
+      padding-bottom: 20px;
       overflow: hidden;
     }
 
@@ -85,7 +85,7 @@
       flex: 1;
       text-align: center;
       padding: 0 20px;
-      margin-top: -30px; /* 🌟 पूरे कंटेंट को थोड़ा और ऊपर ले लिया गया है */
+      margin-top: -60px; /* 🌟 इसे ऊपर की तरफ शिफ्ट किया गया है */
     }
 
     .prompt-text {
@@ -112,7 +112,7 @@
       align-items: center;
       gap: 12px;
       width: 100%;
-      margin-bottom: 70px; /* 🌟 माइक को नीचे से उठाकर और ऊपर सेट किया गया है */
+      margin-bottom: 120px; /* 🌟 माइक और टेक्स्ट को नीचे से काफी ऊपर ले लिया गया है */
     }
 
     .hold-text {
@@ -121,10 +121,10 @@
       font-weight: 500;
     }
 
-    /* माइक बटन (बिना बॉर्डर का) */
+    /* 🌟 माइक बटन की साइज़ को बड़ा किया गया (110px) और कोई बॉर्डर नहीं */
     .mic-btn {
-      width: 92px;
-      height: 92px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
@@ -133,16 +133,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
+      box-shadow: 0 10px 25px rgba(123, 44, 191, 0.4);
     }
 
-    /* 🌟 माइक के अंदर का लोगो (SVG) अब काफ़ी बड़ा कर दिया गया है */
+    /* 🌟 माइक के अंदर का लोगो एकदम नॉर्मल साइज़ में */
     .mic-btn svg {
-      width: 50px;
-      height: 50px;
+      width: 36px;
+      height: 36px;
       stroke: #ffffff;
       fill: none;
-      stroke-width: 1.8;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -154,7 +154,7 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 70px;
+      margin-bottom: 120px;
     }
 
     .action-sub-btn {
@@ -198,12 +198,13 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
-      margin-bottom: 70px;
+      margin-bottom: 120px;
     }
 
+    /* 🌟 SAVE बटन को भी बड़ा किया गया (110px) */
     .save-big-btn {
-      width: 92px;
-      height: 92px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
@@ -213,9 +214,9 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 700;
-      box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
+      box-shadow: 0 10px 25px rgba(123, 44, 191, 0.4);
       transition: all 0.3s ease;
     }
 
@@ -328,7 +329,7 @@
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
-        <!-- 🌟 बड़ा और सुंदर माइक लोगो -->
+        <!-- 🌟 नॉर्मल साइज़ लोगो (बिना बॉर्डर का बड़ा गोल बटन) -->
         <svg viewBox="0 0 24 24">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
