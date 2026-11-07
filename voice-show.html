@@ -36,6 +36,7 @@
       background: #ffffff;
       justify-content: space-between;
       padding-bottom: 40px;
+      transition: opacity 0.3s ease-out; /* 🌟 सफेद फ्लैश रोकने के लिए स्मूथ ट्रांज़िशन */
     }
 
     .top-bar {
@@ -218,21 +219,22 @@
       pointer-events: none;
     }
 
-    /* नीचे आने वाला खूबसूरत टोस्ट पॉप-अप स्टाइल */
+    /* 🌟 पॉप-अप के रंग उल्टे: सफेद बैकग्राउंड, काले अक्षर और प्यारा शैडो */
     .toast-popup {
       display: none;
       position: fixed;
       bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(30, 30, 30, 0.9);
-      color: #fff;
-      padding: 12px 24px;
+      background: #ffffff;
+      color: #111111;
+      padding: 14px 28px;
       border-radius: 30px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       z-index: 1000;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      border: 1px solid #eaeaea;
       animation: fadeInOut 2s ease;
     }
 
@@ -297,9 +299,9 @@
 
 <body>
 
-  <div class="page-container">
+  <div class="page-container" id="pageContainer">
     <div class="top-bar">
-      <button class="back-btn" onclick="window.location.replace('edit-profile.html')">
+      <button class="back-btn" onclick="smoothNavigate('edit-profile.html')">
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
       </button>
       <span class="page-title">Voice show</span>
@@ -364,7 +366,7 @@
     </div>
   </div>
 
-  <!-- नीचे आने वाला टोस्ट पॉप-अप (Delete successfully के लिए) -->
+  <!-- टोस्ट पॉप-अप (सफेद बैकग्राउंड और काले अक्षर) -->
   <div id="toastPopup" class="toast-popup">Delete successfully</div>
 
   <!-- परमिशन पॉप-अप -->
@@ -414,6 +416,14 @@
         document.getElementById("freshRecordSection").style.display = "flex";
       }
     };
+
+    // 🌟 सफेद फ्लैश रोकने के लिए स्मूथ नेविगेशन
+    function smoothNavigate(url) {
+      document.getElementById("pageContainer").style.opacity = "0";
+      setTimeout(() => {
+        window.location.replace(url);
+      }, 250);
+    }
 
     function setupHoldToSpeakListeners() {
       let micBtn = document.getElementById("micButton");
@@ -555,7 +565,6 @@
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
-    // 🌟 SAVE बटन दबाने पर लोडिंग का नाटक और प्रोफाइल पर 'Upload successfully' भेजने का सिग्नल
     function saveVoiceRecordingFinal() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -566,20 +575,18 @@
 
       localStorage.setItem("greedy_voiceshow_duration", recordedDurationSeconds);
       localStorage.setItem("greedy_voiceshow_saved", "true");
-      
-      // प्रोफाइल पेज पर पॉप-अप दिखाने के लिए फ्लैग सेट करें
       localStorage.setItem("show_toast_message", "Upload successfully");
 
+      // सफेद फ्लैश से बचने के लिए स्मूथ नेविगेशन
       setTimeout(() => {
-        window.location.replace("edit-profile.html");
-      }, 600); // 0.6 सेकंड का लोडिंग नाटक
+        smoothNavigate("edit-profile.html");
+      }, 600);
     }
 
     function previewNewRecording() {
       alert("Duration: " + recordedDurationSeconds + " seconds");
     }
 
-    // 🌟 पुरानी रिकॉर्डिंग डिलीट करते ही तुरंत पेज हटेगा और नीचे 'Delete successfully' पॉप-अप आएगा
     function deleteExistingRecording() {
       if(recordingTimer) clearInterval(recordingTimer);
       if(playbackTimer) clearInterval(playbackTimer);
@@ -590,13 +597,11 @@
       recordedDurationSeconds = 0;
       isPlaying = false;
 
-      // तुरंत स्क्रीन से सब हटाकर फ्रेश पेज दिखाएं
       document.getElementById("savedRecordActions").style.display = "none";
       document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("promptText").style.display = "block";
       document.getElementById("freshRecordSection").style.display = "flex";
       
-      // नीचे टोस्ट पॉप-अप दिखाएं
       let toast = document.getElementById("toastPopup");
       toast.innerText = "Delete successfully";
       toast.style.display = "block";
