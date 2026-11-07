@@ -200,7 +200,6 @@
       transition: all 0.3s ease;
     }
 
-    /* जब सेव बटन OFF (धुंधला) रहेगा */
     .save-big-btn.disabled-save {
       background: #e0e0e0 !important;
       color: #aaa !important;
@@ -301,7 +300,7 @@
       <!-- मुख्य Save बटन -->
       <button class="save-big-btn" id="mainSaveBtn" onclick="saveVoiceRecordingFinal()">Save</button>
 
-      <!-- Listen बटन (क्लिक करने पर अंदर ◼️ आइकॉन हो जाएगा) -->
+      <!-- Listen बटन -->
       <button class="action-sub-btn" id="listenActionBtn" onclick="togglePlayPauseAudio()">
         <div class="action-sub-icon" id="listenIconContainer">
           <svg viewBox="0 0 24 24" id="listenSvgIcon"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -311,7 +310,7 @@
     </div>
   </div>
 
-  <!-- परमिशन पॉप-अप -->
+  <!-- परमिशन पॉप-अप (यह केवल पहली बार या ब्राउज़र रिसेट होने पर दिखेगा) -->
   <div id="permissionModal" class="custom-modal-overlay">
     <div class="custom-dialog">
       <div class="dialog-message">Allow GREEDYCOIN to record audio?</div>
@@ -331,9 +330,14 @@
     let secondsElapsed = 0;
     let recordedDurationSeconds = 7;
     let isPlaying = false;
-    let pendingHoldAction = false;
 
     window.onload = function() {
+      // चेक करें कि क्या परमिशन पहले से दी जा चुकी है
+      let permGranted = localStorage.getItem("greedy_mic_permission");
+      if (permGranted === "true") {
+        hasPermission = true;
+      }
+
       setupHoldToSpeakListeners();
       
       let savedSec = localStorage.getItem("greedy_voiceshow_temp_sec");
@@ -359,7 +363,7 @@
 
     function onHoldStart() {
       if (!hasPermission) {
-        pendingHoldAction = true;
+        // अगर परमिशन नहीं है, तो पॉप-अप दिखाएं लेकिन ऑटोमैटिक रिकॉर्डिंग बिल्कुल शुरू न करें
         document.getElementById("permissionModal").style.display = "flex";
         return;
       }
@@ -374,11 +378,9 @@
 
     function grantPermission() {
       hasPermission = true;
+      localStorage.setItem("greedy_mic_permission", "true"); // परमिशन को याद रखें ताकि बार-बार न पूछे
       closeModal();
-      if (pendingHoldAction) {
-        pendingHoldAction = false;
-        startActualRecording();
-      }
+      // परमिशन मिलने के बाद रिकॉर्डिंग अपने आप चालू नहीं होगी, यूजर जब दोबारा बटन दबाएगा तभी होगी
     }
 
     function closeModal() {
@@ -435,10 +437,6 @@
       
       document.getElementById("promptText").style.display = "block";
       document.getElementById("waveformDisplay").style.display = "none";
-      document.getElementById("postRecordActions").style.display = "flex";
-      document.getElementById("initialRecordSection").style.display = "flex";
-      document.getElementById("promptText").style.display = "block";
-      document.getElementById("waveformDisplay").style.display = "none";
       document.getElementById("postRecordActions").style.display = "none";
       document.getElementById("initialRecordSection").style.display = "flex";
       document.getElementById("holdInstructionText").innerText = "Hold to speak";
@@ -447,10 +445,8 @@
       resetPlayButtonUI();
     }
 
-    /* 🌟 जब Listen बटन पर क्लिक होगा: प्ले से स्टॉप (◼️) होगा, Save बटन OFF होगा, और सेकंड उल्टे घटेंगे */
     function togglePlayPauseAudio() {
       if (isPlaying) {
-        // यदि पहले से चल रहा है और यूजर ने रोक दिया (Pause/Stop)
         if(playbackTimer) clearInterval(playbackTimer);
         resetPlayButtonUI();
         return;
@@ -458,16 +454,13 @@
 
       isPlaying = true;
 
-      // 1. Save बटन को OFF (धुंधला) करें
       let saveBtn = document.getElementById("mainSaveBtn");
       saveBtn.classList.add("disabled-save");
 
-      // 2. Listen आइकॉन को बदलकर चौकोर (◼️) स्टॉप आइकॉन करें और नीचे लेबल 'Pause' करें
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<rect x="6" y="6" width="12" height="12"></rect>';
       document.getElementById("listenLabel").innerText = "Pause";
 
-      // 3. वेवफॉर्म दिखाएं और उल्टी गिनती शुरू करें
       document.getElementById("waveformDisplay").style.display = "flex";
       let playbackSec = recordedDurationSeconds > 0 ? recordedDurationSeconds : 7;
       let secElem = document.getElementById("recordedSecondsCount");
@@ -481,7 +474,6 @@
           secElem.innerText = playbackSec;
         } else {
           clearInterval(playbackTimer);
-          // सुनना पूरा होने पर सब कुछ अपनी पोजीशन पर वापस आ जाएगा
           resetPlayButtonUI();
         }
       }, 1000);
@@ -491,16 +483,13 @@
       if(playbackTimer) clearInterval(playbackTimer);
       isPlaying = false;
 
-      // Save बटन को फिर से ON करें
       let saveBtn = document.getElementById("mainSaveBtn");
       saveBtn.classList.remove("disabled-save");
 
-      // आइकॉन वापस प्ले (▶️) पर और लेबल 'Listen' पर लाएं
       let svgIcon = document.getElementById("listenSvgIcon");
       svgIcon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"></polygon>';
       document.getElementById("listenLabel").innerText = "Listen";
 
-      // अंक वापस अपनी असली रिकॉर्डिंग पोजीशन पर आ जाएंगे
       document.getElementById("recordedSecondsCount").innerText = recordedDurationSeconds;
     }
 
