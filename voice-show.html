@@ -22,29 +22,34 @@
       display: flex;
       justify-content: center;
       color: #333;
-      min-height: 100vh;
-      overflow-x: hidden;
+      height: 100vh;
+      overflow: hidden; /* 🌟 पेज को पूरी तरह स्थिर रखने के लिए स्क्रॉल बंद किया गया है */
     }
 
     .page-container {
       width: 100%;
       max-width: 480px;
-      min-height: 100vh;
+      height: 100vh;
       position: relative;
       display: flex;
       flex-direction: column;
       background: #ffffff;
       justify-content: space-between;
-      padding-bottom: 120px; /* 🌟 बटनों को नीचे से थोड़ा और ऊपर ले लिया गया है */
-      opacity: 1;
+      padding-bottom: 50px;
+      overflow: hidden; /* 🌟 अंदर का कोई भी कंटेट पेज को हिलाएगा नहीं */
     }
 
+    /* 🌟 टॉप बार और नीचे केस जैसी लाइन (Border-bottom) */
     .top-bar {
       display: flex;
       align-items: center;
       padding: 16px 20px;
       gap: 20px;
       background: #ffffff;
+      border-bottom: 1px solid #f0f0f0; /* 🌟 लेफ्ट से राइट तक केस जैसी लाइन */
+      position: sticky;
+      top: 0;
+      z-index: 50;
     }
 
     .back-btn {
@@ -67,8 +72,8 @@
     }
 
     .page-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 700;
       color: #111;
     }
 
@@ -86,7 +91,7 @@
       font-size: 20px;
       font-weight: 500;
       color: #111;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .waveform-display {
@@ -97,15 +102,16 @@
       font-size: 20px;
       font-weight: 700;
       color: #333;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .record-section {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       width: 100%;
+      margin-bottom: 40px; /* 🌟 अपनी जगह पर एकदम स्थिर */
     }
 
     .hold-text {
@@ -114,12 +120,12 @@
       font-weight: 500;
     }
 
-    /* 🌟 माइक बटन का रंग और डिज़ाइन बिल्कुल आपकी फोटो जैसा सटीक पर्पल ग्रेडिएंट */
+    /* माइक बटन */
     .mic-btn {
-      width: 96px;
-      height: 96px;
+      width: 92px;
+      height: 92px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #6236ff 0%, #7b2cbf 50%, #8f3985 100%);
+      background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
       outline: none;
       cursor: pointer;
@@ -129,7 +135,6 @@
       box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
     }
 
-    /* 🌟 माइक का अंदर वाला SVG लोगो बिल्कुल आपकी फोटो जैसा */
     .mic-btn svg {
       width: 36px;
       height: 36px;
@@ -147,6 +152,7 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
+      margin-bottom: 40px;
     }
 
     .action-sub-btn {
@@ -190,13 +196,14 @@
       justify-content: space-around;
       width: 100%;
       padding: 0 20px;
+      margin-bottom: 40px;
     }
 
     .save-big-btn {
-      width: 96px;
-      height: 96px;
+      width: 92px;
+      height: 92px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #6236ff 0%, #7b2cbf 50%, #8f3985 100%);
+      background: linear-gradient(135deg, #6c35de 0%, #7b2cbf 50%, #9d4edd 100%);
       border: none;
       outline: none;
       cursor: pointer;
@@ -204,7 +211,7 @@
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       box-shadow: 0 8px 22px rgba(123, 44, 191, 0.35);
       transition: all 0.3s ease;
@@ -319,7 +326,6 @@
     <div class="record-section" id="freshRecordSection">
       <span class="hold-text" id="holdInstructionText">Hold to speak</span>
       <button class="mic-btn" id="micButton">
-        <!-- 🌟 बिल्कुल आपकी फोटो जैसा सटीक माइक SVG लोगो -->
         <svg viewBox="0 0 24 24">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
           <path d="M19 10v1a7 7 0 0 1-14 0v-1"></path>
