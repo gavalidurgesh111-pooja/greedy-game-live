@@ -141,26 +141,27 @@
     
     .tags-row { display: flex; gap: 10px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 Lv.1 बॉक्स का बैकग्राउंड डार्क ऑरेंज (🟧), टेक्स्ट सफेद */
+    /* 🌟 Lv.1 बॉक्स का आकार और छोटा किया गया, बैकग्राउंड डार्क ऑरेंज */
     .tag-lv { 
       background: #ff6f00; 
       color: #ffffff; 
-      font-size: 12px; 
-      font-weight: 900; 
-      padding: 3px 10px; 
-      border-radius: 12px; 
+      font-size: 10px; 
+      font-weight: 800; 
+      padding: 2px 8px; 
+      border-radius: 8px; 
       display: inline-flex; 
       align-items: center; 
-      gap: 4px; 
+      gap: 3px; 
     }
 
-    .tag-sent-text { font-size: 13px; font-weight: bold; color: #111; }
+    /* 🌟 Followers और sent का रंग और स्टाइल एक जैसा रखा गया है */
+    .f-count-item { display: flex; gap: 6px; align-items: baseline; }
+    .f-num { font-size: 14px; font-weight: 800; color: #555; }
+    .f-lbl { font-size: 14px; font-weight: 800; color: #555; }
+    .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; }
 
     .follow-stats-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 22px; padding: 0 20px; }
     .follow-counts { display: flex; gap: 25px; align-items: center; }
-    .f-count-item { display: flex; gap: 6px; align-items: baseline; }
-    .f-num { font-size: 15px; font-weight: 900; color: #111; }
-    .f-lbl { font-size: 13px; color: #555; font-weight: 600; }
 
     .profile-section-title-box { padding: 25px 20px 10px 20px; display: flex; flex-direction: column; gap: 6px; }
     .profile-heading-text { font-size: 16px; font-weight: 800; color: #111; }
@@ -208,12 +209,13 @@
           <div class="accompany-badge">Active: 1 Days ✨</div>
         </div>
 
-        <!-- 👑Lv.1 बॉक्स का बैकग्राउंड डार्क ऑरेंज, Lv.1 सफेद टेक्स्ट -->
+        <!-- छोटा Lv.1 बॉक्स -->
         <div class="tags-row">
           <div class="tag-lv">👑 Lv.<span id="profLevel">1</span></div>
         </div>
       </div>
 
+      <!-- Followers और sent एक जैसे रंग में -->
       <div class="follow-stats-row">
         <div class="follow-counts">
           <div class="f-count-item">
