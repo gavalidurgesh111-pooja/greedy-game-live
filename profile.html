@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 Accompany Time बैज (30 दिन तक दिखने वाला)[span_0](start_span)[span_0](end_span) */
+    /* 🌟 Accompany Time बैज (30 दिन तक दिखने वाला नए यूज़र्स के लिए)[span_0](start_span)[span_0](end_span) */
     .accompany-badge { 
       background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
       color: #ffffff; 
@@ -192,23 +192,23 @@
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (☆1) - Medium Spring Green (#00fa9a) बैकग्राउंड */
+    /* 🌟 लेवल टैग (☆1) - बिल्कुल हल्का फिका काला और गोल बैकग्राउंड, सफेद अंक और स्टार */
     .tag-lv { 
-      background-color: #00fa9a !important; 
-      color: #ffffff; /* टेक्स्ट कलर गहरे रंग में ताकि साफ़ दिखे */
+      background-color: rgba(0, 0, 0, 0.15) !important; /* बिल्कुल हल्का (फिका) काला बैकग्राउंड */
+      color: #ffffff !important; /* अंक सफेद */
       font-size: 11px; 
       font-weight: 800; 
-      padding: 2px 6px; 
-      border-radius: 10px; 
+      padding: 2px 8px; 
+      border-radius: 12px; /* गोल / कैप्सूल शेप */
       display: inline-flex; 
       align-items: center; 
-      gap: 2px; 
+      gap: 3px; 
     }
     
     .web-star-icon {
       width: 13px;
       height: 13px;
-      fill: #ffffff; /* स्टार का कलर भी डार्क कर दिया है ताकि मैच करे */
+      fill: #ffffff !important; /* स्टार सफेद */
       flex-shrink: 0;
     }
 
@@ -461,7 +461,7 @@
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#00fa9a"; 
+        lvTag.style.backgroundColor = "rgba(0, 0, 0, 0.15)"; 
       } else if (lvl <= 30) {
         lvTag.style.backgroundColor = "#2196f3"; 
       } else {
