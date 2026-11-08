@@ -192,23 +192,34 @@
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (☆1) - बिल्कुल हल्का फिका काला और गोल बैकग्राउंड, सफेद अंक और स्टार */
+    /* 🌟 लेवल टैग (☆1) - Medium Spring Green बैकग्राउंड */
     .tag-lv { 
-      background-color: rgba(0, 0, 0, 0.15) !important; /* बिल्कुल हल्का (फिका) काला बैकग्राउंड */
-      color: #ffffff !important; /* अंक सफेद */
+      background-color: #00fa9a !important; 
+      color: #ffffff; 
       font-size: 11px; 
       font-weight: 800; 
       padding: 2px 8px; 
-      border-radius: 12px; /* गोल / कैप्सूल शेप */
+      border-radius: 10px; 
       display: inline-flex; 
       align-items: center; 
-      gap: 3px; 
+      gap: 4px; 
     }
     
+    /* 🌟 सिर्फ स्टार के पीछे हल्का काला गोल घेरा */
+    .star-circle-bg {
+      width: 16px;
+      height: 16px;
+      background-color: rgba(0, 0, 0, 0.15); /* हल्का फिका काला रंग */
+      border-radius: 50%; /* गोल घेरा */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .web-star-icon {
-      width: 13px;
-      height: 13px;
-      fill: #ffffff !important; /* स्टार सफेद */
+      width: 10px;
+      height: 10px;
+      fill: #ffffff; /* सफेद स्टार */
       flex-shrink: 0;
     }
 
@@ -306,7 +317,10 @@
 
         <div class="tags-row">
           <div class="tag-lv" id="profLevelTag">
-            <svg class="web-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <!-- 🌟 केवल स्टार के पीछे हल्का काला गोल घेरा -->
+            <div class="star-circle-bg">
+              <svg class="web-star-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
             <span id="profLevel">1</span>
           </div>
           
@@ -461,7 +475,7 @@
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "rgba(0, 0, 0, 0.15)"; 
+        lvTag.style.backgroundColor = "#00fa9a"; 
       } else if (lvl <= 30) {
         lvTag.style.backgroundColor = "#2196f3"; 
       } else {
