@@ -138,11 +138,11 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - फिक्स साइज़ */
+    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - overflow को visible रखा ताकि षट्कोण के कोने बाहर दिख सकें */
     .accompany-badge { 
       background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
       color: #ffffff; 
-      padding: 4px 10px; 
+      padding: 4px 10px 4px 22px; /* 👈 बाएं तरफ पैडिंग बढ़ाई ताकि षट्कोण के लिए जगह बने */
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
@@ -153,25 +153,28 @@
       gap: 6px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden;
+      overflow: visible; /* 👈 कोने बाहर दिखाने के लिए बेहद ज़रूरी */
     }
     
-    /* 🌟 पहला (बाहर वाला) षट्कोण - डार्क ग्रीन बॉर्डर और हल्का हरा अंदरूनी रंग */
+    /* 🌟 बाहर का बड़ा षट्कोण - बिल्कुल बाएं कोने पर सेट, ऊपर-नीचे बैकग्राउंड को टच करता हुआ */
     .accompany-hexagon-outer {
-      width: 22px;  
-      height: 22px; 
+      position: absolute;
+      left: -8px; /* 👈 बाएं कोने से थोड़ा बाहर निकाला ताकि कोने बाहर दिखें */
+      top: 50%;
+      transform: translateY(-50%);
+      width: 26px;  
+      height: 26px; /* बैकग्राउंड की ऊँचाई के बराबर ताकि ऊपर-नीचे टच करे */
       background: #0d3b18; /* डार्क ग्रीन बॉर्डर */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      position: relative;
     }
     .accompany-hexagon-base {
-      width: 19px;
-      height: 19px;
-      background: #81c784; /* पहला षट्कोण - हल्का हरा रंग */
+      width: 23px;
+      height: 23px;
+      background: #81c784; /* हल्का हरा रंग */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
@@ -179,11 +182,11 @@
       position: absolute;
     }
     
-    /* 🌟 दूसरा (अंदर वाला) छोटा षट्कोण - बैकग्राउंड जैसा रंग और फोन आइकॉन */
+    /* 🌟 अंदर का छोटा षट्कोण - बैकग्राउंड वाला रंग और फोन आइकॉन */
     .accompany-hexagon-inner {
-      width: 14px;  /* 👈 पहले वाले से छोटा */
-      height: 14px; 
-      background: #1b5e20; /* 👈 मुख्य बैकग्राउंड वाला हरा रंग */
+      width: 17px;  
+      height: 17px; 
+      background: #1b5e20; /* मुख्य बैकग्राउंड वाला हरा रंग */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
@@ -329,7 +332,7 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- 🌟 डबल षट्कोण लेयर सेटअप -->
+            <!-- 🌟 षट्कोण बिल्कुल बाएं कोने पर, जिसके कोने बाहर निकल रहे हैं और ऊपर-नीचे टच कर रहे हैं -->
             <div class="accompany-hexagon-outer">
               <div class="accompany-hexagon-base">
                 <div class="accompany-hexagon-inner">
@@ -715,7 +718,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>.</p>";
         }
       }
     }
