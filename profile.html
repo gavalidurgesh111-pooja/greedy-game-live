@@ -138,50 +138,60 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 फोटो जैसा नया "Accompany Time" ग्रीन कैप्सूल बैज (नए यूज़र्स के लिए 1 महीने तक)[span_2](start_span)[span_2](end_span) */
+    /* 🌟 फोटो[span_2](start_span)[span_2](end_span) से मैच करता हुआ बिल्कुल हूबहू "Accompany Time" ग्रीन कैप्सूल बैज */
     .accompany-badge { 
-      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); 
-      color: #fff; 
-      padding: 4px 10px; 
-      border-radius: 16px; 
-      font-size: 10px; 
-      font-weight: 700; 
+      background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
+      color: #ffffff; 
+      padding: 5px 12px; 
+      border-radius: 20px; 
       position: absolute; 
       right: 0; 
       top: -55px; 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25); 
       display: inline-flex; 
       align-items: center; 
-      gap: 6px;
-      border: 1px solid rgba(255,255,255,0.2);
+      gap: 7px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
-    .accompany-icon {
-      width: 14px;
-      height: 14px;
+    .accompany-hexagon-box {
+      width: 22px;
+      height: 22px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1.5px solid #a5d6a7;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .accompany-hexagon-box svg {
+      width: 13px;
+      height: 13px;
       stroke: #ffffff;
       fill: none;
       stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    .accompany-text {
+    .accompany-text-group {
       display: flex;
       flex-direction: column;
-      line-height: 1.1;
+      line-height: 1.15;
     }
-    .accompany-title {
-      font-size: 9px;
-      opacity: 0.85;
-      font-weight: 600;
+    .accompany-title-lbl {
+      font-size: 10px;
+      font-weight: 500;
+      color: #e8f5e9;
+      letter-spacing: 0.2px;
     }
-    .accompany-days {
-      font-size: 11px;
-      font-weight: 900;
+    .accompany-days-val {
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
     }
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (☆1) - छोटा और कॉम्पैक्ट */
     .tag-lv { 
       background-color: #81c784; 
       color: #ffffff; 
@@ -201,7 +211,6 @@
       flex-shrink: 0;
     }
 
-    /* 🌟 प्लेनेट लोगो बॉक्स - छोटा बैकग्राउंड और परफेक्ट साइज़ */
     .planet-badge {
       width: 20px;
       height: 14px;
@@ -279,15 +288,17 @@
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
-          <!-- 🌟 नया Accompany Time बैज (यह सिर्फ पहले 30 दिनों तक दिखेगा, उसके बाद अपने आप छिप जाएगा) -->
+          <!-- 🌟 हूबहू फोटो वाला Accompany Time बैज (30 दिन तक दिखेगा, फिर हटेगा) -->
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <svg class="accompany-icon" viewBox="0 0 24 24">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-              <line x1="12" y1="18" x2="12.01" y2="18"></line>
-            </svg>
-            <div class="accompany-text">
-              <span class="accompany-title">Accompany Time</span>
-              <span class="accompany-days" id="accompanyDaysText">1 days</span>
+            <div class="accompany-hexagon-box">
+              <svg viewBox="0 0 24 24">
+                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                <line x1="12" y1="18" x2="12.01" y2="18"></line>
+              </svg>
+            </div>
+            <div class="accompany-text-group">
+              <span class="accompany-title-lbl">Accompany Time:</span>
+              <span class="accompany-days-val" id="accompanyDaysText">1 days</span>
             </div>
           </div>
 
@@ -458,7 +469,7 @@
       }
     }
 
-    // 🌟 30 दिन का नियम: नए यूज़र्स के लिए Accompany Time दिखाएगा, 30 दिन बाद यह अपने आप छिप जाएगा
+    // 🌟 30 दिन का नियम: नए यूज़र्स के लिए ठीक फोटो[span_3](start_span)[span_3](end_span) जैसा Accompany Time बैज दिखेगा, 30 दिन बाद अपने आप हटेगा
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
@@ -477,11 +488,9 @@
       
       if (badgeBox && daysText) {
         if (diffDays <= 30) {
-          // अगर 30 दिन या उससे कम हुए हैं, तो Accompany Time बैज दिखाई देगा और दिन गिनेगा
           daysText.innerText = diffDays + " days";
           badgeBox.style.display = "inline-flex";
         } else {
-          // जैसे ही 30 दिन से ज़्यादा हो जाएंगे, यह बैज अपने आप गायब (Hidden) हो जाएगा
           badgeBox.style.display = "none";
         }
       }
