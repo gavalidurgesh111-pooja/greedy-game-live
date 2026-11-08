@@ -139,44 +139,45 @@
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     
-    .tags-row { display: flex; gap: 8px; margin-top: 14px; align-items: center; }
+    .tags-row { display: flex; gap: 6px; margin-top: 14px; align-items: center; }
     
+    /* 🌟 लेवल टैग (☆1) - और छोटा और कॉम्पैक्ट किया गया */
     .tag-lv { 
       background-color: #81c784; 
       color: #ffffff; 
-      font-size: 12px; 
-      font-weight: 800; 
-      padding: 3px 10px; 
-      border-radius: 14px; 
+      font-size: 11px; 
+      font-weight: 700; 
+      padding: 2px 8px; 
+      border-radius: 10px; 
       display: inline-flex; 
       align-items: center; 
-      gap: 5px; 
+      gap: 4px; 
     }
     
     .web-star-icon {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       fill: #ffffff;
       flex-shrink: 0;
     }
 
-    /* 🌟 आपका ओरिजिनल प्लेनेट बॉक्स और सही साइज़ */
+    /* 🌟 प्लेनेट लोगो बॉक्स - बैकग्राउंड और साइज़ दोनों छोटे किए गए */
     .planet-badge {
-      width: 32px;
-      height: 20px;
+      width: 24px;
+      height: 16px;
       background-color: #2196f3;
-      border-radius: 6px;
+      border-radius: 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
       pointer-events: none;
       overflow: hidden;
       flex-shrink: 0;
     }
     .planet-badge svg {
-      width: 20px;
-      height: 20px;
+      width: 13px;
+      height: 13px;
       stroke: #ffffff;
       fill: none;
       stroke-width: 2;
@@ -246,7 +247,6 @@
             <span id="profLevel">1</span>
           </div>
           
-          <!-- 🪐 आपका असली ओरिजिनल प्लेनेट और रिंग कोड -->
           <div class="planet-badge" title="Planet Badge">
             <svg viewBox="0 0 48 48" fill="none">
               <path d="M24 40c8.837 0 16-7.163 16-16S32.837 8 24 8S8 15.163 8 24s7.163 16 16 16Z"/>
@@ -578,7 +578,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>.</p>";
         }
       }
     }
