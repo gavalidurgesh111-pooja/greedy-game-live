@@ -156,7 +156,7 @@
       overflow: hidden;
     }
     
-    /* 🌟 सबसे बाहर का षट्कोण (डार्क ग्रीन बॉर्डर) */
+    /* 🌟 पहला (बाहर वाला) षट्कोण - डार्क ग्रीन बॉर्डर और हल्का हरा अंदरूनी रंग */
     .accompany-hexagon-outer {
       width: 22px;  
       height: 22px; 
@@ -166,41 +166,40 @@
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      padding: 1.5px; /* बॉर्डर की मोटाई */
+      position: relative;
+    }
+    .accompany-hexagon-base {
+      width: 19px;
+      height: 19px;
+      background: #81c784; /* पहला षट्कोण - हल्का हरा रंग */
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
     }
     
-    /* 🌟 बीच का षट्कोण (इसे बैकग्राउंड जैसा रंग दिया है) */
-    .accompany-hexagon-middle {
-      width: 100%;
-      height: 100%;
-      background: #1b5e20; /* 👈 यहाँ मुख्य बैकग्राउंड वाला हरा रंग सेट है */
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5px; /* अंदर वाले षट्कोण के लिए गैप */
-    }
-
-    /* 🌟 सबसे अंदर का षट्कोण (इसे भी बैकग्राउंड का रंग दिया है ताकि डबल इफ़ेक्ट आए) */
+    /* 🌟 दूसरा (अंदर वाला) छोटा षट्कोण - बैकग्राउंड जैसा रंग और फोन आइकॉन */
     .accompany-hexagon-inner {
-      width: 100%;
-      height: 100%;
-      background: #134e26; /* 👈 सबसे अंदर का षट्कोण रंग */
+      width: 14px;  /* 👈 पहले वाले से छोटा */
+      height: 14px; 
+      background: #1b5e20; /* 👈 मुख्य बैकग्राउंड वाला हरा रंग */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
+      position: absolute;
     }
 
     .accompany-hexagon-inner svg {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       stroke: #ffffff;
       fill: none;
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      transform: translate(0px, 0px); /* 👈 फोन आइकॉन को अपनी मर्जी से यहाँ से खिसका सकते हैं */
+      transform: translate(0px, 0px); /* 👈 फोन आइकॉन को यहाँ से मर्जी अनुसार खिसका सकते हैं */
     }
 
     .accompany-text-group {
@@ -330,9 +329,9 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- 🌟 डबल षट्कोण ढांचा (डार्क ग्रीन बॉर्डर + बैकग्राउंड रंग वाले अंदरूनी षट्कोण) -->
+            <!-- 🌟 डबल षट्कोण लेयर सेटअप -->
             <div class="accompany-hexagon-outer">
-              <div class="accompany-hexagon-middle">
+              <div class="accompany-hexagon-base">
                 <div class="accompany-hexagon-inner">
                   <svg viewBox="0 0 24 24">
                     <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
