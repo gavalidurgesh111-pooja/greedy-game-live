@@ -160,12 +160,17 @@
       flex-shrink: 0;
     }
 
-    /* 🌟 ग्रह लोगो: एकदम परफेक्ट और सही सेट किया हुआ डिज़ाइन */
+    /* 🌟 ग्रह लोगो: छोटा बॉक्स और लगातार घूमने वाला एनिमेशन */
+    @keyframes rotatePlanet {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
     .planet-badge {
-      width: 32px;
-      height: 20px;
+      width: 24px;
+      height: 16px;
       background-color: #2196f3;
-      border-radius: 6px;
+      border-radius: 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -175,8 +180,9 @@
       flex-shrink: 0;
     }
     .planet-badge svg {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
+      animation: rotatePlanet 4s linear infinite;
     }
 
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
@@ -243,9 +249,9 @@
           <div class="planet-badge" title="Planet Badge">
             <svg viewBox="0 0 24 24" fill="none">
               <!-- मुख्य नीला ग्रह -->
-              <circle cx="12" cy="12" r="6" fill="#2196f3" stroke="#ffffff" stroke-width="1.6"/>
-              <!-- ग्रह के ठीक ऊपर से गुजरती हुई बिल्कुल साफ सफेद रिंग -->
-              <path d="M4.30 13.96a12.5 2.5 135 1010.4-10"stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="4.5" fill="#2196f3" stroke="#ffffff" stroke-width="1.5"/>
+              <!-- रिंग पाथ (दाहिनी तरफ से सेट किया हुआ) -->
+              <path d="M4.56 16.5 a13.63 3.60 135 1 0 10.4 -6.5" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
             </svg>
           </div>
         </div>
