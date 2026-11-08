@@ -156,36 +156,51 @@
       overflow: hidden;
     }
     
-    /* 🌟 षट्कोण का बाहरी हिस्सा (डार्क ग्रीन बॉर्डर) */
+    /* 🌟 सबसे बाहर का षट्कोण (डार्क ग्रीन बॉर्डर) */
     .accompany-hexagon-outer {
       width: 22px;  
       height: 22px; 
-      background: #0d3b18; 
+      background: #0d3b18; /* डार्क ग्रीन बॉर्डर */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      padding: 1.5px; 
+      padding: 1.5px; /* बॉर्डर की मोटाई */
     }
-    .accompany-hexagon-box {
+    
+    /* 🌟 बीच का षट्कोण (इसे बैकग्राउंड जैसा रंग दिया है) */
+    .accompany-hexagon-middle {
       width: 100%;
       height: 100%;
-      background: #81c784; 
+      background: #1b5e20; /* 👈 यहाँ मुख्य बैकग्राउंड वाला हरा रंग सेट है */
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5px; /* अंदर वाले षट्कोण के लिए गैप */
+    }
+
+    /* 🌟 सबसे अंदर का षट्कोण (इसे भी बैकग्राउंड का रंग दिया है ताकि डबल इफ़ेक्ट आए) */
+    .accompany-hexagon-inner {
+      width: 100%;
+      height: 100%;
+      background: #134e26; /* 👈 सबसे अंदर का षट्कोण रंग */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .accompany-hexagon-box svg {
-      width: 11px;
-      height: 11px;
+
+    .accompany-hexagon-inner svg {
+      width: 10px;
+      height: 10px;
       stroke: #ffffff;
       fill: none;
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      transform: translate(0px, 0px); /* 👈 यहाँ से फोन आइकॉन को अपनी मर्जी से खिसका सकते हैं (जैसे translate(1px, -1px)) */
+      transform: translate(0px, 0px); /* 👈 फोन आइकॉन को अपनी मर्जी से यहाँ से खिसका सकते हैं */
     }
 
     .accompany-text-group {
@@ -315,14 +330,18 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
+            <!-- 🌟 डबल षट्कोण ढांचा (डार्क ग्रीन बॉर्डर + बैकग्राउंड रंग वाले अंदरूनी षट्कोण) -->
             <div class="accompany-hexagon-outer">
-              <div class="accompany-hexagon-box">
-                <svg viewBox="0 0 24 24">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                  <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                </svg>
+              <div class="accompany-hexagon-middle">
+                <div class="accompany-hexagon-inner">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                  </svg>
+                </div>
               </div>
             </div>
+
             <div class="accompany-text-group">
               <span class="accompany-title-lbl">Accompany Time:</span>
               <span class="accompany-days-val" id="accompanyDaysText">1 days</span>
