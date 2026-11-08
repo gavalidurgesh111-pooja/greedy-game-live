@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 फोटो[span_2](start_span)[span_2](end_span) से मैच करता हुआ बिल्कुल हूबहू "Accompany Time" ग्रीन कैप्सूल बैज */
+    /* 🌟 Accompany Time बैज (30 दिन तक दिखने वाला)[span_0](start_span)[span_0](end_span) */
     .accompany-badge { 
       background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
       color: #ffffff; 
@@ -192,9 +192,10 @@
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
     
+    /* 🌟 लेवल टैग (☆1) - Medium Spring Green (#00fa9a) बैकग्राउंड */
     .tag-lv { 
-      background-color: #81c784; 
-      color: #ffffff; 
+      background-color: #00fa9a !important; 
+      color: #111111; /* टेक्स्ट कलर गहरे रंग में ताकि साफ़ दिखे */
       font-size: 11px; 
       font-weight: 800; 
       padding: 2px 6px; 
@@ -207,7 +208,7 @@
     .web-star-icon {
       width: 13px;
       height: 13px;
-      fill: #ffffff;
+      fill: #111111; /* स्टार का कलर भी डार्क कर दिया है ताकि मैच करे */
       flex-shrink: 0;
     }
 
@@ -288,7 +289,6 @@
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
-          <!-- 🌟 हूबहू फोटो वाला Accompany Time बैज (30 दिन तक दिखेगा, फिर हटेगा) -->
           <div class="accompany-badge" id="accompanyBadgeBox">
             <div class="accompany-hexagon-box">
               <svg viewBox="0 0 24 24">
@@ -461,7 +461,7 @@
       if (!lvTag) return;
       
       if (lvl <= 10) {
-        lvTag.style.backgroundColor = "#81c784"; 
+        lvTag.style.backgroundColor = "#00fa9a"; 
       } else if (lvl <= 30) {
         lvTag.style.backgroundColor = "#2196f3"; 
       } else {
@@ -469,7 +469,6 @@
       }
     }
 
-    // 🌟 30 दिन का नियम: नए यूज़र्स के लिए ठीक फोटो[span_3](start_span)[span_3](end_span) जैसा Accompany Time बैज दिखेगा, 30 दिन बाद अपने आप हटेगा
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
