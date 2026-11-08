@@ -137,11 +137,51 @@
     
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
-    .accompany-badge { background: linear-gradient(90deg, #ff416c, #ff4b2b); color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; position: absolute; right: 0; top: -55px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    
+    /* 🌟 फोटो जैसा नया "Accompany Time" ग्रीन कैप्सूल बैज (नए यूज़र्स के लिए 1 महीने तक)[span_2](start_span)[span_2](end_span) */
+    .accompany-badge { 
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); 
+      color: #fff; 
+      padding: 4px 10px; 
+      border-radius: 16px; 
+      font-size: 10px; 
+      font-weight: 700; 
+      position: absolute; 
+      right: 0; 
+      top: -55px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .accompany-icon {
+      width: 14px;
+      height: 14px;
+      stroke: #ffffff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .accompany-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .accompany-title {
+      font-size: 9px;
+      opacity: 0.85;
+      font-weight: 600;
+    }
+    .accompany-days {
+      font-size: 11px;
+      font-weight: 900;
+    }
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
     
-    /* 🌟 लेवल टैग (☆1) - और छोटा और कॉम्पैक्ट किया गया */
+    /* 🌟 लेवल टैग (☆1) - छोटा और कॉम्पैक्ट */
     .tag-lv { 
       background-color: #81c784; 
       color: #ffffff; 
@@ -161,7 +201,7 @@
       flex-shrink: 0;
     }
 
-    /* 🌟 प्लेनेट लोगो बॉक्स - बैकग्राउंड और साइज़ दोनों छोटे किए गए */
+    /* 🌟 प्लेनेट लोगो बॉक्स - छोटा बैकग्राउंड और परफेक्ट साइज़ */
     .planet-badge {
       width: 20px;
       height: 14px;
@@ -238,8 +278,19 @@
         
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
-          <!-- 🌟 यहाँ ID जोड़ी गई है ताकि Active Days की काउंटिंग सही से हो सके -->
-          <div class="accompany-badge" id="activeDaysBadge">Active: 1 Days ✨</div>
+          
+          <!-- 🌟 नया Accompany Time बैज (यह सिर्फ पहले 30 दिनों तक दिखेगा, उसके बाद अपने आप छिप जाएगा) -->
+          <div class="accompany-badge" id="accompanyBadgeBox">
+            <svg class="accompany-icon" viewBox="0 0 24 24">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+            <div class="accompany-text">
+              <span class="accompany-title">Accompany Time</span>
+              <span class="accompany-days" id="accompanyDaysText">1 days</span>
+            </div>
+          </div>
+
         </div>
 
         <div class="tags-row">
@@ -407,7 +458,7 @@
       }
     }
 
-    // 🌟 एक्टिव डेज़ की ऑटोमैटिक काउंटिंग कैलकुलेट करने वाला फंक्शन
+    // 🌟 30 दिन का नियम: नए यूज़र्स के लिए Accompany Time दिखाएगा, 30 दिन बाद यह अपने आप छिप जाएगा
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
@@ -421,9 +472,18 @@
       let diffTime = now - parseInt(joinDate);
       let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; 
       
-      const badge = document.getElementById("activeDaysBadge");
-      if (badge) {
-        badge.innerText = `Active: ${diffDays} Days ✨`;
+      const badgeBox = document.getElementById("accompanyBadgeBox");
+      const daysText = document.getElementById("accompanyDaysText");
+      
+      if (badgeBox && daysText) {
+        if (diffDays <= 30) {
+          // अगर 30 दिन या उससे कम हुए हैं, तो Accompany Time बैज दिखाई देगा और दिन गिनेगा
+          daysText.innerText = diffDays + " days";
+          badgeBox.style.display = "inline-flex";
+        } else {
+          // जैसे ही 30 दिन से ज़्यादा हो जाएंगे, यह बैज अपने आप गायब (Hidden) हो जाएगा
+          badgeBox.style.display = "none";
+        }
       }
     }
 
@@ -433,7 +493,7 @@
       document.getElementById("aboutUserId").innerText = userId;
       
       updateLevelBackground(userLevel);
-      updateActiveDays(); // 🌟 यहाँ पर एक्टिव डेज़ फंक्शन कॉल कर दिया गया है
+      updateActiveDays(); 
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
