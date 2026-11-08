@@ -238,7 +238,8 @@
         
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
-          <div class="accompany-badge">Active: 1 Days ✨</div>
+          <!-- 🌟 यहाँ ID जोड़ी गई है ताकि Active Days की काउंटिंग सही से हो सके -->
+          <div class="accompany-badge" id="activeDaysBadge">Active: 1 Days ✨</div>
         </div>
 
         <div class="tags-row">
@@ -406,12 +407,33 @@
       }
     }
 
+    // 🌟 एक्टिव डेज़ की ऑटोमैटिक काउंटिंग कैलकुलेट करने वाला फंक्शन
+    function updateActiveDays() {
+      let joinDateKey = "greedy_join_date_" + currentIdentifier;
+      let joinDate = localStorage.getItem(joinDateKey);
+      
+      if (!joinDate) {
+        joinDate = new Date().getTime();
+        localStorage.setItem(joinDateKey, joinDate);
+      }
+      
+      let now = new Date().getTime();
+      let diffTime = now - parseInt(joinDate);
+      let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; 
+      
+      const badge = document.getElementById("activeDaysBadge");
+      if (badge) {
+        badge.innerText = `Active: ${diffDays} Days ✨`;
+      }
+    }
+
     function renderProfileData() {
       document.getElementById("profNameDisplay").innerText = userName;
       document.getElementById("profLevel").innerText = userLevel;
       document.getElementById("aboutUserId").innerText = userId;
       
       updateLevelBackground(userLevel);
+      updateActiveDays(); // 🌟 यहाँ पर एक्टिव डेज़ फंक्शन कॉल कर दिया गया है
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
