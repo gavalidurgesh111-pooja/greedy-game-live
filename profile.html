@@ -138,11 +138,11 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - फिक्स साइज, बाएं पैडिंग बिल्कुल सही */
+    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - बाएं पैडिंग बढ़ाई ताकि बड़ा षट्कोण अंदर आराम से फिट हो जाए */
     .accompany-badge { 
       background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
       color: #ffffff; 
-      padding: 4px 10px 4px 24px; 
+      padding: 4px 10px 4px 30px; /* 👈 बाएं तरफ स्पेस बढ़ाया */
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
@@ -153,17 +153,17 @@
       gap: 6px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden; /* 👈 ताकि षट्कोण बैकग्राउंड के बाहर फालतू न फैले */
+      overflow: hidden; /* 👈 बैकग्राउंड के बाहर कुछ भी नहीं निकलेगा */
     }
     
-    /* 🌟 बड़ा षट्कोण - बाएं कोने पर सेट, ऊपर-नीचे से बैकग्राउंड को टच करता हुआ */
+    /* 🌟 बड़ा षट्कोण - बाएं साइड से अंदर की तरफ सेट, बैकग्राउंड के अंदर ही पूरा दिखेगा */
     .accompany-hexagon-outer {
       position: absolute;
-      left: -3px; /* 👈 बाएं से बैकग्राउंड के अंदर या बिल्कुल किनारे पर फिक्स */
+      left: 3px; /* 👈 बाएं किनारे से अंदर की तरफ रखा ताकि बाहर न कटे */
       top: 50%;
       transform: translateY(-50%);
-      width: 28px;  /* 👈 षट्कोण की साइज़ बड़ी की गई है */
-      height: 28px; /* बैकग्राउंड की ऊँचाई के बराबर ताकि ऊपर-नीचे टच करे */
+      width: 30px;  /* 👈 षट्कोण का बड़ा साइज़ */
+      height: 30px; 
       background: #0d3b18; /* डार्क ग्रीन बॉर्डर */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
@@ -172,8 +172,8 @@
       flex-shrink: 0;
     }
     .accompany-hexagon-base {
-      width: 25px;
-      height: 25px;
+      width: 27px;
+      height: 27px;
       background: #81c784; /* पहला हल्का हरा षट्कोण */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
@@ -184,8 +184,8 @@
     
     /* 🌟 अंदर का छोटा षट्कोण - बैकग्राउंड वाला रंग और फोन आइकॉन */
     .accompany-hexagon-inner {
-      width: 18px;  
-      height: 18px; 
+      width: 20px;  
+      height: 20px; 
       background: #1b5e20; /* मुख्य बैकग्राउंड वाला हरा रंग */
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
@@ -332,7 +332,7 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- 🌟 षट्कोण सेटअप: बैकग्राउंड के अंदर बिल्कुल सही फिट और बड़ा -->
+            <!-- 🌟 षट्कोण अब बैकग्राउंड के अंदर पूरी तरह फिट और बड़ा है -->
             <div class="accompany-hexagon-outer">
               <div class="accompany-hexagon-base">
                 <div class="accompany-hexagon-inner">
