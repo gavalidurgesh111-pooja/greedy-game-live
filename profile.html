@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 मेहंदी-फिका हरा मिक्स बैकग्राउंड, हल्के डॉट्स और एकदम फिकी तिरछी पट्टियाँ */
+    /* 🌟 मेहंदी-फिका हरा मिक्स रंग, हल्के डॉट्स और एकदम फिकी तिरछी पट्टियाँ */
     .accompany-badge { 
       background-image: 
         radial-gradient(circle, rgba(255,255,255,0.25) 1.2px, transparent 1.2px), 
@@ -146,11 +146,11 @@
           135deg, 
           transparent 0%, 
           transparent 38%, 
-          rgba(255, 255, 255, 0.18) 38%,   /* पहली फिकी तिरछी पट्टी */
+          rgba(255, 255, 255, 0.18) 38%, 
           rgba(255, 255, 255, 0.18) 50%,  
           transparent 50%, 
           transparent 60%, 
-          rgba(255, 255, 255, 0.12) 60%,   /* दूसरी बहुत फिकी तिरछी पट्टी */
+          rgba(255, 255, 255, 0.12) 60%, 
           rgba(255, 255, 255, 0.12) 70%, 
           transparent 70%, 
           transparent 100%
@@ -174,7 +174,6 @@
       overflow: visible; 
     }
     
-    /* 🌟 बड़ा षट्कोण - अपनी सही जगह और साइज पर सुरक्षित */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -182,15 +181,12 @@
      transform: translateY(-50%);
      width: 30px;  
      height: 30px; 
-  
      background: linear-gradient(135deg, #ffffff 0%, #81c784 50%, #4CAF50 100%); 
-  
      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
      display: flex;
      align-items: center;
      justify-content: center;
      flex-shrink: 0;
-  
      box-shadow: 0 0 6px rgba(255, 255, 255, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.8);
     }
    
