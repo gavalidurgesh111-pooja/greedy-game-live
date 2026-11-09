@@ -172,7 +172,6 @@
       overflow: visible; 
     }
     
-    /* 🌟 बाहर का षट्कोण (Hexagon) अलग सुरक्षित */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -340,18 +339,11 @@
             <div class="accompany-hexagon-outer">
               <div class="accompany-hexagon-base">
                 <div class="accompany-hexagon-inner">
-                  <!-- 🌟 षट्कोण के अंदर आपका एकदम सही मोबाइल आइकॉन (फोटो के जैसा) -->
+                  <!-- 🌟 षट्कोण के अंदर मोबाइल आइकॉन (यहाँ style में width और height से साइज़ छोटा-बड़ा कर सकते हैं) -->
                   <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 20px;">
-                    <!-- 1. बाहरी मोबाइल बॉडी: पूरी तरह सफेद -->
                     <rect x="5" y="5" width="90" height="120" rx="28" ry="28" fill="#ffffff" stroke="none" />
-                    
-                    <!-- 2. ऊपर स्पीकर की जगह रेक्टेंगल (जैसे आपकी भेजी हुई फोटो में है) -->
                     <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
-                    
-                    <!-- 3. बड़ी अंदर की स्क्रीन: मेहंदी हरा रंग -->
                     <rect x="14" y="27" width="72" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
-                    
-                    <!-- 4. नीचे का गोल होम बटन -->
                     <circle cx="50" cy="116" r="6" fill="#3a7d44" stroke="none" />
                   </svg>
                 </div>
@@ -695,7 +687,7 @@
       document.getElementById("modalFrame").style.display = "flex"; 
       history.pushState({modal: "frame"}, "", window.location.href);
     }
-    function closeFrameModal() { document.getElementById("modalModel")?.style.display = "none"; document.getElementById("modalFrame").style.display = "none"; }
+    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
