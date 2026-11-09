@@ -138,19 +138,19 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - overflow: visible किया ताकि षट्कोण बिल्कुल न कटे */
+    /* 🌟 एकदम सेम फोटो जैसी पट्टियाँ और रिच ग्रीन शेड[span_4](start_span)[span_4](end_span)[span_5](start_span)[span_5](end_span) */
     .accompany-badge { 
       background: linear-gradient(
         135deg, 
         transparent 0%, 
-        transparent 52%, 
-        rgba(255, 255, 255, 0.35) 62%, 
-        rgba(255, 255, 255, 0.35) 72%,  
-        transparent 62%, 
-        transparent 68%, 
+        transparent 42%, 
+        rgba(255, 255, 255, 0.35) 42%, 
+        rgba(255, 255, 255, 0.35) 55%,  
+        transparent 55%, 
+        transparent 65%, 
+        rgba(255, 255, 255, 0.25) 65%, 
         rgba(255, 255, 255, 0.25) 78%, 
-        rgba(255, 255, 255, 0.25) 86%, 
-        transparent 76%, 
+        transparent 78%, 
         transparent 100%
       ), 
       linear-gradient(135deg, #046307 0%, #50C878 100%); 
@@ -166,10 +166,10 @@
       gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: visible; /* 👈 यहाँ visible कर दिया है ताकि षट्कोण पूरा सुरक्षित रहे */
+      overflow: visible; /* षट्कोण को पूरी तरह सुरक्षित रखने के लिए[span_6](start_span)[span_6](end_span) */
     }
     
-    /* 🌟 बड़ा षट्कोण - अपनी तय पोजीशन और साइज पर बिल्कुल सुरक्षित */
+    /* 🌟 बड़ा षट्कोण - अपनी सही जगह पर सुरक्षित[span_7](start_span)[span_7](end_span) */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -361,7 +361,7 @@
 
             <div class="accompany-text-group">
               <span class="accompany-title-lbl">Accompany Time:</span>
-              <span class="accompany-days-val" id="accompanyDaysText">1 days</span>
+              <span class="accompany-days-val" id="accompanyDaysText">36 days</span>
             </div>
           </div>
 
