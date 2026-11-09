@@ -142,7 +142,7 @@
     .accompany-badge { 
       background: linear-gradient(135deg, #134e26 0%, #1b5e20 100%); 
       color: #ffffff; 
-      padding: 4px 12px 4px 6px; /* 👈 बाएं तरफ स्पेस बढ़ाया */
+      padding: 4px 10px 4px 10px; /* 👈 बाएं तरफ स्पेस बढ़ाया */
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
@@ -153,11 +153,15 @@
       gap: 12px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden;
+      overflow: visible;
     }
     
     /* 🌟 बड़ा षट्कोण - बाएं साइड से अंदर की तरफ सेट, बैकग्राउंड के अंदर ही पूरा दिखेगा */
     .accompany-hexagon-outer {
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
       width: 30px;  /* 👈 षट्कोण का बड़ा साइज़ */
       height: 30px; 
       background: #81c784; /* पहला हल्का हरा षट्कोण */
