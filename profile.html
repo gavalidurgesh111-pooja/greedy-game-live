@@ -138,22 +138,27 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 एकदम असली फोटो जैसी पट्टियाँ और सही मैचिंग ग्रीन शेड[span_1](start_span)[span_1](end_span) */
+    /* 🌟 मेहंदी-फिका हरा मिक्स बैकग्राउंड, हल्के डॉट्स और एकदम फिकी तिरछी पट्टियाँ */
     .accompany-badge { 
-      background: linear-gradient(
-        135deg, 
-        transparent 0%, 
-        transparent 70%, 
-        rgba(255, 255, 255, 0.3) 70%, 
-        rgba(255, 255, 255, 0.3) 80%,  
-        transparent 80%, 
-        transparent 88%, 
-        rgba(255, 255, 255, 0.2) 88%, 
-        rgba(255, 255, 255, 0.2) 95%, 
-        transparent 95%, 
-        transparent 100%
-      ), 
-      linear-gradient(135deg, #0d5c22 0%, #2e8b57 100%); 
+      background-image: 
+        radial-gradient(circle, rgba(255,255,255,0.25) 1.2px, transparent 1.2px), 
+        linear-gradient(
+          135deg, 
+          transparent 0%, 
+          transparent 38%, 
+          rgba(255, 255, 255, 0.18) 38%,   /* पहली फिकी तिरछी पट्टी */
+          rgba(255, 255, 255, 0.18) 50%,  
+          transparent 50%, 
+          transparent 60%, 
+          rgba(255, 255, 255, 0.12) 60%,   /* दूसरी बहुत फिकी तिरछी पट्टी */
+          rgba(255, 255, 255, 0.12) 70%, 
+          transparent 70%, 
+          transparent 100%
+        ), 
+        linear-gradient(135deg, #3a7d44 0%, #76c783 100%); 
+      
+      background-size: 14px 14px, 100% 100%, 100% 100%;
+      background-position: 0 0, 0 0, 0 0;
       
       padding: 4px 18px 4px 35px; 
       border-radius: 20px; 
@@ -166,7 +171,7 @@
       gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: visible; /* षट्कोण को सुरक्षित रखने के लिए */
+      overflow: visible; 
     }
     
     /* 🌟 बड़ा षट्कोण - अपनी सही जगह और साइज पर सुरक्षित */
@@ -192,7 +197,7 @@
     .accompany-hexagon-base {
       width: 20px;
       height: 20px;
-      background: #046307; 
+      background: #3a7d44; 
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
@@ -203,7 +208,7 @@
     .accompany-hexagon-inner {
       width: 20px;  
       height: 20px; 
-      background: #046307; 
+      background: #3a7d44; 
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
