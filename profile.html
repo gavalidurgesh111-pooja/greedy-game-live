@@ -314,7 +314,7 @@
           
           <div class="accompany-badge" id="accompanyBadgeBox">
             <div class="accompany-hexagon-outer">
-              <!-- 🌟 षट्कोण और मोबाइल आइकॉन -->
+              <!-- 🌟 SVG के अंदर क्लिप-पथ (clipPath) लगा दिया है ताकि मोबाइल षट्कोण के बाहर कभी न जाए -->
               <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; overflow: visible;">
                 <defs>
                   <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -322,21 +322,28 @@
                     <stop offset="50%" stop-color="#81c784" />
                     <stop offset="100%" stop-color="#4CAF50" />
                   </linearGradient>
+
+                  <!-- षट्कोण की बाउंड्री, ताकि इसके बाहर कुछ भी न निकले -->
+                  <clipPath id="hexagonClip">
+                    <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
+                  </clipPath>
                 </defs>
-                <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="11" stroke-linejoin="round" />
-                
-                <!-- मोबाइल फोन (चौड़ाई कम की गई है और ऊँचाई उतनी ही रखी गई है) -->
-                <g transform="translate(28, 14) scale(0.44)">
-                  <rect x="5" y="5" width="90" height="120" rx="28" ry="28" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
-                  <rect x="5" y="5" width="90" height="120" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
-                  
-                  <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
-                  
-                  <!-- अंदर की स्क्रीन (चौड़ाई 64 और x=18 कर दी गई है) -->
-                  <rect x="18" y="27" width="64" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
-                  
-                  <circle cx="50" cy="116" r="6" fill="#3a7d44" stroke="none" />
+
+                <!-- मोबाइल आइकॉन (जो सिर्फ षट्कोण के अंदर क्लिप रहेगा) -->
+                <g clip-path="url(#hexagonClip)">
+                  <!-- 🔍 यहाँ translate(28, 18) में '18' बदलकर आप मोबाइल को ऊपर-नीचे कर सकते हैं -->
+                  <g transform="translate(28, 18) scale(0.44)">
+                    <rect x="5" y="5" width="90" height="120" rx="28" ry="28" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
+                    <rect x="5" y="5" width="90" height="120" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
+                    
+                    <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
+                    <rect x="18" y="27" width="64" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
+                    <circle cx="50" cy="116" r="6" fill="#3a7d44" stroke="none" />
+                  </g>
                 </g>
+
+                <!-- बाहर का चमकता हुआ षट्कोण बॉर्डर (सबसे ऊपर रहेगा ताकि हमेशा साफ़ दिखे) -->
+                <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="11" stroke-linejoin="round" />
               </svg>
             </div>
 
@@ -660,7 +667,7 @@
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
       ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
-      if(frameName !== 'none') frameEl.classList.add('frame-' + frameName);
+      if(frameName !== 'none') frameel.classList.add('frame-' + frameName);
       else frameEl.style.display = "none";
       closeFrameModal();
     }
@@ -701,6 +708,7 @@
       updatePrivacyHeart();
     }
     
+    // ... बाकी कोड पहले जैसा ही है ...
     function updatePrivacyHeart() {
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
