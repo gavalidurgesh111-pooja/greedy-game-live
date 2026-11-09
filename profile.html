@@ -150,17 +150,13 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.25); 
       display: inline-flex; 
       align-items: center; 
-      gap: 15px;
+      gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
     }
     
     /* 🌟 बड़ा षट्कोण - बाएं साइड से अंदर की तरफ सेट, बैकग्राउंड के अंदर ही पूरा दिखेगा */
     .accompany-hexagon-outer {
-      position: absolute;
-      left: 1px; /* 👈 बाएं किनारे से अंदर की तरफ रखा ताकि बाहर न कटे */
-      top: 50%;
-      transform: translateY(-50%);
       width: 30px;  /* 👈 षट्कोण का बड़ा साइज़ */
       height: 30px; 
       background: #81c784; /* पहला हल्का हरा षट्कोण */
@@ -201,7 +197,6 @@
       stroke-width: 2.2;
       stroke-linecap: round;
       stroke-linejoin: round;
-      transform: translate(0px, 0px); /* 👈 फोन आइकॉन को यहाँ से मर्जी अनुसार खिसका सकते हैं */
     }
 
     .accompany-text-group {
