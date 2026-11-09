@@ -138,17 +138,9 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 कैप्सूल बैज (इसमें ऊपर से नीचे की तरफ दो चौड़ी सफेद और हल्के हरे रंग की पट्टियाँ जोड़ दी गई हैं) */
+    /* 🌟 कैप्सूल बैज (साफ-सुथरा हरा बैकग्राउंड) */
     .accompany-badge { 
-      background: linear-gradient(
-        180deg, 
-        rgba(255, 255, 255, 0.3) 0%,   /* ऊपर की चौड़ी सफेद पट्टी */
-        rgba(255, 255, 255, 0.3) 45%,  
-        rgba(129, 199, 132, 0.45) 45%, /* नीचे की चौड़ी हल्के हरे रंग की पट्टी */
-        rgba(129, 199, 132, 0.45) 100%
-      ), 
-      linear-gradient(135deg, #046307 0%, #50C878 100%); /* बेस इमल्डा / ग्रास ग्रीन शेड */
-      
+      background: linear-gradient(135deg, #046307 0%, #50C878 100%); 
       padding: 4px 18px 4px 35px; 
       border-radius: 20px; 
       position: absolute; 
@@ -163,7 +155,7 @@
       overflow: visible;
     }
     
-    /* 🌟 बड़ा षट्कोण - अपनी तय पोजीशन पर सुरक्षित */
+    /* 🌟 बड़ा षट्कोण (Logo) - इसमें ऊपर से नीचे की तरफ दो चौड़ी सफेद और हल्के हरे रंग की पट्टियाँ जोड़ी गई हैं */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -172,7 +164,13 @@
      width: 30px;  
      height: 30px; 
   
-     background: linear-gradient(135deg, #ffffff 0%, #81c784 50%, #4CAF50 100%); 
+     background: linear-gradient(
+       180deg, 
+       rgba(255, 255, 255, 0.85) 0%,   /* ऊपर की चौड़ी सफेद पट्टी */
+       rgba(255, 255, 255, 0.85) 50%,  
+       rgba(129, 199, 132, 0.9) 50%,   /* नीचे की चौड़ी हल्के हरे रंग की पट्टी */
+       rgba(129, 199, 132, 0.9) 100%
+     ); 
   
      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
      display: flex;
