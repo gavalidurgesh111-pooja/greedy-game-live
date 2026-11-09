@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 मेहंदी-फिका हरा मिक्स बैकग्राउंड और फिकी तिरछी पट्टियाँ */
+    /* 🌟 बटन का बैकग्राउंड: मेहंदी और फिका हरा मिक्स */
     .accompany-badge { 
       background-image: 
         linear-gradient(
@@ -173,6 +173,7 @@
       overflow: visible; 
     }
     
+    /* 🌟 मोबाइल के पीछे का गैप पूरी तरह सफेद */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -180,26 +181,26 @@
      transform: translateY(-50%);
      width: 30px;  
      height: 30px; 
-     background: linear-gradient(135deg, #ffffff 0%, #81c784 50%, #4CAF50 100%); 
+     background: #ffffff; /* पीछे का गैप सफेद */
      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
      display: flex;
      align-items: center;
      justify-content: center;
      flex-shrink: 0;
-     box-shadow: 0 0 6px rgba(255, 255, 255, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.8);
+     box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     }
    
-    /* 🌟 मोबाइल की स्क्रीन - बैकग्राउंड के रंग की और नॉर्मल बड़ी */
+    /* 🌟 मोबाइल की अंदर की स्क्रीन: बटन के बैकग्राउंड के रंग की */
     .accompany-hexagon-base {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       background: linear-gradient(135deg, #3a7d44 0%, #76c783 100%); 
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
       justify-content: center;
       position: absolute;
-      border: 1.5px solid #ffffff; /* मोबाइल की बॉर्डर पूरी तरह सफेद */
+      border: 2px solid #ffffff; /* मोबाइल की पूरी बॉर्डर सफेद */
     }
     
     .accompany-hexagon-inner {
@@ -212,10 +213,10 @@
       position: absolute;
     }
 
-    /* 🌟 मोबाइल का पूरा आइकॉन सफेद रंग का */
+    /* 🌟 मोबाइल का आइकॉन सफेद रंग का */
     .accompany-hexagon-inner svg {
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       fill: #ffffff; 
     }
 
@@ -712,7 +713,6 @@
       document.getElementById("screenProfile").style.display = "block";
     }
     
-    // डार्क/प्राइवेट मोड या अन्य सेटिंग्स
     function togglePrivacy() {
       isPrivate = !isPrivate;
       localStorage.setItem("prof_private_" + currentIdentifier, isPrivate);
