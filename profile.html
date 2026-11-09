@@ -138,10 +138,18 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - बाएं पैडिंग बढ़ाई ताकि बड़ा षट्कोण अंदर आराम से फिट हो जाए */
+    /* 🌟 कैप्सूल बैज (इसमें ऊपर से नीचे की तरफ दो चौड़ी सफेद और हल्के हरे रंग की पट्टियाँ जोड़ दी गई हैं) */
     .accompany-badge { 
-      background: linear-gradient(135deg, #046307 0%, #50C878 100%); /* 👈 यहाँ अपना मनपसंद Emerald या Grass Green कोड डालें */
-      padding: 4px 18px 4px 35px; /* 👈 बाएं तरफ स्पेस बढ़ाया */
+      background: linear-gradient(
+        180deg, 
+        rgba(255, 255, 255, 0.3) 0%,   /* ऊपर की चौड़ी सफेद पट्टी */
+        rgba(255, 255, 255, 0.3) 45%,  
+        rgba(129, 199, 132, 0.45) 45%, /* नीचे की चौड़ी हल्के हरे रंग की पट्टी */
+        rgba(129, 199, 132, 0.45) 100%
+      ), 
+      linear-gradient(135deg, #046307 0%, #50C878 100%); /* बेस इमल्डा / ग्रास ग्रीन शेड */
+      
+      padding: 4px 18px 4px 35px; 
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
@@ -155,7 +163,7 @@
       overflow: visible;
     }
     
-    /* 🌟 बड़ा षट्कोण - बाएं साइड से अंदर की तरफ सेट, बैकग्राउंड के अंदर ही पूरा दिखेगा */
+    /* 🌟 बड़ा षट्कोण - अपनी तय पोजीशन पर सुरक्षित */
     .accompany-hexagon-outer {
      position: absolute;
      left: -5px; 
@@ -164,8 +172,7 @@
      width: 30px;  
      height: 30px; 
   
-    /* 👈 यहाँ हमने सफेद और हल्के हरे (Grass/Emerald) रंग का स्टाइलिश डायगोनल शेड मिला दिया है */
-    background: linear-gradient(135deg, #ffffff 0%, #81c784 50%, #4CAF50 100%); 
+     background: linear-gradient(135deg, #ffffff 0%, #81c784 50%, #4CAF50 100%); 
   
      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
      display: flex;
@@ -173,14 +180,13 @@
      justify-content: center;
      flex-shrink: 0;
   
-    /* 👈 षट्कोण के किनारों पर हल्की सी सफेद चमक (Border Glow) देने के लिए */
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.8);
+     box-shadow: 0 0 6px rgba(255, 255, 255, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.8);
     }
    
     .accompany-hexagon-base {
       width: 20px;
       height: 20px;
-      background: #046307; /* Emerald या Grass Green कोड डालें */
+      background: #046307; 
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
@@ -188,11 +194,10 @@
       position: absolute;
     }
     
-    /* 🌟 अंदर का छोटा षट्कोण - बैकग्राउंड वाला रंग और फोन आइकॉन */
     .accompany-hexagon-inner {
       width: 20px;  
       height: 20px; 
-      background: #046307; /* Emerald या Grass Green कोड डालें */
+      background: #046307; 
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
       display: flex;
       align-items: center;
@@ -337,7 +342,6 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- 🌟 षट्कोण अब बैकग्राउंड के अंदर पूरी तरह फिट और बड़ा है -->
             <div class="accompany-hexagon-outer">
               <div class="accompany-hexagon-base">
                 <div class="accompany-hexagon-inner">
