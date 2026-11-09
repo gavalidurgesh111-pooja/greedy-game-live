@@ -138,17 +138,17 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - पट्टियाँ बिल्कुल फोटो की तरह दाहिनी तरफ पीछे सेट की गई हैं[span_2](start_span)[span_2](end_span) */
+    /* 🌟 पूरा हरा बैकग्राउंड (कैप्सूल बैज) - overflow: visible किया ताकि षट्कोण बिल्कुल न कटे */
     .accompany-badge { 
       background: linear-gradient(
         135deg, 
         transparent 0%, 
         transparent 62%, 
-        rgba(255, 255, 255, 0.35) 62%,   /* फोटो जैसी पहली दाहिनी तिरछी पट्टी[span_3](start_span)[span_3](end_span) */
+        rgba(255, 255, 255, 0.35) 62%, 
         rgba(255, 255, 255, 0.35) 72%,  
         transparent 72%, 
         transparent 78%, 
-        rgba(255, 255, 255, 0.25) 78%,   /* फोटो जैसी दूसरी दाहिनी तिरछी पट्टी[span_4](start_span)[span_4](end_span) */
+        rgba(255, 255, 255, 0.25) 78%, 
         rgba(255, 255, 255, 0.25) 86%, 
         transparent 86%, 
         transparent 100%
@@ -166,7 +166,7 @@
       gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden; 
+      overflow: visible; /* 👈 यहाँ visible कर दिया है ताकि षट्कोण पूरा सुरक्षित रहे */
     }
     
     /* 🌟 बड़ा षट्कोण - अपनी तय पोजीशन और साइज पर बिल्कुल सुरक्षित */
@@ -726,7 +726,7 @@
       if(isPrivate) {
         heart.innerText = "❤️";
         if(bioBox) {
-          biobox.style.background = "#ffe6e6";
+          bioBox.style.background = "#ffe6e6";
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
         }
       } else {
