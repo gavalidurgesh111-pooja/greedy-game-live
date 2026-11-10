@@ -156,7 +156,8 @@
         linear-gradient(135deg, #3a7d44 0%, #76c783 100%); 
 
       background-size: 100% 100%, 100% 100%;
-      background-position: -10px 0, -20px 0;
+      /* यहाँ से आप अपनी पट्टियों को मैनेज (नंबर बदलकर सेट) कर सकते हैं */
+      background-position: 0 0, 0 0;
       
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
@@ -169,12 +170,12 @@
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: visible; /* कोई कट-पीट नहीं, सब साफ़ दिखेगा */
+      overflow: visible; 
     }
     
     .accompany-hexagon-outer {
      position: absolute;
-     left: -7px; /* षट्कोण को बाहर की तरफ रखा ताकि वह बॉर्डर लाइन के ऊपर बैठे */
+     left: -7px; 
      top: 50%;
      transform: translateY(-52%);
      width: 34px;  
@@ -184,7 +185,7 @@
      align-items: center;
      justify-content: center;
      flex-shrink: 0;
-     z-index: 30; /* इसे सबसे ऊपर रखा ताकि यह बॉर्डर लाइन के ऊपर साफ़ दिखे */
+     z-index: 30; 
      overflow: visible;
     }
 
