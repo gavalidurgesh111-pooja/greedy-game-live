@@ -138,7 +138,6 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* 🟢 यहाँ बैकग्राउंड की लेफ्ट लाइन को षट्कोण के साथ परफेक्ट मैच करने के लिए एडजस्ट किया गया है */
     .accompany-badge { 
       background-image: 
         linear-gradient(
@@ -159,7 +158,7 @@
       background-size: 100% 100%, 100% 100%;
       background-position: 0 0, 0 0;
       
-      padding: 4px 18px 4px 34px; 
+      padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
@@ -170,23 +169,23 @@
       gap: 4px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden; /* ताकि कोई भी फालतू लाइन बाहर न निकले */
-      clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 0% 50%); /* 👈 बाएं कोने को षट्कोण जैसा एंगल दे दिया ताकि लाइन मैच हो जाए */
+      overflow: visible; /* कोई कट-पीट नहीं, सब साफ़ दिखेगा */
     }
     
     .accompany-hexagon-outer {
      position: absolute;
-     left: -6px; /* षट्कोण को बिल्कुल सही जगह पर बैठाया ताकि बॉर्डर मर्ज हो जाए */
+     left: -12px; /* षट्कोण को बाहर की तरफ रखा ताकि वह बॉर्डर लाइन के ऊपर बैठे */
      top: 50%;
-     transform: translateY(-50%);
-     width: 30px;  
-     height: 30px; 
+     transform: translateY(-52%);
+     width: 34px;  
+     height: 34px; 
      background: transparent;
      display: flex;
      align-items: center;
      justify-content: center;
      flex-shrink: 0;
-     z-index: 10; 
+     z-index: 30; /* इसे सबसे ऊपर रखा ताकि यह बॉर्डर लाइन के ऊपर साफ़ दिखे */
+     overflow: visible;
     }
 
     .accompany-text-group {
@@ -718,7 +717,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
         }
       }
     }
