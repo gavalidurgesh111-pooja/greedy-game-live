@@ -33,21 +33,7 @@
       padding-bottom: 60px; 
       overflow-y: auto; 
     }
-    
-    /* 👇 यहाँ बैकग्राउंड की हाइट और खिसकाने (translate) की सेटिंग जोड़ी गई है 👇 */
-    .cover-slider-container { 
-      width: 100%; 
-      height: 320px; 
-      position: relative; 
-      overflow-x: auto; 
-      display: flex; 
-      flex-wrap: nowrap; 
-      scroll-snap-type: x mandatory; 
-      background: #9b51e0; 
-      cursor: pointer; 
-      scroll-behavior: smooth; 
-    }
-
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
       flex: 0 0 100%;
@@ -152,6 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
+    /* 🟢 यह रहा बैकग्राउंड डिब्बा (इसे अब आप transform से जिधर चाहें खिसकाएं, षट्कोण नहीं हिलेगा) */
     .accompany-badge { 
       background-image: 
         linear-gradient(
@@ -175,7 +162,7 @@
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
-      right: -0; 
+      right: 0; 
       top: -55px; 
       box-shadow: 0 2px 8px rgba(0,0,0,0.25); 
       display: inline-flex; 
@@ -183,13 +170,16 @@
       gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: visible;
-      transform: translate(0px, -5px); /* पहला नंबर (दाएँ-बाएँ), दूसरा नंबर (ऊपर-नीचे) */
+      overflow: visible; 
+
+      /* 👇 यहाँ से आप सिर्फ बैकग्राउंड को खिसका सकते हैं, षट्कोण अपनी जगह फिक्स रहेगा 👇 */
+      transform: translate(0px, 0px); 
     }
     
+    /* 🟢 यह रहा षट्कोण जो अब बिल्कुल स्वतंत्र और अपनी जगह पर फिक्स है */
     .accompany-hexagon-outer {
      position: absolute;
-     left: -4px; 
+     left: -18px; /* इसे जरूरत के हिसाब से आगे-पीछे सेट कर सकते हैं */
      top: 50%;
      transform: translateY(-50%);
      width: 32px;  
@@ -199,6 +189,7 @@
      align-items: center;
      justify-content: center;
      flex-shrink: 0;
+     z-index: 5;
     }
 
     .accompany-text-group {
@@ -327,35 +318,36 @@
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
-          <div class="accompany-badge" id="accompanyBadgeBox">
-            <div class="accompany-hexagon-outer">
-              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 28px; height: 28px; overflow: visible;">
-                <defs>
-                  <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" />
-                    <stop offset="50%" stop-color="#81c784" />
-                    <stop offset="100%" stop-color="#4CAF50" />
-                  </linearGradient>
+          <!-- 🟢 यहाँ षट्कोण को बैकग्राउंड डिब्बे से बाहर स्वतंत्र कर दिया गया है -->
+          <div class="accompany-hexagon-outer">
+            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width: 32px; height: 32px; overflow: visible;">
+              <defs>
+                <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="50%" stop-color="#81c784" />
+                  <stop offset="100%" stop-color="#4CAF50" />
+                </linearGradient>
 
-                  <clipPath id="hexagonClip">
-                    <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
-                  </clipPath>
-                </defs>
+                <clipPath id="hexagonClip">
+                  <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
+                </clipPath>
+              </defs>
 
-                <g clip-path="url(#hexagonClip)">
-                  <g transform="translate(28, 20) scale(0.44)">
-                    <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
-                    <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
-                    <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
-                    <rect x="18" y="27" width="60" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
-                    <circle cx="50" cy="112" r="6" fill="#3a7d44" stroke="none" />
-                  </g>
+              <g clip-path="url(#hexagonClip)">
+                <g transform="translate(28, 20) scale(0.44)">
+                  <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
+                  <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
+                  <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
+                  <rect x="18" y="27" width="60" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
+                  <circle cx="50" cy="112" r="6" fill="#3a7d44" stroke="none" />
                 </g>
+              </g>
 
-                <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="8" stroke-linejoin="round" />
-              </svg>
-            </div>
+              <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="8" stroke-linejoin="round" />
+            </svg>
+          </div>
 
+          <div class="accompany-badge" id="accompanyBadgeBox">
             <div class="accompany-text-group">
               <span class="accompany-title-lbl">Accompany Time:</span>
               <span class="accompany-days-val" id="accompanyDaysText">36 days</span>
@@ -736,7 +728,7 @@
     }
 
     function openGroupsScreen() { 
-      document.getElementById("screenProfile").style.display = "none";
+      document.getElementById("screenProfile").save = document.getElementById("screenProfile").style.display = "none";
       document.getElementById("screenGroups").style.display = "flex"; 
       history.pushState({screen: "groups"}, "", window.location.href);
     }
