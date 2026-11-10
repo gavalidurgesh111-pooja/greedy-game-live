@@ -138,7 +138,6 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* मुख्य हरा बैज */
     .accompany-badge { 
       background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
@@ -146,15 +145,16 @@
       position: absolute; 
       right: 0; 
       top: -55px; 
+      box-shadow: none; 
       display: inline-flex; 
       align-items: center; 
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: hidden;
+      overflow: hidden; /* ताकि पट्टियाँ गोल कोनों के बाहर न निकलें */
     }
 
-    /* पट्टियों का कंटेनर - यहाँ से पूरे सेट को आगे-पीछे कर सकते हो */
+    /* पट्टियों का स्वतंत्र कंटेनर (बैकग्राउंड से पूरी तरह अलग) */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -162,28 +162,27 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      left: 0px; /* पूरी पट्टियों को एक साथ आगे-पीछे खिसकाने के लिए यहाँ नंबर बदलें */
     }
 
-    /* पहली स्वतंत्र पट्टी */
+    /* पहली स्वतंत्र पट्टी - माप और पोजीशन यहाँ से बदलें */
     .stripe-1 {
       position: absolute;
       top: -10px;
-      left: 55px; /* यहाँ से पहली पट्टी की पोजीशन सेट करें */
+      left: 55px; /* यहाँ से आगे-पीछे करें */
       width: 6px;  /* यहाँ से मोटाई बदलें */
       height: 50px;
-      background-color: rgba(255, 255, 255, 0.35);
+      background-color: rgba(255, 255, 255, 0.25);
       transform: rotate(45deg);
     }
 
-    /* दूसरी स्वतंत्र पट्टी */
+    /* दूसरी स्वतंत्र पट्टी - माप और गैप यहाँ से बदलें */
     .stripe-2 {
       position: absolute;
       top: -10px;
-      left: 75px; /* यहाँ से दूसरी पट्टी की पोजीशन (गैप) सेट करें */
+      left: 75px; /* यहाँ से गैप और पोजीशन सेट करें */
       width: 6px;  /* यहाँ से मोटाई बदलें */
       height: 50px;
-      background-color: rgba(255, 255, 255, 0.35);
+      background-color: rgba(255, 255, 255, 0.25);
       transform: rotate(45deg);
     }
     
@@ -332,7 +331,7 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- पट्टियाँ स्वतंत्र लेयर -->
+            <!-- स्वतंत्र पट्टियाँ (बैकग्राउंड से पूरी तरह अलग) -->
             <div class="custom-stripes-container">
               <div class="stripe-1"></div>
               <div class="stripe-2"></div>
@@ -740,7 +739,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>.</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
         }
       }
     }
