@@ -138,6 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
+    /* 🟢 यहाँ बैकग्राउंड की लेफ्ट लाइन को षट्कोण के साथ परफेक्ट मैच करने के लिए एडजस्ट किया गया है */
     .accompany-badge { 
       background-image: 
         linear-gradient(
@@ -169,12 +170,13 @@
       gap: 4px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: hidden;
+      overflow: hidden; /* ताकि कोई भी फालतू लाइन बाहर न निकले */
+      clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 0% 50%); /* 👈 बाएं कोने को षट्कोण जैसा एंगल दे दिया ताकि लाइन मैच हो जाए */
     }
     
     .accompany-hexagon-outer {
      position: absolute;
-     left: -2px; 
+     left: -6px; /* षट्कोण को बिल्कुल सही जगह पर बैठाया ताकि बॉर्डर मर्ज हो जाए */
      top: 50%;
      transform: translateY(-50%);
      width: 30px;  
@@ -185,7 +187,6 @@
      justify-content: center;
      flex-shrink: 0;
      z-index: 10; 
-     overflow: hidden;
     }
 
     .accompany-text-group {
@@ -717,7 +718,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;</p>";
         }
       }
     }
