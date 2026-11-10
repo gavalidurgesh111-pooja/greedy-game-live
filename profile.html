@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* मुख्य हरा बैज - पट्टियों से बिल्कुल अलग */
+    /* मुख्य हरा बैज - बिल्कुल साफ़, बिना किसी बैकग्राउंड ग्रेडिएंट के */
     .accompany-badge { 
       background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
@@ -151,22 +151,39 @@
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: hidden;
+      overflow: hidden; /* ताकि पट्टियाँ गोल कोने के अंदर ही रहें */
     }
 
-    /* पट्टियों का अपना स्वतंत्र और अलग लेयर कोड */
-    .custom-stripes-box {
+    /* अब पट्टियाँ बैकग्राउंड से पूरी तरह आज़ाद, अलग HTML डिब्बे हैं! */
+    .custom-stripes-container {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      background-image: 
-        linear-gradient(135deg, transparent 35%, rgba(255, 255, 255, 0.35) 35%, rgba(255, 255, 255, 0.35) 45%, transparent 45%),
-        linear-gradient(135deg, transparent 65%, rgba(255, 255, 255, 0.35) 65%, rgba(255, 255, 255, 0.35) 75%, transparent 75%);
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
+    }
+
+    /* पहली स्वतंत्र पट्टी */
+    .stripe-1 {
+      position: absolute;
+      top: -10px;
+      left: 55px; /* यहाँ से इसकी पोजीशन सेट कर */
+      width: 6px;  /* यहाँ से इसकी चौड़ाई (माप) बदल */
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.35);
+      transform: rotate(45deg);
+    }
+
+    /* दूसरी स्वतंत्र पट्टी */
+    .stripe-2 {
+      position: absolute;
+      top: -10px;
+      left: 75px; /* यहाँ से इसकी पोजीशन (गैप) सेट कर */
+      width: 6px;  /* यहाँ से इसकी चौड़ाई (माप) बदल */
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.35);
+      transform: rotate(45deg);
     }
     
     .accompany-hexagon-outer {
@@ -314,8 +331,11 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- पट्टियों की अपनी अलग और स्वतंत्र लेयर -->
-            <div class="custom-stripes-box"></div>
+            <!-- पट्टियाँ अब पूरी तरह बैकग्राउंड से अलग, स्वतंत्र HTML एलिमेंट्स हैं -->
+            <div class="custom-stripes-container">
+              <div class="stripe-1"></div>
+              <div class="stripe-2"></div>
+            </div>
 
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
