@@ -46,7 +46,6 @@
       background: #9b51e0; 
       cursor: pointer; 
       scroll-behavior: smooth; 
-      transform: translate(0px, 0px); /* पहला नंबर (दाएँ-बाएँ), दूसरा नंबर (ऊपर-नीचे) */
     }
 
     .cover-slider-container::-webkit-scrollbar { display: none; }
@@ -176,7 +175,7 @@
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
-      right: -5; 
+      right: -0; 
       top: -55px; 
       box-shadow: 0 2px 8px rgba(0,0,0,0.25); 
       display: inline-flex; 
@@ -184,7 +183,8 @@
       gap: 10px;
       border: 1px solid rgba(255, 255, 255, 0.25);
       height: 28px;
-      overflow: visible; 
+      overflow: visible;
+      transform: translate(0px, -2px); /* पहला नंबर (दाएँ-बाएँ), दूसरा नंबर (ऊपर-नीचे) */
     }
     
     .accompany-hexagon-outer {
