@@ -139,7 +139,26 @@
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
     .accompany-badge { 
-      background-color: #3a7d44;
+      background-image: 
+        linear-gradient(
+          135deg, 
+          transparent 0%, 
+          transparent 38%, 
+          rgba(255, 255, 255, 0.18) 38%, 
+          rgba(255, 255, 255, 0.18) 50%,  
+          transparent 50%, 
+          transparent 60%, 
+          rgba(255, 255, 255, 0.12) 60%, 
+          rgba(255, 255, 255, 0.12) 70%, 
+          transparent 70%, 
+          transparent 100%
+        ), 
+        linear-gradient(135deg, #3a7d44 0%, #76c783 100%); 
+
+      background-size: 120% 100%, 130% 100%;
+      /* यहाँ से आप अपनी पट्टियों को मैनेज (नंबर बदलकर सेट) कर सकते हैं */
+      background-position: -5px 0px, -20px 0px;
+      
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
@@ -151,39 +170,7 @@
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: hidden; /* ताकि पट्टियाँ गोल कोनों के बाहर न निकलें */
-    }
-
-    /* पट्टियों का स्वतंत्र कंटेनर (बैकग्राउंड से पूरी तरह अलग) */
-    .custom-stripes-container {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* पहली स्वतंत्र पट्टी - माप और पोजीशन यहाँ से बदलें */
-    .stripe-1 {
-      position: absolute;
-      top: -10px;
-      left: 55px; /* यहाँ से आगे-पीछे करें */
-      width: 6px;  /* यहाँ से मोटाई बदलें */
-      height: 50px;
-      background-color: rgba(255, 255, 255, 0.25);
-      transform: rotate(45deg);
-    }
-
-    /* दूसरी स्वतंत्र पट्टी - माप और गैप यहाँ से बदलें */
-    .stripe-2 {
-      position: absolute;
-      top: -10px;
-      left: 75px; /* यहाँ से गैप और पोजीशन सेट करें */
-      width: 6px;  /* यहाँ से मोटाई बदलें */
-      height: 50px;
-      background-color: rgba(255, 255, 255, 0.25);
-      transform: rotate(45deg);
+      overflow: visible; 
     }
     
     .accompany-hexagon-outer {
@@ -206,8 +193,6 @@
       display: flex;
       flex-direction: column;
       line-height: 1.12;
-      position: relative;
-      z-index: 2;
     }
     .accompany-title-lbl {
       font-size: 10px;
@@ -331,12 +316,6 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- स्वतंत्र पट्टियाँ (बैकग्राउंड से पूरी तरह अलग) -->
-            <div class="custom-stripes-container">
-              <div class="stripe-1"></div>
-              <div class="stripe-2"></div>
-            </div>
-
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
