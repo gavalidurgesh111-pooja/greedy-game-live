@@ -33,7 +33,22 @@
       padding-bottom: 60px; 
       overflow-y: auto; 
     }
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    
+    /* 👇 यहाँ बैकग्राउंड की हाइट और खिसकाने (translate) की सेटिंग जोड़ी गई है 👇 */
+    .cover-slider-container { 
+      width: 100%; 
+      height: 320px; 
+      position: relative; 
+      overflow-x: auto; 
+      display: flex; 
+      flex-wrap: nowrap; 
+      scroll-snap-type: x mandatory; 
+      background: #9b51e0; 
+      cursor: pointer; 
+      scroll-behavior: smooth; 
+      transform: translate(0px, 0px); /* पहला नंबर (दाएँ-बाएँ), दूसरा नंबर (ऊपर-नीचे) */
+    }
+
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
       flex: 0 0 100%;
@@ -328,15 +343,11 @@
                 </defs>
 
                 <g clip-path="url(#hexagonClip)">
-                  <!-- 🔍 यहाँ translate(28, 20) को परफेक्ट सेंटर पर सेट किया गया है ताकि षट्कोण के बाहर न निकले -->
                   <g transform="translate(28, 20) scale(0.44)">
                     <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
                     <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
-                    
                     <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
-                    
                     <rect x="18" y="27" width="60" height="80" rx="10" ry="10" fill="#3a7d44" stroke="none" />
-                    
                     <circle cx="50" cy="112" r="6" fill="#3a7d44" stroke="none" />
                   </g>
                 </g>
