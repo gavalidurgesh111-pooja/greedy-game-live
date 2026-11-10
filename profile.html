@@ -138,41 +138,51 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    .accompany-badge { 
-      background-image: 
-        linear-gradient(
-          135deg, 
-          transparent 0%, 
-          transparent 38%, 
-          rgba(255, 255, 255, 0.18) 38%, 
-          rgba(255, 255, 255, 0.18) 50%,  
-          transparent 50%, 
-          transparent 60%, 
-          rgba(255, 255, 255, 0.12) 60%, 
-          rgba(255, 255, 255, 0.12) 70%, 
-          transparent 70%, 
-          transparent 100%
-        ), 
-        linear-gradient(135deg, #3a7d44 0%, #76c783 100%); 
-
-      background-size: 120% 100%, 130% 100%;
-      /* यहाँ से आप अपनी पट्टियों को मैनेज (नंबर बदलकर सेट) कर सकते हैं */
-      background-position: -5px 0px, -20px 0px;
-      
+     .accompany-badge { 
+      background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
       top: -55px; 
-      box-shadow: none; 
       display: inline-flex; 
       align-items: center; 
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: visible; 
+      overflow: hidden; 
     }
-    
+
+    .custom-stripes-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .stripe-1 {
+      position: absolute;
+      top: -15px;      
+      left: 20px;      
+      width: 6px;      
+      height: 60px;    
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: rotate(45deg);
+    }
+
+    .stripe-2 {
+      position: absolute;
+      top: -15px;      
+      left: 60px;      
+      width: 6px;      
+      height: 60px;    
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: rotate(45deg);
+    }
+  
     .accompany-hexagon-outer {
      position: absolute;
      left: -7px; 
@@ -314,6 +324,11 @@
         
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
+          
+          <div class="custom-stripes-container">
+            <div class="stripe-1"></div>
+            <div class="stripe-2"></div>
+          </div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
             <div class="accompany-hexagon-outer">
