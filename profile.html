@@ -138,47 +138,13 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    .accompany-badge { 
-    /* पट्टियों का कंटेनर */
-    .custom-stripes-container {
+     .accompany-badge { 
       background-color: #3a7d44;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-      overflow: visible;
-    }
-
-    /* पहली पट्टी - background पर जहाँ मर्जी घुमाओ */
-    .stripe-1 {
-      position: absolute;
-      top: -15px;      
-      left: 20px;      /* यहाँ नंबर बदलकर इसे बाएं-दाएं घुमा ले */
-      width: 6px;      
-      height: 60px;    
-      background-color: rgba(255, 255, 255, 0.3);
-      transform: rotate(45deg);
-    }
-
-    /* दूसरी पट्टी - इसका गैप और पोजीशन सेट करें */
-    .stripe-2 {
-      position: absolute;
-      top: -15px;      
-      left: 60px;      /* यहाँ नंबर बदलकर पहली से दूरी सेट कर ले */
-      width: 6px;      
-      height: 60px;    
-      background-color: rgba(255, 255, 255, 0.3);
-      transform: rotate(45deg);
-    }
-      
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
       top: -55px; 
-      box-shadow: none; 
       display: inline-flex; 
       align-items: center; 
       gap: 2px;
@@ -186,6 +152,37 @@
       height: 28px;
       overflow: visible; 
     }
+
+    .custom-stripes-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .stripe-1 {
+      position: absolute;
+      top: -15px;      
+      left: 20px;      
+      width: 6px;      
+      height: 60px;    
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: rotate(45deg);
+    }
+
+    .stripe-2 {
+      position: absolute;
+      top: -15px;      
+      left: 60px;      
+      width: 6px;      
+      height: 60px;    
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: rotate(45deg);
+    }
+
     
     .accompany-hexagon-outer {
      position: absolute;
