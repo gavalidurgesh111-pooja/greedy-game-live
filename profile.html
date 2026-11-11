@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-     .accompany-badge { 
+    .accompany-badge { 
       background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
       border-radius: 20px; 
@@ -150,7 +150,7 @@
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: visible; 
+      overflow: hidden; 
     }
 
     .custom-stripes-container {
@@ -159,17 +159,17 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 4;
-      overflow: visible;
+      z-index: 1;
+      overflow: hidden;
     }
 
     .stripe-1 {
       position: absolute;
       top: -15px;      
       left: 20px;      
-      width: 8px;      
+      width: 6px;      
       height: 60px;    
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: rgba(255, 255, 255, 0.3);
       transform: rotate(45deg);
     }
 
@@ -177,12 +177,12 @@
       position: absolute;
       top: -15px;      
       left: 60px;      
-      width: 8px;      
+      width: 6px;      
       height: 60px;    
-      background-color: rgba(255, 255, 255, 0.7);
+      background-color: rgba(255, 255, 255, 0.3);
       transform: rotate(45deg);
     }
-
+    
     .accompany-hexagon-outer {
      position: absolute;
      left: -7px; 
@@ -203,6 +203,8 @@
       display: flex;
       flex-direction: column;
       line-height: 1.12;
+      position: relative;
+      z-index: 2;
     }
     .accompany-title-lbl {
       font-size: 10px;
@@ -325,12 +327,12 @@
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
-          <div class="custom-stripes-container">
-            <div class="stripe-1"></div>
-            <div class="stripe-2"></div>
-          </div>
-
           <div class="accompany-badge" id="accompanyBadgeBox">
+            <div class="custom-stripes-container">
+              <div class="stripe-1"></div>
+              <div class="stripe-2"></div>
+            </div>
+
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
