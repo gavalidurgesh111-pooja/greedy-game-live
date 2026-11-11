@@ -140,7 +140,17 @@
     
     /* बैज का मुख्य डिब्बा - overflow visible ताकि षट्कोण कभी न कटे */
     .accompany-badge { 
-      background: linear-gradient(to bottom, #3a7d44 60%, rgba(58, 125, 68, 0.2) 100%);
+      /* यहाँ तू अपने हिसाब से रंग और उनके प्रतिशत (फैलाव) बदल सकता है */
+      background: linear-gradient(
+        to bottom, 
+        #3a7d44 0%,   /* ऊपर का पक्का हरा रंग */
+        #3a7d44 60%,  /* 60% तक यही पक्का रहेगा */
+        rgba(58, 125, 68, 0.4) 100% /* नीचे आते-जाते हल्का और साफ़ शेड */
+      );
+      
+      /* सबसे फीका मेहंदी रंग की हल्की सी बॉर्डर */
+      border: 1px solid rgba(129, 199, 132, 0.4); 
+
       padding: 4px 19px 4px 26px; 
       border-radius: 20px; 
       position: absolute; 
@@ -149,11 +159,10 @@
       display: inline-flex; 
       align-items: center; 
       gap: 8px;
-      border: none;
       height: 28px;
       overflow: visible; 
     }
-
+    
     /* पट्टियों का कंटेनर - पट्टियों को इसी के अंदर छुपाया है ताकि वे बाहर न आएं */
     .custom-stripes-container {
       position: absolute;
