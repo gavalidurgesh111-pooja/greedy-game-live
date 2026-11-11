@@ -138,13 +138,10 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* बैज का मुख्य डिब्बा - लोगो वाले हरे रंगों का ग्रेडिएंट और हल्की मेहंदी बॉर्डर */
+      /* बैज का मुख्य डिब्बा - चारों दिशाओं में फैलने वाला पोपटी और फीके हरे का मिक्स शेड */
     .accompany-badge { 
-      /* लोगो के हिसाब से लेफ्ट का हल्का हरा (Kelly) से लेकर राइट का गहरा हरा (Emerald) तक का ग्रेडिएंट */
-      background: linear-gradient(135deg, #4c9a58 0%, #3a7d44 50%, #22522b 100%);
-      
-      /* चारों तरफ से वही हल्की मेहंदी (Light Sage) रंग की साफ़ बॉर्डर */
-      border: 1px solid rgba(129, 199, 132, 0.5); 
+      /* केंद्र से चारों दिशाओं में फैलता हुआ पोपटी और फीके हरे का मिक्स ग्रेडिएंट */
+      background: radial-gradient(circle at center, #76d784 0%, #4caf50 50%, #2e6b36 100%);
 
       padding: 4px 19px 4px 26px; 
       border-radius: 20px; 
