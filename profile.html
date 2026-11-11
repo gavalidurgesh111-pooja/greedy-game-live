@@ -137,21 +137,19 @@
     
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
-
-    /* बैज का मुख्य डिब्बा - बीच में हरी लाइन और ऊपर-नीचे हल्का होते हुए फैलने वाला शेड */
+    
+    /* बैज का मुख्य डिब्बा - बैकग्राउंड और चारों तरफ से हल्का शेड */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
-        #529e2c 0%,   /* ऊपर का सिरा: तेरा ही हरा रंग हल्का होकर शुरू होगा (कोई सफेदपन नहीं) */
-        #3f881f 25%,  /* ऊपर से अंदर आते हुए शेड */
-        #2a7e19 50%,  /* एकदम बीच का तेरा पक्का रंग जो अंदर साफ़ दिखेगा */
-        #3f881f 75%,  /* नीचे जाते हुए फिर वैसा ही शेड */
-        #529e2c 100%  /* नीचे का सिरा: हल्का हरा होकर खत्म होगा */
+        #529e2c 0%,   
+        #3f881f 25%,  
+        #2a7e19 50%,  
+        #3f881f 75%,  
+        #529e2c 100%  
       );
-
-      /* चारों तरफ से वही हल्की मेहंदी बॉर्डर */
-      border: 1px solid rgba(129, 199, 132, 0.4); 
       
+      border: 1px solid rgba(129, 199, 132, 0.4); 
       padding: 4px 19px 4px 26px; 
       border-radius: 20px; 
       position: absolute; 
@@ -163,7 +161,53 @@
       height: 28px;
       overflow: visible; 
     }
-    
+
+    /* --- तूने जहाँ-जहाँ कहा है, वहाँ पीले रंग के स्टार्स (★) सेट कर दिए हैं --- */
+    .star-a-top-right {
+      position: absolute;
+      top: 2px;
+      left: 78px;
+      color: #ffd700;
+      font-size: 8px;
+      z-index: 10;
+    }
+
+    .star-a-bottom-left {
+      position: absolute;
+      bottom: 2px;
+      left: 62px;
+      color: #ffd700;
+      font-size: 8px;
+      z-index: 10;
+    }
+
+    .star-ny-bottom {
+      position: absolute;
+      bottom: -6px;
+      left: 102px;
+      color: #ffd700;
+      font-size: 9px;
+      z-index: 10;
+    }
+
+    .star-e-top-right {
+      position: absolute;
+      top: 1px;
+      right: 22px;
+      color: #ffd700;
+      font-size: 9px;
+      z-index: 10;
+    }
+
+    .star-e-bottom {
+      position: absolute;
+      bottom: -6px;
+      right: 25px;
+      color: #ffd700;
+      font-size: 9px;
+      z-index: 10;
+    }
+
     /* पट्टियों का कंटेनर - पट्टियों को इसी के अंदर छुपाया है ताकि वे बाहर न आएं */
     .custom-stripes-container {
       position: absolute;
@@ -180,7 +224,7 @@
     .stripe-1 {
       position: absolute;
       top: -15px;      
-      left: 70px;      /* यहाँ से आगे-पीछे कर ले */
+      left: 70px;      
       width: 13px;      
       height: 60px;    
       background-color: rgba(255, 255, 255, 0.1);
@@ -191,7 +235,7 @@
     .stripe-2 {
       position: absolute;
       top: -15px;      
-      left: 95px;      /* यहाँ से गैप सेट कर ले */
+      left: 95px;      
       width: 10px;      
       height: 60px;    
       background-color: rgba(255, 255, 255, 0.1);
@@ -344,13 +388,20 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- पट्टियों का कंटेनर (पट्टियाँ यहीं सुरक्षित रहेंगी) -->
+            <!-- तूने जो स्टार्स मांगे हैं, वे यहाँ जोड़ दिए हैं -->
+            <span class="star-a-top-right">★</span>
+            <span class="star-a-bottom-left">★</span>
+            <span class="star-ny-bottom">★</span>
+            <span class="star-e-top-right">★</span>
+            <span class="star-e-bottom">★</span>
+
+            <!-- पट्टियों का कंटेनर -->
             <div class="custom-stripes-container">
               <div class="stripe-1"></div>
               <div class="stripe-2"></div>
             </div>
 
-            <!-- षट्कोण - बिल्कुल सुरक्षित और अनछुआ -->
+            <!-- षट्कोण -->
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
