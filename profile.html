@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* बैज का मुख्य डिब्बा - षट्कोण सुरक्षित रखने के लिए overflow hidden रखा है */
+    /* बैज का मुख्य डिब्बा - overflow visible ताकि षट्कोण कभी न कटे */
     .accompany-badge { 
       background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
@@ -151,10 +151,10 @@
       gap: 2px;
       border: none;
       height: 28px;
-      overflow: hidden; 
+      overflow: visible; 
     }
 
-    /* पट्टियों का स्वतंत्र कंटेनर */
+    /* पट्टियों का कंटेनर - पट्टियों को इसी के अंदर छुपाया है ताकि वे बाहर न आएं */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -163,24 +163,25 @@
       pointer-events: none;
       z-index: 1;
       overflow: hidden;
+      border-radius: 20px;
     }
 
-    /* पहली पट्टी - left के नंबर से इसे आगे-पीछे कर सकते हो */
+    /* पहली पट्टी */
     .stripe-1 {
       position: absolute;
       top: -15px;      
-      left: 20px;      
+      left: 20px;      /* यहाँ से आगे-पीछे कर ले */
       width: 6px;      
       height: 60px;    
       background-color: rgba(255, 255, 255, 0.3);
       transform: rotate(45deg);
     }
 
-    /* دوسری पट्टी - left के नंबर से इसकी दूरी सेट कर सकते हो */
+    /* दूसरी पट्टी */
     .stripe-2 {
       position: absolute;
       top: -15px;      
-      left: 60px;      
+      left: 60px;      /* यहाँ से गैप सेट कर ले */
       width: 6px;      
       height: 60px;    
       background-color: rgba(255, 255, 255, 0.3);
@@ -332,13 +333,13 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- पट्टियों का कंटेनर -->
+            <!-- पट्टियों का कंटेनर (पट्टियाँ यहीं सुरक्षित रहेंगी) -->
             <div class="custom-stripes-container">
               <div class="stripe-1"></div>
               <div class="stripe-2"></div>
             </div>
 
-            <!-- षट्कोण (जस का तस सुरक्षित) -->
+            <!-- षट्कोण - बिल्कुल सुरक्षित और अनछुआ -->
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
