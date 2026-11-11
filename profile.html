@@ -139,23 +139,9 @@
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
     .accompany-badge { 
-      background-color: #3a7d44;
-      padding: 4px 18px 4px 38px; 
-      border-radius: 20px; 
-      position: absolute; 
-      right: 0; 
-      top: -55px; 
-      box-shadow: none; 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 2px;
-      border: none;
-      height: 28px;
-      overflow: hidden; 
-    }
-    
     /* पट्टियों का कंटेनर */
     .custom-stripes-container {
+      background-color: #3a7d44;
       position: absolute;
       inset: 0;
       width: 100%;
@@ -185,6 +171,20 @@
       height: 60px;    
       background-color: rgba(255, 255, 255, 0.3);
       transform: rotate(45deg);
+    }
+      
+      padding: 4px 18px 4px 38px; 
+      border-radius: 20px; 
+      position: absolute; 
+      right: 0; 
+      top: -55px; 
+      box-shadow: none; 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 2px;
+      border: none;
+      height: 28px;
+      overflow: visible; 
     }
     
     .accompany-hexagon-outer {
@@ -311,7 +311,7 @@
       
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">❮</div>
       
-        <div class="profile-top-icons">
+      <div class="profile-top-icons">
         <div class="icon-circle" onclick="location.href='edit-profile.html'">
           <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
         </div>
@@ -328,12 +328,12 @@
         
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
-
+          
           <div class="custom-stripes-container">
             <div class="stripe-1"></div>
             <div class="stripe-2"></div>
           </div>
-  
+
           <div class="accompany-badge" id="accompanyBadgeBox">
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
