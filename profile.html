@@ -138,6 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
+    /* बैज का मुख्य डिब्बा - षट्कोण सुरक्षित रखने के लिए overflow hidden रखा है */
     .accompany-badge { 
       background-color: #3a7d44;
       padding: 4px 18px 4px 38px; 
@@ -153,6 +154,7 @@
       overflow: hidden; 
     }
 
+    /* पट्टियों का स्वतंत्र कंटेनर */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -163,6 +165,7 @@
       overflow: hidden;
     }
 
+    /* पहली पट्टी - left के नंबर से इसे आगे-पीछे कर सकते हो */
     .stripe-1 {
       position: absolute;
       top: -15px;      
@@ -173,6 +176,7 @@
       transform: rotate(45deg);
     }
 
+    /* دوسری पट्टी - left के नंबर से इसकी दूरी सेट कर सकते हो */
     .stripe-2 {
       position: absolute;
       top: -15px;      
@@ -328,11 +332,13 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
+            <!-- पट्टियों का कंटेनर -->
             <div class="custom-stripes-container">
               <div class="stripe-1"></div>
               <div class="stripe-2"></div>
             </div>
 
+            <!-- षट्कोण (जस का तस सुरक्षित) -->
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
