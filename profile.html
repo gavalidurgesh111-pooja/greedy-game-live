@@ -26,13 +26,14 @@
       -webkit-overflow-scrolling: touch; 
     }
     .page-container { 
-      width: 100%; 
-      max-width: 480px; 
-      min-height: 100vh; 
-      background: #fff; 
-      position: relative; 
-      padding-bottom: 60px; 
-      overflow-y: auto; 
+     width: 100%; 
+     max-width: 480px; 
+     background: #fff; 
+  
+     /* 🌟 यहाँ से ऊपर के दोनों कोने गोल होते हैं */
+     border-top-left-radius: 25px;   /* बाएं (Left) तरफ का कोना गोल करने के लिए */
+     border-top-right-radius: 25px;  /* दाएं (Right) तरफ का कोना गोल करने के लिए */
+     overflow: hidden;               /* यह इसलिए ताकि अंदर का कवर फोटो बाहर न निकले */
     }
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
