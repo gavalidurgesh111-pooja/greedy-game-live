@@ -327,8 +327,19 @@
                   </g>
                 </g>
 
-                <!-- एकदम साफ-सुथरा ओरिजिनल षट्कोण (बिना किसी डायमंड या फालतू कट के) -->
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
+                <!-- 1. बाहर का वही ओरिजिनल बड़ा षट्कोण (ग्रेडिएंट रंग के साथ) -->
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="5" stroke-linejoin="round" />
+
+                <!-- 2. ठीक वैसा ही अंदर का छोटा षट्कोण (जैसा फोटो में है) -->
+                <polygon points="50,28 75,42 75,58 50,72 25,58 25,42" fill="none" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linejoin="round" />
+
+                <!-- 3. दोनों षट्कोण के कोनों को आपस में मिलाने वाली बिल्कुल सटीक तिरछी लाइनें (जैसे फोटो में दी गई हैं) -->
+                <line x1="10" y1="32" x2="25" y2="42" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="90" y1="32" x2="75" y2="42" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="90" y1="68" x2="75" y2="58" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="10" y1="68" x2="25" y2="58" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="50" y1="8" x2="50" y2="28" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
+                <line x1="50" y1="94" x2="50" y2="72" stroke="url(#oldHexGradient)" stroke-width="3.5" stroke-linecap="round" />
               </svg>
             </div>
 
@@ -666,6 +677,7 @@
     }
 
     function openFrameModal() { 
+      document.getElementById("modalHeader").style.display = "flex"; // updated
       document.getElementById("modalFrame").style.display = "flex"; 
       history.pushState({modal: "frame"}, "", window.location.href);
     }
@@ -706,7 +718,7 @@
         heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
-          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;>.</p>";
+          bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
         }
       }
     }
