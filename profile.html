@@ -25,20 +25,22 @@
       overflow-y: auto; 
       -webkit-overflow-scrolling: touch; 
     }
-    .page-container { 
+    .cover-slider-container { 
      width: 100%; 
-     max-width: 480px; 
-     min-height: 100vh; 
-     background: #fff; 
+     height: 320px; 
      position: relative; 
-     padding-bottom: 60px; 
-     overflow-y: auto; 
-  
-     /* 🌟 सिर्फ नीचे के दोनों कोनों को गोल करने के लिए यह जोड़ना है: */
-     border-bottom-left-radius: 24px;  /* नीचे का बायां कोना गोल */
-     border-bottom-right-radius: 24px; /* नीचे का दायां कोना गोल */
-  
-     overflow: hidden; /* ताकि नीचे की लाइन और फोटो उस गोlay के अंदर बिल्कुल फिट रहें */
+     overflow-x: auto; 
+     display: flex; 
+     flex-wrap: nowrap; 
+     scroll-snap-type: x mandatory; 
+     background: #9b51e0; 
+     cursor: pointer; 
+     scroll-behavior: smooth; 
+
+     /* 🌟 सिर्फ नीचे के दोनों कोनों को गोल करने के लिए यह लाइनें डालनी हैं: */
+     border-bottom-left-radius: 24px; 
+     border-bottom-right-radius: 24px; 
+     overflow: hidden; 
     }
 
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
