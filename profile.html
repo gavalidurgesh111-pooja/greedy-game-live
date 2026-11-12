@@ -35,7 +35,7 @@
       overflow-y: auto; 
     }
 
-    /* 🌟 यहाँ कवर फोटो के डिब्बे के नीचे वाले दोनों कोनों को गोल किया गया है और overflow: hidden लगाया है */
+    /* 🌟 यहाँ सिर्फ नीचे की तरफ दोनों कोनों को गोल किया गया है (ऊपर के कोने चौकोर रहेंगे) */
     .cover-slider-container { 
       width: 100%; 
       height: 320px; 
@@ -47,9 +47,9 @@
       background: #9b51e0; 
       cursor: pointer; 
       scroll-behavior: smooth; 
-      border-bottom-left-radius: 25px; 
-      border-bottom-right-radius: 25px; 
-      overflow: hidden; 
+      border-bottom-left-radius: 25px;  /* नीचे का बायां कोना गोल */
+      border-bottom-right-radius: 25px; /* नीचे का दायां कोना गोल */
+      overflow: hidden;                 /* ताकि कवर फोटो बाहर न निकले */
     }
 
     .cover-slider-container::-webkit-scrollbar { display: none; }
