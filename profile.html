@@ -69,46 +69,43 @@
       cursor: pointer;
     }
     
-    /* 🌟 कवर के ऊपर लेफ्ट और राइट दोनों तरफ बिल्कुल एक जैसे आइकॉन (लोगो) */
-    .cover-action-icon-left {
-      position: absolute;
-      top: 14px;
-      left: 15px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
+    /* 🌟 कवर के ऊपर लेफ्ट और राइट दोनों तरफ बिल्कुल एक जैसे कैमरे वाले आइकॉन (फोटो के अनुसार) */
+    .cover-icon-left { 
+      position: absolute; 
+      top: 14px; 
+      left: 15px; 
+      width: 44px; 
+      height: 44px; 
+      border-radius: 50%; 
+      background: transparent; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      z-index: 20; 
     }
-
-    .cover-action-icon-right {
-      position: absolute;
-      top: 14px;
-      right: 15px;
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 20;
+    .cover-icon-right { 
+      position: absolute; 
+      top: 14px; 
+      right: 15px; 
+      width: 44px; 
+      height: 44px; 
+      border-radius: 50%; 
+      background: transparent; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      cursor: pointer; 
+      z-index: 20; 
     }
-
-    .cover-action-icon-left svg,
-    .cover-action-icon-right svg {
-      width: 24px;
-      height: 24px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 1.4;
-      stroke-linecap: round;
-      stroke-linejoin: round;
+    .cover-icon-left svg, .cover-icon-right svg { 
+      width: 24px; 
+      height: 24px; 
+      stroke: #ffffff; 
+      fill: none; 
+      stroke-width: 1.4; 
+      stroke-linecap: round; 
+      stroke-linejoin: round; 
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
@@ -288,16 +285,16 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- 🌟 कवर के ऊपर लेफ्ट साइड में लोगो/आइसॉन -->
-      <div class="cover-action-icon-left" onclick="openPhotoGridScreen()">
+      <!-- 🌟 कवर के ऊपर बाईं तरफ (Left) कैमरे वाला आइकॉन -->
+      <div class="cover-icon-left" onclick="openPhotoGridScreen()">
         <svg viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
           <circle cx="12" cy="13" r="4"></circle>
         </svg>
       </div>
       
-      <!-- 🌟 कवर के ऊपर राइट साइड में बिल्कुल सेम लोगो/आइसॉन -->
-      <div class="cover-action-icon-right" onclick="openPhotoGridScreen()">
+      <!-- 🌟 कवर के ऊपर दाईं तरफ (Right) बिल्कुल सेम कैमरे वाला आइकॉन -->
+      <div class="cover-icon-right" onclick="openPhotoGridScreen()">
         <svg viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
           <circle cx="12" cy="13" r="4"></circle>
