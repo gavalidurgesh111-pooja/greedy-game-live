@@ -69,32 +69,7 @@
       cursor: pointer;
     }
     
-    .profile-back-btn { 
-      position: absolute; 
-      top: 14px; 
-      left: 15px; 
-      width: 35px; 
-      height: 35px; 
-      border-radius: 50%; 
-      background: transparent; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      cursor: pointer; 
-      z-index: 20; 
-    }
-    .profile-back-btn svg {
-      width: 37px;
-      height: 37px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 1;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-    }
-
-    /* 🌟 कवर के ऊपर बिल्कुल एक जैसे लेफ्ट और राइट आइकॉन की सटीक और बराबर स्टाइलिंग */
+    /* 🌟 कवर के ऊपर बिल्कुल एक जैसे लेफ्ट और राइट आइकॉन (फोटो वाले स्टाइल में) */
     .cover-action-icon-left {
       position: absolute;
       top: 14px;
@@ -134,35 +109,6 @@
       stroke-width: 1.4;
       stroke-linecap: round;
       stroke-linejoin: round;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
-    }
-
-    .profile-top-icons { 
-      position: absolute; 
-      top: 14px; 
-      right: 15px; 
-      display: flex; 
-      gap: 10px; 
-      z-index: 20; 
-    }
-    .icon-circle { 
-      width: 44px; 
-      height: 44px; 
-      border-radius: 50%; 
-      background: transparent; 
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      cursor: pointer; 
-    }
-    .icon-circle svg { 
-      width: 22px; 
-      height: 24px; 
-      stroke: #ffffff; 
-      fill: none; 
-      stroke-width: 1.4; 
-      stroke-linecap: round; 
-      stroke-linejoin: round; 
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
@@ -342,7 +288,7 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- 🌟 कवर के ऊपर लेफ्ट साइड में वही कैमरा/फोटो वाला आइकॉन -->
+      <!-- 🌟 कवर के ऊपर लेफ्ट साइड में कैमरा आइकॉन -->
       <div class="cover-action-icon-left" onclick="openPhotoGridScreen()">
         <svg viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
@@ -350,7 +296,7 @@
         </svg>
       </div>
       
-      <!-- 🌟 कवर के ऊपर राइट साइड में बिल्कुल सेम वही आइकॉन -->
+      <!-- 🌟 कवर के ऊपर राइट साइड में बिल्कुल सेम कैमरा आइकॉन -->
       <div class="cover-action-icon-right" onclick="openPhotoGridScreen()">
         <svg viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
