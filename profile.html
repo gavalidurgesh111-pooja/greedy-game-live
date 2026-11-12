@@ -159,7 +159,7 @@
       align-items: center; 
       gap: 8px;
       height: 28px;
-      overflow: visible; /* पट्टियों को बाहर जाने से रोकने के लिए */
+      overflow: visible; 
     }
 
     /* पीले रंग के स्टार्स (★) */
@@ -216,6 +216,15 @@
      flex-shrink: 0;
      z-index: 30; 
      overflow: visible;
+    }
+
+    /* षट्कोण का बॉर्डर और अंदर का रंग #32CD32 सेट किया गया है */
+    .accompany-hexagon-outer svg path, 
+    .accompany-hexagon-outer polygon {
+      stroke: #32CD32 !important; 
+      stroke-width: 14px;
+      stroke-linejoin: round;
+      fill: #32CD32 !important;   
     }
 
     .accompany-text-group {
@@ -306,12 +315,6 @@
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
-                  <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" />
-                    <stop offset="50%" stop-color="#81c784" />
-                    <stop offset="100%" stop-color="#4CAF50" />
-                  </linearGradient>
-
                   <clipPath id="hexagonClip">
                     <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
                   </clipPath>
@@ -327,13 +330,13 @@
                   </g>
                 </g>
 
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke-linejoin="round" />
               </svg>
             </div>
 
             <div class="accompany-text-group">
               <span class="accompany-title-lbl">Accompany Time:</span>
-              <span class="accompany-days-val" id="accompanyDaysText">36 days</span>
+              <span class="accompany-days-val" id="accompanyDaysText">1 days</span>
             </div>
           </div>
 
@@ -506,6 +509,7 @@
       }
     }
 
+    // Accompany Time रोज़ दिन बढ़ाने वाला लॉजिक (LocalStorage के साथ)
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
