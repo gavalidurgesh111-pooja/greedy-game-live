@@ -25,6 +25,8 @@
       overflow-y: auto; 
       -webkit-overflow-scrolling: touch; 
     }
+    
+    /* 🌟 यहाँ मुख्य पेज के डिब्बे में नीचे के दोनों कोनों को गोल किया गया है और overflow hidden लगाया है */
     .page-container { 
       width: 100%; 
       max-width: 480px; 
@@ -33,25 +35,12 @@
       position: relative; 
       padding-bottom: 60px; 
       overflow-y: auto; 
-    }
-
-    /* 🌟 यहाँ सिर्फ नीचे की तरफ दोनों कोनों को गोल किया गया है (ऊपर के कोने चौकोर रहेंगे) */
-    .cover-slider-container { 
-      width: 100%; 
-      height: 320px; 
-      position: relative; 
-      overflow-x: auto; 
-      display: flex; 
-      flex-wrap: nowrap; 
-      scroll-snap-type: x mandatory; 
-      background: #9b51e0; 
-      cursor: pointer; 
-      scroll-behavior: smooth; 
       border-bottom-left-radius: 25px;  /* नीचे का बायां कोना गोल */
       border-bottom-right-radius: 25px; /* नीचे का दायां कोना गोल */
-      overflow: hidden;                 /* ताकि कवर फोटो बाहर न निकले */
+      overflow: hidden;                 /* ताकि अंदर की चीजें बाहर न निकलें */
     }
 
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
       flex: 0 0 100%;
@@ -86,7 +75,6 @@
       cursor: pointer;
     }
     
-    /* बैक बटन की बिल्कुल पतली और सटीक स्टाइलिंग */
     .profile-back-btn { 
       position: absolute; 
       top: 14px; 
@@ -142,7 +130,6 @@
 
     .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
     
-    /* अवतार के डिब्बे की परछाई हटाई गई */
     .avatar-wrapper { 
       position: relative; 
       width: 80px; 
@@ -181,7 +168,6 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
-    /* बैज का मुख्य डिब्बा */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
@@ -309,7 +295,6 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- पतला और शानदार SVG बैक बटन -->
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">
         <svg viewBox="0 0 24 24">
           <polyline points="15 18 9 12 15 6"></polyline>
