@@ -322,8 +322,19 @@
                   </g>
                 </g>
 
-                <!-- तुम्हारा बिल्कुल ओरिजिनल, सही साइज और ग्रेडिएंट वाला षट्कोण -->
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
+                <!-- 1. बाहर का वही ओरिजिनल षट्कोण -->
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="3" stroke-linejoin="round" />
+
+                <!-- 2. अंदर का छोटा षट्कोण (डायमंड कट के लिए) -->
+                <polygon points="50,30 70,42 70,58 50,70 30,58 30,42" fill="none" stroke="#81c784" stroke-width="1" stroke-linejoin="round" />
+
+                <!-- 3. कोनों को आपस में मिलाने वाली बारीक तिरछी रेखाएँ (Diamond Facets) -->
+                <line x1="10" y1="32" x2="30" y2="42" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <line x1="90" y1="32" x2="70" y2="42" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <line x1="90" y1="68" x2="70" y2="58" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <line x1="10" y1="68" x2="30" y2="58" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <line x1="50" y1="8" x2="50" y2="30" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <line x1="50" y1="94" x2="50" y2="70" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
               </svg>
             </div>
 
