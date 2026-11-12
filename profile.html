@@ -25,21 +25,16 @@
       overflow-y: auto; 
       -webkit-overflow-scrolling: touch; 
     }
-    .page-container: { 
-     width: 100%; 
-     height: 320px; 
+    .profile-header-area { 
+     padding: 0 20px; 
+     margin-top: -35px; 
      position: relative; 
-     overflow-x: auto; 
-     display: flex; 
-     flex-wrap: nowrap; 
-     scroll-snap-type: x mandatory; 
-     background: #9b51e0; 
-     cursor: pointer; 
-     scroll-behavior: smooth; 
-
-     /* 🌟 सिर्फ नीचे के दोनों कोनों को गोल करने के लिए यह लाइनें डालनी हैं: */
-     border-bottom-left-radius: 24px; 
-     border-bottom-right-radius: 24px; 
+     z-index: 12; 
+     background: #fff; /* अगर बैकग्राउंड सफेद रखना है */
+  
+     /* 🌟 यहाँ से दोनों कोनों को राउंड शेप मिल जाएगी */
+     border-bottom-left-radius: 20px; 
+     border-bottom-right-radius: 20px; 
      overflow: hidden; 
     }
 
