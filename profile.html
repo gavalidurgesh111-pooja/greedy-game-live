@@ -327,16 +327,7 @@
                   </g>
                 </g>
 
-                <!-- बाहर का ओरिजिनल षट्कोण बॉर्डर -->
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="1.2" stroke-linejoin="round" />
-
-                <!-- अंदर की एकदम सटीक और साफ़ तिरछी लाइनें जो आपके ओरिजिनल शेप से मिलती हैं -->
-                <line x1="50" y1="8" x2="50" y2="30" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
-                <line x1="50" y1="94" x2="50" y2="70" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
-                <line x1="10" y1="32" x2="30" y2="42" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
-                <line x1="90" y1="32" x2="70" y2="42" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
-                <line x1="90" y1="68" x2="70" y2="58" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
-                <line x1="10" y1="68" x2="30" y2="58" stroke="#81c784" stroke-width="0.8" stroke-linecap="round" />
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
               </svg>
             </div>
 
@@ -515,6 +506,7 @@
       }
     }
 
+    // Accompany Time रोज़ दिन बढ़ाने वाला परफेक्ट लॉजिक
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
@@ -547,7 +539,7 @@
       document.getElementById("aboutUserId").innerText = userId;
       
       updateLevelBackground(userLevel);
-      updateActiveDays();
+      updateActiveDays(); // यहाँ दिन काउंटिंग फंक्शन कॉल हो रहा है
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
