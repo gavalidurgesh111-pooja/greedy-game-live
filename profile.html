@@ -311,12 +311,28 @@
                     <stop offset="50%" stop-color="#81c784" />
                     <stop offset="100%" stop-color="#4CAF50" />
                   </linearGradient>
+
+                  <!-- फोन को सही जगह रखने के लिए ऑरिजिनल क्लिप-पथ -->
+                  <clipPath id="hexagonClip">
+                    <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
+                  </clipPath>
                 </defs>
+
+                <!-- बीच में फोन वाला ग्राफिक (बिल्कुल अपनी जगह पर सुरक्षित) -->
+                <g clip-path="url(#hexagonClip)">
+                  <g transform="translate(30, 22) scale(0.40)">
+                    <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
+                    <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.12" stroke="none" />
+                    <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
+                    <rect x="18" y="27" width="60" height="80" rx="0" ry="0" fill="#3a7d44" stroke="none" />
+                    <circle cx="50" cy="120" r="6" fill="#3a7d44" stroke="none" />
+                  </g>
+                </g>
 
                 <!-- 1. आपका बिल्कुल ऑरिजिनल षट्कोण बॉर्डर -->
                 <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
 
-                <!-- 2. तिरछी और सीधी लाइनें (जो सीधे षट्कोण के ऊपर और अंदर फिट हैं, बिना किसी बाहरी/आंतरिक बॉर्डर के) -->
+                <!-- 2. तिरछी और सीधी लाइनें (जो सीधे आपके ऑरिजिनल षट्कोण के ऊपर हैं, जिन्हें आप मैनेज कर सकते हैं) -->
                 <g stroke="#ffffff" stroke-width="1.5" stroke-linecap="round">
                   <line x1="50" y1="8"  x2="50" y2="30" />
                   <line x1="50" y1="94" x2="50" y2="70" />
