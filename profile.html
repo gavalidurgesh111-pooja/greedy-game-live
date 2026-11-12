@@ -138,7 +138,6 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* बैज का मुख्य डिब्बा */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
@@ -162,14 +161,12 @@
       overflow: visible; 
     }
 
-    /* पीले रंग के स्टार्स (★) */
     .star-a-top-right { position: absolute; top: 1px; left: 114px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-a-bottom-left { position: absolute; bottom: 1px; left: 78px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-ny-bottom { position: absolute; bottom: 1px; left: 105px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-e-top-right { position: absolute; top: 2px; right: 53px; color: #ffd700; font-size: 2px; z-index: 10; }
     .star-e-bottom { position: absolute; bottom: 13px; right: 57px; color: #ffd700; font-size: 2px; z-index: 10; }
 
-    /* पट्टियों का कंटेनर */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -301,16 +298,21 @@
               <div class="stripe-2"></div>
             </div>
 
-            <!-- आपका वही पुराना षट्कोण और फोन आइकॉन (बिल्कुल सही साइज और जगह पर), बस बॉर्डर को सबसे फीका हल्का पोपटी रंग दिया गया है -->
+            <!-- आपका वही एकदम ओरिजिनल पुराना षट्कोण और फोन आइकॉन, बिल्कुल उसी साइज और रंग में (बिना किसी बदलाव के) -->
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
+                  <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="50%" stop-color="#81c784" />
+                    <stop offset="100%" stop-color="#4CAF50" />
+                  </linearGradient>
+
                   <clipPath id="hexagonClip">
                     <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
                   </clipPath>
                 </defs>
 
-                <!-- अंदर का ओरिजिनल फोन/कार्ड आइकॉन एकदम सुरक्षित -->
                 <g clip-path="url(#hexagonClip)">
                   <g transform="translate(30, 22) scale(0.40)">
                     <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
@@ -321,8 +323,7 @@
                   </g>
                 </g>
 
-                <!-- वही पुराना षट्कोण और साइज, सिर्फ सबसे फीका हल्का पोपटी रंग (#b2fba5) और पतली बॉर्डर -->
-                <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" fill="none" stroke="#b2fba5" stroke-width="5" stroke-linejoin="round" />
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
               </svg>
             </div>
 
