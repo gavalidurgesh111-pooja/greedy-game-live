@@ -28,13 +28,19 @@
     .page-container { 
      width: 100%; 
      max-width: 480px; 
+     min-height: 100vh; 
      background: #fff; 
+     position: relative; 
+     padding-bottom: 60px; 
+     overflow-y: auto; 
   
-     /* 🌟 यहाँ से ऊपर के दोनों कोने गोल होते हैं */
-     border-top-left-radius: 25px;   /* बाएं (Left) तरफ का कोना गोल करने के लिए */
-     border-top-right-radius: 25px;  /* दाएं (Right) तरफ का कोना गोल करने के लिए */
-     overflow: hidden;               /* यह इसलिए ताकि अंदर का कवर फोटो बाहर न निकले */
+     /* 🌟 सिर्फ नीचे के दोनों कोनों को गोल करने के लिए यह जोड़ना है: */
+     border-bottom-left-radius: 24px;  /* नीचे का बायां कोना गोल */
+     border-bottom-right-radius: 24px; /* नीचे का दायां कोना गोल */
+  
+     overflow: hidden; /* ताकि नीचे की लाइन और फोटो उस गोlay के अंदर बिल्कुल फिट रहें */
     }
+
     .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
