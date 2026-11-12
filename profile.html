@@ -138,7 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
-    /* बैज का मुख्य डिब्बा - बैकग्राउंड और चारों तरफ से हल्का शेड */
+    /* बैज का मुख्य डिब्बा */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
@@ -159,56 +159,17 @@
       align-items: center; 
       gap: 8px;
       height: 28px;
-      overflow: visible; 
+      overflow: hidden; /* पट्टियों को बाहर जाने से रोकने के लिए */
     }
 
-    /* --- तूने जहाँ-जहाँ कहा है, वहाँ पीले रंग के स्टार्स (★) सेट कर दिए हैं --- */
-    .star-a-top-right {
-      position: absolute;
-      top: 1px;
-      left:114px;
-      color: #ffd700;
-      font-size: 4px;
-      z-index: 10;
-    }
+    /* पीले रंग के स्टार्स (★) */
+    .star-a-top-right { position: absolute; top: 1px; left: 114px; color: #ffd700; font-size: 4px; z-index: 10; }
+    .star-a-bottom-left { position: absolute; bottom: 1px; left: 78px; color: #ffd700; font-size: 4px; z-index: 10; }
+    .star-ny-bottom { position: absolute; bottom: 1px; left: 105px; color: #ffd700; font-size: 4px; z-index: 10; }
+    .star-e-top-right { position: absolute; top: 2px; right: 53px; color: #ffd700; font-size: 2px; z-index: 10; }
+    .star-e-bottom { position: absolute; bottom: 13px; right: 57px; color: #ffd700; font-size: 2px; z-index: 10; }
 
-    .star-a-bottom-left {
-      position: absolute;
-      bottom: 1px;
-      left: 78px;
-      color: #ffd700;
-      font-size: 4px;
-      z-index: 10;
-    }
-
-    .star-ny-bottom {
-      position: absolute;
-      bottom: 1px;
-      left: 105px;
-      color: #ffd700;
-      font-size: 4px;
-      z-index: 10;
-    }
-
-    .star-e-top-right {
-      position: absolute;
-      top: 2px;
-      right: 53px;
-      color: #ffd700;
-      font-size: 2px;
-      z-index: 10;
-    }
-
-    .star-e-bottom {
-      position: absolute;
-      bottom: 13px;
-      right: 57px;
-      color: #ffd700;
-      font-size: 2px;
-      z-index: 10;
-    }
-
-    /* पट्टियों का कंटेनर - पट्टियों को इसी के अंदर छुपाया है ताकि वे बाहर न आएं */
+    /* पट्टियों का कंटेनर */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -216,7 +177,6 @@
       height: 100%;
       pointer-events: none;
       z-index: 1;
-      overflow: visible;
       border-radius: 20px;
     }
 
@@ -266,72 +226,16 @@
       z-index: 2;
       transform: translateX(6px);
     }
-    .accompany-title-lbl {
-      font-size: 10px;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.3px;
-    }
-    .accompany-days-val {
-      font-size: 10px;
-      font-weight: 700;
-      color: #ffffff;
-    }
+    .accompany-title-lbl { font-size: 10px; font-weight: 700; color: #ffffff; letter-spacing: 0.3px; }
+    .accompany-days-val { font-size: 10px; font-weight: 700; color: #ffffff; }
     
     .tags-row { display: flex; gap: 3px; margin-top: 14px; align-items: center; }
-    
-    .tag-lv { 
-      background-color: #00fa9a !important; 
-      color: #ffffff; 
-      font-size: 11px; 
-      font-weight: 900; 
-      padding: 2px 9px; 
-      border-radius: 10px; 
-      display: inline-flex; 
-      align-items: center; 
-      gap: 6px; 
-    }
-    
-     .star-circle-bg {
-      width: 13px;
-      height: 13px;
-      background-color: rgba(0, 0, 0, 0.25); 
-      border-radius: 50%; 
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: -4px; 
-    }
+    .tag-lv { background-color: #00fa9a !important; color: #ffffff; font-size: 11px; font-weight: 900; padding: 2px 9px; border-radius: 10px; display: inline-flex; align-items: center; gap: 6px; }
+    .star-circle-bg { width: 13px; height: 13px; background-color: rgba(0, 0, 0, 0.25); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-left: -4px; }
+    .web-star-icon { width: 12px; height: 12px; fill: #ffffff; flex-shrink: 0; }
 
-    .web-star-icon {
-      width: 12px;
-      height: 12px;
-      fill: #ffffff; 
-      flex-shrink: 0;
-    }
-
-    .planet-badge {
-      width: 20px;
-      height: 14px;
-      background-color: #2196f3;
-      border-radius: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-      pointer-events: none;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-    .planet-badge svg {
-      width: 14px;
-      height: 14px;
-      stroke: #ffffff;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
+    .planet-badge { width: 20px; height: 14px; background-color: #2196f3; border-radius: 4px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 1px 2px rgba(0,0,0,0.2); pointer-events: none; overflow: hidden; flex-shrink: 0; }
+    .planet-badge svg { width: 14px; height: 14px; stroke: #ffffff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
     .tag-sent-text { font-size: 14px; font-weight: 800; color: #555; display: inline-flex; align-items: center; gap: 3px; }
     .tag-sent-text span { font-size: 13px; }
@@ -388,20 +292,17 @@
           <div class="user-name" id="profNameDisplay">User</div>
           
           <div class="accompany-badge" id="accompanyBadgeBox">
-            <!-- तूने जो स्टार्स मांगे हैं, वे यहाँ जोड़ दिए हैं -->
             <span class="star-a-top-right">★</span>
             <span class="star-a-bottom-left">★</span>
             <span class="star-ny-bottom">★</span>
             <span class="star-e-top-right">★</span>
             <span class="star-e-bottom">★</span>
 
-            <!-- पट्टियों का कंटेनर -->
             <div class="custom-stripes-container">
               <div class="stripe-1"></div>
               <div class="stripe-2"></div>
             </div>
 
-            <!-- षट्कोण -->
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
