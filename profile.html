@@ -138,6 +138,7 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 22px; font-weight: 900; color: #111; }
     
+    /* बैज का मुख्य डिब्बा */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
@@ -161,12 +162,14 @@
       overflow: visible; 
     }
 
+    /* पीले रंग के स्टार्स (★) */
     .star-a-top-right { position: absolute; top: 1px; left: 114px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-a-bottom-left { position: absolute; bottom: 1px; left: 78px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-ny-bottom { position: absolute; bottom: 1px; left: 105px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-e-top-right { position: absolute; top: 2px; right: 53px; color: #ffd700; font-size: 2px; z-index: 10; }
     .star-e-bottom { position: absolute; bottom: 13px; right: 57px; color: #ffd700; font-size: 2px; z-index: 10; }
 
+    /* पट्टियों का कंटेनर */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -177,6 +180,7 @@
       border-radius: 20px;
     }
 
+    /* पहली पट्टी */
     .stripe-1 {
       position: absolute;
       top: -15px;      
@@ -187,6 +191,7 @@
       transform: rotate(34deg);
     }
 
+    /* दूसरी पट्टी */
     .stripe-2 {
       position: absolute;
       top: -15px;      
@@ -322,19 +327,7 @@
                   </g>
                 </g>
 
-                <!-- 1. बाहर का वही ओरिजिनल षट्कोण -->
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="3" stroke-linejoin="round" />
-
-                <!-- 2. अंदर का छोटा षट्कोण (डायमंड कट के लिए) -->
-                <polygon points="50,30 70,42 70,58 50,70 30,58 30,42" fill="none" stroke="#81c784" stroke-width="1" stroke-linejoin="round" />
-
-                <!-- 3. कोनों को आपस में मिलाने वाली बारीक तिरछी रेखाएँ (Diamond Facets) -->
-                <line x1="10" y1="32" x2="30" y2="42" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
-                <line x1="90" y1="32" x2="70" y2="42" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
-                <line x1="90" y1="68" x2="70" y2="58" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
-                <line x1="10" y1="68" x2="30" y2="58" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
-                <line x1="50" y1="8" x2="50" y2="30" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
-                <line x1="50" y1="94" x2="50" y2="70" stroke="#81c784" stroke-width="1" stroke-linecap="round" />
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
               </svg>
             </div>
 
@@ -513,6 +506,7 @@
       }
     }
 
+    // Accompany Time रोज़ दिन बढ़ाने वाला परफेक्ट लॉजिक
     function updateActiveDays() {
       let joinDateKey = "greedy_join_date_" + currentIdentifier;
       let joinDate = localStorage.getItem(joinDateKey);
@@ -545,7 +539,7 @@
       document.getElementById("aboutUserId").innerText = userId;
       
       updateLevelBackground(userLevel);
-      updateActiveDays();
+      updateActiveDays(); // यहाँ दिन काउंटिंग फंक्शन कॉल हो रहा है
       
       const avatarImg = document.getElementById("profAvatarImg");
       const plusIcon = document.getElementById("avatarPlusIcon");
@@ -699,7 +693,7 @@
       updatePrivacyHeart();
     }
     
-    postUpdatePrivacyHeart = function() {
+    function updatePrivacyHeart() {
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
       if(isPrivate) {
@@ -715,8 +709,7 @@
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
         }
       }
-    };
-    function updatePrivacyHeart() { postUpdatePrivacyHeart(); }
+    }
 
     function openGroupsScreen() { 
       document.getElementById("screenProfile").style.display = "none";
