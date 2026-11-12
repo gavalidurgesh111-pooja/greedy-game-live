@@ -301,6 +301,12 @@
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
+                  <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="50%" stop-color="#81c784" />
+                    <stop offset="100%" stop-color="#4CAF50" />
+                  </linearGradient>
+
                   <clipPath id="hexagonClip">
                     <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
                   </clipPath>
@@ -316,8 +322,8 @@
                   </g>
                 </g>
 
-                <!-- तुम्हारा वही एकदम ओरिजिनल, साफ़-सुथरा और परफेक्ट षट्कोण (हल्के पोपटी रंग #98fb98 के साथ) -->
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="#98fb98" stroke-width="1.2" stroke-linejoin="round" />
+                <!-- तुम्हारा बिल्कुल ओरिजिनल, सही साइज और ग्रेडिएंट वाला षट्कोण -->
+                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
               </svg>
             </div>
 
@@ -682,7 +688,7 @@
       updatePrivacyHeart();
     }
     
-    function updatePrivacyHeart() {
+    postUpdatePrivacyHeart = function() {
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
       if(isPrivate) {
@@ -698,7 +704,8 @@
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'>This is your personal profile bio.</p>";
         }
       }
-    }
+    };
+    function updatePrivacyHeart() { postUpdatePrivacyHeart(); }
 
     function openGroupsScreen() { 
       document.getElementById("screenProfile").style.display = "none";
