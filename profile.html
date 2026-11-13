@@ -123,32 +123,33 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    /* 🌟 यहाँ कवर के ठीक नीचे वाले हिस्से को दोनों तरफ से गोल (Rounded corners) किया गया है */
+    /* 🌟 यहाँ कोनों को गोल किया गया है और मार्जिन सेट किया गया है ताकि अवतार आधा ऊपर-नीचे दिखे */
     .profile-header-area { 
       padding: 0 20px; 
-      margin-top: -35px; 
+      margin-top: -50px; 
       position: relative; 
       z-index: 12; 
       background: #fff;
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
-      overflow: hidden;
+      overflow: visible;
     }
     
-    /* अवतार के डिब्बे की परछाई हटाई गई है */
+    /* 🌟 अवतार अब कवर पर आधा ऊपर और आधा नीचे साफ दिखेगा */
     .avatar-wrapper { 
       position: relative; 
       width: 80px; 
       height: 80px; 
       border-radius: 50%; 
-      background: #e0e0e0; 
+      background: #fff; 
       padding: 3px; 
-      box-shadow: none !important; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       overflow: visible !important; 
+      margin-top: -40px;
     }
 
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -171,7 +172,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; box-shadow: none !important; }
     
-    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 15px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
     /* बैज का मुख्य डिब्बा */
@@ -190,7 +191,7 @@
       border-radius: 20px; 
       position: absolute; 
       right: 0; 
-      top: -55px; 
+      top: -45px; 
       display: inline-flex; 
       align-items: center; 
       gap: 8px;
