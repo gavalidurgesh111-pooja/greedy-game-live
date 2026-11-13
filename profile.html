@@ -34,7 +34,7 @@
       padding-bottom: 60px; 
       overflow-y: auto; 
     }
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; overflow-y: visible !important; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
       flex: 0 0 100%;
@@ -122,10 +122,10 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    /* 🌟 कवर फोटो के ठीक बाद शुरू होने वाले सफेद हिस्से के ऊपर के दोनों कोने यहाँ गोल किए गए हैं */
+    /* सफेद हिस्से की स्टाइलिंग */
     .profile-header-area { 
       padding: 0 20px; 
-      margin-top: -35px; 
+      margin-top: 0px; 
       position: relative; 
       z-index: 12; 
       background: #fff; 
@@ -136,20 +136,20 @@
     
     .avatar-wrapper { 
       position: absolute !important; 
-      top: -40px !important; /* आधा हिस्सा कवर पर और आधा सफेद हिस्से पर सेट करने के लिए */
+      bottom: -40px !important; /* कवर फोटो और सफेद हिस्से के बिल्कुल बीचों-बीच (आधा ऊपर, आधा नीचे) */
       left: 20px;
       width: 80px; 
       height: 80px; 
       border-radius: 50%; 
       background: #fff; 
       padding: 3px; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       overflow: visible !important; 
-      z-index: 25;
+      z-index: 99 !important; 
     }
 
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -172,7 +172,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; box-shadow: none !important; }
     
-    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 50px; position: relative; } /* मार्जिन ऊपर बढ़ाया गया है ताकि अवतार नाम से न टकराए */
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 55px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
     .accompany-badge { 
@@ -314,15 +314,17 @@
         </div>
       </div>
 
-      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
-
-      <div class="profile-header-area">
-        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+      <!-- कवर स्लाइडर कंटेनर जिसके अंदर अवतार आधा बाहर दिखेगा -->
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
+        <!-- अवतार को कवर के ठीक निचले हिस्से पर सेट किया गया है -->
+        <div class="avatar-wrapper" onclick="event.stopPropagation(); openFrameModal()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
           <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
-        
+      </div>
+
+      <div class="profile-header-area">
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
@@ -602,7 +604,11 @@
       }
 
       let sliderContainer = document.getElementById("coverSlider");
+      
+      // अवतार को सुरक्षित रखने के लिए उसे दोबारा री-रेंडर करते वक्त सुरक्षित रखते हैं
+      let avatarWrapperHTML = sliderContainer.querySelector('.avatar-wrapper').outerHTML;
       sliderContainer.innerHTML = "";
+      
       let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
       validPhotos.forEach((photoUrl) => {
@@ -619,12 +625,17 @@
         sliderContainer.appendChild(uploadPageDiv);
       }
 
+      // अवतार को वापस स्लाइडर में जोड़ते हैं
+      sliderContainer.insertAdjacentHTML('beforeend', avatarWrapperHTML);
+
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none") {
-        frameEl.style.display = "none";
+        if(frameEl) frameEl.style.display = "none";
       } else {
-        frameEl.style.display = "block";
-        applyFrameClass(currentFrame);
+        if(frameEl) {
+          frameEl.style.display = "block";
+          applyFrameClass(currentFrame);
+        }
       }
       updatePrivacyHeart();
 
@@ -696,6 +707,7 @@
       localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
       const frameEl = document.getElementById("profAvatarFrame");
+      if(!frameEl) return;
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
@@ -709,7 +721,8 @@
       currentFrame = "none";
       localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
-      document.getElementById("profAvatarFrame").style.display = "none";
+      let frameEl = document.getElementById("profAvatarFrame");
+      if(frameEl) frameEl.style.display = "none";
       closeFrameModal();
     }
 
@@ -745,13 +758,13 @@
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
       if(isPrivate) {
-        heart.innerText = "❤️";
+        if(heart) heart.innerText = "❤️";
         if(bioBox) {
           bioBox.style.background = "#ffe6e6";
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
         }
       } else {
-        heart.innerText = "🤍";
+        if(heart) heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'></p>";
