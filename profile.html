@@ -34,7 +34,7 @@
       padding-bottom: 60px; 
       overflow-y: auto; 
     }
-    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; overflow-y: visible !important; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
+    .cover-slider-container { width: 100%; height: 320px; position: relative; overflow-x: auto; display: flex; flex-wrap: nowrap; scroll-snap-type: x mandatory; background: #9b51e0; cursor: pointer; scroll-behavior: smooth; }
     .cover-slider-container::-webkit-scrollbar { display: none; }
     .cover-page {
       flex: 0 0 100%;
@@ -122,7 +122,7 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    /* सफेद हिस्से की स्टाइलिंग */
+    /* मुख्य कंटेनर जहाँ कवर और नीचे का हिस्सा मिलता है */
     .profile-header-area { 
       padding: 0 20px; 
       margin-top: 0px; 
@@ -131,12 +131,13 @@
       background: #fff; 
       border-top-left-radius: 25px; 
       border-top-right-radius: 25px; 
-      overflow: hidden; 
+      overflow: visible !important; 
     }
     
+    /* 🌟 अवतार को बिल्कुल सही जगह (आधा कवर पर, आधा नीचे) सेट करने के लिए */
     .avatar-wrapper { 
       position: absolute !important; 
-      bottom: -40px !important; /* कवर फोटो और सफेद हिस्से के बिल्कुल बीचों-बीच (आधा ऊपर, आधा नीचे) */
+      top: -40px !important; /* कवर फोटो के अंदर आधा ऊपर और आधा नीचे ओवरलैप करेगा */
       left: 20px;
       width: 80px; 
       height: 80px; 
@@ -172,7 +173,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; box-shadow: none !important; }
     
-    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 55px; position: relative; }
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 50px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
     .accompany-badge { 
@@ -314,17 +315,17 @@
         </div>
       </div>
 
-      <!-- कवर स्लाइडर कंटेनर जिसके अंदर अवतार आधा बाहर दिखेगा -->
-      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()">
-        <!-- अवतार को कवर के ठीक निचले हिस्से पर सेट किया गया है -->
-        <div class="avatar-wrapper" onclick="event.stopPropagation(); openFrameModal()" title="Avatar">
+      <!-- कवर स्लाइडर -->
+      <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
+
+      <!-- प्रोफाइल हेडर एरिया जिसके अंदर सुरक्षित रूप से अवतार रखा गया है -->
+      <div class="profile-header-area">
+        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
           <img src="" class="avatar-img" id="profAvatarImg">
           <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
           <div class="avatar-frame" id="profAvatarFrame"></div>
         </div>
-      </div>
-
-      <div class="profile-header-area">
+        
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
@@ -604,11 +605,7 @@
       }
 
       let sliderContainer = document.getElementById("coverSlider");
-      
-      // अवतार को सुरक्षित रखने के लिए उसे दोबारा री-रेंडर करते वक्त सुरक्षित रखते हैं
-      let avatarWrapperHTML = sliderContainer.querySelector('.avatar-wrapper').outerHTML;
       sliderContainer.innerHTML = "";
-      
       let validPhotos = dbPhotos.filter(p => p && p.trim() !== "");
 
       validPhotos.forEach((photoUrl) => {
@@ -624,9 +621,6 @@
         uploadPageDiv.innerHTML = `<div class="cover-center-plus" onclick="event.stopPropagation(); openPhotoGridScreen()">Upload</div>`;
         sliderContainer.appendChild(uploadPageDiv);
       }
-
-      // अवतार को वापस स्लाइडर में जोड़ते हैं
-      sliderContainer.insertAdjacentHTML('beforeend', avatarWrapperHTML);
 
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none") {
