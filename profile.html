@@ -122,22 +122,22 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    /* 🌟 सफेद हिस्सा: इसके ऊपर के दोनों कोने गोल हैं और overflow: hidden सुरक्षित है */
+    /* 🌟 सफेद हिस्सा: कोने गोल हैं, और overflow को 'visible' रखा गया है ताकि अवतार और बैज कटे नहीं */
     .profile-header-area { 
       padding: 0 20px; 
-      margin-top: -35px; /* कवर के ऊपर थोड़ा सा चढ़ाने के लिए */
+      margin-top: -35px; 
       position: relative; 
       z-index: 12; 
       background: #fff; 
       border-top-left-radius: 25px; 
       border-top-right-radius: 25px; 
-      overflow: hidden; 
+      overflow: visible !important; 
     }
     
-    /* 🌟 अवतार की फिक्स पोजीशन: यह कवर और सफेद हिस्से के बीच बिल्कुल सटीक बैठेगा बिना हिले */
+    /* 🌟 अवतार को बिल्कुल सही जगह (आधा ऊपर कवर पर, आधा सफेद हिस्से पर) सेट किया गया है */
     .avatar-wrapper { 
       position: absolute !important; 
-      top: 280px !important; /* कवर फोटो की ऊंचाई (320px) के हिसाब से बिल्कुल बीच में सेट */
+      top: -40px !important; 
       left: 20px;
       width: 80px; 
       height: 80px; 
@@ -173,7 +173,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; box-shadow: none !important; }
     
-    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 50px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
     .accompany-badge { 
@@ -196,6 +196,7 @@
       gap: 8px;
       height: 28px;
       overflow: visible; 
+      z-index: 30;
     }
 
     .star-a-top-right { position: absolute; top: 1px; left: 114px; color: #ffd700; font-size: 4px; z-index: 10; }
@@ -315,18 +316,16 @@
         </div>
       </div>
 
-      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
 
-      <!-- 🌟 अवतार को यहाँ कवर और सफेद हिस्से के बिल्कुल बीच में रखा गया है ताकि यह अपनी जगह से न हिले -->
-      <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
-        <img src="" class="avatar-img" id="profAvatarImg">
-        <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
-        <div class="avatar-frame" id="profAvatarFrame"></div>
-      </div>
-
-      <!-- सफेद हिस्सा जिसके दोनों ऊपर के कोने गोल हैं -->
+      <!-- सफेद हिस्सा और इसके अंदर सुरक्षित रूप से सेट किया गया अवतार -->
       <div class="profile-header-area">
+        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+          <img src="" class="avatar-img" id="profAvatarImg">
+          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+          <div class="avatar-frame" id="profAvatarFrame"></div>
+        </div>
+        
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
