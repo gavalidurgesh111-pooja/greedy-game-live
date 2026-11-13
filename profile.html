@@ -123,8 +123,17 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
-    
+    /* 🌟 यहाँ overflow: visible किया गया है ताकि अवतार कटे नहीं */
+    .profile-header-area { 
+      padding: 0 20px; 
+      margin-top: 0px; 
+      position: relative; 
+      z-index: 12; 
+      background: #fff; 
+      border-top-left-radius: 25px; 
+      border-top-right-radius: 25px; 
+      overflow: visible !important; 
+    } 
     /* 🌟 यहाँ से अवतार के डिब्बे की परछाई (box-shadow) पूरी तरह हटा दी गई है */
     .avatar-wrapper { 
       position: relative; 
