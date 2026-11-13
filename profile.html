@@ -122,12 +122,14 @@
       stroke-linejoin: round; 
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
-
-    .profile-header-area {
-     border-top-left-radius: 20px;
-     border-top-right-radius: 20px;
-     overflow: hidden; 
-    }
+      /* सिर्फ प्रोफाइल कार्ड के ऊपर वाले दोनों कोनों को गोल करने के लिए */
+    .profile-card, .profile-container {
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
+      overflow: hidden; /* ताकि फोटो या अंदर का कंटेंट कोने से बाहर न निकले */
+    }   
+    .profile-header-area { padding: 0 20px; margin-top: -35px; position: relative; z-index: 12; }
+    
     /* 🌟 यहाँ से अवतार के डिब्बे की परछाई (box-shadow) पूरी तरह हटा दी गई है */
     .avatar-wrapper { 
       position: relative; 
