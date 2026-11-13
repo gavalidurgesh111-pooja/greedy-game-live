@@ -69,7 +69,6 @@
       cursor: pointer;
     }
     
-    /* बैक बटन की बिल्कुल पतली और सटीक स्टाइलिंग */
     .profile-back-btn { 
       position: absolute; 
       top: 14px; 
@@ -123,31 +122,35 @@
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));
     }
 
-    /* 🌟 यहाँ overflow: visible किया गया है ताकि अवतार कटे नहीं */
+    /* 🌟 सफेद हिस्सा: इसके ऊपर के दोनों कोने गोल हैं और overflow: hidden सुरक्षित है */
     .profile-header-area { 
       padding: 0 20px; 
-      margin-top: 0px; 
+      margin-top: -35px; /* कवर के ऊपर थोड़ा सा चढ़ाने के लिए */
       position: relative; 
-      z-index: 10; 
+      z-index: 12; 
       background: #fff; 
-      border-top-left-radius: 20px; 
-      border-top-right-radius: 20px; 
-      overflow: hideen!important; 
-    } 
-    /* 🌟 यहाँ से अवतार के डिब्बे की परछाई (box-shadow) पूरी तरह हटा दी गई है */
+      border-top-left-radius: 25px; 
+      border-top-right-radius: 25px; 
+      overflow: hidden; 
+    }
+    
+    /* 🌟 अवतार की फिक्स पोजीशन: यह कवर और सफेद हिस्से के बीच बिल्कुल सटीक बैठेगा बिना हिले */
     .avatar-wrapper { 
-      position: relative; 
+      position: absolute !important; 
+      top: 280px !important; /* कवर फोटो की ऊंचाई (320px) के हिसाब से बिल्कुल बीच में सेट */
+      left: 20px;
       width: 80px; 
       height: 80px; 
       border-radius: 50%; 
-      background: #e0e0e0; 
+      background: #fff; 
       padding: 3px; 
-      box-shadow: none !important; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2) !important; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       overflow: visible !important; 
+      z-index: 99 !important; 
     }
 
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -160,7 +163,6 @@
       z-index: 25 !important; display: none;
     }
     
-    /* फ्रेम की स्टाइलिंग (बिना किसी काली परछाई के) */
     .frame-peacock { border: 4px dashed #00b09b; box-shadow: inset 0 0 10px #00b09b; }
     .frame-lion { border: 4px solid #ff4500; box-shadow: inset 0 0 10px #ff4500; }
     .frame-star { border: 4px double #ffd700; box-shadow: inset 0 0 10px #ffd700; }
@@ -174,7 +176,6 @@
     .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
-    /* बैज का मुख्य डिब्बा */
     .accompany-badge { 
       background: linear-gradient(
         to bottom, 
@@ -184,7 +185,6 @@
         #3f881f 75%,  
         #529e2c 100%  
       );
-      
       border: 1px solid rgba(129, 199, 132, 0.4); 
       padding: 4px 16px 4px 26px; 
       border-radius: 20px; 
@@ -198,14 +198,12 @@
       overflow: visible; 
     }
 
-    /* पीले रंग के स्टार्स (★) */
     .star-a-top-right { position: absolute; top: 1px; left: 114px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-a-bottom-left { position: absolute; bottom: 1px; left: 78px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-ny-bottom { position: absolute; bottom: 1px; left: 105px; color: #ffd700; font-size: 4px; z-index: 10; }
     .star-e-top-right { position: absolute; top: 2px; right: 53px; color: #ffd700; font-size: 2px; z-index: 10; }
     .star-e-bottom { position: absolute; bottom: 13px; right: 57px; color: #ffd700; font-size: 2px; z-index: 10; }
 
-    /* पट्टियों का कंटेनर */
     .custom-stripes-container {
       position: absolute;
       inset: 0;
@@ -216,7 +214,6 @@
       border-radius: 20px;
     }
 
-    /* पहली पट्टी */
     .stripe-1 {
       position: absolute;
       top: -15px;      
@@ -227,7 +224,6 @@
       transform: rotate(34deg);
     }
 
-    /* दूसरी पट्टी */
     .stripe-2 {
       position: absolute;
       top: -15px;      
@@ -307,7 +303,6 @@
   <div class="page-container">
     <div id="screenProfile">
       
-      <!-- पतला और शानदार SVG बैक बटन -->
       <div class="profile-back-btn" onclick="window.location.replace('home.html')">
         <svg viewBox="0 0 24 24">
           <polyline points="15 18 9 12 15 6"></polyline>
@@ -320,15 +315,18 @@
         </div>
       </div>
 
+      <!-- कवर स्लाइडर -->
       <div class="cover-slider-container" id="coverSlider" onclick="openPhotoGridScreen()"></div>
 
+      <!-- 🌟 अवतार को यहाँ कवर और सफेद हिस्से के बिल्कुल बीच में रखा गया है ताकि यह अपनी जगह से न हिले -->
+      <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
+        <img src="" class="avatar-img" id="profAvatarImg">
+        <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
+        <div class="avatar-frame" id="profAvatarFrame"></div>
+      </div>
+
+      <!-- सफेद हिस्सा जिसके दोनों ऊपर के कोने गोल हैं -->
       <div class="profile-header-area">
-        <div class="avatar-wrapper" onclick="openFrameModal()" title="Avatar">
-          <img src="" class="avatar-img" id="profAvatarImg">
-          <div id="avatarPlusIcon" style="font-size:28px; font-weight:bold; color:#666; position:absolute; z-index:1;">+</div>
-          <div class="avatar-frame" id="profAvatarFrame"></div>
-        </div>
-        
         <div class="user-name-row">
           <div class="user-name" id="profNameDisplay">User</div>
           
@@ -627,10 +625,12 @@
 
       const frameEl = document.getElementById("profAvatarFrame");
       if (currentFrame === "none") {
-        frameEl.style.display = "none";
+        if(frameEl) frameEl.style.display = "none";
       } else {
-        frameEl.style.display = "block";
-        applyFrameClass(currentFrame);
+        if(frameEl) {
+          frameEl.style.display = "block";
+          applyFrameClass(currentFrame);
+        }
       }
       updatePrivacyHeart();
 
@@ -702,6 +702,7 @@
       localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: frameName }).catch((err) => console.error(err));
       const frameEl = document.getElementById("profAvatarFrame");
+      if(!frameEl) return;
       frameEl.className = "avatar-frame";
       frameEl.style.display = "block";
       frameEl.style.backgroundImage = "";
@@ -715,7 +716,8 @@
       currentFrame = "none";
       localStorage.setItem("prof_frame_" + currentIdentifier, currentFrame);
       db.collection("users").doc(currentIdentifier).update({ frame: "none" }).catch((err) => console.error(err));
-      document.getElementById("profAvatarFrame").style.display = "none";
+      let frameEl = document.getElementById("profAvatarFrame");
+      if(frameEl) frameEl.style.display = "none";
       closeFrameModal();
     }
 
@@ -751,13 +753,13 @@
       const heart = document.getElementById("privacyHeart");
       const bioBox = document.getElementById("aboutMeContentBox");
       if(isPrivate) {
-        heart.innerText = "❤️";
+        if(heart) heart.innerText = "❤️";
         if(bioBox) {
           bioBox.style.background = "#ffe6e6";
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#d9534f; font-weight:bold;'>🔒 Private Mode Active</p>";
         }
       } else {
-        heart.innerText = "🤍";
+        if(heart) heart.innerText = "🤍";
         if(bioBox) {
           bioBox.style.background = "#fff";
           bioBox.innerHTML = "<h4>Bio & Details</h4><p style='font-size:13px; color:#555;'></p>";
