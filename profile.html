@@ -259,7 +259,7 @@
      top: 50%;
      transform: translateY(-45%);
      width: 38px;  
-     height: 38px; 
+     height: 36px; 
      background: transparent;
      display: flex;
      align-items: center;
@@ -363,7 +363,7 @@
             </div>
 
             <div class="accompany-hexagon-outer">
-              <svg viewBox="0 0 100 100" style="width: 38px; height: 38px; overflow: visible;">
+              <svg viewBox="0 0 100 100" style="width: 38px; height: 36px; overflow: visible;">
                 <defs>
                   <!-- 🌟 3D उभरे हुए कांच जैसे इफ़ेक्ट के लिए ग्रेडिएंट्स -->
                   <linearGradient id="bevelTop" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -381,6 +381,11 @@
                     <stop offset="70%" stop-color="#388e3c" />
                     <stop offset="100%" stop-color="#1b5e20" />
                   </radialGradient>
+
+                  <!-- 🔒 फोन को षट्कोण के अंदर ही लॉक रखने के लिए क्लिप-पथ -->
+                  <clipPath id="phoneClip">
+                    <polygon points="50,12 80,29 80,63 50,80 20,63 20,29" />
+                  </clipPath>
                 </defs>
 
                 <!-- षट्कोण के 6 3D उभरे हुए हिस्से (Beveled 3D Facets) -->
@@ -394,13 +399,15 @@
                 <!-- अंदर का मुख्य केंद्र चमकदार हिस्सा -->
                 <polygon points="50,12 80,29 80,63 50,80 20,63 20,29" fill="url(#centerGlow)" stroke="#ffffff" stroke-width="8" stroke-opacity="0.6" />
 
-                <!-- फोन का आइकॉन (अब बिल्कुल सही साइज़ और सेंटर में सेट किया गया है) -->
-                <g transform="translate(34, 23) scale(0.34)">
-                  <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
-                  <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.2" stroke="none" />
-                  <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#2e7d32" stroke="none" />
-                  <rect x="18" y="27" width="60" height="80" rx="0" ry="0" fill="#2e7d32" stroke="none" />
-                  <circle cx="50" cy="120" r="6" fill="#2e7d32" stroke="none" />
+                <!-- 📱 फोन का आइकॉन (क्लिप-पथ की वजह से अब यह षट्कोण से बाहर कभी नहीं निकलेगा) -->
+                <g clip-path="url(#phoneClip)">
+                  <g transform="translate(34, 23) scale(0.34)">
+                    <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
+                    <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.2" stroke="none" />
+                    <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#2e7d32" stroke="none" />
+                    <rect x="18" y="27" width="60" height="80" rx="0" ry="0" fill="#2e7d32" stroke="none" />
+                    <circle cx="50" cy="120" r="6" fill="#2e7d32" stroke="none" />
+                  </g>
                 </g>
 
                 <!-- बाहरी हल्की कांच जैसी बॉर्डर -->
