@@ -365,38 +365,46 @@
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 28px; height: 32px; overflow: visible;">
                 <defs>
-                  <linearGradient id="oldHexGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#ffffff" />
-                    <stop offset="50%" stop-color="#81c784" />
-                    <stop offset="100%" stop-color="#4CAF50" />
+                  <!-- 🌟 3D उभरे हुए कांच जैसे इफ़ेक्ट के लिए ग्रेडिएंट्स -->
+                  <linearGradient id="bevelTop" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#4CAF50" stop-opacity="0.5" />
                   </linearGradient>
 
-                  <clipPath id="hexagonClip">
-                    <polygon points="50,10 90,32 90,68 50,90 10,68 10,32" />
-                  </clipPath>
+                  <linearGradient id="bevelBottom" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#2e7d32" />
+                    <stop offset="100%" stop-color="#a5d6a7" stop-opacity="0.9" />
+                  </linearGradient>
+
+                  <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#81c784" />
+                    <stop offset="70%" stop-color="#388e3c" />
+                    <stop offset="100%" stop-color="#1b5e20" />
+                  </radialGradient>
                 </defs>
 
-                <g clip-path="url(#hexagonClip)">
-                  <!-- 📱 यहाँ सिर्फ फोन की बॉर्डर पर हल्का हरा ग्रेडिएंट सेट किया गया है, अंदर का हिस्सा सुरक्षित है -->
-                  <g transform="translate(30, 22) scale(0.40)">
-                    <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#b1f2bb" stroke="url(#oldHexGradient)" stroke-width="4" />
-                    <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#77c984" fill-opacity="0.12" stroke="none" />
-                    <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#3a7d44" stroke="none" />
-                    <rect x="18" y="27" width="60" height="80" rx="0" ry="0" fill="#3a7d44" stroke="none" />
-                    <circle cx="50" cy="120" r="6" fill="#3a7d44" stroke="none" />
-                  </g>
+                <!-- षट्कोण के 6 3D उभरे हुए हिस्से (Beveled 3D Facets) -->
+                <polygon points="50,50 50,4 86,25" fill="url(#bevelTop)" />
+                <polygon points="50,50 86,25 86,67" fill="#43a047" />
+                <polygon points="50,50 86,67 50,88" fill="url(#bevelBottom)" />
+                <polygon points="50,50 50,88 14,67" fill="url(#bevelBottom)" />
+                <polygon points="50,50 14,67 14,25" fill="#2e7d32" />
+                <polygon points="50,50 14,25 50,4" fill="url(#bevelTop)" />
+
+                <!-- अंदर का मुख्य केंद्र चमकदार हिस्सा -->
+                <polygon points="50,12 80,29 80,63 50,80 20,63 20,29" fill="url(#centerGlow)" stroke="#ffffff" stroke-width="1.5" stroke-opacity="0.6" />
+
+                <!-- फोन का आइकॉन (सफेद बॉर्डर और हरा अंदर) -->
+                <g transform="translate(30, 22) scale(0.40)">
+                  <rect x="5" y="5" width="90" height="127" rx="0" ry="0" fill="#ffffff" stroke="#ffffff" stroke-width="3" />
+                  <rect x="5" y="5" width="90" height="127" rx="28" ry="28" fill="#76c783" fill-opacity="0.2" stroke="none" />
+                  <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#2e7d32" stroke="none" />
+                  <rect x="18" y="27" width="60" height="80" rx="0" ry="0" fill="#2e7d32" stroke="none" />
+                  <circle cx="50" cy="120" r="6" fill="#2e7d32" stroke="none" />
                 </g>
 
-                <polygon points="50,8 90,32 90,68 50,94 10,68 10,32" fill="none" stroke="url(#oldHexGradient)" stroke-width="14" stroke-linejoin="round" />
-
-                <g stroke="#b1f2bb" stroke-width="1.2" stroke-linecap="round">
-                  <line x1="50" y1="3"  x2="50" y2="14" />
-                  <line x1="50" y1="99" x2="50" y2="88" />
-                  <line x1="5"  y1="29" x2="16" y2="35" />
-                  <line x1="95" y1="29" x2="84" y2="35" />
-                  <line x1="95" y1="71" x2="84" y2="65" />
-                  <line x1="5"  y1="71" x2="16" y2="65" />
-                </g>
+                <!-- बाहरी हल्की कांच जैसी बॉर्डर -->
+                <polygon points="50,4 86,25 86,67 50,88 14,67 14,25" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.8" stroke-linejoin="round" />
               </svg>
             </div>
 
