@@ -135,18 +135,21 @@
     }
     
     .avatar-wrapper { 
-      position: relative; 
+      position: absolute !important; 
+      top: -40px !important; /* आधा हिस्सा कवर पर और आधा सफेद हिस्से पर सेट करने के लिए */
+      left: 20px;
       width: 80px; 
       height: 80px; 
       border-radius: 50%; 
-      background: #e0e0e0; 
+      background: #fff; 
       padding: 3px; 
-      box-shadow: none !important; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15) !important; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
       justify-content: center; 
       overflow: visible !important; 
+      z-index: 25;
     }
 
     .avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: none; position: relative; z-index: 3; }
@@ -169,7 +172,7 @@
     .frame-custom3 { background-image: url('frame3.png') !important; box-shadow: none !important; }
     .frame-custom4 { background-image: url('tiger-frame4.webp') !important; box-shadow: none !important; }
     
-    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 25px; position: relative; }
+    .user-name-row { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 50px; position: relative; } /* मार्जिन ऊपर बढ़ाया गया है ताकि अवतार नाम से न टकराए */
     .user-name { font-size: 20px; font-weight: 800; color: #111; }
     
     .accompany-badge { 
