@@ -397,15 +397,15 @@
                 <!-- अंदर का मुख्य केंद्र चमकदार हिस्सा -->
                 <polygon points="50,16 76,30 76,64 50,78 24,64 24,30" fill="url(#centerGlow)" stroke="#e3ffe4" stroke-width="2" stroke-opacity="0.8" />
 
-                <!-- 📱 फोन का आइकॉन (लॉक मुक्त, साफ़ स्क्रीन और सही साइज़) -->
+                <!-- 📱 फोन का आइकॉन (डार्क शेड/रंग की समस्या का पक्का समाधान) -->
                 <g>
                   <g transform="translate(34, 23) scale(0.34)">
                     <rect x="5" y="3" width="44" height="74" rx="20" ry="20" fill="#dcf7d7" stroke="#dcf7d7" stroke-width="2" />
                     <rect x="5" y="5" width="90" height="127" rx="25" ry="25" fill="#76c783" fill-opacity="0.2" stroke="none" />
                     <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#2e7d32" stroke="none" />
                     
-                    <!-- 🌟 स्क्रीन ऊपर से बिल्कुल साफ़ (y="26") और नीचे से लंबी (height="92") -->
-                    <rect x="18" y="26" width="60" height="92" rx="8" ry="8" fill="#2e7d32" stroke="none" />
+                    <!-- 🌟 स्क्रीन की शुरुआत y="29" पर सेट है ताकि स्पीकर बार से फासला रहे और height="95" से नीचे लंबी हो गई है -->
+                    <rect x="18" y="29" width="60" height="95" rx="8" ry="8" fill="#2e7d32" stroke="none" />
                     
                     <!-- 🌟 होम बटन बिल्कुल सही जगह पर नीचे -->
                     <circle cx="50" cy="122" r="6" fill="#2e7d32" stroke="none" />
@@ -758,7 +758,7 @@
       document.getElementById("modalFrame").style.display = "flex"; 
       history.pushState({modal: "frame"}, "", window.location.href);
     }
-    function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
+    closeFrameModal = () => { document.getElementById("modalFrame").style.display = "none"; }
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
