@@ -365,7 +365,6 @@
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 38px; height: 36px; overflow: visible;">
                 <defs>
-                  <!-- 🌟 केंद्र में गहरा हरा और बाहर आते-आते सफेद रंग में मिलने वाला ग्रेडिएंट -->
                   <radialGradient id="greenToWhiteFade" cx="50%" cy="50%" r="65%" fx="50%" fy="50%">
                     <stop offset="0%" stop-color="#2e7d32" />
                     <stop offset="50%" stop-color="#81c784" />
@@ -386,14 +385,8 @@
                     <stop offset="0%" stop-color="#388e3c" />
                     <stop offset="100%" stop-color="#2a7e19" />
                   </radialGradient>
-
-                  <!-- 🔒 फोन को षट्कोण के अंदर ही लॉक रखने के लिए क्लिप-पथ -->
-                  <clipPath id="phoneClip">
-                    <polygon points="50,12 80,29 80,63 50,80 20,63 20,29" />
-                  </clipPath>
                 </defs>
 
-                <!-- षट्कोण के 6 बॉक्स (केंद्र में हरा और बाहर सफेद में घुलने वाला इफ़ेक्ट) -->
                 <polygon points="50,50 50,4 86,25" fill="url(#greenToWhiteFade)" />
                 <polygon points="50,50 86,25 86,67" fill="url(#greenToWhiteFade)" />
                 <polygon points="50,50 86,67 50,88" fill="url(#greenToWhiteFade)" />
@@ -404,18 +397,21 @@
                 <!-- अंदर का मुख्य केंद्र चमकदार हिस्सा -->
                 <polygon points="50,16 76,30 76,64 50,78 24,64 24,30" fill="url(#centerGlow)" stroke="#e3ffe4" stroke-width="2" stroke-opacity="0.8" />
 
-                <!-- 📱 फोन का आइकॉन (क्लिप-पथ की वजह से अब यह षट्कोण से बाहर कभी नहीं निकलेगा) -->
-                <g clip-path="url(#phoneClip)">
-                  <g transform="translate(34, 23) scale(0.30)">
-                    <rect x="5" y="5" width="90" height="135" rx="20" ry="20" fill="#dcf7d7" stroke="#dcf7d7" stroke-width="3" />
-                    <rect x="5" y="5" width="90" height="135" rx="25" ry="25" fill="#76c783" fill-opacity="0.2" stroke="none" />
+                <!-- 📱 फोन का आइकॉन (अब यह क्लिप-पथ / लॉक से पूरी तरह आज़ाद है) -->
+                <g>
+                  <g transform="translate(34, 23) scale(0.34)">
+                    <rect x="5" y="3" width="44" height="74" rx="20" ry="20" fill="#dcf7d7" stroke="#dcf7d7" stroke-width="2" />
+                    <rect x="5" y="5" width="90" height="127" rx="25" ry="25" fill="#76c783" fill-opacity="0.2" stroke="none" />
                     <rect x="35" y="14" width="30" height="6" rx="3" ry="3" fill="#2e7d32" stroke="none" />
-                    <rect x="18" y="27" width="60" height="80" rx="10" ry="10" fill="#2e7d32" stroke="none" />
-                    <circle cx="50" cy="120" r="6" fill="#2e7d32" stroke="none" />
+                    
+                    <!-- 🌟 स्क्रीन ऊपर से साफ़ और नीचे से लंबी (height="95") -->
+                    <rect x="18" y="27" width="60" height="95" rx="10" ry="10" fill="#2e7d32" stroke="none" />
+                    
+                    <!-- 🌟 होम बटन बिल्कुल नीचे सही जगह पर -->
+                    <circle cx="50" cy="122" r="6" fill="#2e7d32" stroke="none" />
                   </g>
                 </g>
 
-                <!-- बाहरी हल्की कांच जैसी बॉर्डर -->
                 <polygon points="50,4 86,25 86,67 50,88 14,67 14,25" fill="none" stroke="#ffffff" stroke-width="1" stroke-opacity="0.8" stroke-linejoin="round" />
               </svg>
             </div>
@@ -763,6 +759,8 @@
       history.pushState({modal: "frame"}, "", window.location.href);
     }
     function closeFrameModal() { document.getElementById("modalFrame").style.display = "none"; }
+
+    postMessage
 
     function copyMyId() {
       navigator.clipboard.writeText(userId);
