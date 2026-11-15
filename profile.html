@@ -365,13 +365,14 @@
             <div class="accompany-hexagon-outer">
               <svg viewBox="0 0 100 100" style="width: 38px; height: 36px; overflow: visible;">
                 <defs>
+                  <!-- 🌟 नीचे वाले डिब्बों के लिए पुराना ग्रेडिएंट -->
                   <radialGradient id="greenToWhiteFade" cx="50%" cy="50%" r="65%" fx="50%" fy="50%">
                     <stop offset="0%" stop-color="#69ab0e" />
                     <stop offset="50%" stop-color="#8bc738" />
                     <stop offset="100%" stop-color="#d9f0b9" />
                   </radialGradient>
 
-                  <!-- 🌟 सिर्फ ऊपर वाले बॉक्स के लिए हल्का हरा और फैलता हुआ नया ग्रेडिएंट -->
+                  <!-- 🌟 ऊपर वाले डिब्बों के लिए बिल्कुल अलग और आज़ाद ग्रेडिएंट (तेरे रखे हुए रंग, नीचे वालों से कोई मिक्सिंग नहीं!) -->
                   <radialGradient id="topBoxFade" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
                     <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7" />
                     <stop offset="60%" stop-color="#ffffff" stop-opacity="0.4" />
@@ -398,12 +399,16 @@
                   </clipPath>
                 </defs>
 
-                <!-- 🌟 केवल सबसे ऊपर वाला बॉक्स नए हल्के फैलाव वाले रंग में -->
+                <!-- 🌟 ऊपर वाले दोनों डिब्बे अब अपने आज़ाद 'topBoxFade' ग्रेडिएंट से चलेंगे -->
                 <polygon points="50,50 50,4 86,25" fill="url(#topBoxFade)" />
+                
+                <!-- नीचे और साइड वाले चारों डिब्बे अपने पुराने 'greenToWhiteFade' पर रहेंगे -->
                 <polygon points="50,50 86,25 86,67" fill="url(#greenToWhiteFade)" />
                 <polygon points="50,50 86,67 50,88" fill="url(#greenToWhiteFade)" />
                 <polygon points="50,50 50,88 14,67" fill="url(#greenToWhiteFade)" />
                 <polygon points="50,50 14,67 14,25" fill="url(#greenToWhiteFade)" />
+                
+                <!-- 🌟 ऊपर-बाएँ वाला डिब्बा भी उसी आज़ाद ग्रेडिएंट से -->
                 <polygon points="50,50 14,25 50,4" fill="url(#topBoxFade)" />
 
                 <!-- अंदर का मुख्य केंद्र चमकदार हिस्सा -->
