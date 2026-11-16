@@ -136,6 +136,25 @@
     .support-top-btn:active {
       transform: scale(0.92);
     }
+
+    /* स्क्रीन पर तैरने वाले छोटे 'Successfully' टस्ट मैसेज की स्टाइल */
+    #floatingToast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: rgba(0, 0, 0, 0.85);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 700;
+      z-index: 9999999;
+      display: none;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+      transition: transform 0.2s ease;
+      text-align: center;
+    }
   </style>
 
   <!-- EmailJS Library लोड की जा रही है -->
@@ -156,6 +175,9 @@
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
     </svg>
   </div>
+
+  <!-- स्क्रीन पर दिखने वाला छोटा Successfully टोस्ट मैसेज -->
+  <div id="floatingToast">Successfully</div>
 
   <div id="authFlowContainer">
     <!-- मुख्य लॉगिन स्क्रीन -->
@@ -189,7 +211,7 @@
       </div>
     </div>
 
-    <!-- Customer Service Center Modal (छोटा सक्सेस मैसेज वाला फॉर्म) -->
+    <!-- Customer Service Center Modal -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
@@ -204,13 +226,10 @@
             <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
           </div>
           <!-- 3. Message Field -->
-          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px; position:relative;">
+          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:20px; position:relative;">
             <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
             <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:4px;">0/300</div>
           </div>
-
-          <!-- फॉर्म के अंदर ही छोटा सक्सेस मैसेज दिखने के लिए -->
-          <div id="formSuccessMsg" style="display:none; color:#28a745; font-size:13px; font-weight:700; margin-bottom:12px;">Successful! Your message has been sent.</div>
 
           <div style="display:flex; gap:12px; justify-content:center;">
             <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
@@ -279,7 +298,6 @@
       document.getElementById("csEmailInput").value = "";
       document.getElementById("csIssueInput").value = "";
       document.getElementById("csCharCount").innerText = "0/300";
-      document.getElementById("formSuccessMsg").style.display = "none";
       let confirmBtn = document.getElementById("csConfirmBtn");
       confirmBtn.innerText = "Confirm";
       confirmBtn.disabled = false;
@@ -297,7 +315,7 @@
       document.getElementById("csCharCount").innerText = len + "/300";
     }
 
-    // EmailJS फॉर्म सबमिशन लॉजिक (छोटा सक्सेस मैसेज दिखाने के लिए)
+    // EmailJS फॉर्म सबमिशन (फॉर्म बंद होकर स्क्रीन पर 'Successfully' दिखाने का लॉजिक)
     document.getElementById('support-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -310,15 +328,18 @@
           confirmBtn.innerText = "Confirm";
           confirmBtn.disabled = false;
           
-          let successMsg = document.getElementById("formSuccessMsg");
-          successMsg.style.display = "block";
+          // 1. फॉर्म वाला पॉप-अप तुरंत बंद कर दें
+          closeCustomerServiceModal();
           
+          // 2. फॉर्म रीसेट कर दें
           document.getElementById('support-form').reset();
           document.getElementById("csCharCount").innerText = "0/300";
 
+          // 3. स्क्रीन के बीच में छोटा 'Successfully' मैसेज दिखाएं और 2 सेकंड बाद गायब कर दें
+          let toast = document.getElementById("floatingToast");
+          toast.style.display = "block";
           setTimeout(function() {
-            successMsg.style.display = "none";
-            closeCustomerServiceModal();
+            toast.style.display = "none";
           }, 2000);
 
         }, function(error) {
