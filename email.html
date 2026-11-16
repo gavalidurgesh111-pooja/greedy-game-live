@@ -348,20 +348,37 @@
       }
     }
 
-    // 🌟 बिल्कुल पक्का लॉजिक: पुराना यूजर पहचानते ही सीधा पासवर्ड पर भेजेगा, पॉप-अप नहीं आएगा!
+    // 🌟 सुपर-स्मार्ट और फुल-प्रूफ लॉजिक: चाहे ईमेल कैसा भी लिखा हो, यह स्टोरेज को डीप स्कैन करके तुरंत पहचान लेगा!
     function handleEmailNext() {
-      let email = document.getElementById("emailInput").value.trim().toLowerCase();
-      if (!email.includes("@") || !email.includes(".")) {
+      let rawInput = document.getElementById("emailInput").value;
+      if (!rawInput || !rawInput.includes("@") || !rawInput.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
         return;
       }
+      
+      // ईमेल को पूरी तरह साफ़ और लोअरकेस करना ताकि कोई गलती न बचे
+      let email = rawInput.trim().toLowerCase();
       currentEmail = email;
 
+      // 1. डायरेक्ट चेक
       let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
       let isPasswordSaved = localStorage.getItem("greedy_email_password_" + email);
 
-      // अगर ईमेल रजिस्टर्ड है या पासवर्ड सेव है, तो यह 100% पुराना यूजर है
-      if (isRegistered || isPasswordSaved) {
+      // 2. डीप स्कैन (यदि स्टोरेज में आगे-पीछे किसी भी फॉर्मेट में सेव है)
+      let foundInStorage = false;
+      for (let i = 0; i < localStorage.length; i++) {
+        let key = localStorage.key(i);
+        if (key && (key.includes("greedy_email_registered_") || key.includes("greedy_email_password_"))) {
+          let storedEmail = key.replace("greedy_email_registered_", "").replace("greedy_email_password_", "").trim().toLowerCase();
+          if (storedEmail === email) {
+            foundInStorage = true;
+            break;
+          }
+        }
+      }
+
+      // अगर किसी भी तरीके से मिल गया, तो यह 100% पुराना यूजर है!
+      if (isRegistered || isPasswordSaved || foundInStorage) {
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
         document.getElementById("forgotPassContainer").style.display = "block";
@@ -369,7 +386,7 @@
         document.getElementById("emailPassSubmitBtn").classList.remove("active");
         updateEmailScreen("password");
       } else {
-        // नया यूजर होने पर ही रजिस्ट्रेशन कंफर्मेशन पॉप-अप आएगा
+        // सचमुच नया यूजर होने पर ही यह रजिस्ट्रेशन/OTP वाला पॉप-अप आएगा
         showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
           if (confirmed) {
             updateEmailScreen("otp");
@@ -457,15 +474,17 @@
         return;
       }
 
-      let isRegistered = localStorage.getItem("greedy_email_registered_" + currentEmail);
+      // हमेशा साफ़ और लोअरकेस ईमेल ही सेव करेंगे ताकि कभी मैचिंग मिस न हो
+      let cleanEmail = currentEmail.trim().toLowerCase();
+      let isRegistered = localStorage.getItem("greedy_email_registered_" + cleanEmail);
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
-        localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
-        localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
+        localStorage.setItem("greedy_email_registered_" + cleanEmail, "true");
+        localStorage.setItem("greedy_email_password_" + cleanEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
-        localStorage.setItem("greedy_email_identifier", currentEmail);
-        localStorage.setItem("greedy_login_identifier", currentEmail);
+        localStorage.setItem("greedy_email_identifier", cleanEmail);
+        localStorage.setItem("greedy_login_identifier", cleanEmail);
 
         if (!localStorage.getItem("greedy_unique_id")) {
           let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
@@ -485,14 +504,14 @@
           }, 1000);
         });
       } else {
-        let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
+        let savedPass = localStorage.getItem("greedy_email_password_" + cleanEmail);
         if (passVal !== savedPass) {
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
         }
 
-        localStorage.setItem("greedy_email_identifier", currentEmail);
-        localStorage.setItem("greedy_login_identifier", currentEmail);
+        localStorage.setItem("greedy_email_identifier", cleanEmail);
+        localStorage.setItem("greedy_login_identifier", cleanEmail);
         localStorage.setItem("greedy_initialized", "true");
         
         document.getElementById("loadingOverlay").style.display = "flex";
