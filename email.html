@@ -50,8 +50,9 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
+    /* 🌟 लोगो और नामों को नीचे करने और साइज़ नॉर्मल छोटा करने के लिए */
     .social-login-section {
-      margin-top: 55px;
+      margin-top: 55px; /* इसे थोड़ा और नीचे कर दिया गया है */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -93,8 +94,8 @@
       width: 48%;
     }
     .social-icon-circle {
-      width: 52px;
-      height: 52px;
+      width: 52px;  /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
+      height: 52px; /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -105,8 +106,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .facebook-icon {
-      width: 26px;
-      height: 26px;
+      width: 26px;  /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
+      height: 26px; /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
       background: #1877f2;
       border-radius: 50%;
       display: flex;
@@ -118,6 +119,7 @@
       font-family: Arial, sans-serif;
     }
     
+    /* 🌟 मोबाइल डिवाइस लोगो का साइज़ भी छोटा और नॉर्मल किया गया */
     .mobile-icon-shape {
       width: 16px;
       height: 24px;
@@ -155,7 +157,7 @@
     </div>
     
     <div style="margin-top: 20px;">
-      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Sign in with Email (Trial)</div>
+      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Sign in with Email</div>
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter your email address to continue</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailInput')">
@@ -166,6 +168,7 @@
       </form>
     </div>
 
+    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (नॉर्मल छोटे लोगो और नीचे खिसके हुए) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -189,7 +192,7 @@
     </div>
   </div>
 
-  <!-- 2. ईमेल OTP वेरिफिकेशन स्क्रीन (ट्रायल में अभी होल्ड पर) -->
+  <!-- 2. ईमेल OTP वेरिफिकेशन स्क्रीन -->
   <div id="screenEmailOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
       <div class="back-btn" onclick="showEmailInputScreen()" style="font-size:24px; cursor:pointer;">❮</div>
@@ -197,7 +200,7 @@
     
     <div style="margin-top: 20px;">
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Email Verification</div>
-      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Trial OTP: 1234</div>
+      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">New user verification required. Demo OTP: 1234</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailOtpInput')">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
@@ -224,7 +227,7 @@
     
     <div style="margin-top: 20px;">
       <div class="step-title" id="emailPassTitle" style="font-size:24px; font-weight:900; color:#000;">Enter Password</div>
-      <div id="emailPassSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Trial Mode: Enter any 8-character password</div>
+      <div id="emailPassSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Exact 8 characters required</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailPassInput')">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; position:relative;">
@@ -238,7 +241,7 @@
       </form>
 
       <div id="forgotPassContainer" style="margin-top:15px; text-align:center; display:none;">
-        <span onclick="forgotEmailPassword()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password?</span>
+        <span onclick="forgotEmailPassword()" style="color:#5e229e; font-size:14px; font-weight:600; cursor:pointer;">Forgot password? (Reset via OTP)</span>
       </div>
     </div>
 
@@ -267,6 +270,8 @@
     }, false);
 
     window.onload = function() {
+      // 🌟 पेज खुलते ही पुरानी सारी स्टोरेज साफ़ करना ताकि कोई पुराना डेटा या मिक्सिंग न हो
+      localStorage.clear();
       history.replaceState({ page: "email_input" }, "");
     };
 
@@ -318,6 +323,17 @@
       popupCallback = callback;
     }
 
+    function showCustomConfirm(message, callback) {
+      document.getElementById("popupMessage").innerText = message;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = callback;
+    }
+
     function closeCustomPopup(result) {
       document.getElementById("customPopupModal").style.display = "none";
       let cb = popupCallback;
@@ -337,21 +353,28 @@
       }
     }
 
-    // 🌟 ट्रायल मोड: ईमेल डालते ही बिना OTP के सीधा पासवर्ड स्क्रीन पर ले जाएगा
     function handleEmailNext() {
-      let email = document.getElementById("emailInput").value.trim().toLowerCase();
+      let email = document.getElementById("emailInput").value.trim();
       if (!email.includes("@") || !email.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
         return;
       }
       currentEmail = email;
 
-      document.getElementById("emailPassTitle").innerText = "Enter Password";
-      document.getElementById("emailPassSub").innerText = "Trial Mode: Enter your 8-character password";
-      document.getElementById("forgotPassContainer").style.display = "block";
-      document.getElementById("emailPassInput").value = "";
-      document.getElementById("emailPassSubmitBtn").classList.remove("active");
-      updateEmailScreen("password");
+      let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
+
+      if (!isRegistered) {
+        showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
+          if (confirmed) {
+            updateEmailScreen("otp");
+          }
+        });
+      } else {
+        document.getElementById("emailPassTitle").innerText = "Enter Password";
+        document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
+        document.getElementById("forgotPassContainer").style.display = "block";
+        updateEmailScreen("password");
+      }
     }
 
     function checkEmailOtpInput(input) {
@@ -370,6 +393,12 @@
         showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
         return;
       }
+
+      document.getElementById("emailPassTitle").innerText = "Create Password";
+      document.getElementById("emailPassSub").innerText = "Set an exact 8-character password for your new account";
+      document.getElementById("forgotPassContainer").style.display = "none";
+      document.getElementById("emailPassInput").value = "";
+      document.getElementById("emailPassSubmitBtn").classList.remove("active");
       updateEmailScreen("password");
     }
 
@@ -386,7 +415,13 @@
     }
 
     function forgotEmailPassword() {
-      showCustomAlert("Trial Mode: You can enter any 8-character password to proceed.");
+      history.pushState({ modalOpen: true }, "");
+      
+      showCustomAlert("OTP verification required to reset your password.", function() {
+        document.getElementById("emailOtpInput").value = "";
+        document.getElementById("emailOtpSubmitBtn").classList.remove("active");
+        updateEmailScreen("otp");
+      });
     }
 
     function checkEmailPassInput(input) {
@@ -413,7 +448,6 @@
       }
     }
 
-    // 🌟 ट्रायल मोड: पासवर्ड 8 अक्षर का होते ही सीधा आगे भेज देगा
     function handleEmailFinalSubmit() {
       let passVal = document.getElementById("emailPassInput").value;
       if (passVal.length !== 8) {
@@ -421,26 +455,53 @@
         return;
       }
 
-      localStorage.setItem("greedy_email_identifier", currentEmail);
-      localStorage.setItem("greedy_login_identifier", currentEmail);
-      localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
+      let isRegistered = localStorage.getItem("greedy_email_registered_" + currentEmail);
+      let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
-      if (!localStorage.getItem("greedy_unique_id")) {
+      if (!isRegistered || isForgotFlow || isCreateMode) {
+        localStorage.removeItem("greedy_coins");
+        localStorage.removeItem("greedy_unique_id");
+        localStorage.removeItem("greedy_name");
+        localStorage.removeItem("greedy_won");
+        localStorage.removeItem("greedy_level");
+
+        localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
+        localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
+        localStorage.setItem("greedy_password", passVal);
+        localStorage.setItem("greedy_email_identifier", currentEmail);
+        localStorage.setItem("greedy_login_identifier", currentEmail);
+
         let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
         localStorage.setItem("greedy_unique_id", freshId);
         localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
         localStorage.setItem("greedy_coins", "1000");
         localStorage.setItem("greedy_won", "0");
         localStorage.setItem("greedy_level", "1");
-      }
 
-      showCustomAlert("Success! Logging in (Trial)...", function() {
+        isForgotFlow = false;
+        showCustomAlert("Success! Logging in...", function() {
+          localStorage.setItem("greedy_initialized", "true");
+          document.getElementById("loadingOverlay").style.display = "flex";
+          setTimeout(() => {
+            window.location.replace("photo-gateway.html");
+          }, 1000);
+        });
+      } else {
+        let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
+        if (passVal !== savedPass) {
+          showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
+          return;
+        }
+
+        localStorage.setItem("greedy_email_identifier", currentEmail);
+        localStorage.setItem("greedy_login_identifier", currentEmail);
         localStorage.setItem("greedy_initialized", "true");
+        
         document.getElementById("loadingOverlay").style.display = "flex";
         setTimeout(() => {
           window.location.replace("photo-gateway.html");
         }, 1000);
-      });
+      }
     }
 
     function handleMobileLogin() {
