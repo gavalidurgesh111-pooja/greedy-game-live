@@ -142,7 +142,6 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        // तेरी नई Public Key
         emailjs.init("LAQTW0O3jnMV4GyV4");
      })();
   </script>
@@ -190,25 +189,29 @@
       </div>
     </div>
 
-    <!-- Customer Service Center Modal (ट्रेनों नए डैशबोर्ड के अनुसार 3 फील्ड्स वाला फॉर्म) -->
+    <!-- Customer Service Center Modal (छोटा सक्सेस मैसेज वाला फॉर्म) -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
         
         <form id="support-form">
-          <!-- 1. Name Field ({{name}}) -->
+          <!-- 1. Name Field -->
           <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px;">
             <input type="text" id="csNameInput" name="name" placeholder="Please enter your name or ID" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
           </div>
-          <!-- 2. Email Field ({{email}}) -->
+          <!-- 2. Email Field -->
           <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px;">
             <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
           </div>
-          <!-- 3. Message Field ({{message}}) -->
-          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:20px; position:relative;">
+          <!-- 3. Message Field -->
+          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px; position:relative;">
             <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
             <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:4px;">0/300</div>
           </div>
+
+          <!-- फॉर्म के अंदर ही छोटा सक्सेस मैसेज दिखने के लिए -->
+          <div id="formSuccessMsg" style="display:none; color:#28a745; font-size:13px; font-weight:700; margin-bottom:12px;">Successful! Your message has been sent.</div>
+
           <div style="display:flex; gap:12px; justify-content:center;">
             <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
             <button type="submit" style="flex:1; padding:14px; border-radius:24px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:15px;" id="csConfirmBtn">Confirm</button>
@@ -216,15 +219,6 @@
         </form>
 
         <div style="font-size:10px; color:#aaa; margin-top:15px;">did:da41489e5bd3b3cf</div>
-      </div>
-    </div>
-
-    <!-- Custom Popup Modal -->
-    <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-        <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
-        <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
-        <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
       </div>
     </div>
   </div>
@@ -242,13 +236,6 @@
 
     window.addEventListener('popstate', function(event) {
       history.pushState({page: "auth_secure"}, "", window.location.href);
-      
-      let modal = document.getElementById("customPopupModal");
-      if (modal && modal.style.display === "flex") {
-        modal.style.display = "none";
-        popupCallback = null;
-        return;
-      }
 
       let csModal = document.getElementById("customerServiceModal");
       if (csModal && csModal.style.display === "flex") {
@@ -283,7 +270,7 @@
     }
 
     function socialLoginNotice(provider) {
-      showCustomAlert(provider + " login selected. Please use More Options for phone/ID login.");
+      alert(provider + " login selected. Please use More Options for phone/ID login.");
     }
 
     function openCustomerServiceModal() {
@@ -292,7 +279,10 @@
       document.getElementById("csEmailInput").value = "";
       document.getElementById("csIssueInput").value = "";
       document.getElementById("csCharCount").innerText = "0/300";
+      document.getElementById("formSuccessMsg").style.display = "none";
       let confirmBtn = document.getElementById("csConfirmBtn");
+      confirmBtn.innerText = "Confirm";
+      confirmBtn.disabled = false;
       confirmBtn.style.background = "#8a2be2";
       confirmBtn.style.color = "#fff";
       document.getElementById("customerServiceModal").style.display = "flex";
@@ -307,46 +297,37 @@
       document.getElementById("csCharCount").innerText = len + "/300";
     }
 
-    // EmailJS फॉर्म सबमिशन लॉजिक (नई Service ID और Template ID के साथ)
+    // EmailJS फॉर्म सबमिशन लॉजिक (छोटा सक्सेस मैसेज दिखाने के लिए)
     document.getElementById('support-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
       let confirmBtn = document.getElementById("csConfirmBtn");
       confirmBtn.innerText = "Sending...";
+      confirmBtn.disabled = true;
 
       emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
         .then(function() {
           confirmBtn.innerText = "Confirm";
-          closeCustomerServiceModal();
-          showCustomAlert("Your request has been submitted successfully! We will resolve it within 48 hours.");
+          confirmBtn.disabled = false;
+          
+          let successMsg = document.getElementById("formSuccessMsg");
+          successMsg.style.display = "block";
+          
           document.getElementById('support-form').reset();
+          document.getElementById("csCharCount").innerText = "0/300";
+
+          setTimeout(function() {
+            successMsg.style.display = "none";
+            closeCustomerServiceModal();
+          }, 2000);
+
         }, function(error) {
           confirmBtn.innerText = "Confirm";
+          confirmBtn.disabled = false;
           console.log('FAILED...', error);
-          showCustomAlert("Failed to send message. Please try again later.");
+          alert("Failed to send message. Please try again later.");
         });
     });
-
-    let popupCallback = null;
-
-    function showCustomAlert(message, callback) {
-      document.getElementById("popupMessage").innerText = message;
-      let btnContainer = document.getElementById("popupButtons");
-      btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
-      `;
-      document.getElementById("customPopupModal").style.display = "flex";
-      popupCallback = callback;
-    }
-
-    function closeCustomPopup(result) {
-      document.getElementById("customPopupModal").style.display = "none";
-      let cb = popupCallback;
-      popupCallback = null;
-      if (result && cb) {
-        cb(true);
-      }
-    }
   </script>
 </body>
 </html>
