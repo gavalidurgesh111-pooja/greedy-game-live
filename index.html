@@ -137,23 +137,23 @@
       transform: scale(0.92);
     }
 
-    /* स्क्रीन पर तैरने वाले छोटे 'Successfully' टस्ट मैसेज की स्टाइल */
+    /* स्क्रीन के नीचे (Bottom) सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला टोस्ट मैसेज */
     #floatingToast {
       position: fixed;
-      top: 50%;
+      bottom: 30px;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: rgba(0, 0, 0, 0.85);
-      color: #fff;
-      padding: 12px 24px;
-      border-radius: 30px;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #6a0dad; /* पर्पल-नीला रंग */
+      padding: 12px 28px;
+      border-radius: 24px;
       font-size: 15px;
-      font-weight: 700;
+      font-weight: 800;
       z-index: 9999999;
       display: none;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
       text-align: center;
+      border: 2px solid #8a2be2;
     }
   </style>
 
@@ -176,7 +176,7 @@
     </svg>
   </div>
 
-  <!-- स्क्रीन पर दिखने वाला छोटा Successfully टोस्ट मैसेज -->
+  <!-- स्क्रीन के नीचे दिखने वाला सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला मैसेज -->
   <div id="floatingToast">Successfully</div>
 
   <div id="authFlowContainer">
@@ -315,7 +315,7 @@
       document.getElementById("csCharCount").innerText = len + "/300";
     }
 
-    // EmailJS फॉर्म सबमिशन (फॉर्म बंद होकर स्क्रीन पर 'Successfully' दिखाने का लॉजिक)
+    // EmailJS सबमिशन (नीचे सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला सक्सेस मैसेज दिखाने का लॉजिक)
     document.getElementById('support-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -328,14 +328,14 @@
           confirmBtn.innerText = "Confirm";
           confirmBtn.disabled = false;
           
-          // 1. फॉर्म वाला पॉप-अप तुरंत बंद कर दें
+          // 1. फॉर्म वाला पॉप-अप बंद कर दें
           closeCustomerServiceModal();
           
           // 2. फॉर्म रीसेट कर दें
           document.getElementById('support-form').reset();
           document.getElementById("csCharCount").innerText = "0/300";
 
-          // 3. स्क्रीन के बीच में छोटा 'Successfully' मैसेज दिखाएं और 2 सेकंड बाद गायब कर दें
+          // 3. स्क्रीन के नीचे सफेद बैकग्राउंड वाला 'Successfully' मैसेज दिखाएं और 2 सेकंड बाद गायब कर दें
           let toast = document.getElementById("floatingToast");
           toast.style.display = "block";
           setTimeout(function() {
