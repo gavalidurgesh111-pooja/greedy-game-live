@@ -267,7 +267,6 @@
     }, false);
 
     window.onload = function() {
-      // 🌟 यहाँ से localStorage.clear(); हटा दिया गया है ताकि पुराना डेटा डिलीट न हो!
       history.replaceState({ page: "email_input" }, "");
     };
 
@@ -350,7 +349,7 @@
     }
 
     function handleEmailNext() {
-      let email = document.getElementById("emailInput").value.trim();
+      let email = document.getElementById("emailInput").value.trim().toLowerCase(); // 🌟 ईमेल को हमेशा लोअरकेस में बदला गया
       if (!email.includes("@") || !email.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
         return;
