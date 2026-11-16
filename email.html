@@ -349,25 +349,30 @@
     }
 
     function handleEmailNext() {
-      let email = document.getElementById("emailInput").value.trim().toLowerCase(); // 🌟 ईमेल को हमेशा लोअरकेस में बदला गया
+      let email = document.getElementById("emailInput").value.trim().toLowerCase();
       if (!email.includes("@") || !email.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
         return;
       }
       currentEmail = email;
 
-      let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
+      // 🌟 सीधा चेक करो कि इस ईमेल का पासवर्ड पहले से सेव है या नहीं
+      let savedPass = localStorage.getItem("greedy_email_password_" + email);
 
-      if (!isRegistered) {
+      if (!savedPass) {
+        // नया यूजर - ओटीपी पर भेजो
         showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
           if (confirmed) {
             updateEmailScreen("otp");
           }
         });
       } else {
+        // पुराना यूजर - सीधा पासवर्ड मांगो
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
         document.getElementById("forgotPassContainer").style.display = "block";
+        document.getElementById("emailPassInput").value = "";
+        document.getElementById("emailPassSubmitBtn").classList.remove("active");
         updateEmailScreen("password");
       }
     }
@@ -410,6 +415,7 @@
     }
 
     function forgotEmailPassword() {
+      isForgotFlow = true;
       history.pushState({ modalOpen: true }, "");
       
       showCustomAlert("OTP verification required to reset your password.", function() {
@@ -450,21 +456,23 @@
         return;
       }
 
-      let isRegistered = localStorage.getItem("greedy_email_registered_" + currentEmail);
-      let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
+      let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
+      let titleText = document.getElementById("emailPassTitle").innerText;
 
-      if (!isRegistered || isForgotFlow || isCreateMode) {
-        localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
+      if (!savedPass || titleText === "Create Password" || isForgotFlow) {
+        // नया पासवर्ड या रिसेट किया हुआ पासवर्ड सेव करना
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_email_identifier", currentEmail);
         localStorage.setItem("greedy_login_identifier", currentEmail);
 
-        let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("greedy_unique_id", freshId);
-        localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-        localStorage.setItem("greedy_coins", "1000");
-        localStorage.setItem("greedy_won", "0");
-        localStorage.setItem("greedy_level", "1");
+        if (!localStorage.getItem("greedy_unique_id")) {
+          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem("greedy_unique_id", freshId);
+          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+          localStorage.setItem("greedy_coins", "1000");
+          localStorage.setItem("greedy_won", "0");
+          localStorage.setItem("greedy_level", "1");
+        }
 
         isForgotFlow = false;
         showCustomAlert("Success! Logging in...", function() {
@@ -475,7 +483,7 @@
           }, 1000);
         });
       } else {
-        let savedPass = localStorage.getItem("greedy_email_password_" + currentEmail);
+        // पुराना यूजर - पासवर्ड मैच करो
         if (passVal !== savedPass) {
           showCustomAlert("Incorrect password! Please enter the correct 8-character password.");
           return;
