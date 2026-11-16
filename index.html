@@ -137,23 +137,23 @@
       transform: scale(0.92);
     }
 
-    /* स्क्रीन के नीचे (Bottom) सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला टोस्ट मैसेज */
+    /* स्क्रीन के नीचे छोटा, बिना बॉर्डर वाला, सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला मैसेज */
     #floatingToast {
       position: fixed;
-      bottom: 30px;
+      bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
       background: #ffffff;
-      color: #6a0dad; /* पर्पल-नीला रंग */
-      padding: 12px 28px;
-      border-radius: 24px;
-      font-size: 15px;
+      color: #6a0dad;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
       font-weight: 800;
       z-index: 9999999;
       display: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
       text-align: center;
-      border: 2px solid #8a2be2;
+      border: none !important;
     }
   </style>
 
@@ -176,7 +176,7 @@
     </svg>
   </div>
 
-  <!-- स्क्रीन के नीचे दिखने वाला सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला मैसेज -->
+  <!-- स्क्रीन के नीचे दिखने वाला मैसेज -->
   <div id="floatingToast">Successfully</div>
 
   <div id="authFlowContainer">
@@ -211,33 +211,33 @@
       </div>
     </div>
 
-    <!-- Customer Service Center Modal -->
-    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
-        <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
+    <!-- Customer Service Center Modal (छोटा साइज) -->
+    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:15px;">
+      <div style="background:#fff; width:100%; max-width:320px; border-radius:20px; padding:18px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
+        <h3 style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Customer Service Center</h3>
         
         <form id="support-form">
           <!-- 1. Name Field -->
-          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px;">
-            <input type="text" id="csNameInput" name="name" placeholder="Please enter your name or ID" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
+          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
+            <input type="text" id="csNameInput" name="name" placeholder="Please enter your name or ID" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
           </div>
           <!-- 2. Email Field -->
-          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:12px;">
-            <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
+          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
+            <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
           </div>
           <!-- 3. Message Field -->
-          <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:20px; position:relative;">
-            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
-            <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:4px;">0/300</div>
+          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:12px; position:relative;">
+            <textarea id="csIssueInput" name="message" rows="2" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+            <div id="csCharCount" style="text-align:right; font-size:10px; color:#999; margin-top:2px;">0/300</div>
           </div>
 
-          <div style="display:flex; gap:12px; justify-content:center;">
-            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
-            <button type="submit" style="flex:1; padding:14px; border-radius:24px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:15px;" id="csConfirmBtn">Confirm</button>
+          <div style="display:flex; gap:10px; justify-content:center;">
+            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:10px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
+            <button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px;" id="csConfirmBtn">Confirm</button>
           </div>
         </form>
 
-        <div style="font-size:10px; color:#aaa; margin-top:15px;">did:da41489e5bd3b3cf</div>
+        <div style="font-size:9px; color:#aaa; margin-top:10px;">did:da41489e5bd3b3cf</div>
       </div>
     </div>
   </div>
@@ -315,7 +315,7 @@
       document.getElementById("csCharCount").innerText = len + "/300";
     }
 
-    // EmailJS सबमिशन (नीचे सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला सक्सेस मैसेज दिखाने का लॉजिक)
+    // EmailJS सबमिशन लॉजिक
     document.getElementById('support-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -328,14 +328,11 @@
           confirmBtn.innerText = "Confirm";
           confirmBtn.disabled = false;
           
-          // 1. फॉर्म वाला पॉप-अप बंद कर दें
           closeCustomerServiceModal();
           
-          // 2. फॉर्म रीसेट कर दें
           document.getElementById('support-form').reset();
           document.getElementById("csCharCount").innerText = "0/300";
 
-          // 3. स्क्रीन के नीचे सफेद बैकग्राउंड वाला 'Successfully' मैसेज दिखाएं और 2 सेकंड बाद गायब कर दें
           let toast = document.getElementById("floatingToast");
           toast.style.display = "block";
           setTimeout(function() {
