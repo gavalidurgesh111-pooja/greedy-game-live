@@ -142,7 +142,6 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        // तेरी Public Key यहाँ जोड़ दी गई है
         emailjs.init("eBjCqVxgCEpvp9dW2esw");
      })();
   </script>
@@ -195,14 +194,15 @@
       <div style="background:#fff; width:100%; max-width:380px; border-radius:24px; padding:25px 20px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:20px;">Customer Service Center</h3>
         
-        <!-- फॉर्म की शुरुआत जहाँ Service ID और Template ID जुड़ेगी -->
+        <!-- फॉर्म की शुरुआत जहाँ name="name" और name="message" सेट कर दिए गए हैं -->
         <form id="support-form">
           <div style="background:#f4f5f7; border-radius:16px; padding:12px; margin-bottom:15px; position:relative;">
             <textarea id="csIssueInput" name="message" rows="4" maxlength="300" oninput="updateCharCount(this)" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
             <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:4px;">0/300</div>
           </div>
           <div style="background:#f4f5f7; border-radius:16px; padding:12px 16px; margin-bottom:25px;">
-            <input type="email" id="csEmailInput" name="from_email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
+            <!-- यहाँ name="name" कर दिया गया है ताकि डैशबोर्ड के {{name}} से मैच हो जाए -->
+            <input type="email" id="csEmailInput" name="name" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
           </div>
           <div style="display:flex; gap:12px; justify-content:center;">
             <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:24px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
@@ -310,14 +310,13 @@
       }
     }
 
-    // 🌟 EmailJS फॉर्म सबमिशन लॉजिक यहाँ जोड़ा गया है
+    // 🌟 EmailJS फॉर्म सबमिशन लॉजिक
     document.getElementById('support-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // पेज रीफ्रेश होने से रोकता है
+      event.preventDefault();
 
       let confirmBtn = document.getElementById("csConfirmBtn");
       confirmBtn.innerText = "Sending...";
 
-      // तेरी Service ID और Template ID यहाँ सेट कर दी गई हैं
       emailjs.sendForm('service_eek762a', 'template_d73nkq9', this)
         .then(function() {
           confirmBtn.innerText = "Confirm";
