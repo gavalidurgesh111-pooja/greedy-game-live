@@ -50,9 +50,8 @@
       box-shadow: 0 0 15px #00cd00;
     }
 
-    /* 🌟 लोगो और नामों को नीचे करने और साइज़ नॉर्मल छोटा करने के लिए */
     .social-login-section {
-      margin-top: 55px; /* इसे थोड़ा और नीचे कर दिया गया है */
+      margin-top: 55px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -94,8 +93,8 @@
       width: 48%;
     }
     .social-icon-circle {
-      width: 52px;  /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
-      height: 52px; /* 🌟 लोगो का गोला थोड़ा छोटा कर दिया गया है */
+      width: 52px;
+      height: 52px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -106,8 +105,8 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     .facebook-icon {
-      width: 26px;  /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
-      height: 26px; /* 🌟 फेसबुक आइकॉन का साइज़ छोटा किया */
+      width: 26px;
+      height: 26px;
       background: #1877f2;
       border-radius: 50%;
       display: flex;
@@ -119,7 +118,6 @@
       font-family: Arial, sans-serif;
     }
     
-    /* 🌟 मोबाइल डिवाइस लोगो का साइज़ भी छोटा और नॉर्मल किया गया */
     .mobile-icon-shape {
       width: 16px;
       height: 24px;
@@ -168,7 +166,6 @@
       </form>
     </div>
 
-    <!-- 🌟 फेसबुक और मोबाइल लॉगिन विकल्प (नॉर्मल छोटे लोगो और नीचे खिसके हुए) -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -270,8 +267,7 @@
     }, false);
 
     window.onload = function() {
-      // 🌟 पेज खुलते ही पुरानी सारी स्टोरेज साफ़ करना ताकि कोई पुराना डेटा या मिक्सिंग न हो
-      localStorage.clear();
+      // 🌟 localStorage.clear() यहाँ से हमेशा के लिए हटा दिया गया है ताकि पुराना डेटा सेफ रहे
       history.replaceState({ page: "email_input" }, "");
     };
 
@@ -459,24 +455,20 @@
       let isCreateMode = (document.getElementById("emailPassTitle").innerText === "Create Password");
 
       if (!isRegistered || isForgotFlow || isCreateMode) {
-        localStorage.removeItem("greedy_coins");
-        localStorage.removeItem("greedy_unique_id");
-        localStorage.removeItem("greedy_name");
-        localStorage.removeItem("greedy_won");
-        localStorage.removeItem("greedy_level");
-
         localStorage.setItem("greedy_email_registered_" + currentEmail, "true");
         localStorage.setItem("greedy_email_password_" + currentEmail, passVal);
         localStorage.setItem("greedy_password", passVal);
         localStorage.setItem("greedy_email_identifier", currentEmail);
         localStorage.setItem("greedy_login_identifier", currentEmail);
 
-        let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
-        localStorage.setItem("greedy_unique_id", freshId);
-        localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
-        localStorage.setItem("greedy_coins", "1000");
-        localStorage.setItem("greedy_won", "0");
-        localStorage.setItem("greedy_level", "1");
+        if (!localStorage.getItem("greedy_unique_id")) {
+          let freshId = "#" + Math.floor(100000 + Math.random() * 900000);
+          localStorage.setItem("greedy_unique_id", freshId);
+          localStorage.setItem("greedy_name", "User_" + Math.floor(100000 + Math.random() * 900000));
+          localStorage.setItem("greedy_coins", "1000");
+          localStorage.setItem("greedy_won", "0");
+          localStorage.setItem("greedy_level", "1");
+        }
 
         isForgotFlow = false;
         showCustomAlert("Success! Logging in...", function() {
