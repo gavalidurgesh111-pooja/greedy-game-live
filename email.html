@@ -267,7 +267,6 @@
     }, false);
 
     window.onload = function() {
-      // 🌟 localStorage.clear() यहाँ से हमेशा के लिए हटा दिया गया है ताकि पुराना डेटा सेफ रहे
       history.replaceState({ page: "email_input" }, "");
     };
 
@@ -349,8 +348,9 @@
       }
     }
 
+    // 🌟 नियंत्रित लॉजिक: सिर्फ नया यूजर होने पर ही पॉप-अप आएगा, पुराना होने पर सीधा पासवर्ड स्क्रीन!
     function handleEmailNext() {
-      let email = document.getElementById("emailInput").value.trim();
+      let email = document.getElementById("emailInput").value.trim().toLowerCase();
       if (!email.includes("@") || !email.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
         return;
@@ -360,15 +360,19 @@
       let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
 
       if (!isRegistered) {
+        // नया यूजर है - तभी रजिस्ट्रेशन कंफर्मेशन पॉप-अप दिखाओ
         showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
           if (confirmed) {
             updateEmailScreen("otp");
           }
         });
       } else {
+        // पुराना यूजर है - कोई पॉप-अप नहीं, सीधे पासवर्ड स्क्रीन पर भेजो
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
         document.getElementById("forgotPassContainer").style.display = "block";
+        document.getElementById("emailPassInput").value = "";
+        document.getElementById("emailPassSubmitBtn").classList.remove("active");
         updateEmailScreen("password");
       }
     }
@@ -411,6 +415,7 @@
     }
 
     function forgotEmailPassword() {
+      isForgotFlow = true;
       history.pushState({ modalOpen: true }, "");
       
       showCustomAlert("OTP verification required to reset your password.", function() {
