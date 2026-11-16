@@ -348,7 +348,7 @@
       }
     }
 
-    // 🌟 नियंत्रित लॉजिक: सिर्फ नया यूजर होने पर ही पॉप-अप आएगा, पुराना होने पर सीधा पासवर्ड स्क्रीन!
+    // 🌟 बिल्कुल पक्का लॉजिक: पुराना यूजर पहचानते ही सीधा पासवर्ड पर भेजेगा, पॉप-अप नहीं आएगा!
     function handleEmailNext() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
       if (!email.includes("@") || !email.includes(".")) {
@@ -358,22 +358,23 @@
       currentEmail = email;
 
       let isRegistered = localStorage.getItem("greedy_email_registered_" + email);
+      let isPasswordSaved = localStorage.getItem("greedy_email_password_" + email);
 
-      if (!isRegistered) {
-        // नया यूजर है - तभी रजिस्ट्रेशन कंफर्मेशन पॉप-अप दिखाओ
-        showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
-          if (confirmed) {
-            updateEmailScreen("otp");
-          }
-        });
-      } else {
-        // पुराना यूजर है - कोई पॉप-अप नहीं, सीधे पासवर्ड स्क्रीन पर भेजो
+      // अगर ईमेल रजिस्टर्ड है या पासवर्ड सेव है, तो यह 100% पुराना यूजर है
+      if (isRegistered || isPasswordSaved) {
         document.getElementById("emailPassTitle").innerText = "Enter Password";
         document.getElementById("emailPassSub").innerText = "Welcome back! Enter your 8-character password";
         document.getElementById("forgotPassContainer").style.display = "block";
         document.getElementById("emailPassInput").value = "";
         document.getElementById("emailPassSubmitBtn").classList.remove("active");
         updateEmailScreen("password");
+      } else {
+        // नया यूजर होने पर ही रजिस्ट्रेशन कंफर्मेशन पॉप-अप आएगा
+        showCustomConfirm("This email is not registered! Do you want to register a new account with this email?", function(confirmed) {
+          if (confirmed) {
+            updateEmailScreen("otp");
+          }
+        });
       }
     }
 
