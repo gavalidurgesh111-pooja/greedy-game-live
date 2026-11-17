@@ -156,9 +156,8 @@
       <div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div>
     </div>
 
-    <!-- Thin Black Back Button -->
-    <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-      <div class="back-btn" onclick="handleBackAction()" style="font-size:24px; font-weight:300; line-height:1; cursor:pointer; color:#000000; padding:4px 8px 4px 0;">❮</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <div class="back-btn" onclick="handleBackAction()" style="font-size:22px; font-weight:300; cursor:pointer; color:#000000; line-height:1;">❮</div>
     </div>
     
     <div style="margin-top: 10px;">
@@ -247,11 +246,10 @@
       document.getElementById("popupMessage").innerHTML = `
         <p style="margin-bottom:12px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
         <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
-        <div style="margin-top:10px; text-align:right;">
-          <span id="resendOtpBtn" onclick="resendPopupOtp()" style="font-size:12px; color:#00c853; font-weight:600; cursor:pointer;">send again otp</span>
+        <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
+        <div style="margin-top:10px;">
+          <span id="resendOtpText" onclick="resendPopupOtp()" style="color:#8a2be2; font-size:12px; text-transform:lowercase; cursor:pointer; font-weight:500;">send verification code again</span>
         </div>
-        <div id="popupOtpStatus" style="color:#00a152; font-size:12px; margin-top:6px; display:none;">OTP sent again! (Demo: 1234)</div>
-        <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:6px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
@@ -266,26 +264,19 @@
     }
 
     function resendPopupOtp() {
-      let inp = document.getElementById("popupOtpInput");
-      let err = document.getElementById("popupOtpError");
-      let status = document.getElementById("popupOtpStatus");
-      if (inp) {
-        inp.value = "";
-        inp.focus();
-      }
-      if (err) err.style.display = "none";
-      if (status) {
-        status.style.display = "block";
+      let resendEl = document.getElementById("resendOtpText");
+      if (resendEl) {
+        resendEl.innerText = "verification code sent again!";
         setTimeout(() => {
-          if (status) status.style.display = "none";
-        }, 3000);
+          if (document.getElementById("resendOtpText")) {
+            document.getElementById("resendOtpText").innerText = "send verification code again";
+          }
+        }, 2000);
       }
     }
 
     function verifyPopupOtp() {
       let otp = document.getElementById("popupOtpInput").value.trim();
-      let status = document.getElementById("popupOtpStatus");
-      if (status) status.style.display = "none";
       if (otp !== "1234") {
         document.getElementById("popupOtpError").style.display = "block";
         return;
