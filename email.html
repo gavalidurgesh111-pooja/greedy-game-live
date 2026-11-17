@@ -51,7 +51,7 @@
     }
 
     .social-login-section {
-      margin-top: 40px;
+      margin-top: 75px; /* 🌟 यहाँ स्पेस (सेंस) बढ़ाने के लिए मार्जिन बढ़ा दिया है */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -177,7 +177,7 @@
       </form>
     </div>
 
-    <!-- 🌟 Facebook और Mobile Login वाले बटन एकदम नीचे शिफ्ट कर दिए गए हैं -->
+    <!-- 🌟 Facebook और Mobile Login वाले बटन नीचे शिफ्ट कर दिए गए हैं और बीच में पर्याप्त स्पेस है -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -321,7 +321,7 @@
       }
     }
 
-    // 🌟 फॉरगॉट पासवर्ड एक्शन (इमेल पेज से ही ओटीपी के लिए)
+    // फॉरगॉट पासवर्ड एक्शन
     function forgotPasswordAction() {
       let rawInput = document.getElementById("emailInput").value;
       if (!rawInput || !rawInput.includes("@") || !rawInput.includes(".")) {
@@ -333,7 +333,6 @@
       currentEmail = email;
       isForgotFlow = true;
 
-      // चेक करो कि क्या यह ईमेल डेटाबेस में सच में है या नहीं
       document.getElementById("loadingOverlay").style.display = "flex";
       db.collection("users").doc(email).get().then((doc) => {
         document.getElementById("loadingOverlay").style.display = "none";
@@ -351,7 +350,7 @@
       });
     }
 
-    // 🌟 मुख्य ईमेल नेक्स्ट बटन लॉजिक (साथ में 5 ईमेल की डिवाइस लिमिट)
+    // मुख्य ईमेल नेक्स्ट बटन लॉजिक (साथ में 5 ईमेल की डिवाइस लिमिट)
     function handleEmailNext() {
       let rawInput = document.getElementById("emailInput").value;
       if (!rawInput || !rawInput.includes("@") || !rawInput.includes(".")) {
@@ -371,10 +370,8 @@
         document.getElementById("loadingOverlay").style.display = "none";
 
         if (doc.exists) {
-          // ✅ पुराना यूजर - सीधा पासवर्ड पेज पर भेजो
           window.location.replace("password.html");
         } else {
-          // ❌ नया यूजर - पहले 5 ईमेल की डिवाइस लिमिट चेक करो
           let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
           
           if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
@@ -382,7 +379,6 @@
             return;
           }
 
-          // नया यूजर होने पर सीधे पासवर्ड पेज पर भेजो (बिना ओटीपी के)
           window.location.replace("password.html");
         }
       }).catch((error) => {
@@ -409,7 +405,6 @@
       }
 
       if (isForgotFlow) {
-        // फॉरगॉट पासवर्ड वेरीफाई होने पर पासवर्ड रीसेट पेज पर भेजो
         window.location.replace("password.html");
       }
     }
