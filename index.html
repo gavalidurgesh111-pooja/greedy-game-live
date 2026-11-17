@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#6a0dad">
   <title>Greedy Coin - Registration and Login</title>
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
+  <link rel="stylesheet" href="style.css">
   <style>
     :root {
       --sheet-icon-size: 22px;
@@ -25,12 +26,14 @@
     html, body {
       width: 100%;
       height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+      overflow: hidden !important;
+      position: fixed !important;
+      inset: 0 !important;
     }
 
     body {
+      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -172,7 +175,7 @@
      })();
   </script>
 </head>
-<body style="background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed; background-size: cover;">
+<body>
 
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -206,7 +209,7 @@
       </div>
     </div>
 
-    <!-- More OptionsModal -->
+    <!-- More OptionsModal - गोल कोनों वाला फ़ोन इनपुट बटन -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
