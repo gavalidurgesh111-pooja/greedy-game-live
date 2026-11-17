@@ -168,18 +168,18 @@
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box -->
+        <!-- 1. Email Box (कोने गोल किए गए हैं) -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 22px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
             <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%;">
           </div>
         </div>
 
-        <!-- 2. OTP Box (सिर्फ नए यूजर के लिए) -->
+        <!-- 2. OTP Box (सिर्फ नए यूजर के लिए - इसे भी गोल कर दिया गया है) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px;">
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 22px; height:56px;">
             <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; height:100%; letter-spacing: 6px; font-weight:bold;">
           </div>
         </div>
