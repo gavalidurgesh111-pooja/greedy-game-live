@@ -8,6 +8,7 @@
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
+    /* लॉन्ग प्रेस और नीले बॉक्स को पूरी तरह रोकने के लिए */
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -18,6 +19,7 @@
       padding: 0;
     }
 
+    /* स्क्रीन को पूरी तरह फिक्स रखने के लिए ताकि हिले नहीं */
     html, body {
       width: 100%;
       height: 100%;
@@ -135,6 +137,7 @@
       transform: scale(0.92);
     }
 
+    /* स्क्रीन के नीचे छोटा, बिना बॉर्डर वाला, सफेद बैकग्राउंड और पर्पल-नीले टेक्स्ट वाला मैसेज */
     #floatingToast {
       position: fixed;
       bottom: 25px;
@@ -154,6 +157,7 @@
     }
   </style>
 
+  <!-- EmailJS Library लोड की जा रही है -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
@@ -163,17 +167,20 @@
 </head>
 <body>
 
+  <!-- दाईं तरफ ऊपर छोटा हेल्प/सपोर्ट लोगो -->
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
     </svg>
   </div>
 
+  <!-- स्क्रीन के नीचे दिखने वाला मैसेज -->
   <div id="floatingToast">Successfully</div>
 
   <div id="authFlowContainer">
+    <!-- मुख्य लॉगिन स्क्रीन -->
     <div id="screenMain">
       <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
 
@@ -195,6 +202,7 @@
       </div>
     </div>
 
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
@@ -203,22 +211,26 @@
       </div>
     </div>
 
+    <!-- Customer Service Center Modal (यूजरनेम हटाया गया) -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:15px;">
       <div style="background:#fff; width:100%; max-width:320px; border-radius:20px; padding:18px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Customer Service Center</h3>
         
         <form id="support-form">
+          <!-- 1. Email Field (पहला फील्ड ईमेल, oninput पर वैलिडेट होगा) -->
           <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
-            <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
+            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
           </div>
+          <!-- 2. Message Field (दूसरा फील्ड समस्या और 300 शब्दों की लिमिट) -->
           <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:12px; position:relative;">
-            <textarea id="csIssueInput" name="message" rows="2" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
             <div id="csCharCount" style="text-align:right; font-size:10px; color:#999; margin-top:2px;">0/300</div>
           </div>
 
           <div style="display:flex; gap:10px; justify-content:center;">
             <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:10px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
-            <button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px; opacity: 0.5; cursor: not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+            <!-- शुरुआत में बटन disable और हल्का रहेगा -->
+            <button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:14px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
           </div>
         </form>
 
@@ -290,14 +302,15 @@
       document.getElementById("customerServiceModal").style.display = "none";
     }
 
+    // ईमेल भरने पर Confirm बटन को एक्टिव (Enable) करने का फंक्शन
     function validateForm() {
-      let emailInput = document.getElementById("csEmailInput").value;
+      let emailVal = document.getElementById("csEmailInput").value.trim();
       let textarea = document.getElementById("csIssueInput");
       let len = textarea.value.length;
       document.getElementById("csCharCount").innerText = len + "/300";
 
       let confirmBtn = document.getElementById("csConfirmBtn");
-      if (emailInput.trim() !== "") {
+      if (emailVal !== "") {
         confirmBtn.disabled = false;
         confirmBtn.style.opacity = "1";
         confirmBtn.style.cursor = "pointer";
@@ -308,6 +321,7 @@
       }
     }
 
+    // EmailJS सबमिशन लॉजिक
     document.getElementById('support-form').addEventListener('submit', function(event) {
       event.preventDefault();
 
@@ -321,6 +335,7 @@
         .then(function() {
           confirmBtn.innerText = "Confirm";
           closeCustomerServiceModal();
+          
           document.getElementById('support-form').reset();
           document.getElementById("csCharCount").innerText = "0/300";
           validateForm();
