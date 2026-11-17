@@ -38,7 +38,6 @@
       z-index: 100;
     }
 
-    /* 🌟 सबमिट बटन तब एक्टिव होगा जब ईमेल और पासवर्ड दोनों भरे होंगे */
     #emailSubmitBtn, #emailOtpSubmitBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -165,19 +164,19 @@
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter your email and password to continue</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailInput')">
-        <!-- 🌟 ईमेल इनपुट बॉक्स (वैसा ही बैकग्राउंड) -->
+        <!-- ईमेल इनपुट बॉक्स -->
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; margin-bottom:15px;">
           <input type="email" id="emailInput" oninput="checkFormInputs()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
 
-        <!-- 🌟 पासवर्ड इनपुट बॉक्स (बिल्कुल वैसा ही बैकग्राउंड) -->
+        <!-- पासवर्ड इनपुट बॉक्स -->
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <input type="password" id="passwordInput" oninput="checkFormInputs()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
 
-        <!-- 🌟 पासवर्ड बॉक्स के ठीक नीचे: Forgot Password का ऑप्शन -->
-        <div style="margin-top:10px; text-align:right; padding-right:5px;">
-          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:600; cursor:pointer;">Forgot password?</span>
+        <!-- 🌟 Forgot Password के लिए भी ईमेल/पासवर्ड बॉक्स जैसा ही शानदार बैकग्राउंड -->
+        <div style="margin-top:10px; background:#f0f0f0; border-radius:12px; padding:10px 16px; text-align:right;">
+          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
         </div>
 
         <button type="submit" style="display:none;"></button>
@@ -312,7 +311,6 @@
       if (result && cb) cb(true);
     }
 
-    // जब तक ईमेल और पासवर्ड दोनों नहीं भरे जाएंगे, नेक्स्ट बटन हाईलाइट नहीं होगा
     function checkFormInputs() {
       let emailVal = document.getElementById("emailInput").value.trim();
       let passVal = document.getElementById("passwordInput").value.trim();
@@ -325,7 +323,7 @@
       }
     }
 
-    // फॉरगॉट पासवर्ड पर क्लिक करने पर
+    // फॉरगॉट पासवर्ड एक्शन (OTP स्क्रीन खुलेगी)
     function forgotPasswordAction() {
       let rawInput = document.getElementById("emailInput").value;
       if (!rawInput || !rawInput.includes("@") || !rawInput.includes(".")) {
@@ -351,7 +349,7 @@
       });
     }
 
-    // नेक्स्ट बटन दबाने पर (पुराना यूजर है तो पासवर्ड मैच करेगा, नया है तो रजिस्टर करेगा)
+    // नेक्स्ट बटन लॉजिक (साथ में 5 ईमेल लिमिट और तेरा पॉप-अप मैसेज)
     function handleEmailNext() {
       let rawInput = document.getElementById("emailInput").value;
       let passwordVal = document.getElementById("passwordInput").value.trim();
@@ -363,6 +361,7 @@
       
       let email = rawInput.trim().toLowerCase();
       localStorage.setItem("greedy_login_identifier", email);
+      localStorage.setItem("greedy_forgot_flow", "false");
 
       document.getElementById("loadingOverlay").style.display = "flex";
 
@@ -376,14 +375,14 @@
             showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
             return;
           }
-          // पासवर्ड सही है या डेटाबेस में सेव नहीं था - आगे बढ़ाओ
-          window.location.replace("index.html"); // या गेम का मेन पेज
+          window.location.replace("index.html");
         } else {
           // नया यूजर - 5 ईमेल की डिवाइस लिमिट चेक करो
           let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
           
           if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
-            showCustomAlert("Device Limit Reached! You can register a maximum of 5 emails from this mobile device.");
+            // 🌟 यूजर की मांग के अनुसार पॉप-अप मैसेज
+            showCustomAlert("Email registration is not supported currently");
             return;
           }
 
@@ -416,13 +415,14 @@
       }
     }
 
+    // 🌟 OTP सही होने पर पासवर्ड रीसेट/न्यू पासवर्ड के लिए पासवर्ड पेज पर भेजना
     function verifyEmailOtp() {
       let otp = document.getElementById("emailOtpInput").value.trim();
       if (otp !== "1234") {
         showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
         return;
       }
-      // OTP सही होने पर पासवर्ड रीसेट करने के लिए आगे भेजो
+      // OTP सही होने पर password.html पर भेज देगा (जहाँ वह नया पासवर्ड सेट कर सकता है)
       window.location.replace("password.html");
     }
 
