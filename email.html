@@ -7,7 +7,6 @@
   <title>Greedy Coin - Sign in with Email</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    /* लॉन्ग प्रेस, सिलेक्शन और टच हाईलाइट को रोकने के लिए */
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -38,6 +37,7 @@
       z-index: 100;
     }
 
+    /* 🌟 नियोन ग्लो इफ़ेक्ट */
     #emailSubmitBtn, #emailOtpSubmitBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -47,11 +47,11 @@
       opacity: 1;
       pointer-events: auto;
       background: #00cd00 !important;
-      box-shadow: 0 0 15px #00cd00;
+      box-shadow: 0 0 20px #00cd00, 0 0 40px #00cd00;
     }
 
     .social-login-section {
-      margin-top: 50px;
+      margin-top: 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -117,7 +117,6 @@
       font-weight: bold;
       font-family: Arial, sans-serif;
     }
-    
     .mobile-icon-shape {
       width: 16px;
       height: 24px;
@@ -136,7 +135,6 @@
       background: #fff;
       border-radius: 50%;
     }
-
     .social-btn-text {
       font-size: 12px;
       color: #666;
@@ -148,7 +146,7 @@
 </head>
 <body>
 
-  <!-- 1. ईमेल और पासवर्ड इनपुट स्क्रीन -->
+  <!-- 1. मुख्य ईमेल और पासवर्ड इनपुट स्क्रीन -->
   <div id="screenEmailInput" style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     
     <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
@@ -160,23 +158,35 @@
     </div>
     
     <div style="margin-top: 10px;">
-      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Sign in with Email & Login</div>
-      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter your email and password to continue</div>
+      <!-- 🌟 नाम और हेडिंग को बड़ा किया गया है -->
+      <div class="step-title" style="font-size:28px; font-weight:900; color:#000; letter-spacing:0.5px;">Sign in with Email & Login</div>
+      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;">Enter your email and password to continue</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailInput')">
-        <!-- ईमेल इनपुट बॉक्स -->
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px; margin-bottom:15px;">
-          <input type="email" id="emailInput" oninput="checkFormInputs()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+        
+        <!-- 🌟 Enter your email बॉक्स (बड़ा और शानदार बैकग्राउंड) -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+            <input type="email" id="emailInput" oninput="checkFormInputs()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
+          </div>
         </div>
 
-        <!-- पासवर्ड इनपुट बॉक्स -->
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-          <input type="password" id="passwordInput" oninput="checkFormInputs()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+        <!-- 🌟 Enter your password बॉक्स (अलग बॉक्स, बड़ा साइज़ और पर्याप्त अंतर) -->
+        <div style="margin-bottom:12px;">
+          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+            <input type="password" id="passwordInput" oninput="checkFormInputs()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
+            <!-- 🌟 आँख का ऑप्शन (Password Show/Hide) पासवर्ड बॉक्स के अंदर उसी लाइन में -->
+            <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:18px; color:#777; padding-left:10px;">👁️‍🗨️</span>
+          </div>
         </div>
 
-        <!-- 🌟 Forgot Password के लिए भी ईमेल/पासवर्ड बॉक्स जैसा ही शानदार बैकग्राउंड -->
-        <div style="margin-top:10px; background:#f0f0f0; border-radius:12px; padding:10px 16px; text-align:right;">
-          <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
+        <!-- 🌟 Forgot Password का ऑप्शन ठीक पासवर्ड बॉक्स के सामने (बगल में) और अलग बैकग्राउंड पट्टी के साथ -->
+        <div style="display:flex; justify-content:flex-end; margin-bottom:20px;">
+          <div style="background:#f0f0f0; border-radius:12px; padding:8px 14px; display:inline-block;">
+            <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
+          </div>
         </div>
 
         <button type="submit" style="display:none;"></button>
@@ -203,30 +213,30 @@
     </div>
 
     <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="emailSubmitBtn" onclick="handleEmailNext()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+      <button class="btn-round-next" id="emailSubmitBtn" onclick="handleEmailNext()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">➔</button>
     </div>
   </div>
 
-  <!-- 2. फॉरगॉट पासवर्ड के लिए OTP स्क्रीन -->
+  <!-- 2. OTP वेरिफिकेशन स्क्रीन (नये रजिस्ट्रेशन या फॉरगॉट पासवर्ड के लिए) -->
   <div id="screenEmailOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
       <div class="back-btn" onclick="showEmailInputScreen()" style="font-size:24px; cursor:pointer;">❮</div>
     </div>
     
     <div style="margin-top: 20px;">
-      <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Reset Password OTP</div>
-      <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter verification code. Demo OTP: 1234</div>
+      <div class="step-title" style="font-size:28px; font-weight:900; color:#000;">Verification Code</div>
+      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;">Enter verification code sent to your email. Demo OTP: 1234</div>
 
       <form onsubmit="handleEmailFormSubmit(event, 'emailOtpInput')">
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-          <input type="text" id="emailOtpInput" maxlength="4" oninput="checkEmailOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px;">
+          <input type="text" id="emailOtpInput" maxlength="4" oninput="checkEmailOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; letter-spacing: 6px; font-weight:bold;">
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
     </div>
 
     <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="emailOtpSubmitBtn" onclick="verifyEmailOtp()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+      <button class="btn-round-next" id="emailOtpSubmitBtn" onclick="verifyEmailOtp()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">➔</button>
     </div>
   </div>
 
@@ -311,6 +321,20 @@
       if (result && cb) cb(true);
     }
 
+    // 🌟 आँख का बटन दबाने पर पासवर्ड दिखे या छिपे
+    function togglePasswordVisibility() {
+      let passInput = document.getElementById("passwordInput");
+      let toggleBtn = document.getElementById("togglePasswordBtn");
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        toggleBtn.innerText = "👁️";
+      } else {
+        passInput.type = "password";
+        toggleBtn.innerText = "👁️‍🗨️";
+      }
+    }
+
+    // 🌟 जैसे ही ईमेल और पासवर्ड दोनों भरे जाएंगे, बटन तुरंत नियोन चमक के साथ एक्टिव होगा
     function checkFormInputs() {
       let emailVal = document.getElementById("emailInput").value.trim();
       let passVal = document.getElementById("passwordInput").value.trim();
@@ -323,7 +347,7 @@
       }
     }
 
-    // फॉरगॉट पासवर्ड एक्शन (OTP स्क्रीन खुलेगी)
+    // 🌟 Forgot Password एक्शन (OTP स्क्रीन खोलेगा)
     function forgotPasswordAction() {
       let rawInput = document.getElementById("emailInput").value;
       if (!rawInput || !rawInput.includes("@") || !rawInput.includes(".")) {
@@ -349,7 +373,7 @@
       });
     }
 
-    // नेक्स्ट बटन लॉजिक (साथ में 5 ईमेल लिमिट और तेरा पॉप-अप मैसेज)
+    // 🌟 मुख्य नेक्स्ट बटन लॉजिक (नया vs पुराना यूजर चेक)
     function handleEmailNext() {
       let rawInput = document.getElementById("emailInput").value;
       let passwordVal = document.getElementById("passwordInput").value.trim();
@@ -369,35 +393,27 @@
         document.getElementById("loadingOverlay").style.display = "none";
 
         if (doc.exists) {
-          // पुराना यूजर - पासवर्ड चेक करो
+          // पुराना यूजर: पासवर्ड सही है या नहीं जाँचो
           let savedPassword = doc.data().password;
           if (savedPassword && savedPassword !== passwordVal) {
             showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
             return;
           }
-          window.location.replace("index.html");
+          // पासवर्ड सही होने पर सीधे home.html पर भेजो
+          window.location.replace("home.html");
         } else {
-          // नया यूजर - 5 ईमेल की डिवाइस लिमिट चेक करो
+          // नया यूजर: 5 ईमेल की डिवाइस लिमिट चेक करो
           let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
           
           if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
-            // 🌟 यूजर की मांग के अनुसार पॉप-अप मैसेज
+            // 🌟 लिमिट पार होने पर सटीक पॉप-अप मैसेज
             showCustomAlert("Email registration is not supported currently");
             return;
           }
 
-          // नया यूजर डेटाबेस में सेव करो और आगे बढ़ो
-          db.collection("users").doc(email).set({
-            email: email,
-            password: passwordVal,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          }).then(() => {
-            registeredEmailsList.push(email);
-            localStorage.setItem("greedy_device_emails", JSON.stringify(registeredEmailsList));
-            window.location.replace("index.html");
-          }).catch((err) => {
-            showCustomAlert("Error saving account: " + err.message);
-          });
+          // नया यूजर है, तो पहले OTP वेरिफिकेशन स्क्रीन दिखाओ
+          localStorage.setItem("greedy_temp_password", passwordVal);
+          updateEmailScreen("otp");
         }
       }).catch((error) => {
         document.getElementById("loadingOverlay").style.display = "none";
@@ -415,15 +431,42 @@
       }
     }
 
-    // 🌟 OTP सही होने पर पासवर्ड रीसेट/न्यू पासवर्ड के लिए पासवर्ड पेज पर भेजना
+    // 🌟 OTP वेरिफाई होने पर (चाहे नया रजिस्ट्रेशन हो या फॉरगॉट पासवर्ड)
     function verifyEmailOtp() {
       let otp = document.getElementById("emailOtpInput").value.trim();
       if (otp !== "1234") {
         showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
         return;
       }
-      // OTP सही होने पर password.html पर भेज देगा (जहाँ वह नया पासवर्ड सेट कर सकता है)
-      window.location.replace("password.html");
+
+      let isForgot = localStorage.getItem("greedy_forgot_flow") === "true";
+
+      if (isForgot) {
+        // फॉरगॉट पासवर्ड फ्लो: पासवर्ड पेज पर नया पासवर्ड बनाने भेजो
+        window.location.replace("password.html");
+      } else {
+        // नया यूजर रजिस्ट्रेशन फ्लो: डेटाबेस में सेव करके सीधा home.html पर भेजो
+        let email = localStorage.getItem("greedy_login_identifier");
+        let passwordVal = localStorage.getItem("greedy_temp_password");
+
+        document.getElementById("loadingOverlay").style.display = "flex";
+
+        db.collection("users").doc(email).set({
+          email: email,
+          password: passwordVal,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
+          if (!registeredEmailsList.includes(email)) {
+            registeredEmailsList.push(email);
+            localStorage.setItem("greedy_device_emails", JSON.stringify(registeredEmailsList));
+          }
+          window.location.replace("home.html");
+        }).catch((err) => {
+          document.getElementById("loadingOverlay").style.display = "none";
+          showCustomAlert("Error saving account: " + err.message);
+        });
+      }
     }
 
     function handleEmailFormSubmit(event, inputId) {
