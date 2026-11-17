@@ -168,7 +168,7 @@
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box (पासवर्ड और फॉरगॉट वाला झंझट पूरी तरह खत्म) -->
+        <!-- 1. Email Box -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
@@ -176,7 +176,7 @@
           </div>
         </div>
 
-        <!-- 2. OTP Box (ईमेल वेरीफाई करने के लिए) -->
+        <!-- 2. OTP Box (सिर्फ नए यूजर के लिए) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px;">
@@ -262,7 +262,7 @@
       if (result && cb) cb(true);
     }
 
-    // 🌟 जैसे ही ईमेल या OTP टाइप हो, बटन तुरंत एक्टिव हो जाए
+    // तुरंत बटन एक्टिव करने का लॉजिक
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
       if (currentMode === "email") {
@@ -297,7 +297,7 @@
       }
     }
 
-    // 🌟 मुख्य एक्शन: 5 ईमेल लिमिट चेक और OTP फ्लो
+    // मुख्य एक्शन: पुराना यूजर सीधा पासवर्ड पेज पर, नया यूजर लिमिट चेक और OTP के साथ
     function handleMainAction() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
 
@@ -314,25 +314,18 @@
           document.getElementById("loadingOverlay").style.display = "none";
 
           if (doc.exists) {
-            // अगर ईमेल पहले से रजिस्टर्ड है, तो सीधा आगे पासवर्ड पेज पर भेजो (या OTP के जरिए)
-            currentMode = "otp";
-            document.getElementById("emailContainer").style.display = "none";
-            document.getElementById("socialSection").style.display = "none";
-            document.getElementById("pageTitle").innerText = "Verification Code";
-            document.getElementById("pageSub").innerText = "Enter 4-digit OTP sent to your email (Demo: 1234)";
-            document.getElementById("otpContainer").style.display = "block";
-            document.getElementById("otpInput").focus();
-            checkInputState();
+            // 🌟 पुराना यूजर है: बिना किसी OTP के सीधा आगे पासवर्ड वाले पेज पर भेजो!
+            window.location.replace("password.html");
           } else {
-            // नया यूजर: डिवाइस पर 5 ईमेल रजिस्ट्रेशन की लिमिट चेक करो
+            // 🌟 नया यूजर है: डिवाइस पर 5 ईमेल रजिस्ट्रेशन की लिमिट चेक करो
             let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
             
             if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
-              showCustomAlert("Email registration limit reached (Max 5 emails per device)!");
+              showCustomAlert("Email registration limit reached (Max 5 emails per device)! You cannot proceed further.");
               return;
             }
 
-            // लिमिट के अंदर है तो OTP स्क्रीन दिखाओ
+            // लिमिट के अंदर है तो नया यूजर मानकर OTP स्क्रीन दिखाओ
             currentMode = "otp";
             document.getElementById("emailContainer").style.display = "none";
             document.getElementById("socialSection").style.display = "none";
@@ -354,7 +347,7 @@
           return;
         }
 
-        // OTP सही होने पर आगे के password.html पेज पर भेजो (जहाँ असली पासवर्ड सेटअप है)
+        // OTP सही होने पर आगे के password.html पेज पर भेजो
         window.location.replace("password.html");
       }
     }
