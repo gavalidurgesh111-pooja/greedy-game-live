@@ -166,25 +166,25 @@
         <!-- 1. Email Box -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
-            <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+            <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%;">
           </div>
         </div>
 
-        <!-- 2. Password Box और Forgot Password: दोनों बिल्कुल एक ही साइज़ के बॉक्स और एक लाइन में -->
+        <!-- 2. Password Box और Forgot Password: दोनों बिल्कुल एक ही साइज़ के डिब्बे और एक लाइन में -->
         <div id="passwordContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
-          <div style="display:flex; align-items:stretch; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px;">
             
-            <!-- पासवर्ड का बॉक्स -->
-            <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; flex:1; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); min-height:56px;">
-              <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
-              <!-- 🌟 ऑरिजिनल आँख का आइकॉन (पंख और बंद/आधी आँख के साथ) -->
-              <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:20px; padding-left:10px; user-select:none;" title="Show/Hide Password">👁️‍🗨️</span>
+            <!-- पासवर्ड का बॉक्स (Exact height 56px) -->
+            <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; flex:1; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+              <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%;">
+              <!-- 🌟 ऑरिजिनल बंद/आधी आँख का आइकॉन (कीबोर्ड वाला सिंबल पूरी तरह हटाया गया) -->
+              <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:20px; padding-left:10px; user-select:none; line-height: 1;" title="Show/Hide Password">👁️‍🗨️</span>
             </div>
 
-            <!-- Forgot Password का बॉक्स (ऊँचाई और साइज़ बिल्कुल पासवर्ड बॉक्स जैसी बराबर) -->
-            <div style="background:#f0f0f0; border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; white-space:nowrap; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); min-height:56px;">
+            <!-- Forgot Password का बॉक्स (ऊँचाई और साइज़ बिल्कुल पासवर्ड बॉक्स जैसी 56px बराबर) -->
+            <div style="background:#f0f0f0; border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; white-space:nowrap; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
               <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
             </div>
 
@@ -194,8 +194,8 @@
         <!-- 3. OTP Box (नया यूजर या फॉरगॉट के वक्त) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; min-height:56px;">
-            <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; letter-spacing: 6px; font-weight:bold;">
+          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px;">
+            <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; height:100%; letter-spacing: 6px; font-weight:bold;">
           </div>
         </div>
 
@@ -286,7 +286,7 @@
         toggleBtn.innerText = "👁️"; // आधी खुली आँख
       } else {
         passInput.type = "password";
-        toggleBtn.innerText = "👁️‍🗨️"; // पंखों वाली बंद आँख
+        toggleBtn.innerText = "👁️‍🗨️"; // बंद आँख
       }
     }
 
