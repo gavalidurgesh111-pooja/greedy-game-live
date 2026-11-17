@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#6a0dad">
   <title>Greedy Coin - Registration and Login</title>
-  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooj/greedy-game-live/main/bg.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <style>
     * {
@@ -27,7 +27,7 @@
     }
 
     body {
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooj/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
       background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
@@ -93,16 +93,9 @@
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      width: 28px !important;
-      height: 28px !important;
+      width: 32px !important;
+      height: 32px !important;
       flex-shrink: 0;
-    }
-
-    .btn-facebook .social-logo-svg {
-      fill: #1877F2;
-      background: #fff;
-      border-radius: 50%;
-      padding: 2px;
     }
 
     .btn-login span {
@@ -151,6 +144,27 @@
       transform: scale(0.92);
     }
 
+    .compact-lang-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: -2px;
+    }
+
+    .compact-lang-select {
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 16px;
+      border: 1px solid #ddd;
+      background: #f4f5f7;
+      color: #333;
+      font-size: 12.5px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+      text-align: center;
+    }
+
     #floatingToast {
       position: fixed;
       bottom: 25px;
@@ -195,50 +209,60 @@
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          <span>Sign in with Facebook</span>
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span id="txtFbBtn">Sign in with Facebook</span>
         </button>
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
           <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.33 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.84 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.67 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-          <span>Sign in with Google</span>
+          <span id="txtGoogleBtn">Sign in with Google</span>
         </button>
-        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span id="txtMoreOptions">More Options</span> <span class="last-login-tag" id="txtLastLogin">Last login</span></button>
         
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
-          <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
+          <span id="txtTerms">By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
         </div>
       </div>
     </div>
 
+    <!-- More OptionsModal - Optimized -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
-      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+      <div class="options-sheet" style="width:100%; max-width:400px; background:#fff; border-top-left-radius:24px; border-top-right-radius:24px; padding:25px 20px 20px; display:flex; flex-direction:column; gap:14px;">
+        <button class="btn-sheet-phone" id="btnSheetPhone" onclick="selectPhoneOption()" style="width:100%; height:48px; border-radius:24px; border:none; background:#00cd00; color:#fff; font-size:15px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" id="btnSheetEmail" onclick="selectEmailOption()" style="width:100%; height:48px; border-radius:24px; border:none; background:#ffa500; color:#fff; font-size:15px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        
+        <div class="compact-lang-wrapper">
+          <select id="languageSelect" class="compact-lang-select" onchange="changeLanguage(this.value)" aria-label="Language">
+            <option value="en">🌐 English</option>
+            <option value="hi">🌐 हिन्दी</option>
+          </select>
+        </div>
+
+        <button class="btn-sheet-cancel" id="btnSheetCancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:15px; font-weight:800; color:#111; padding:8px; cursor:pointer;">Cancel</button>
       </div>
     </div>
 
+    <!-- Customer Service Center Modal - Balanced -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#fff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
-        <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
+      <div style="background:#fff; width:100%; max-width:360px; border-radius:22px; padding:22px 18px; box-shadow:0 12px 30px rgba(0,0,0,0.35); text-align:center; position:relative;">
+        <h3 style="margin-top:0; color:#111; font-size:20px; font-weight:800; margin-bottom:14px;">Customer Service Center</h3>
         
         <form id="support-form">
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px;">
-            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333;" required>
+          <div style="background:#f4f5f7; border-radius:12px; padding:10px 14px; margin-bottom:12px;">
+            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333;" required>
           </div>
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px; position:relative;">
-            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
-            <div id="csCharCount" style="text-align:right; font-size:12px; color:#999; margin-top:4px; font-weight:600;">0/300</div>
+          <div style="background:#f4f5f7; border-radius:12px; padding:10px 14px; margin-bottom:12px; position:relative;">
+            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:14px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+            <div id="csCharCount" style="text-align:right; font-size:11px; color:#999; margin-top:3px; font-weight:600;">0/300</div>
           </div>
 
-          <div style="display:flex; gap:12px; justify-content:center;">
-            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
-            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:15px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+          <div style="display:flex; gap:10px; justify-content:center;">
+            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:12px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
+            <button type="submit" style="flex:1; padding:12px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:14px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
           </div>
         </form>
 
-        <div style="font-size:11px; color:#aaa; margin-top:14px;">did:da41489e5bd3b3cf</div>
+        <div style="font-size:10px; color:#aaa; margin-top:12px;">did:da41489e5bd3b3cf</div>
       </div>
     </div>
   </div>
@@ -269,6 +293,42 @@
         return;
       }
     });
+
+    const translations = {
+      en: {
+        fbBtn: "Sign in with Facebook",
+        googleBtn: "Sign in with Google",
+        moreOptions: "More Options",
+        lastLogin: "Last login",
+        terms: "By continuing, you agree to the Terms and Conditions & Privacy Policy",
+        phoneBtn: "📞 Sign in with Phone / ID",
+        emailBtn: "✉️ Sign in with Email",
+        cancelBtn: "Cancel"
+      },
+      hi: {
+        fbBtn: "Facebook से साइन इन करें",
+        googleBtn: "Google से साइन इन करें",
+        moreOptions: "अन्य विकल्प",
+        lastLogin: "पिछला लॉगिन",
+        terms: "जारी रखकर, आप नियम और शर्तों और गोपनीयता नीति से सहमत हैं",
+        phoneBtn: "📞 फ़ोन / आईडी से साइन इन करें",
+        emailBtn: "✉️ ईमेल से साइन इन करें",
+        cancelBtn: "रद्द करें"
+      }
+    };
+
+    function changeLanguage(lang) {
+      const t = translations[lang] || translations.en;
+      document.documentElement.lang = lang;
+      document.getElementById("txtFbBtn").innerText = t.fbBtn;
+      document.getElementById("txtGoogleBtn").innerText = t.googleBtn;
+      document.getElementById("txtMoreOptions").innerText = t.moreOptions;
+      document.getElementById("txtLastLogin").innerText = t.lastLogin;
+      document.getElementById("txtTerms").innerText = t.terms;
+      document.getElementById("btnSheetPhone").innerText = t.phoneBtn;
+      document.getElementById("btnSheetEmail").innerText = t.emailBtn;
+      document.getElementById("btnSheetCancel").innerText = t.cancelBtn;
+    }
 
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
