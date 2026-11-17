@@ -81,9 +81,8 @@
       font-weight: 700;
       display: flex;
       align-items: center;
-      justify-content: flex-start; /* लोगो और टेक्स्ट को बाएं से व्यवस्थित करने के लिए */
       position: relative;
-      padding-left: 20px; /* बाएं से उचित दूरी */
+      padding-left: 16px;
       cursor: pointer;
     }
     .btn-facebook { background: #1877F2; color: #fff; }
@@ -91,7 +90,7 @@
 
     .btn-login .social-logo-svg {
       position: absolute;
-      left: 18px; /* दोनों लोगो की बाएं कोने से सटीक दूरी */
+      left: 16px;
       top: 50%;
       transform: translateY(-50%);
       width: 25px !important;
@@ -102,7 +101,6 @@
     .btn-login span {
       flex: 1;
       text-align: center;
-      padding-right: 20px; /* ताकि टेक्स्ट बटन के बिल्कुल बीच में दिखे */
     }
 
     .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
@@ -206,11 +204,17 @@
       </div>
     </div>
 
-    <!-- More OptionsModal - Original structure restored -->
+    <!-- More OptionsModal - Icons aligned left -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:25px; cursor:pointer;">
+          <span style="font-size:20px; margin-right:10px;">📞</span>
+          <span style="flex:1; text-align:center; padding-right:35px;">Sign in with Phone / ID</span>
+        </button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:25px; cursor:pointer;">
+          <span style="font-size:20px; margin-right:10px;">✉️</span>
+          <span style="flex:1; text-align:center; padding-right:35px;">Sign in with Email</span>
+        </button>
         <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
       </div>
     </div>
