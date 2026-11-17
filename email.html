@@ -146,7 +146,7 @@
 </head>
 <body>
 
-  <!-- सिंगल पेज लेआउट -->
+  <!-- पूरा लेआउट एक ही पेज पर -->
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     
     <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
@@ -163,7 +163,7 @@
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box (हमेशा सामने दिखेगा) -->
+        <!-- 1. Email Box -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
@@ -171,14 +171,13 @@
           </div>
         </div>
 
-        <!-- 2. Password Box (यह भी शुरुआत से ही ईमेल के नीचे मौजूद रहेगा) -->
+        <!-- 2. Password Box (साथ में Forgot Password का ऑप्शन) -->
         <div id="passwordContainer" style="margin-bottom:12px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
             <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
             <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:18px; color:#777; padding-left:10px;">👁️‍🗨️</span>
           </div>
-          <!-- Forgot Password ऑप्शन ठीक पासवर्ड बॉक्स के सामने कोने में -->
           <div style="display:flex; justify-content:flex-end; margin-top:10px;">
             <div style="background:#f0f0f0; border-radius:12px; padding:8px 14px; display:inline-block;">
               <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
@@ -186,9 +185,9 @@
           </div>
         </div>
 
-        <!-- 3. OTP Box (सिर्फ तब खुलेगा जब नया यूजर होगा या फॉरगॉट पासवर्ड दबाएगा) -->
+        <!-- 3. OTP Box (सिर्फ नया यूजर या फॉरगॉट के वक्त प्रकट होगा) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
-          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;" id="otpLabel">Verification Code (Demo: 1234)</div>
+          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px;">
             <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; letter-spacing: 6px; font-weight:bold;">
           </div>
@@ -284,7 +283,7 @@
       }
     }
 
-    // बटन एक्टिव करने का लॉजिक (ईमेल और पासवर्ड दोनों भरे होने पर या ओटीपी भरे होने पर)
+    // बटन एक्टिव करने का लॉजिक
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
       if (currentMode === "login") {
@@ -339,7 +338,7 @@
         localStorage.setItem("greedy_login_identifier", email);
         document.getElementById("loadingOverlay").style.display = "flex";
 
-        // डेटाबेस में चेक करो कि यूजर नया है या पुराना
+        // डेटाबेस जाँच: यूजर नया है या पुराना
         db.collection("users").doc(email).get().then((doc) => {
           document.getElementById("loadingOverlay").style.display = "none";
 
@@ -350,7 +349,7 @@
               showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
               return;
             }
-            // पासवर्ड सही है ➔ सीधा home.html पर भेजो
+            // पासवर्ड सही ➔ सीधा home.html पर भेजो
             window.location.replace("home.html");
           } else {
             // 👉 नया यूजर: 5 ईमेल की डिवाइस लिमिट चेक करो
@@ -360,7 +359,7 @@
               return;
             }
 
-            // नया यूजर है ➔ OTP स्क्रीन दिखाओ
+            // नया यूजर है ➔ इसी पेज पर OTP मांगो
             currentMode = "otp";
             localStorage.setItem("greedy_temp_password", passwordVal);
             localStorage.setItem("greedy_forgot_flow", "false");
@@ -387,7 +386,7 @@
           return;
         }
 
-        // 🌟 OTP सही होने पर हमारे फिक्स password.html पेज पर भेजो (नया पासवर्ड सेट करने के लिए)
+        // 🌟 OTP सही होने पर सीधे हमारे फिक्स password.html पेज पर भेजो
         window.location.replace("password.html");
       }
     }
