@@ -29,11 +29,11 @@
       overflow: hidden !important;
       position: fixed !important;
       inset: 0 !important;
+      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background-size: cover !important;
     }
 
     body {
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
-      background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -209,7 +209,7 @@
       </div>
     </div>
 
-    <!-- More OptionsModal - गोल कोनों वाला फ़ोन इनपुट बटन -->
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
@@ -281,97 +281,4 @@
       }
 
       let moreOptionsModal = document.getElementById("moreOptionsModal");
-      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
-        moreOptionsModal.style.display = "none";
-        return;
-      }
-    });
-
-    function selectPhoneOption() {
-      document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.replace("phone.html");
-    }
-
-    function selectEmailOption() {
-      document.getElementById("moreOptionsModal").style.display = "none";
-      window.location.replace("email.html");
-    }
-
-    function openMoreOptionsSheet() {
-      history.pushState({ modalOpen: true }, "");
-      document.getElementById("moreOptionsModal").style.display = "flex";
-    }
-
-    function closeMoreOptionsSheet() {
-      document.getElementById("moreOptionsModal").style.display = "none";
-    }
-
-    function socialLoginNotice(provider) {
-      alert(provider + " login selected. Please use More Options for phone/ID login.");
-    }
-
-    function openCustomerServiceModal() {
-      history.pushState({ modalOpen: true }, "");
-      document.getElementById("csEmailInput").value = "";
-      document.getElementById("csIssueInput").value = "";
-      document.getElementById("csCharCount").innerText = "0/300";
-      validateForm();
-      document.getElementById("customerServiceModal").style.display = "flex";
-    }
-
-    function closeCustomerServiceModal() {
-      document.getElementById("customerServiceModal").style.display = "none";
-    }
-
-    function validateForm() {
-      let emailVal = document.getElementById("csEmailInput").value.trim();
-      let textarea = document.getElementById("csIssueInput");
-      let len = textarea.value.length;
-      document.getElementById("csCharCount").innerText = len + "/300";
-
-      let confirmBtn = document.getElementById("csConfirmBtn");
-      if (emailVal !== "") {
-        confirmBtn.disabled = false;
-        confirmBtn.style.opacity = "1";
-        confirmBtn.style.cursor = "pointer";
-      } else {
-        confirmBtn.disabled = true;
-        confirmBtn.style.opacity = "0.5";
-        confirmBtn.style.cursor = "not-allowed";
-      }
-    }
-
-    document.getElementById('support-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-
-      let confirmBtn = document.getElementById("csConfirmBtn");
-      confirmBtn.innerText = "Sending...";
-      confirmBtn.disabled = true;
-      confirmBtn.style.opacity = "0.5";
-      confirmBtn.style.cursor = "not-allowed";
-
-      emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
-        .then(function() {
-          confirmBtn.innerText = "Confirm";
-          closeCustomerServiceModal();
-          
-          document.getElementById('support-form').reset();
-          document.getElementById("csCharCount").innerText = "0/300";
-          validateForm();
-
-          let toast = document.getElementById("floatingToast");
-          toast.style.display = "block";
-          setTimeout(function() {
-            toast.style.display = "none";
-          }, 2000);
-
-        }, function(error) {
-          confirmBtn.innerText = "Confirm";
-          validateForm();
-          console.log('FAILED...', error);
-          alert("Failed to send message. Please try again later.");
-        });
-    });
-  </script>
-</body>
-</html>
+      if (moreOptionsModal && moreOptionsModal.style.display === "
