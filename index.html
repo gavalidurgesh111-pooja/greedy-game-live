@@ -211,30 +211,29 @@
       </div>
     </div>
 
-    <!-- Customer Service Center Modal (यूजरनेम हटाया गया) -->
-    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:15px;">
-      <div style="background:#fff; width:100%; max-width:320px; border-radius:20px; padding:18px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
-        <h3 style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Customer Service Center</h3>
+    <!-- Customer Service Center Modal (बढ़ा हुआ साइज़) -->
+    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
+      <div style="background:#fff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
+        <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
         
         <form id="support-form">
-          <!-- 1. Email Field (पहला फील्ड ईमेल, oninput पर वैलिडेट होगा) -->
-          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
-            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
+          <!-- 1. Email Field -->
+          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px;">
+            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333;" required>
           </div>
-          <!-- 2. Message Field (दूसरा फील्ड समस्या और 300 शब्दों की लिमिट) -->
-          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:12px; position:relative;">
-            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
-            <div id="csCharCount" style="text-align:right; font-size:10px; color:#999; margin-top:2px;">0/300</div>
+          <!-- 2. Message Field -->
+          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px; position:relative;">
+            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+            <div id="csCharCount" style="text-align:right; font-size:12px; color:#999; margin-top:4px; font-weight:600;">0/300</div>
           </div>
 
-          <div style="display:flex; gap:10px; justify-content:center;">
-            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:10px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
-            <!-- शुरुआत में बटन disable और हल्का रहेगा -->
-            <button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:14px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+          <div style="display:flex; gap:12px; justify-content:center;">
+            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
+            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:15px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
           </div>
         </form>
 
-        <div style="font-size:9px; color:#aaa; margin-top:10px;">did:da41489e5bd3b3cf</div>
+        <div style="font-size:11px; color:#aaa; margin-top:14px;">did:da41489e5bd3b3cf</div>
       </div>
     </div>
   </div>
