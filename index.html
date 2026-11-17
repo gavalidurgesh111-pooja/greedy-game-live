@@ -81,8 +81,9 @@
       font-weight: 700;
       display: flex;
       align-items: center;
+      justify-content: flex-start; /* लोगो और टेक्स्ट को बाएं से व्यवस्थित करने के लिए */
       position: relative;
-      padding-left: 16px;
+      padding-left: 20px; /* बाएं से उचित दूरी */
       cursor: pointer;
     }
     .btn-facebook { background: #1877F2; color: #fff; }
@@ -90,7 +91,7 @@
 
     .btn-login .social-logo-svg {
       position: absolute;
-      left: 16px;
+      left: 18px; /* दोनों लोगो की बाएं कोने से सटीक दूरी */
       top: 50%;
       transform: translateY(-50%);
       width: 25px !important;
@@ -101,6 +102,7 @@
     .btn-login span {
       flex: 1;
       text-align: center;
+      padding-right: 20px; /* ताकि टेक्स्ट बटन के बिल्कुल बीच में दिखे */
     }
 
     .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
