@@ -37,7 +37,6 @@
       z-index: 100;
     }
 
-    /* नियोन ग्लो इफ़ेक्ट - ईमेल सही होते ही तुरंत एक्टिव */
     #mainActionBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -151,15 +150,15 @@
 </head>
 <body>
 
-  <!-- सिंगल पेज लेआउट -->
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     
     <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
       <div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div>
     </div>
 
+    <!-- बैक बटन सफ़ेद रखा गया है -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <div class="back-btn" onclick="handleBackAction()" style="font-size:24px; cursor:pointer;">❮</div>
+      <div class="back-btn" onclick="handleBackAction()" style="font-size:24px; cursor:pointer; color:#ffffff; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">❮</div>
     </div>
     
     <div style="margin-top: 10px;">
@@ -168,7 +167,6 @@
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box (कोने गोल रखे गए हैं) -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 22px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
@@ -176,19 +174,10 @@
           </div>
         </div>
 
-        <!-- 2. OTP Box (कोने वापस सामान्य यानी 16px कर दिए गए हैं) -->
-        <div id="otpContainer" style="display:none; margin-bottom:20px;">
-          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px;">
-            <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; height:100%; letter-spacing: 6px; font-weight:bold;">
-          </div>
-        </div>
-
         <button type="submit" style="display:none;"></button>
       </form>
     </div>
 
-    <!-- Social Login Section -->
     <div class="social-login-section" id="socialSection">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -207,7 +196,6 @@
       </div>
     </div>
 
-    <!-- नीचे वाला मुख्य बटन -->
     <div class="bottom-fixed-btn-container">
       <button class="btn-round-next" id="mainActionBtn" onclick="handleMainAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">➔</button>
     </div>
@@ -217,12 +205,11 @@
   <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
     <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
       <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Notice</h3>
-      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+      <div id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></div>
       <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
     </div>
   </div>
 
-  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -240,12 +227,12 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentMode = "email"; // 'email', 'otp'
     let popupCallback = null;
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
     function showCustomAlert(message, callback) {
+      document.getElementById("popupTitle").innerText = "Notice";
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
@@ -255,6 +242,35 @@
       popupCallback = callback;
     }
 
+    function showOtpPopupModal() {
+      document.getElementById("popupTitle").innerText = "Verification Code";
+      document.getElementById("popupMessage").innerHTML = `
+        <p style="margin-bottom:12px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
+        <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
+        <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
+      `;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ddd; background:#fff; font-weight:700; cursor:pointer; color:#555;">Cancel</button>
+        <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      setTimeout(() => {
+        let inp = document.getElementById("popupOtpInput");
+        if (inp) inp.focus();
+      }, 100);
+    }
+
+    function verifyPopupOtp() {
+      let otp = document.getElementById("popupOtpInput").value.trim();
+      if (otp !== "1234") {
+        document.getElementById("popupOtpError").style.display = "block";
+        return;
+      }
+      closeCustomPopup(false);
+      window.location.replace("password.html");
+    }
+
     function closeCustomPopup(result) {
       document.getElementById("customPopupModal").style.display = "none";
       let cb = popupCallback;
@@ -262,94 +278,50 @@
       if (result && cb) cb(true);
     }
 
-    // तुरंत बटन एक्टिव करने का लॉजिक
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
-      if (currentMode === "email") {
-        let emailVal = document.getElementById("emailInput").value.trim();
-        if (emailVal.includes("@") && emailVal.includes(".")) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
-      } else if (currentMode === "otp") {
-        let otpVal = document.getElementById("otpInput").value.trim();
-        if (otpVal.length === 4) {
-          btn.classList.add("active");
-        } else {
-          btn.classList.remove("active");
-        }
+      let emailVal = document.getElementById("emailInput").value.trim();
+      if (emailVal.includes("@") && emailVal.includes(".")) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
       }
     }
 
     function handleBackAction() {
-      if (currentMode === "otp") {
-        currentMode = "email";
-        document.getElementById("emailContainer").style.display = "block";
-        document.getElementById("socialSection").style.display = "flex";
-        document.getElementById("otpContainer").style.display = "none";
-        document.getElementById("pageTitle").innerText = "Sign in with Email";
-        document.getElementById("pageSub").innerText = "Enter your email address to continue";
-        document.getElementById("otpInput").value = "";
-        checkInputState();
-      } else {
-        window.location.replace("index.html");
-      }
+      window.location.replace("index.html");
     }
 
-    // मुख्य एक्शन: पुराना यूजर सीधा पासवर्ड पेज पर, नया यूजर लिमिट चेक और OTP के साथ
     function handleMainAction() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
 
-      if (currentMode === "email") {
-        if (!email.includes("@") || !email.includes(".")) {
-          showCustomAlert("Please enter a valid email address!");
-          return;
-        }
-
-        localStorage.setItem("greedy_login_identifier", email);
-        document.getElementById("loadingOverlay").style.display = "flex";
-
-        db.collection("users").doc(email).get().then((doc) => {
-          document.getElementById("loadingOverlay").style.display = "none";
-
-          if (doc.exists) {
-            // 🌟 पुराना यूजर है: बिना किसी OTP के सीधा आगे पासवर्ड वाले पेज पर भेजो!
-            window.location.replace("password.html");
-          } else {
-            // 🌟 नया यूजर है: डिवाइस पर 5 ईमेल रजिस्ट्रेशन की लिमिट चेक करो
-            let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
-            
-            if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
-              showCustomAlert("Email registration limit reached (Max 5 emails per device)! You cannot proceed further.");
-              return;
-            }
-
-            // लिमिट के अंदर है तो नया यूजर मानकर OTP स्क्रीन दिखाओ
-            currentMode = "otp";
-            document.getElementById("emailContainer").style.display = "none";
-            document.getElementById("socialSection").style.display = "none";
-            document.getElementById("pageTitle").innerText = "Verification Code";
-            document.getElementById("pageSub").innerText = "Enter 4-digit OTP sent to your email (Demo: 1234)";
-            document.getElementById("otpContainer").style.display = "block";
-            document.getElementById("otpInput").focus();
-            checkInputState();
-          }
-        }).catch((err) => {
-          document.getElementById("loadingOverlay").style.display = "none";
-          showCustomAlert("Error: " + err.message);
-        });
-
-      } else if (currentMode === "otp") {
-        let otp = document.getElementById("otpInput").value.trim();
-        if (otp !== "1234") {
-          showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
-          return;
-        }
-
-        // OTP सही होने पर आगे के password.html पेज पर भेजो
-        window.location.replace("password.html");
+      if (!email.includes("@") || !email.includes(".")) {
+        showCustomAlert("Please enter a valid email address!");
+        return;
       }
+
+      localStorage.setItem("greedy_login_identifier", email);
+      document.getElementById("loadingOverlay").style.display = "flex";
+
+      db.collection("users").doc(email).get().then((doc) => {
+        document.getElementById("loadingOverlay").style.display = "none";
+
+        if (doc.exists) {
+          window.location.replace("password.html");
+        } else {
+          let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
+          
+          if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
+            showCustomAlert("Email registration limit reached (Max 5 emails per device)! You cannot proceed further.");
+            return;
+          }
+
+          showOtpPopupModal();
+        }
+      }).catch((err) => {
+        document.getElementById("loadingOverlay").style.display = "none";
+        showCustomAlert("Error: " + err.message);
+      });
     }
 
     function handleMobileLogin() { window.location.replace("phone.html"); }
