@@ -159,11 +159,11 @@
     
     <div style="margin-top: 10px;">
       <div class="step-title" id="pageTitle" style="font-size:28px; font-weight:900; color:#000; letter-spacing:0.5px;">Sign in with Email & Login</div>
-      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;" id="pageSub">Enter your email address to continue</div>
+      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;" id="pageSub">Enter your email and password to continue</div>
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box -->
+        <!-- 1. Email Box (हमेशा सामने दिखेगा) -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
@@ -171,14 +171,14 @@
           </div>
         </div>
 
-        <!-- 2. Password Box (पुराने यूजर के लिए) -->
-        <div id="passwordContainer" style="display:none; margin-bottom:12px;">
+        <!-- 2. Password Box (यह भी शुरुआत से ही ईमेल के नीचे मौजूद रहेगा) -->
+        <div id="passwordContainer" style="margin-bottom:12px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
             <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px;">
             <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:18px; color:#777; padding-left:10px;">👁️‍🗨️</span>
           </div>
-          <!-- Forgot Password ऑप्शन -->
+          <!-- Forgot Password ऑप्शन ठीक पासवर्ड बॉक्स के सामने कोने में -->
           <div style="display:flex; justify-content:flex-end; margin-top:10px;">
             <div style="background:#f0f0f0; border-radius:12px; padding:8px 14px; display:inline-block;">
               <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
@@ -186,9 +186,9 @@
           </div>
         </div>
 
-        <!-- 3. OTP Box (नया यूजर या फॉरगॉट पासवर्ड के लिए) -->
+        <!-- 3. OTP Box (सिर्फ तब खुलेगा जब नया यूजर होगा या फॉरगॉट पासवर्ड दबाएगा) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
-          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
+          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;" id="otpLabel">Verification Code (Demo: 1234)</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:16px 18px;">
             <input type="text" id="otpInput" maxlength="4" oninput="checkInputState()" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:18px; letter-spacing: 6px; font-weight:bold;">
           </div>
@@ -250,7 +250,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentStep = "email"; // 'email', 'password', 'otp'
+    let currentMode = "login"; // 'login' (email+password), 'otp'
     let popupCallback = null;
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
@@ -284,33 +284,36 @@
       }
     }
 
+    // बटन एक्टिव करने का लॉजिक (ईमेल और पासवर्ड दोनों भरे होने पर या ओटीपी भरे होने पर)
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
-      if (currentStep === "email") {
-        let val = document.getElementById("emailInput").value.trim();
-        if (val.includes("@") && val.includes(".")) btn.classList.add("active");
-        else btn.classList.remove("active");
-      } else if (currentStep === "password") {
-        let val = document.getElementById("passwordInput").value.trim();
-        if (val.length >= 6) btn.classList.add("active");
-        else btn.classList.remove("active");
-      } else if (currentStep === "otp") {
-        let val = document.getElementById("otpInput").value.trim();
-        if (val.length === 4) btn.classList.add("active");
-        else btn.classList.remove("active");
+      if (currentMode === "login") {
+        let emailVal = document.getElementById("emailInput").value.trim();
+        let passVal = document.getElementById("passwordInput").value.trim();
+        if (emailVal.includes("@") && emailVal.includes(".") && passVal.length >= 6) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      } else if (currentMode === "otp") {
+        let otpVal = document.getElementById("otpInput").value.trim();
+        if (otpVal.length === 4) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
       }
     }
 
     function handleBackAction() {
-      if (currentStep === "password" || currentStep === "otp") {
-        currentStep = "email";
+      if (currentMode === "otp") {
+        currentMode = "login";
         document.getElementById("emailContainer").style.display = "block";
-        document.getElementById("passwordContainer").style.display = "none";
+        document.getElementById("passwordContainer").style.display = "block";
         document.getElementById("otpContainer").style.display = "none";
         document.getElementById("socialSection").style.display = "flex";
         document.getElementById("pageTitle").innerText = "Sign in with Email & Login";
-        document.getElementById("pageSub").innerText = "Enter your email address to continue";
-        document.getElementById("passwordInput").value = "";
+        document.getElementById("pageSub").innerText = "Enter your email and password to continue";
         document.getElementById("otpInput").value = "";
         checkInputState();
       } else {
@@ -318,40 +321,55 @@
       }
     }
 
+    // मुख्य बटन क्लिक एक्शन
     function handleMainAction() {
-      if (currentStep === "email") {
-        let email = document.getElementById("emailInput").value.trim().toLowerCase();
-        localStorage.setItem("greedy_login_identifier", email);
+      let email = document.getElementById("emailInput").value.trim().toLowerCase();
+      let passwordVal = document.getElementById("passwordInput").value.trim();
 
+      if (currentMode === "login") {
+        if (!email.includes("@") || !email.includes(".")) {
+          showCustomAlert("Please enter a valid email address!");
+          return;
+        }
+        if (passwordVal.length < 6) {
+          showCustomAlert("Password must be at least 6 characters long!");
+          return;
+        }
+
+        localStorage.setItem("greedy_login_identifier", email);
         document.getElementById("loadingOverlay").style.display = "flex";
 
+        // डेटाबेस में चेक करो कि यूजर नया है या पुराना
         db.collection("users").doc(email).get().then((doc) => {
           document.getElementById("loadingOverlay").style.display = "none";
 
           if (doc.exists) {
-            // पुराना यूजर: इसी पेज पर पासवर्ड बॉक्स दिखाओ
-            currentStep = "password";
-            document.getElementById("emailContainer").style.display = "none";
-            document.getElementById("passwordContainer").style.display = "block";
-            document.getElementById("socialSection").style.display = "none";
-            document.getElementById("pageTitle").innerText = "Enter Your Password";
-            document.getElementById("pageSub").innerText = "Welcome back! Please enter your password.";
-            document.getElementById("passwordInput").focus();
-            checkInputState();
+            // 👉 पुराना यूजर: पासवर्ड मैच करो
+            let savedPassword = doc.data().password;
+            if (savedPassword && savedPassword !== passwordVal) {
+              showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
+              return;
+            }
+            // पासवर्ड सही है ➔ सीधा home.html पर भेजो
+            window.location.replace("home.html");
           } else {
-            // नया यूजर: 5 ईमेल की डिवाइस लिमिट चेक करो
+            // 👉 नया यूजर: 5 ईमेल की डिवाइस लिमिट चेक करो
             let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
             if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
               showCustomAlert("Email registration is not supported currently");
               return;
             }
-            // नया यूजर: OTP दिखाओ
-            currentStep = "otp";
+
+            // नया यूजर है ➔ OTP स्क्रीन दिखाओ
+            currentMode = "otp";
+            localStorage.setItem("greedy_temp_password", passwordVal);
             localStorage.setItem("greedy_forgot_flow", "false");
+            
             document.getElementById("emailContainer").style.display = "none";
+            document.getElementById("passwordContainer").style.display = "none";
             document.getElementById("socialSection").style.display = "none";
             document.getElementById("pageTitle").innerText = "Verification Code";
-            document.getElementById("pageSub").innerText = "Enter 4-digit OTP (Demo: 1234)";
+            document.getElementById("pageSub").innerText = "Enter 4-digit OTP sent to your email (Demo: 1234)";
             document.getElementById("otpContainer").style.display = "block";
             document.getElementById("otpInput").focus();
             checkInputState();
@@ -361,29 +379,7 @@
           showCustomAlert("Error: " + err.message);
         });
 
-      } else if (currentStep === "password") {
-        // पुराना यूजर पासवर्ड डालकर लॉगिन कर रहा है
-        let passwordVal = document.getElementById("passwordInput").value.trim();
-        let email = localStorage.getItem("greedy_login_identifier");
-
-        document.getElementById("loadingOverlay").style.display = "flex";
-        db.collection("users").doc(email).get().then((doc) => {
-          document.getElementById("loadingOverlay").style.display = "none";
-          if (doc.exists) {
-            let savedPassword = doc.data().password;
-            if (savedPassword && savedPassword !== passwordVal) {
-              showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
-              return;
-            }
-            // पासवर्ड सही ➔ सीधा home.html पर भेजो
-            window.location.replace("home.html");
-          }
-        }).catch((err) => {
-          document.getElementById("loadingOverlay").style.display = "none";
-          showCustomAlert("Error: " + err.message);
-        });
-
-      } else if (currentStep === "otp") {
+      } else if (currentMode === "otp") {
         // OTP वेरिफाई हो रहा है
         let otp = document.getElementById("otpInput").value.trim();
         if (otp !== "1234") {
@@ -391,20 +387,44 @@
           return;
         }
 
-        // 🌟 OTP सही होने पर सीधे हमारे पहले से बने हुए password.html पेज पर भेजो (नया पासवर्ड बनाने के लिए)
+        // 🌟 OTP सही होने पर हमारे फिक्स password.html पेज पर भेजो (नया पासवर्ड सेट करने के लिए)
         window.location.replace("password.html");
       }
     }
 
     // Forgot password एक्शन
     function forgotPasswordAction() {
-      currentStep = "otp";
+      let email = document.getElementById("emailInput").value.trim().toLowerCase();
+      if (!email || !email.includes("@") || !email.includes(".")) {
+        showCustomAlert("Please enter your registered email first!");
+        return;
+      }
+
+      localStorage.setItem("greedy_login_identifier", email);
       localStorage.setItem("greedy_forgot_flow", "true");
-      document.getElementById("passwordContainer").style.display = "none";
-      document.getElementById("pageTitle").innerText = "Reset Password OTP";
-      document.getElementById("pageSub").innerText = "Enter 4-digit OTP (Demo: 1234) to reset password.";
-      document.getElementById("otpContainer").style.display = "block";
-      checkInputState();
+
+      document.getElementById("loadingOverlay").style.display = "flex";
+      db.collection("users").doc(email).get().then((doc) => {
+        document.getElementById("loadingOverlay").style.display = "none";
+        if (!doc.exists) {
+          showCustomAlert("This email is not registered yet!");
+          return;
+        }
+
+        // पुराना यूजर है, फॉरगॉट पासवर्ड के लिए OTP दिखाओ
+        currentMode = "otp";
+        document.getElementById("emailContainer").style.display = "none";
+        document.getElementById("passwordContainer").style.display = "none";
+        document.getElementById("socialSection").style.display = "none";
+        document.getElementById("pageTitle").innerText = "Reset Password OTP";
+        document.getElementById("pageSub").innerText = "Enter 4-digit OTP (Demo: 1234) to reset password.";
+        document.getElementById("otpContainer").style.display = "block";
+        document.getElementById("otpInput").focus();
+        checkInputState();
+      }).catch((err) => {
+        document.getElementById("loadingOverlay").style.display = "none";
+        showCustomAlert("Error: " + err.message);
+      });
     }
 
     function handleMobileLogin() { window.location.replace("phone.html"); }
