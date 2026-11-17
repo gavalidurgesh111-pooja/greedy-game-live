@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed; background-size: cover; min-height: 100%;">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -7,6 +7,11 @@
   <title>Greedy Coin - Registration and Login</title>
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
   <style>
+    :root {
+      --sheet-icon-size: 22px;
+      --sheet-icon-gap: 16px;
+    }
+
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -23,8 +28,9 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
-      background-size: cover !important;
+    }
+
+    body {
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -166,7 +172,7 @@
      })();
   </script>
 </head>
-<body>
+<body style="background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed; background-size: cover;">
 
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
