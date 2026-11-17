@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed; background-size: cover;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#6a0dad">
   <title>Greedy Coin - Registration and Login</title>
-  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp">
   <link rel="stylesheet" href="style.css">
   <style>
     :root {
@@ -26,14 +26,13 @@
     html, body {
       width: 100%;
       height: 100%;
-      overflow: hidden !important;
-      position: fixed !important;
-      inset: 0 !important;
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
-      background-size: cover !important;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
     }
 
     body {
+      background: transparent;
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -43,7 +42,7 @@
       z-index: 100;
       display: flex;
       flex-direction: column;
-      background: transparent !important;
+      background: transparent;
       overflow: hidden;
     }
 
@@ -131,19 +130,19 @@
     }
 
     .support-top-btn {
-      position: fixed !important;
-      top: 15px !important;
-      right: 15px !important;
-      width: 38px !important;
-      height: 38px !important;
-      background: rgba(255, 255, 255, 0.95) !important;
-      border-radius: 50% !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      cursor: pointer !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-      z-index: 99999 !important;
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 38px;
+      height: 38px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 99999;
     }
     .support-top-btn:active {
       transform: scale(0.92);
@@ -164,7 +163,7 @@
       display: none;
       box-shadow: 0 4px 15px rgba(0,0,0,0.25);
       text-align: center;
-      border: none !important;
+      border: none;
     }
   </style>
 
@@ -175,7 +174,7 @@
      })();
   </script>
 </head>
-<body>
+<body style="background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed; background-size: cover;">
 
   <div class="support-top-btn" onclick="openCustomerServiceModal()">
     <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -209,7 +208,7 @@
       </div>
     </div>
 
-    <!-- More Options Modal -->
+    <!-- More OptionsModal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
@@ -281,4 +280,97 @@
       }
 
       let moreOptionsModal = document.getElementById("moreOptionsModal");
-      if (moreOptionsModal && moreOptionsModal.style.display === "
+      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
+        moreOptionsModal.style.display = "none";
+        return;
+      }
+    });
+
+    function selectPhoneOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      window.location.replace("phone.html");
+    }
+
+    function selectEmailOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      window.location.replace("email.html");
+    }
+
+    function openMoreOptionsSheet() {
+      history.pushState({ modalOpen: true }, "");
+      document.getElementById("moreOptionsModal").style.display = "flex";
+    }
+
+    function closeMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+    }
+
+    function socialLoginNotice(provider) {
+      alert(provider + " login selected. Please use More Options for phone/ID login.");
+    }
+
+    function openCustomerServiceModal() {
+      history.pushState({ modalOpen: true }, "");
+      document.getElementById("csEmailInput").value = "";
+      document.getElementById("csIssueInput").value = "";
+      document.getElementById("csCharCount").innerText = "0/300";
+      validateForm();
+      document.getElementById("customerServiceModal").style.display = "flex";
+    }
+
+    function closeCustomerServiceModal() {
+      document.getElementById("customerServiceModal").style.display = "none";
+    }
+
+    function validateForm() {
+      let emailVal = document.getElementById("csEmailInput").value.trim();
+      let textarea = document.getElementById("csIssueInput");
+      let len = textarea.value.length;
+      document.getElementById("csCharCount").innerText = len + "/300";
+
+      let confirmBtn = document.getElementById("csConfirmBtn");
+      if (emailVal !== "") {
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = "1";
+        confirmBtn.style.cursor = "pointer";
+      } else {
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = "0.5";
+        confirmBtn.style.cursor = "not-allowed";
+      }
+    }
+
+    document.getElementById('support-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      let confirmBtn = document.getElementById("csConfirmBtn");
+      confirmBtn.innerText = "Sending...";
+      confirmBtn.disabled = true;
+      confirmBtn.style.opacity = "0.5";
+      confirmBtn.style.cursor = "not-allowed";
+
+      emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
+        .then(function() {
+          confirmBtn.innerText = "Confirm";
+          closeCustomerServiceModal();
+          
+          document.getElementById('support-form').reset();
+          document.getElementById("csCharCount").innerText = "0/300";
+          validateForm();
+
+          let toast = document.getElementById("floatingToast");
+          toast.style.display = "block";
+          setTimeout(function() {
+            toast.style.display = "none";
+          }, 2000);
+
+        }, function(error) {
+          confirmBtn.innerText = "Confirm";
+          validateForm();
+          console.log('FAILED...', error);
+          alert("Failed to send message. Please try again later.");
+        });
+    });
+  </script>
+</body>
+</html>
