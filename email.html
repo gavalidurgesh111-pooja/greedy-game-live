@@ -143,7 +143,6 @@
       white-space: nowrap;
     }
 
-    /* "Enter your password" का placeholder एकदम छोटा और साफ़ */
     input::placeholder {
       font-size: 13px;
       color: #888;
@@ -184,14 +183,14 @@
             
             <!-- पासवर्ड का बॉक्स (height: 56px) -->
             <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; flex:1; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
-              <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:15px; height:100%;">
+              <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:14px; height:100%;">
               
-              <!-- 🌟 तेरी भेजी हुई फोटो के नक्शे वाली ऑरिजिनल आँख का SVG आइकॉन -->
+              <!-- 🌟 एकदम स्टैंडर्ड, छोटा और प्रोफेशनल ब्राउज़र वाला आँख का SVG आइकॉन -->
               <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; display:flex; align-items:center; justify-content:center; padding-left:8px;" title="Show/Hide Password">
-                <svg id="customEyeSvg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <!-- बंद आँख (नीचे पलकें/पंख जैसी डिज़ाइन जो तूने फोटो में भेजी है)[span_1](start_span)[span_1](end_span) -->
-                  <path id="eyeMainPath" d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path>
-                  <circle id="eyePupil" cx="12" cy="12" r="3" style="display:none; fill:#555;"></circle>
+                <svg id="proEyeIcon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <!-- बंद आँख का स्टैंडर्ड पाथ -->
+                  <path id="eyeSvgPath" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line id="eyeSvgSlash" x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
               </span>
             </div>
@@ -290,22 +289,23 @@
       if (result && cb) cb(true);
     }
 
-    // 🌟 आँख का टॉगल (बंद होने पर नीचे पंखों वाली आँख[span_2](start_span)[span_2](end_span), खुलने पर बीच में गोल पुतली वाली आँख)
+    // 🌟 प्रोफेशनल ब्राउज़र वाली स्टैंडर्ड आँख टॉगल (क्लिक करने पर पूरी साफ़ खुली आँख और बंद करने पर बंद आँख)
     function togglePasswordVisibility() {
       let passInput = document.getElementById("passwordInput");
-      let eyeMainPath = document.getElementById("eyeMainPath");
-      let eyePupil = document.getElementById("eyePupil");
+      let eyeSvgPath = document.getElementById("eyeSvgPath");
+      let eyeSvgSlash = document.getElementById("eyeSvgSlash");
 
       if (passInput.type === "password") {
         passInput.type = "text";
-        // खुली आँख (बीच में गोल पुतली दिखाई देगी)
-        eyeMainPath.setAttribute("d", "M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z");
-        eyePupil.style.display = "block";
+        // खुली आँख का क्लीन स्टैंडर्ड SVG पाथ
+        eyeSvgPath.setAttribute("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
+        // बीच की पुतली का छोटा गोला दिखाने के लिए पाथ अपडेट कर सकते हैं या स्लैश हटाते हैं
+        eyeSvgSlash.style.display = "none";
       } else {
         passInput.type = "password";
-        // बंद आँख (तेरी भेजी हुई फोटो के जैसी नीचे पलकों/पंखों वाली डिज़ाइन)[span_3](start_span)[span_3](end_span)
-        eyeMainPath.setAttribute("d", "M2 12c2 3 5 5 10 5s8-2 10-5M6 9l-2-2M18 9l2-2M12 11v3");
-        eyePupil.style.display = "none";
+        // बंद आँख का स्टैंडर्ड पाथ
+        eyeSvgPath.setAttribute("d", "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24");
+        eyeSvgSlash.style.display = "block";
       }
     }
 
