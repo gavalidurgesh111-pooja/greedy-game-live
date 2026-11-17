@@ -37,7 +37,7 @@
       z-index: 100;
     }
 
-    /* नियोन ग्लो इफ़ेक्ट */
+    /* नियोन ग्लो इफ़ेक्ट - ईमेल सही होते ही तुरंत एक्टिव */
     #mainActionBtn {
       opacity: 0.4;
       pointer-events: none;
@@ -144,7 +144,7 @@
     }
 
     input::placeholder {
-      font-size: 13px;
+      font-size: 14px;
       color: #888;
     }
   </style>
@@ -163,12 +163,12 @@
     </div>
     
     <div style="margin-top: 10px;">
-      <div class="step-title" id="pageTitle" style="font-size:28px; font-weight:900; color:#000; letter-spacing:0.5px;">Sign in with Email & Login</div>
-      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;" id="pageSub">Enter your email and password to continue</div>
+      <div class="step-title" id="pageTitle" style="font-size:28px; font-weight:900; color:#000; letter-spacing:0.5px;">Sign in with Email</div>
+      <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:25px;" id="pageSub">Enter your email address to continue</div>
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         
-        <!-- 1. Email Box -->
+        <!-- 1. Email Box (पासवर्ड और फॉरगॉट वाला झंझट पूरी तरह खत्म) -->
         <div id="emailContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
@@ -176,34 +176,7 @@
           </div>
         </div>
 
-        <!-- 2. Password Box और Forgot Password: बिल्कुल एक जैसे डिब्बे और एक लाइन में -->
-        <div id="passwordContainer" style="margin-bottom:20px;">
-          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
-          <div style="display:flex; align-items:center; gap:10px; width:100%;">
-            
-            <!-- पासवर्ड का बॉक्स (height: 56px) -->
-            <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; flex:1; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
-              <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:14px; height:100%;">
-              
-              <!-- 🌟 एकदम स्टैंडर्ड, छोटा और प्रोफेशनल ब्राउज़र वाला आँख का SVG आइकॉन -->
-              <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; display:flex; align-items:center; justify-content:center; padding-left:8px;" title="Show/Hide Password">
-                <svg id="proEyeIcon" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <!-- बंद आँख का स्टैंडर्ड पाथ -->
-                  <path id="eyeSvgPath" d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                  <line id="eyeSvgSlash" x1="1" y1="1" x2="23" y2="23"></line>
-                </svg>
-              </span>
-            </div>
-
-            <!-- Forgot Password का बॉक्स (ऊँचाई और साइज़ बिल्कुल पासवर्ड बॉक्स जैसी 56px बराबर) -->
-            <div style="background:#f0f0f0; border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; white-space:nowrap; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); flex-shrink:0;">
-              <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 3. OTP Box (नया यूजर या फॉरगॉट के वक्त) -->
+        <!-- 2. OTP Box (ईमेल वेरीफाई करने के लिए) -->
         <div id="otpContainer" style="display:none; margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Verification Code (Demo: 1234)</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; height:56px;">
@@ -267,7 +240,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentMode = "login"; // 'login', 'otp'
+    let currentMode = "email"; // 'email', 'otp'
     let popupCallback = null;
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
@@ -289,32 +262,12 @@
       if (result && cb) cb(true);
     }
 
-    // 🌟 प्रोफेशनल ब्राउज़र वाली स्टैंडर्ड आँख टॉगल (क्लिक करने पर पूरी साफ़ खुली आँख और बंद करने पर बंद आँख)
-    function togglePasswordVisibility() {
-      let passInput = document.getElementById("passwordInput");
-      let eyeSvgPath = document.getElementById("eyeSvgPath");
-      let eyeSvgSlash = document.getElementById("eyeSvgSlash");
-
-      if (passInput.type === "password") {
-        passInput.type = "text";
-        // खुली आँख का क्लीन स्टैंडर्ड SVG पाथ
-        eyeSvgPath.setAttribute("d", "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z");
-        // बीच की पुतली का छोटा गोला दिखाने के लिए पाथ अपडेट कर सकते हैं या स्लैश हटाते हैं
-        eyeSvgSlash.style.display = "none";
-      } else {
-        passInput.type = "password";
-        // बंद आँख का स्टैंडर्ड पाथ
-        eyeSvgPath.setAttribute("d", "M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24");
-        eyeSvgSlash.style.display = "block";
-      }
-    }
-
+    // 🌟 जैसे ही ईमेल या OTP टाइप हो, बटन तुरंत एक्टिव हो जाए
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
-      if (currentMode === "login") {
+      if (currentMode === "email") {
         let emailVal = document.getElementById("emailInput").value.trim();
-        let passVal = document.getElementById("passwordInput").value.trim();
-        if (emailVal.includes("@") && emailVal.includes(".") && passVal.length >= 6) {
+        if (emailVal.includes("@") && emailVal.includes(".")) {
           btn.classList.add("active");
         } else {
           btn.classList.remove("active");
@@ -331,13 +284,12 @@
 
     function handleBackAction() {
       if (currentMode === "otp") {
-        currentMode = "login";
+        currentMode = "email";
         document.getElementById("emailContainer").style.display = "block";
-        document.getElementById("passwordContainer").style.display = "block";
-        document.getElementById("otpContainer").style.display = "none";
         document.getElementById("socialSection").style.display = "flex";
-        document.getElementById("pageTitle").innerText = "Sign in with Email & Login";
-        document.getElementById("pageSub").innerText = "Enter your email and password to continue";
+        document.getElementById("otpContainer").style.display = "none";
+        document.getElementById("pageTitle").innerText = "Sign in with Email";
+        document.getElementById("pageSub").innerText = "Enter your email address to continue";
         document.getElementById("otpInput").value = "";
         checkInputState();
       } else {
@@ -345,17 +297,13 @@
       }
     }
 
+    // 🌟 मुख्य एक्शन: 5 ईमेल लिमिट चेक और OTP फ्लो
     function handleMainAction() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
-      let passwordVal = document.getElementById("passwordInput").value.trim();
 
-      if (currentMode === "login") {
+      if (currentMode === "email") {
         if (!email.includes("@") || !email.includes(".")) {
           showCustomAlert("Please enter a valid email address!");
-          return;
-        }
-        if (passwordVal.length < 6) {
-          showCustomAlert("Password must be at least 6 characters long!");
           return;
         }
 
@@ -366,25 +314,27 @@
           document.getElementById("loadingOverlay").style.display = "none";
 
           if (doc.exists) {
-            let savedPassword = doc.data().password;
-            if (savedPassword && savedPassword !== passwordVal) {
-              showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
-              return;
-            }
-            window.location.replace("home.html");
+            // अगर ईमेल पहले से रजिस्टर्ड है, तो सीधा आगे पासवर्ड पेज पर भेजो (या OTP के जरिए)
+            currentMode = "otp";
+            document.getElementById("emailContainer").style.display = "none";
+            document.getElementById("socialSection").style.display = "none";
+            document.getElementById("pageTitle").innerText = "Verification Code";
+            document.getElementById("pageSub").innerText = "Enter 4-digit OTP sent to your email (Demo: 1234)";
+            document.getElementById("otpContainer").style.display = "block";
+            document.getElementById("otpInput").focus();
+            checkInputState();
           } else {
+            // नया यूजर: डिवाइस पर 5 ईमेल रजिस्ट्रेशन की लिमिट चेक करो
             let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
+            
             if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
-              showCustomAlert("Email registration is not supported currently");
+              showCustomAlert("Email registration limit reached (Max 5 emails per device)!");
               return;
             }
 
+            // लिमिट के अंदर है तो OTP स्क्रीन दिखाओ
             currentMode = "otp";
-            localStorage.setItem("greedy_temp_password", passwordVal);
-            localStorage.setItem("greedy_forgot_flow", "false");
-            
             document.getElementById("emailContainer").style.display = "none";
-            document.getElementById("passwordContainer").style.display = "none";
             document.getElementById("socialSection").style.display = "none";
             document.getElementById("pageTitle").innerText = "Verification Code";
             document.getElementById("pageSub").innerText = "Enter 4-digit OTP sent to your email (Demo: 1234)";
@@ -404,41 +354,9 @@
           return;
         }
 
+        // OTP सही होने पर आगे के password.html पेज पर भेजो (जहाँ असली पासवर्ड सेटअप है)
         window.location.replace("password.html");
       }
-    }
-
-    function forgotPasswordAction() {
-      let email = document.getElementById("emailInput").value.trim().toLowerCase();
-      if (!email || !email.includes("@") || !email.includes(".")) {
-        showCustomAlert("Please enter your registered email first!");
-        return;
-      }
-
-      localStorage.setItem("greedy_login_identifier", email);
-      localStorage.setItem("greedy_forgot_flow", "true");
-
-      document.getElementById("loadingOverlay").style.display = "flex";
-      db.collection("users").doc(email).get().then((doc) => {
-        document.getElementById("loadingOverlay").style.display = "none";
-        if (!doc.exists) {
-          showCustomAlert("This email is not registered yet!");
-          return;
-        }
-
-        currentMode = "otp";
-        document.getElementById("emailContainer").style.display = "none";
-        document.getElementById("passwordContainer").style.display = "none";
-        document.getElementById("socialSection").style.display = "none";
-        document.getElementById("pageTitle").innerText = "Reset Password OTP";
-        document.getElementById("pageSub").innerText = "Enter 4-digit OTP (Demo: 1234) to reset password.";
-        document.getElementById("otpContainer").style.display = "block";
-        document.getElementById("otpInput").focus();
-        checkInputState();
-      }).catch((err) => {
-        document.getElementById("loadingOverlay").style.display = "none";
-        showCustomAlert("Error: " + err.message);
-      });
     }
 
     function handleMobileLogin() { window.location.replace("phone.html"); }
