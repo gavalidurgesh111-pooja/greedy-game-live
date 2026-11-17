@@ -38,12 +38,12 @@
       z-index: 100;
     }
 
-    #emailSubmitBtn, #emailOtpSubmitBtn, #emailPassSubmitBtn {
+    #emailSubmitBtn {
       opacity: 0.4;
       pointer-events: none;
       transition: 0.3s;
     }
-    #emailSubmitBtn.active, #emailOtpSubmitBtn.active, #emailPassSubmitBtn.active {
+    #emailSubmitBtn.active {
       opacity: 1;
       pointer-events: auto;
       background: #00cd00 !important;
@@ -51,7 +51,7 @@
     }
 
     .social-login-section {
-      margin-top: 75px; /* 🌟 यहाँ स्पेस (सेंस) बढ़ाने के लिए मार्जिन बढ़ा दिया है */
+      margin-top: 75px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -148,7 +148,7 @@
 </head>
 <body>
 
-  <!-- 1. ईमेल इनपुट स्क्रीन -->
+  <!-- एकमात्र ईमेल स्क्रीन (इसमें Forgot Password हमेशा मौजूद रहेगा) -->
   <div id="screenEmailInput" style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     
     <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
@@ -163,12 +163,12 @@
       <div class="step-title" style="font-size:24px; font-weight:900; color:#000;">Sign in with Email & Login</div>
       <div style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter your email address to continue</div>
 
-      <form onsubmit="handleEmailFormSubmit(event, 'emailInput')">
+      <form onsubmit="handleEmailFormSubmit(event)">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
           <input type="email" id="emailInput" oninput="checkEmailInput()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
 
-        <!-- 🌟 Forgot Password का ऑप्शन ठीक इनपुट बॉक्स के नीचे -->
+        <!-- Forgot Password का ऑप्शन हमेशा यहीं रहेगा -->
         <div style="margin-top:12px; text-align:left; padding-left:5px;">
           <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:600; cursor:pointer;">Forgot password?</span>
         </div>
@@ -177,7 +177,7 @@
       </form>
     </div>
 
-    <!-- 🌟 Facebook और Mobile Login वाले बटन नीचे शिफ्ट कर दिए गए हैं और बीच में पर्याप्त स्पेस है -->
+    <!-- Facebook और Mobile Login वाले बटन -->
     <div class="social-login-section">
       <div class="or-divider">or</div>
       <div class="social-buttons-row">
@@ -198,29 +198,6 @@
 
     <div class="bottom-fixed-btn-container">
       <button class="btn-round-next" id="emailSubmitBtn" onclick="handleEmailNext()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
-    </div>
-  </div>
-
-  <!-- 2. ईमेल OTP वेरिफिकेशन स्क्रीन (फॉरगॉट पासवर्ड के लिए) -->
-  <div id="screenEmailOtp" style="display:none; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <div class="back-btn" onclick="showEmailInputScreen()" style="font-size:24px; cursor:pointer;">❮</div>
-    </div>
-    
-    <div style="margin-top: 20px;">
-      <div class="step-title" id="otpScreenTitle" style="font-size:24px; font-weight:900; color:#000;">Reset Password OTP</div>
-      <div id="otpScreenSub" style="font-size:14px; color:#666; margin-top:4px; margin-bottom:20px;">Enter verification code. Demo OTP: 1234</div>
-
-      <form onsubmit="handleEmailFormSubmit(event, 'emailOtpInput')">
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:12px 16px;">
-          <input type="text" id="emailOtpInput" maxlength="4" oninput="checkEmailOtpInput(this)" placeholder="Enter 4-digit OTP" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; letter-spacing: 5px; font-weight:bold;">
-        </div>
-        <button type="submit" style="display:none;"></button>
-      </form>
-    </div>
-
-    <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="emailOtpSubmitBtn" onclick="verifyEmailOtp()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
     </div>
   </div>
 
@@ -251,9 +228,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentEmailState = "input"; 
-    let currentEmail = "";
-    let isForgotFlow = false;
     let popupCallback = null;
 
     document.addEventListener('contextmenu', function(e) {
@@ -264,32 +238,14 @@
       history.replaceState({ page: "email_input" }, "");
     };
 
-    function updateEmailScreen(state) {
-      currentEmailState = state;
-      document.getElementById("screenEmailInput").style.display = (state === "input") ? "flex" : "none";
-      document.getElementById("screenEmailOtp").style.display = (state === "otp") ? "flex" : "none";
-      history.pushState({ page: state }, "");
-    }
-
-    function showEmailInputScreen() {
-      isForgotFlow = false;
-      updateEmailScreen("input");
-    }
-
     window.addEventListener("popstate", function(event) {
       let modal = document.getElementById("customPopupModal");
-      
       if (modal.style.display === "flex") {
         modal.style.display = "none";
         popupCallback = null;
         return;
       }
-
-      if (currentEmailState === "otp") {
-        updateEmailScreen("input");
-      } else {
-        window.location.replace("index.html");
-      }
+      window.location.replace("index.html");
     });
 
     function showCustomAlert(message, callback) {
@@ -330,20 +286,19 @@
       }
 
       let email = rawInput.trim().toLowerCase();
-      currentEmail = email;
-      isForgotFlow = true;
-
+      
       document.getElementById("loadingOverlay").style.display = "flex";
       db.collection("users").doc(email).get().then((doc) => {
         document.getElementById("loadingOverlay").style.display = "none";
         if (!doc.exists) {
           showCustomAlert("This email is not registered yet!");
-          isForgotFlow = false;
           return;
         }
 
+        // पुराना यूजर है, फॉरगॉट पासवर्ड के लिए flag सेट करके पासवर्ड पेज पर भेजो
         localStorage.setItem("greedy_login_identifier", email);
-        updateEmailScreen("otp");
+        localStorage.setItem("greedy_forgot_flow", "true");
+        window.location.replace("password.html");
       }).catch((error) => {
         document.getElementById("loadingOverlay").style.display = "none";
         showCustomAlert("Error: " + error.message);
@@ -359,10 +314,8 @@
       }
       
       let email = rawInput.trim().toLowerCase();
-      currentEmail = email;
-      isForgotFlow = false;
-      
       localStorage.setItem("greedy_login_identifier", email);
+      localStorage.setItem("greedy_forgot_flow", "false");
 
       document.getElementById("loadingOverlay").style.display = "flex";
 
@@ -370,8 +323,10 @@
         document.getElementById("loadingOverlay").style.display = "none";
 
         if (doc.exists) {
+          // पुराना यूजर - सीधा पासवर्ड पेज
           window.location.replace("password.html");
         } else {
+          // नया यूजर - 5 ईमेल की डिवाइस लिमिट चेक करो
           let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
           
           if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
@@ -379,6 +334,7 @@
             return;
           }
 
+          // नया यूजर - सीधा पासवर्ड पेज (नया पासवर्ड सेट करने के लिए)
           window.location.replace("password.html");
         }
       }).catch((error) => {
@@ -387,36 +343,11 @@
       });
     }
 
-    function checkEmailOtpInput(input) {
-      let val = input.value;
-      let btn = document.getElementById("emailOtpSubmitBtn");
-      if (val.length === 4) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
-
-    function verifyEmailOtp() {
-      let otp = document.getElementById("emailOtpInput").value.trim();
-      if (otp !== "1234") {
-        showCustomAlert("Invalid OTP! (Demo OTP is 1234)");
-        return;
-      }
-
-      if (isForgotFlow) {
-        window.location.replace("password.html");
-      }
-    }
-
-    function handleEmailFormSubmit(event, inputId) {
+    function handleEmailFormSubmit(event) {
       event.preventDefault();
-      if (inputId === 'emailInput') {
-        let btn = document.getElementById("emailSubmitBtn");
-        if (btn.classList.contains("active")) handleEmailNext();
-      } else if (inputId === 'emailOtpInput') {
-        let btn = document.getElementById("emailOtpSubmitBtn");
-        if (btn.classList.contains("active")) verifyEmailOtp();
+      let btn = document.getElementById("emailSubmitBtn");
+      if (btn.classList.contains("active")) {
+        handleEmailNext();
       }
     }
 
