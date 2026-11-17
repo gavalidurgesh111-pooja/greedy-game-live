@@ -171,20 +171,20 @@
           </div>
         </div>
 
-        <!-- 2. Password Box और Forgot Password: दोनों बिल्कुल एक ही साइज़ के डिब्बे और एक लाइन में -->
+        <!-- 2. Password Box और Forgot Password: बिल्कुल एक जैसे डिब्बे और एक लाइन में -->
         <div id="passwordContainer" style="margin-bottom:20px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:8px; padding-left:4px;">Password</div>
-          <div style="display:flex; align-items:center; gap:10px;">
+          <div style="display:flex; align-items:center; gap:10px; width:100%;">
             
-            <!-- पासवर्ड का बॉक्स (Exact height 56px) -->
+            <!-- पासवर्ड का बॉक्स -->
             <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:16px; padding:0 18px; flex:1; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
               <input type="password" id="passwordInput" oninput="checkInputState()" placeholder="Enter your password" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%;">
-              <!-- 🌟 ऑरिजिनल बंद/आधी आँख का आइकॉन (कीबोर्ड वाला सिंबल पूरी तरह हटाया गया) -->
+              <!-- 🌟 शुद्ध ऑरिजिनल आँख का आइकॉन (बंद आँख / आधी खुली आँख) -->
               <span id="togglePasswordBtn" onclick="togglePasswordVisibility()" style="cursor:pointer; font-size:20px; padding-left:10px; user-select:none; line-height: 1;" title="Show/Hide Password">👁️‍🗨️</span>
             </div>
 
             <!-- Forgot Password का बॉक्स (ऊँचाई और साइज़ बिल्कुल पासवर्ड बॉक्स जैसी 56px बराबर) -->
-            <div style="background:#f0f0f0; border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; white-space:nowrap; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="background:#f0f0f0; border-radius:16px; padding:0 16px; display:flex; align-items:center; justify-content:center; white-space:nowrap; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); flex-shrink:0;">
               <span onclick="forgotPasswordAction()" style="color:#5e229e; font-size:13px; font-weight:700; cursor:pointer;">Forgot password?</span>
             </div>
 
@@ -255,7 +255,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentMode = "login"; // 'login' (email+password), 'otp'
+    let currentMode = "login"; // 'login', 'otp'
     let popupCallback = null;
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
@@ -277,16 +277,16 @@
       if (result && cb) cb(true);
     }
 
-    // 🌟 आँख का टॉगल (बंद आँख 👁️‍🗨️ से आधी खुली आँख 👁️ दिखाने के लिए)
+    // 🌟 आँख टॉगल (बंद आँख 👁️‍🗨️ से आधी खुली आँख 👁️)
     function togglePasswordVisibility() {
       let passInput = document.getElementById("passwordInput");
       let toggleBtn = document.getElementById("togglePasswordBtn");
       if (passInput.type === "password") {
         passInput.type = "text";
-        toggleBtn.innerText = "👁️"; // आधी खुली आँख
+        toggleBtn.innerText = "👁️"; 
       } else {
         passInput.type = "password";
-        toggleBtn.innerText = "👁️‍🗨️"; // बंद आँख
+        toggleBtn.innerText = "👁️‍🗨️"; 
       }
     }
 
@@ -347,23 +347,19 @@
           document.getElementById("loadingOverlay").style.display = "none";
 
           if (doc.exists) {
-            // पुराना यूजर: पासवर्ड मैच करो
             let savedPassword = doc.data().password;
             if (savedPassword && savedPassword !== passwordVal) {
               showCustomAlert("Incorrect password! Please try again or use 'Forgot password?'.");
               return;
             }
-            // पासवर्ड सही ➔ सीधा home.html पर भेजो
             window.location.replace("home.html");
           } else {
-            // नया यूजर: 5 ईमेल की डिवाइस लिमिट चेक करो
             let registeredEmailsList = JSON.parse(localStorage.getItem("greedy_device_emails") || "[]");
             if (!registeredEmailsList.includes(email) && registeredEmailsList.length >= 5) {
               showCustomAlert("Email registration is not supported currently");
               return;
             }
 
-            // नया यूजर है ➔ OTP स्क्रीन दिखाओ
             currentMode = "otp";
             localStorage.setItem("greedy_temp_password", passwordVal);
             localStorage.setItem("greedy_forgot_flow", "false");
@@ -389,7 +385,6 @@
           return;
         }
 
-        // OTP सही होने पर password.html पर भेजो
         window.location.replace("password.html");
       }
     }
