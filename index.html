@@ -1,301 +1,343 @@
-<pre><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#6a0dad">
-<title>Greedy Coin - Registration and Login</title>
-<link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
-<link rel="stylesheet" href="style.css">
-<style>
-* {
--webkit-user-select: none;
-user-select: none;
--webkit-touch-callout: none;
--webkit-tap-highlight-color: transparent;
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
-html, body {
-width: 100%;
-height: 100%;
-overflow: hidden !important;
-position: fixed !important;
-inset: 0 !important;
-}
-body {
-background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
-background-size: cover !important;
-font-family: 'Segoe UI', Roboto, sans-serif;
-}
-#authFlowContainer {
-position: absolute;
-inset: 0;
-z-index: 100;
-display: flex;
-flex-direction: column;
-background: transparent !important;
-overflow: hidden;
-}
-#screenMain {
-flex: 1;
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-align-items: center;
-padding: 15px 15px 10px;
-}
-.brand-title {
-font-size: 38px;
-font-weight: 900;
-color: #ffd700;
-letter-spacing: 1px;
-text-shadow: 0 4px 20px rgba(0,0,0,0.95);
-margin-top: 25px;
-text-align: center;
-}
-.auth-bottom-panel {
-width: 100%;
-max-width: 330px;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 12px;
-margin-top: -20px;
-margin-bottom: 2px;
-}
-.btn-login {
-width: 100%;
-height: 48px;
-border-radius: 24px;
-border: none;
-font-size: 16px;
-font-weight: 700;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 10px;
-cursor: pointer;
-}
-.btn-facebook { background: #1877F2; color: #fff; }
-.btn-google { background: #ffffff; color: #222; }
-.social-logo-svg {
-width: 20px !important;
-height: 20px !important;
-flex-shrink: 0;
-}
-.more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
-.last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
-.terms-text {
-font-size: 9.5px;
-color: rgba(255,255,255,0.95);
-text-align: center;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 4px;
-margin-top: 1px;
-width: 100%;
-white-space: nowrap;
-}
-.terms-text input[type="checkbox"] {
-width: 12px;
-height: 12px;
-accent-color: #8a2be2;
-cursor: pointer;
-}
-.support-top-btn {
-position: fixed !important;
-top: 15px !important;
-right: 15px !important;
-width: 38px !important;
-height: 38px !important;
-background: rgba(255, 255, 255, 0.95) !important;
-border-radius: 50% !important;
-display: flex !important;
-align-items: center !important;
-justify-content: center !important;
-cursor: pointer !important;
-box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-z-index: 99999 !important;
-}
-.support-top-btn:active {
-transform: scale(0.92);
-}
-#floatingToast {
-position: fixed;
-bottom: 25px;
-left: 50%;
-transform: translateX(-50%);
-background: #ffffff;
-color: #6a0dad;
-padding: 8px 20px;
-border-radius: 20px;
-font-size: 14px;
-font-weight: 800;
-z-index: 9999999;
-display: none;
-box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-text-align: center;
-border: none !important;
-}
-</style>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-<script type="text/javascript">
-(function(){
-emailjs.init("LAQTW0O3jnMV4GyV4");
-})();
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#6a0dad">
+  <title>Greedy Coin - Registration and Login</title>
+  <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden !important;
+      position: fixed !important;
+      inset: 0 !important;
+    }
+
+    body {
+      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background-size: cover !important;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    #authFlowContainer {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      background: transparent !important;
+      overflow: hidden;
+    }
+
+    #screenMain {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 15px 10px;
+    }
+
+    .brand-title { 
+      font-size: 38px; 
+      font-weight: 900; 
+      color: #ffd700;
+      letter-spacing: 1px; 
+      text-shadow: 0 4px 20px rgba(0,0,0,0.95); 
+      margin-top: 25px; 
+      text-align: center; 
+    }
+
+    .auth-bottom-panel {
+      width: 100%;
+      max-width: 330px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: -20px;
+      margin-bottom: 2px;
+    }
+
+    .btn-login {
+      width: 100%;
+      height: 48px;
+      border-radius: 24px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .btn-facebook { background: #1777F2; color: #fff; }
+    .btn-google { background: #ffffff; color: #222; }
+
+    .social-logo-svg {
+      width: 20px !important;
+      height: 20px !important;
+      flex-shrink: 0;
+    }
+
+    .more-options-btn { background: none; border: none; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; padding: 2px; }
+    .last-login-tag { background: #e91e63; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 10px; }
+    
+    .terms-text { 
+      font-size: 9.5px; 
+      color: rgba(255,255,255,0.95); 
+      text-align: center; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 4px; 
+      margin-top: 1px;
+      width: 100%;
+      white-space: nowrap;
+    }
+    .terms-text input[type="checkbox"] {
+      width: 12px;
+      height: 12px;
+      accent-color: #8a2be2;
+      cursor: pointer;
+    }
+
+    .support-top-btn {
+      position: fixed !important;
+      top: 15px !important;
+      right: 15px !important;
+      width: 38px !important;
+      height: 38px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-radius: 50% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+      z-index: 99999 !important;
+    }
+    .support-top-btn:active {
+      transform: scale(0.92);
+    }
+
+    #floatingToast {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      color: #6a0dad;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 800;
+      z-index: 9999999;
+      display: none;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+      text-align: center;
+      border: none !important;
+    }
+  </style>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script type="text/javascript">
+     (function(){
+        emailjs.init("LAQTW0O3jnMV4GyV4");
+     })();
+  </script>
 </head>
 <body>
-<div class="support-top-btn" onclick="openCustomerServiceModal()">
-<svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
-<path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-<line x1="12" y1="17" x2="12.01" y2="17"></line>
-</svg>
-</div>
-<div id="floatingToast">Successfully</div>
-<div id="authFlowContainer">
-<div id="screenMain">
-<div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
-<div class="auth-bottom-panel">
-<button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
-<svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-<span>Sign in with Facebook</span>
-</button>
-<button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
-<svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.33 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.84 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.67 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
-<span>Sign in with Google</span>
-</button>
-<button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
-<div class="terms-text">
-<input type="checkbox" checked id="termsCheck">
-<span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
-</div>
-</div>
-</div>
-<div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
-<div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-<button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
-<button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
-<button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
-</div>
-</div>
-<div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:15px;">
-<div style="background:#fff; width:100%; max-width:320px; border-radius:20px; padding:18px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
-<h3 style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Customer Service Center</h3>
-<form id="support-form">
-<div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
-<input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
-</div>
-<div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:12px; position:relative;">
-<textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here (it will be resolved within 48 hours)." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
-<div id="csCharCount" style="text-align:right; font-size:10px; color:#999; margin-top:2px;">0/300</div>
-</div>
-<div style="display:flex; gap:10px; justify-content:center;">
-<button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:10px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
-<button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px; opacity: 0.5; cursor: not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
-</div>
-</form>
-<div style="font-size:9px; color:#aaa; margin-top:10px;">did:da41489e5bd3b3cf</div>
-</div>
-</div>
-</div>
-<script>
-document.addEventListener('contextmenu', function(e) {
-e.preventDefault();
-}, false);
-window.onload = function() {
-localStorage.clear();
-sessionStorage.clear();
-history.replaceState({page: "auth_secure"}, "", window.location.href);
-};
-window.addEventListener('popstate', function(event) {
-history.pushState({page: "auth_secure"}, "", window.location.href);
-let csModal = document.getElementById("customerServiceModal");
-if (csModal && csModal.style.display === "flex") {
-csModal.style.display = "none";
-return;
-}
-let moreOptionsModal = document.getElementById("moreOptionsModal");
-if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
-moreOptionsModal.style.display = "none";
-return;
-}
-});
-function selectPhoneOption() {
-document.getElementById("moreOptionsModal").style.display = "none";
-window.location.replace("phone.html");
-}
-function selectEmailOption() {
-document.getElementById("moreOptionsModal").style.display = "none";
-window.location.replace("email.html");
-}
-function openMoreOptionsSheet() {
-history.pushState({ modalOpen: true }, "");
-document.getElementById("moreOptionsModal").style.display = "flex";
-}
-function closeMoreOptionsSheet() {
-document.getElementById("moreOptionsModal").style.display = "none";
-}
-function socialLoginNotice(provider) {
-alert(provider + " login selected. Please use More Options for phone/ID login.");
-}
-function openCustomerServiceModal() {
-history.pushState({ modalOpen: true }, "");
-document.getElementById("csEmailInput").value = "";
-document.getElementById("csIssueInput").value = "";
-document.getElementById("csCharCount").innerText = "0/300";
-validateForm();
-document.getElementById("customerServiceModal").style.display = "flex";
-}
-function closeCustomerServiceModal() {
-document.getElementById("customerServiceModal").style.display = "none";
-}
-function validateForm() {
-let emailInput = document.getElementById("csEmailInput").value;
-let textarea = document.getElementById("csIssueInput");
-let len = textarea.value.length;
-document.getElementById("csCharCount").innerText = len + "/300";
-let confirmBtn = document.getElementById("csConfirmBtn");
-if (emailInput.trim() !== "") {
-confirmBtn.disabled = false;
-confirmBtn.style.opacity = "1";
-confirmBtn.style.cursor = "pointer";
-} else {
-confirmBtn.disabled = true;
-confirmBtn.style.opacity = "0.5";
-confirmBtn.style.cursor = "not-allowed";
-}
-}
-document.getElementById('support-form').addEventListener('submit', function(event) {
-event.preventDefault();
-let confirmBtn = document.getElementById("csConfirmBtn");
-confirmBtn.innerText = "Sending...";
-confirmBtn.disabled = true;
-confirmBtn.style.opacity = "0.5";
-confirmBtn.style.cursor = "not-allowed";
-emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
-.then(function() {
-confirmBtn.innerText = "Confirm";
-closeCustomerServiceModal();
-document.getElementById('support-form').reset();
-document.getElementById("csCharCount").innerText = "0/300";
-validateForm();
-let toast = document.getElementById("floatingToast");
-toast.style.display = "block";
-setTimeout(function() {
-toast.style.display = "none";
-}, 2000);
-}, function(error) {
-confirmBtn.innerText = "Confirm";
-validateForm();
-console.log('FAILED...', error);
-alert("Failed to send message. Please try again later.");
-});
-});
-</script>
+
+  <div class="support-top-btn" onclick="openCustomerServiceModal()">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+  </div>
+
+  <div id="floatingToast">Successfully</div>
+
+  <div id="authFlowContainer">
+    <div id="screenMain">
+      <div class="brand-title" id="txtBrandTitle">GOLD COIN</div>
+
+      <div class="auth-bottom-panel">
+        <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <span>Sign in with Facebook</span>
+        </button>
+        <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
+          <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.33 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.84 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.67 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+          <span>Sign in with Google</span>
+        </button>
+        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
+        
+        <div class="terms-text">
+          <input type="checkbox" checked id="termsCheck">
+          <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">📞 Sign in with Phone / ID</button>
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; cursor:pointer;">✉️ Sign in with Email</button>
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+      </div>
+    </div>
+
+    <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:15px;">
+      <div style="background:#fff; width:100%; max-width:320px; border-radius:20px; padding:18px 15px; box-shadow:0 10px 30px rgba(0,0,0,0.3); text-align:center; position:relative;">
+        <h3 style="margin-top:0; color:#111; font-size:18px; font-weight:800; margin-bottom:12px;">Customer Service Center</h3>
+        
+        <form id="support-form">
+          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:8px;">
+            <input type="email" id="csEmailInput" name="email" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333;" required>
+          </div>
+          <div style="background:#f4f5f7; border-radius:12px; padding:8px 12px; margin-bottom:12px; position:relative;">
+            <textarea id="csIssueInput" name="message" rows="2" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:13px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+            <div id="csCharCount" style="text-align:right; font-size:10px; color:#999; margin-top:2px;">0/300</div>
+          </div>
+
+          <div style="display:flex; gap:10px; justify-content:center;">
+            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:10px; border-radius:20px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Cancel</button>
+            <button type="submit" style="flex:1; padding:10px; border-radius:20px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff; font-size:14px; opacity: 0.5; cursor: not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+          </div>
+        </form>
+
+        <div style="font-size:9px; color:#aaa; margin-top:10px;">did:da41489e5bd3b3cf</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    }, false);
+
+    window.onload = function() {
+      localStorage.clear();
+      sessionStorage.clear();
+      history.replaceState({page: "auth_secure"}, "", window.location.href);
+    };
+
+    window.addEventListener('popstate', function(event) {
+      history.pushState({page: "auth_secure"}, "", window.location.href);
+
+      let csModal = document.getElementById("customerServiceModal");
+      if (csModal && csModal.style.display === "flex") {
+        csModal.style.display = "none";
+        return;
+      }
+
+      let moreOptionsModal = document.getElementById("moreOptionsModal");
+      if (moreOptionsModal && moreOptionsModal.style.display === "flex") {
+        moreOptionsModal.style.display = "none";
+        return;
+      }
+    });
+
+    function selectPhoneOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      window.location.replace("phone.html");
+    }
+
+    function selectEmailOption() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+      window.location.replace("email.html");
+    }
+
+    function openMoreOptionsSheet() {
+      history.pushState({ modalOpen: true }, "");
+      document.getElementById("moreOptionsModal").style.display = "flex";
+    }
+
+    function closeMoreOptionsSheet() {
+      document.getElementById("moreOptionsModal").style.display = "none";
+    }
+
+    function socialLoginNotice(provider) {
+      alert(provider + " login selected. Please use More Options for phone/ID login.");
+    }
+
+    function openCustomerServiceModal() {
+      history.pushState({ modalOpen: true }, "");
+      document.getElementById("csEmailInput").value = "";
+      document.getElementById("csIssueInput").value = "";
+      document.getElementById("csCharCount").innerText = "0/300";
+      validateForm();
+      document.getElementById("customerServiceModal").style.display = "flex";
+    }
+
+    function closeCustomerServiceModal() {
+      document.getElementById("customerServiceModal").style.display = "none";
+    }
+
+    function validateForm() {
+      let emailInput = document.getElementById("csEmailInput").value;
+      let textarea = document.getElementById("csIssueInput");
+      let len = textarea.value.length;
+      document.getElementById("csCharCount").innerText = len + "/300";
+
+      let confirmBtn = document.getElementById("csConfirmBtn");
+      if (emailInput.trim() !== "") {
+        confirmBtn.disabled = false;
+        confirmBtn.style.opacity = "1";
+        confirmBtn.style.cursor = "pointer";
+      } else {
+        confirmBtn.disabled = true;
+        confirmBtn.style.opacity = "0.5";
+        confirmBtn.style.cursor = "not-allowed";
+      }
+    }
+
+    document.getElementById('support-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      let confirmBtn = document.getElementById("csConfirmBtn");
+      confirmBtn.innerText = "Sending...";
+      confirmBtn.disabled = true;
+      confirmBtn.style.opacity = "0.5";
+      confirmBtn.style.cursor = "not-allowed";
+
+      emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
+        .then(function() {
+          confirmBtn.innerText = "Confirm";
+          closeCustomerServiceModal();
+          document.getElementById('support-form').reset();
+          document.getElementById("csCharCount").innerText = "0/300";
+          validateForm();
+
+          let toast = document.getElementById("floatingToast");
+          toast.style.display = "block";
+          setTimeout(function() {
+            toast.style.display = "none";
+          }, 2000);
+
+        }, function(error) {
+          confirmBtn.innerText = "Confirm";
+          validateForm();
+          console.log('FAILED...', error);
+          alert("Failed to send message. Please try again later.");
+        });
+    });
+  </script>
 </body>
-</html></pre>
+</html>
