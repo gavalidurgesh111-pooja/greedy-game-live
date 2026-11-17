@@ -9,8 +9,8 @@
   <link rel="stylesheet" href="style.css">
   <style>
     :root {
-      --sheet-icon-size: 20px;
-      --sheet-icon-gap: 12px;
+      --sheet-icon-size: 22px;
+      --sheet-icon-gap: 16px;
     }
 
     * {
@@ -209,18 +209,28 @@
       </div>
     </div>
 
-    <!-- More OptionsModal -->
+    <!-- More OptionsModal - Exact match to reference image -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
-      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 25px; display:flex; flex-direction:column; gap:15px;">
-        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:45px; border-radius:26px; border:none; background:#00cd00; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:20px; cursor:pointer;">
-          <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);"><span style="font-size:var(--sheet-icon-size); line-height:1;">📞</span></span>
-          <span style="flex:1; text-align:center;">Sign in with Phone / ID</span>
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:30px 20px 35px; display:flex; flex-direction:column; gap:14px; position:relative;">
+        
+        <!-- Last login badge positioned identically to reference image -->
+        <div style="position:absolute; top:-14px; right:35px; background:#ff4081; color:#fff; font-size:11px; font-weight:700; padding:3px 10px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">Last login</div>
+
+        <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#00d26a; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          </span>
+          <span style="flex:1; text-align:center; padding-right:30px;">Sign in with Phone</span>
         </button>
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:45px; border-radius:26px; border:none; background:#ffa500; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:20px; cursor:pointer;">
-          <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);"><span style="font-size:var(--sheet-icon-size); line-height:1;">✉️</span></span>
-          <span style="flex:1; text-align:center;">Sign in with Email</span>
+
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:26px; border:none; background:#ffa726; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </span>
+          <span style="flex:1; text-align:center; padding-right:30px;">Sign in with Email</span>
         </button>
-        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:800; color:#111; padding:12px; cursor:pointer;">Cancel</button>
+
+        <button class="btn-sheet-cancel" onclick="closeMoreOptionsSheet()" style="width:100%; background:none; border:none; font-size:16px; font-weight:700; color:#111; padding:12px; cursor:pointer; margin-top:5px;">Cancel</button>
       </div>
     </div>
 
