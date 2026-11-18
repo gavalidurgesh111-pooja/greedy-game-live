@@ -243,9 +243,10 @@
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
+        <!-- यहाँ overflow: visible; जोड़ दिया गया है ताकि टैग बटन की सीमा से बाहर निकल सके -->
         <div style="position:relative; width:100%; overflow: visible; margin-top: 10px;">
-          <!-- Last login टैग: परछाई हटाई गई और outline से अंदर की तरफ सफेद बॉर्डर सेट की गई है -->
-          <div style="position:absolute; top:-10px; right:-8px; z-index:10; background:#ff4081; color:#fff; font-size:8px; font-weight:700; padding:3px 7px; border-radius:9px; outline: 1.2px solid #ffffff; outline-offset: -2.2px;">Last login</div>
+          <!-- right को माइनस वैल्यू (-8px) देने से यह बटन की लाइन को पार करके बाहर की तरफ खिसक जाएगा -->
+          <div style="position:absolute; top:-10px; right:-8px; z-index:10; background:#ff4081; color:#fff; font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #ffffff; box-shadow:0 1px 3px rgba(0,0,0,0.1);">Last login</div>
           
           <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#00d26a; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
             <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
