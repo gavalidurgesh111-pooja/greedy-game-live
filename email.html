@@ -146,21 +146,45 @@
       font-size: 14px;
       color: #888;
     }
+
+    /* गोल बैक बटन जो आपकी भेजी गई फोटो से मेल खाता है */
+    .my-custom-back-btn {
+      position: fixed !important;
+      top: 25px !important;     
+      left: 20px !important;    
+      width: 42px !important;
+      height: 42px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      border-radius: 50% !important;
+      border: none !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+      z-index: 999999 !important;
+    }
+    .my-custom-back-btn:active {
+      transform: scale(0.92);
+    }
   </style>
 </head>
 <body>
+
+  <!-- आपकी भेजी हुई फोटो के अनुसार हूबहू गोल बैक एरो बटन -->
+  <button class="my-custom-back-btn" onclick="handleBackAction()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#222222" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
 
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
     
     <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
       <div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div>
     </div>
-
-    <div style="margin-bottom: 15px;">
-    <div class="back-btn" onclick="handleBackAction()" style="font-size: 25px; font-weight: 100; cursor: pointer; color: #000000; display: inline-block; line-height: 1;">❮</div>
-    </div>
     
-    <div style="margin-top: 15px;">
+    <div style="margin-top: 45px;">
       <div class="step-title" id="pageTitle" style="font-size:25px; font-weight:600; color:#000; letter-spacing:0.5px;">Sign in with Email</div>
       <div style="font-size:15px; color:#666; margin-top:6px; margin-bottom:30px;" id="pageSub">Enter your email address to continue</div>
 
