@@ -118,21 +118,20 @@
       cursor: pointer; 
       padding: 2px; 
       position: relative; 
-      left: 10px; /* अगर More options को दाएं-बाएं करना हो, तो यहाँ नंबर बदलें (जैसे 5px या -5px) */
      }
 
      /* Last login टैग और उसके सफेद बॉर्डर, साइज व पोजीशन के लिए कोड */
      .last-login-tag { 
-      background: #e91e63; /* टैग का बैकग्राउंड रंग */
+      background: #e91e63; 
       color: #fff; 
       font-size: 8px; 
-      padding: 1px 4px; /* इससे बैकग्राउंड छोटा या बड़ा होगा */
+      padding: 1px 4px; 
       border-radius: 10px; 
-      border: 1.5px solid #fff; /* सफेद बॉर्डर */
-      position: relative; 
-      top: -6px; /* इसे ऊपर-नीचे करके 'S' के ठीक ऊपर सेट करें */
-      left: -5px; /* इसे दाएं-बाएं सेट करें */
-      display: inline-block;
+      border: 1.5px solid #fff; 
+      position: absolute; 
+      top: -10px; 
+      right: -18px; 
+      white-space: nowrap;
      }
 
     .terms-text { 
@@ -160,8 +159,9 @@
       right: 15px !important;
       width: 38px !important;
       height: 38px !important;
-      background: rgba(255, 255, 255, 0.95) !important;
+      background: #ffffff !important;
       border-radius: 50% !important;
+      border: none !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -201,13 +201,13 @@
 </head>
 <body>
 
-  <div class="support-top-btn" onclick="openCustomerServiceModal()">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="#000" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <button class="support-top-btn" onclick="openCustomerServiceModal()">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="#333333" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
     </svg>
-  </div>
+  </button>
 
   <div id="floatingToast">Successfully</div>
 
@@ -224,7 +224,12 @@
           <svg class="social-logo-svg" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.33 7.22 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.12 0 9.84 0 12s.43 3.88 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.22 0 3.15 2.67 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
           <span>Sign in with Google</span>
         </button>
-        <button class="more-options-btn" onclick="openMoreOptionsSheet()"><span>More Options</span> <span class="last-login-tag">Last login</span></button>
+        
+        <!-- More Options with Last login tag -->
+        <div style="position: relative; display: inline-block; margin-top: 5px;">
+          <button class="more-options-btn" onclick="openMoreOptionsSheet()">More Options</button>
+          <span class="last-login-tag">Last login</span>
+        </div>
         
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
@@ -233,7 +238,7 @@
       </div>
     </div>
 
-    <!-- More OptionsModal - गोल कोनों वाला फ़ोन इनपुट बटन -->
+    <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
