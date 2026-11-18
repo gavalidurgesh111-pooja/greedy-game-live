@@ -153,12 +153,13 @@
       cursor: pointer;
     }
 
+    /* ऊपर वाला सपोर्ट बटन - यहाँ कटने की समस्या को ठीक किया गया है */
     .support-top-btn {
-      position: fixed !important;
+      position: absolute !important;
       top: 15px !important;
       right: 15px !important;
-      width: 38px !important;
-      height: 38px !important;
+      width: 42px !important;
+      height: 42px !important;
       background: #ffffff !important;
       border-radius: 50% !important;
       border: none !important;
@@ -201,8 +202,9 @@
 </head>
 <body>
 
+  <!-- ऊपर वाला गोल सपोर्ट बटन (सही पोजीशन के साथ) -->
   <button class="support-top-btn" onclick="openCustomerServiceModal()">
-    <svg viewBox="0 0 24 24" width="20" height="20" stroke="#333333" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <svg viewBox="0 0 24 24" width="22" height="22" stroke="#333333" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2"></path>
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
       <line x1="12" y1="17" x2="12.01" y2="17"></line>
