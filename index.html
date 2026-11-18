@@ -154,7 +154,7 @@
       cursor: pointer;
     }
 
-    /* सपोर्ट बटन बॉक्स (साइज वही रखा गया है) */
+    /* सपोर्ट बटन बॉक्स (साइज बिल्कुल सही रखा गया है) */
     .my-custom-support-btn {
       position: fixed !important;
       top: 45px !important;     
@@ -203,12 +203,15 @@
 </head>
 <body>
 
-  <!-- सपोर्ट बटन जिसमें अंदर का '?' आइकॉन छोटा और बॉर्डर पतली कर दी गई है -->
+  <!-- यहाँ आइकॉन को सही viewBox के साथ छोटा और पतली बॉर्डर वाला कर दिया गया है -->
   <button class="my-custom-support-btn" onclick="openCustomerServiceModal()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M8.5 18.5H6a3.5 3.5 0 0 1-3.5-3.5V7A3.5 3.5 0 0 1 6 3.5h12A3.5 3.5 0 0 1 21.5 7v8a3.5 3.5 0 0 1-3.5 3.5h-2.5L12 21.5l-3.5-3z" />
-      <path d="M9.5 9.25a2.5 2.5 0 0 1 5 .25c0 1.75-2.5 2.25-2.5 3.5" />
-      <circle cx="12" cy="16.25" r="0.4" fill="currentColor" />
+    <svg width="20" height="20" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- बाहर का चैट बॉक्स (पतली बॉर्डर के साथ) -->
+      <path d="M416 96H96C60.654 96 32 124.654 32 160V352C32 387.346 60.654 416 96 416H176L256 480L336 416H416C451.346 416 480 387.346 480 352V160C480 124.654 451.346 96 416 96Z" stroke="#222222" stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- अंदर का प्रश्न चिह्न (छोटा और पतला) -->
+      <path d="M192 196C192 162.863 218.863 136 252 136H260C293.137 136 320 162.863 320 196C320 216.7 308.2 234.6 291 243.8C274.6 252.5 264 269.4 264 288V300" stroke="#222222" stroke-width="24" stroke-linecap="round"/>
+      <!-- नीचे वाला डॉट -->
+      <circle cx="264" cy="358" r="14" fill="#222222"/>
     </svg>
   </button>
 
