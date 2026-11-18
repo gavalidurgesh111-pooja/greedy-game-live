@@ -55,7 +55,7 @@
       padding: 15px 15px 10px;
     }
 
-    /* फ़ोटो जैसा दानेदार गोल्ड ग्लिटर - बिना किसी लाइट चालू-बंद होने और बिना परछाई के */
+    /* फ़ोटो जैसा दानेदार गोल्ड ग्लिटर */
     .brand-title { 
       font-size: 30px; 
       font-weight: 900; 
@@ -135,23 +135,54 @@
       display: inline-block;
      }
 
+    /* फ़ोटो जैसा सेम Terms & Conditions डिज़ाइन */
     .terms-text { 
-      font-size: 9.5px; 
-      color: rgba(255,255,255,0.95); 
-      text-align: center; 
+      font-size: 11px; 
+      line-height: 1.35;
+      color: rgba(255, 255, 255, 0.65); 
+      text-align: left; 
       display: flex; 
       align-items: center; 
-      justify-content: center; 
-      gap: 4px; 
-      margin-top: 1px;
+      justify-content: flex-start; 
+      gap: 9px; 
+      margin-top: 2px;
       width: 100%;
-      white-space: nowrap;
+      padding: 0 4px;
     }
     .terms-text input[type="checkbox"] {
-      width: 12px;
-      height: 12px;
-      accent-color: #8a2be2;
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      min-width: 16px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      background-color: transparent;
       cursor: pointer;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .terms-text input[type="checkbox"]:checked {
+      background-color: #7c4dff;
+      border-color: #7c4dff;
+    }
+    .terms-text input[type="checkbox"]:checked::after {
+      content: '';
+      width: 4px;
+      height: 7.5px;
+      border: solid #ffffff;
+      border-width: 0 1.8px 1.8px 0;
+      transform: rotate(45deg);
+      margin-bottom: 1.5px;
+    }
+    .terms-link {
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
 
     /* सपोर्ट बटन */
@@ -242,7 +273,6 @@
 
   <div id="authFlowContainer">
     <div id="screenMain">
-      <!-- नाम बदलकर GREEDY COIN कर दिया गया है -->
       <div class="brand-title" id="txtBrandTitle">GREEDY COIN</div>
 
       <div class="auth-bottom-panel">
@@ -258,7 +288,7 @@
         
         <div class="terms-text">
           <input type="checkbox" checked id="termsCheck">
-          <span>By continuing, you agree to the Terms and Conditions & Privacy Policy</span>
+          <span>By continuing, you agree to the <span class="terms-link">Terms and Conditions</span> &amp;<br><span class="terms-link">Privacy Policy</span></span>
         </div>
       </div>
     </div>
