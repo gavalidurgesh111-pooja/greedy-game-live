@@ -55,37 +55,30 @@
       padding: 15px 15px 10px;
     }
 
+    /* फ़ोटो जैसा दानेदार गोल्ड ग्लिटर और झिलमिलाती चमक (बिना फॉन्ट/साइज़ बदले और बिना सफ़ेद रंग के) */
     .brand-title { 
       font-size: 38px; 
       font-weight: 900; 
       letter-spacing: 1px; 
       margin-top: 25px; 
       text-align: center;
+      color: #d49b27;
       
-      /* फ़ोटो जैसा गहरा सुनहरा और चमकदार ग्लिटर इफ़ेक्ट (बिना सफ़ेद रंग के) */
-      background: 
-        radial-gradient(circle at 20% 30%, #fff099 1px, transparent 1.5px),
-        radial-gradient(circle at 75% 25%, #ffe066 1px, transparent 1.5px),
-        radial-gradient(circle at 40% 70%, #fff2a6 1px, transparent 1.5px),
-        radial-gradient(circle at 85% 65%, #ffd24d 1px, transparent 1.5px),
-        radial-gradient(circle at 15% 80%, #ffe680 1px, transparent 1.5px),
-        radial-gradient(circle at 60% 45%, #fff5b3 1px, transparent 1.5px),
-        linear-gradient(
-          145deg,
-          #b8860b 0%,
-          #ffd700 22%,
-          #daa520 42%,
-          #ffdf00 62%,
-          #996515 82%,
-          #f5c71a 100%
-        );
-      background-size: 18px 18px, 22px 22px, 16px 16px, 24px 24px, 20px 20px, 19px 19px, 100% 100%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      
-      /* सुनहरी चमक और गहराई के लिए */
-      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 10px rgba(255, 200, 0, 0.55));
+      /* असली दानेदार गोल्ड ग्लिटर टेक्सचर फ़िल्टर */
+      filter: url(#goldGlitterFilter) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.9));
+      animation: glitterShimmer 2.5s infinite alternate ease-in-out;
+    }
+
+    @keyframes glitterShimmer {
+      0% {
+        filter: url(#goldGlitterFilter) brightness(0.95) contrast(1.25) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.9));
+      }
+      50% {
+        filter: url(#goldGlitterFilter) brightness(1.2) contrast(1.4) drop-shadow(0 3px 8px rgba(212, 155, 39, 0.6));
+      }
+      100% {
+        filter: url(#goldGlitterFilter) brightness(1.05) contrast(1.3) drop-shadow(0 3px 5px rgba(0, 0, 0, 0.9));
+      }
     }
 
     .auth-bottom-panel {
@@ -176,7 +169,7 @@
       cursor: pointer;
     }
 
-    /* सपोर्ट बटन - ऊपर की लाइन या कोने से सटा हुआ नहीं है, अलग और सही जगह पर है */
+    /* सपोर्ट बटन */
     .my-custom-support-btn {
       position: fixed !important;
       top: 35px !important;     
@@ -225,14 +218,40 @@
 </head>
 <body>
 
-    <button class="my-custom-support-btn" onclick="openCustomerServiceModal()">
+  <!-- गोल्ड ग्लिटर टेक्सचर बनाने वाला छिपा हुआ SVG फ़िल्टर (फ़ोटो जैसा दानेदार सुनहरा प्रभाव) -->
+  <svg width="0" height="0" style="position:absolute; pointer-events:none;">
+    <defs>
+      <filter id="goldGlitterFilter" x="-10%" y="-10%" width="120%" height="120%">
+        <!-- बारीक ग्लिटर के दाने (Noise) -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" seed="15" result="noise"/>
+        <!-- ग्लिटर को सुनहरे और गहरे तांबे/सोने के रंगों में बदलना (बिना सफ़ेद रंग के) -->
+        <feColorMatrix type="matrix" in="noise" result="goldSpecks" values="
+          0.9  0.4  0.1  0  0.15
+          0.6  0.3  0.05 0  0.08
+          0.1  0.05 0.0  0  0.0
+          0    0    0    1  0"/>
+        <!-- अक्षरों के ऊपर ग्लिटर की चमक और उभार (Lighting) -->
+        <feSpecularLighting in="noise" surfaceScale="3" specularConstant="1.4" specularExponent="25" lighting-color="#ffd54f" result="sparkle">
+          <fePointLight x="150" y="-40" z="80"/>
+        </feSpecularLighting>
+        <feComposite in="sparkle" in2="SourceAlpha" operator="in" result="clippedSparkle"/>
+        <feComposite in="goldSpecks" in2="SourceAlpha" operator="in" result="clippedGold"/>
+        <!-- सभी सुनहरी परतों को आपस में मिलाना -->
+        <feBlend mode="screen" in="clippedGold" in2="clippedSparkle" result="finalGlitter"/>
+        <feMerge>
+          <feMergeNode in="SourceGraphic"/>
+          <feMergeNode in="finalGlitter"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <button class="my-custom-support-btn" onclick="openCustomerServiceModal()">
     <svg width="22" height="22" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
       <!-- बाहर का चैट बॉक्स -->
       <path d="M416 96H96C60.654 96 32 124.654 32 160V352C32 387.346 60.654 416 96 416H176L256 480L336 416H416C451.346 416 480 387.346 480 352V160C480 124.654 451.346 96 416 96Z" stroke="#222222" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-      
       <!-- प्रश्न चिह्न -->
       <path transform="translate(38, 50) scale(0.85)" d="M192 196C192 162.863 218.863 136 252 136H260C293.137 136 320 162.863 320 196C320 216.7 308.2 234.6 291 243.8C274.6 252.5 264 269.4 264 288V300" stroke="#222222" stroke-width="25" stroke-linecap="round"/>
-      
       <!-- डॉट -->
       <circle cx="262" cy="348" r="10" fill="#222222"/>
     </svg>
@@ -266,9 +285,7 @@
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
-        <!-- यहाँ overflow: visible; जोड़ दिया गया है ताकि टैग बटन की सीमा से बाहर निकल सके -->
         <div style="position:relative; width:100%; overflow: visible; margin-top: 10px;">
-          <!-- right को माइनस वैल्यू (-8px) देने से यह बटन की लाइन को पार करके बाहर की तरफ खिसक जाएगा -->
           <div style="position:absolute; top:-10px; right:-8px; z-index:10; background:#ff4081; color:#fff; font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #ffffff; box-shadow:0 1px 4px rgba(0,0,0,0.2);">Last login</div>
           
           <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#00d26a; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
