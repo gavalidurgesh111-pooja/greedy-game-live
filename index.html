@@ -243,9 +243,10 @@
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
       <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
-        <div style="position:relative; width:100%;">
-          <!-- Last login टैग: साइज छोटा और सही जगह पर सेट किया गया है -->
-          <div style="position:absolute; top:-10px; right:5px; z-index:10; background:#ff4081; color:#fff; font-size:10px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #ffffff; box-shadow:0 2px 5px rgba(0,0,0,0.3);">Last login</div>
+        <!-- यहाँ overflow: visible; जोड़ दिया गया है ताकि टैग बटन की सीमा से बाहर निकल सके -->
+        <div style="position:relative; width:100%; overflow: visible; margin-top: 10px;">
+          <!-- right को माइनस वैल्यू (-8px) देने से यह बटन की लाइन को पार करके बाहर की तरफ खिसक जाएगा -->
+          <div style="position:absolute; top:-12px; right:-8px; z-index:10; background:#ff4081; color:#fff; font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #ffffff; box-shadow:0 2px 5px rgba(0,0,0,0.3);">Last login</div>
           
           <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#00d26a; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
             <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
@@ -254,7 +255,7 @@
             <span style="flex:1; text-align:center; padding-right:30px;">Sign in with Phone</span>
           </button>
         </div>
-
+        
         <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#ffa726; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
           <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
