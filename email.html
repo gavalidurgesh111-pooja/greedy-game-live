@@ -262,16 +262,6 @@
       return /^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,10}$/.test(String(val || "").trim().toLowerCase());
     }
 
-    function getVerifiedSocialEmails() {
-      try {
-        let raw = localStorage.getItem("greedy_verified_social_emails");
-        let list = raw ? JSON.parse(raw) : [];
-        return Array.isArray(list) ? list.map(e => String(e).toLowerCase()) : [];
-      } catch (e) {
-        return [];
-      }
-    }
-
     function applySavedIdentifierToEmailBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
       if (!restoreVal) return;
@@ -308,7 +298,7 @@
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#ffffff;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#FF631C; font-weight:700; cursor:pointer; color:#ffffff;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -353,15 +343,14 @@
 
       db.collection("users").doc(email).get().then((doc) => {
         isCheckingEmailUser = false;
-        let verifiedSocialEmails = getVerifiedSocialEmails();
 
-        if (doc.exists || verifiedSocialEmails.includes(email)) {
+        if (doc.exists) {
           localStorage.setItem("greedy_login_identifier", email);
           localStorage.setItem("greedy_login_source_page", "email.html");
-          localStorage.setItem("greedy_is_new_user", doc.exists ? "false" : "true");
+          localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          showCustomAlert("Please sign in with Google or Facebook first so your email is verified.");
+          showCustomAlert("Registration Not available try to Google and Facebook");
         }
       }).catch((err) => {
         isCheckingEmailUser = false;
