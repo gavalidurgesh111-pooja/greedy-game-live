@@ -210,6 +210,10 @@
       transform: scale(0.92);
     }
 
+    #customerServiceCard {
+      transition: transform 0.16s ease-out;
+    }
+
     #csConfirmBtn {
       background: #FFA375 !important;
       color: #ffffff !important;
@@ -339,7 +343,7 @@
 
     <!-- Customer Service Center Modal -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#ffffff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
+      <div id="customerServiceCard" style="background:#ffffff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
         
         <form id="support-form">
@@ -372,6 +376,7 @@
       localStorage.clear();
       sessionStorage.clear();
       history.replaceState({page: "auth_secure"}, "", window.location.href);
+      syncHelpModalWithKeyboard();
     };
 
     window.addEventListener('popstate', function(event) {
@@ -380,6 +385,7 @@
       let csModal = document.getElementById("customerServiceModal");
       if (csModal && csModal.style.display === "flex") {
         csModal.style.display = "none";
+        resetHelpModalShift();
         return;
       }
 
@@ -389,6 +395,36 @@
         return;
       }
     });
+
+    function resetHelpModalShift() {
+      let card = document.getElementById("customerServiceCard");
+      if (card) {
+        card.style.transform = "translateY(0px)";
+      }
+    }
+
+    function syncHelpModalWithKeyboard() {
+      let csModal = document.getElementById("customerServiceModal");
+      let card = document.getElementById("customerServiceCard");
+      if (!csModal || !card || csModal.style.display !== "flex") return;
+
+      if (window.visualViewport) {
+        const vv = window.visualViewport;
+        const keyboardHeight = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        if (keyboardHeight > 80) {
+          const shiftUp = Math.min(keyboardHeight * 0.45, 130);
+          card.style.transform = `translateY(-${shiftUp}px)`;
+        } else {
+          card.style.transform = "translateY(0px)";
+        }
+      }
+    }
+
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", syncHelpModalWithKeyboard);
+      window.visualViewport.addEventListener("scroll", syncHelpModalWithKeyboard);
+    }
+    window.addEventListener("resize", syncHelpModalWithKeyboard);
 
     function selectPhoneOption() {
       document.getElementById("moreOptionsModal").style.display = "none";
@@ -418,22 +454,26 @@
       document.getElementById("csEmailInput").value = "";
       document.getElementById("csIssueInput").value = "";
       document.getElementById("csCharCount").innerText = "0/300";
+      resetHelpModalShift();
       validateForm();
       document.getElementById("customerServiceModal").style.display = "flex";
+      setTimeout(syncHelpModalWithKeyboard, 80);
     }
 
     function closeCustomerServiceModal() {
       document.getElementById("customerServiceModal").style.display = "none";
+      resetHelpModalShift();
     }
 
     function validateForm() {
       let emailVal = document.getElementById("csEmailInput").value.trim();
       let textarea = document.getElementById("csIssueInput");
+      let msgVal = textarea.value.trim();
       let len = textarea.value.length;
       document.getElementById("csCharCount").innerText = len + "/300";
 
       let confirmBtn = document.getElementById("csConfirmBtn");
-      if (emailVal !== "") {
+      if (msgVal.length >= 1 || emailVal.length >= 1) {
         confirmBtn.disabled = false;
         confirmBtn.classList.add("active");
       } else {
