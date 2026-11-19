@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#120824">
+  <meta name="theme-color" content="#6a0dad">
   <title>Greedy Coin - Sign in with Email</title>
   <link rel="stylesheet" href="style.css">
   <style>
@@ -21,19 +21,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #120824 !important;
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #120824 url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed;
-      background-size: cover;
+      background-color: #6a0dad;
       font-family: 'Segoe UI', sans-serif;
-    }
-
-    .exit-dark-flash-shield {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #120824;
-      z-index: 9999999;
-      pointer-events: none;
     }
 
     .page-wrapper {
@@ -42,7 +31,7 @@
       width: 100%;
       height: 100vh;
       padding: 20px;
-      background: #fafafa;
+      background: #f2f2f2;
       position: relative;
       overflow: hidden;
     }
@@ -94,7 +83,7 @@
       content: "";
       flex: 1;
       height: 1px;
-      background: #e0e0e0;
+      background: #dcdcdc;
       margin: 0 15px;
     }
     .social-buttons-row {
@@ -121,9 +110,9 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 8px;
-      background: #fff;
-      border: 1px solid #eaeaea;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      background: #f2f2f2;
+      border: 1px solid #e2e2e2;
+      box-shadow: 0 2px 8px rgba(106,13,173,0.06);
     }
     .facebook-icon {
       width: 26px;
@@ -133,7 +122,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #f2f2f2;
       font-size: 16px;
       font-weight: bold;
       font-family: Arial, sans-serif;
@@ -153,7 +142,7 @@
       content: "";
       width: 3px;
       height: 3px;
-      background: #fff;
+      background: #f2f2f2;
       border-radius: 50%;
     }
     .social-btn-text {
@@ -187,7 +176,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(106, 13, 173, 0.28);
       z-index: 2000;
       align-items: flex-end;
       justify-content: center;
@@ -195,18 +184,16 @@
     .bottom-limit-sheet {
       width: 100%;
       max-width: 480px;
-      background: #ffffff;
+      background: #f2f2f2;
       border-top-left-radius: 24px;
       border-top-right-radius: 24px;
       padding: 24px 20px 28px;
       text-align: center;
-      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 -8px 25px rgba(106, 13, 173, 0.22);
     }
   </style>
 </head>
 <body>
-
-  <div id="exitDarkFlashShield" class="exit-dark-flash-shield"></div>
 
   <button class="my-custom-back-btn" onclick="handleBackAction()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#000000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -222,7 +209,7 @@
       <form onsubmit="event.preventDefault(); handleMainAction();">
         <div id="emailContainer" style="margin-bottom:25px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:12px; padding-left:10px;">Email Address</div>
-          <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 20px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+          <div class="input-box" style="display:flex; align-items:center; background:#e8e8e8; border-radius:30px; padding:0 20px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
             <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%; -webkit-user-select:text; user-select:text;">
           </div>
         </div>
@@ -249,14 +236,14 @@
     </div>
 
     <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="mainActionBtn" onclick="handleMainAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#fff; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">➔</button>
+      <button class="btn-round-next" id="mainActionBtn" onclick="handleMainAction()" style="width:60px; height:60px; border-radius:50%; background:#d0a3ff; border:none; color:#f2f2f2; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(106,13,173,0.2);">➔</button>
     </div>
   </div>
 
   <!-- Custom Popup Modal -->
-  <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#fff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Notice</h3>
+  <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(106,13,173,0.35); z-index:999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#f2f2f2; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(106,13,173,0.25); text-align:center;">
+      <h3 id="popupTitle" style="margin-top:0; color:#6a0dad; font-size:20px; font-weight:800;">Notice</h3>
       <div id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></div>
       <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
     </div>
@@ -265,9 +252,9 @@
   <!-- नीचे से आने वाला 24 घंटे ट्राई पॉप-अप -->
   <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
     <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
-      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Please Try Again</h3>
+      <h3 style="color:#6a0dad; font-size:19px; font-weight:800; margin-bottom:10px;">Please Try Again</h3>
       <p style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">Please try again after 24 hours.</p>
-      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#8a2be2; color:#fff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#6a0dad; color:#f2f2f2; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
     </div>
   </div>
 
@@ -310,25 +297,12 @@
       }
     });
 
-    window.addEventListener("pageshow", function() {
-      let shield = document.getElementById("exitDarkFlashShield");
-      if (shield) {
-        shield.style.display = "none";
-      }
-    });
-
     let popupCallback = null;
     const MAX_OTP_LIMIT = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
     let activeOtpEmail = "";
 
     function handleBackAction() {
-      let shield = document.getElementById("exitDarkFlashShield");
-      if (shield) {
-        shield.style.display = "block";
-      }
-      document.documentElement.style.backgroundColor = "#120824";
-      document.body.style.backgroundColor = "#120824";
       window.location.replace("index.html");
     }
 
@@ -427,7 +401,7 @@
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
+        <button onclick="closeCustomPopup(true)" style="width:100%; padding:12px; border-radius:12px; border:none; background:#6a0dad; font-weight:700; cursor:pointer; color:#f2f2f2;">OK</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -441,18 +415,18 @@
       history.pushState({ popup: "otp" }, "");
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
-        <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
+        <p style="margin-bottom:6px;">Email: <b style="color:#6a0dad;">${email}</b></p>
         <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP (Demo: 1234)</p>
-        <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
+        <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #d5d5d5; background:#ececec; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
         <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
         <div style="margin-top:10px;">
-          <span id="resendOtpText" onclick="resendPopupOtp()" style="color:#8a2be2; font-size:12px; text-transform:lowercase; cursor:pointer; font-weight:500;">send verification code again</span>
+          <span id="resendOtpText" onclick="resendPopupOtp()" style="color:#6a0dad; font-size:12px; text-transform:lowercase; cursor:pointer; font-weight:500;">send verification code again</span>
         </div>
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="changeEmailFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#fff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Email</button>
-        <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
+        <button onclick="changeEmailFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #6a0dad; background:#f2f2f2; font-weight:700; cursor:pointer; color:#6a0dad;">Change Email</button>
+        <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#6a0dad; font-weight:700; cursor:pointer; color:#f2f2f2;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
     }
