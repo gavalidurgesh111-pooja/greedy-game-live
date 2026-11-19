@@ -40,7 +40,7 @@
     #mainActionBtn {
       opacity: 0.4;
       pointer-events: none;
-      transition: 0.3s;
+      transition: 0.2s;
     }
     #mainActionBtn.active {
       opacity: 1;
@@ -161,7 +161,6 @@
       transform: scale(0.9);
     }
 
-    /* नीचे से आने वाला 24 घंटे वाला पॉप-अप */
     #bottomLimitPopup {
       display: none;
       position: fixed;
@@ -272,51 +271,123 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
+
+    history.replaceState({ page: "email_screen" }, "");
+
+    window.addEventListener("popstate", function() {
+      let bottomPopup = document.getElementById("bottomLimitPopup");
+      if (bottomPopup && bottomPopup.style.display === "flex") {
+        history.pushState({ page: "email_screen" }, "");
+        bottomPopup.style.display = "none";
+        focusEmailInput();
+        return;
+      }
+
+      let customModal = document.getElementById("customPopupModal");
+      if (customModal && customModal.style.display === "flex") {
+        history.pushState({ page: "email_screen" }, "");
+        customModal.style.display = "none";
+        popupCallback = null;
+        focusEmailInput();
+        return;
+      }
+    });
+
     let popupCallback = null;
     const MAX_OTP_LIMIT = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
     let activeOtpEmail = "";
 
-    document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
-
-    async function checkFirebaseEmailOtpLimit(email) {
-      const ref = db.collection("otp_limits").doc(email);
-      const snap = await ref.get();
-      if (!snap.exists) {
-        return { exceeded: false, count: 0, startTime: Date.now() };
-      }
-      const data = snap.data() || {};
-      const startTime = Number(data.startTime || 0);
-      if (!startTime || (Date.now() - startTime) >= WINDOW_24_HOURS) {
-        await ref.set({ count: 0, startTime: Date.now() }, { merge: true });
-        return { exceeded: false, count: 0, startTime: Date.now() };
-      }
-      const count = Number(data.count || 0);
-      return { exceeded: count >= MAX_OTP_LIMIT, count, startTime };
+    function focusEmailInput() {
+      setTimeout(() => {
+        let inp = document.getElementById("emailInput");
+        if (inp) inp.focus();
+      }, 60);
     }
 
-    async function recordFirebaseEmailOtpUsage(email) {
+    function syncEmailOtpLimitFromFirebase(email) {
+      if (!email) return;
       const ref = db.collection("otp_limits").doc(email);
-      const status = await checkFirebaseEmailOtpLimit(email);
-      const nextCount = status.count + 1;
-      await ref.set({
-        identifier: email,
-        count: nextCount,
-        startTime: status.startTime || Date.now(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
+      ref.get().then((snap) => {
+        if (!snap.exists) return;
+        const data = snap.data() || {};
+        const startTime = Number(data.startTime || 0);
+        if (!startTime || (Date.now() - startTime) >= WINDOW_24_HOURS) {
+          localStorage.removeItem("email_otp_cache_" + email);
+          return;
+        }
+        const count = Number(data.count || 0);
+        localStorage.setItem("email_otp_cache_" + email, JSON.stringify({ count, startTime }));
+      }).catch(() => {});
     }
 
-    async function clearFirebaseEmailOtpUsage(email) {
-      await db.collection("otp_limits").doc(email).delete().catch(() => {});
+    function getCachedEmailOtpCount(email) {
+      try {
+        let raw = localStorage.getItem("email_otp_cache_" + email);
+        if (!raw) return 0;
+        let rec = JSON.parse(raw);
+        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
+          localStorage.removeItem("email_otp_cache_" + email);
+          return 0;
+        }
+        return Number(rec.count || 0);
+      } catch (e) {
+        return 0;
+      }
+    }
+
+    function incrementEmailOtpLimitBackground(email) {
+      let currentCacheCount = getCachedEmailOtpCount(email);
+      let startTime = Date.now();
+      try {
+        let raw = localStorage.getItem("email_otp_cache_" + email);
+        if (raw) {
+          let parsed = JSON.parse(raw);
+          if (parsed.startTime && (Date.now() - parsed.startTime) < WINDOW_24_HOURS) {
+            startTime = parsed.startTime;
+          }
+        }
+      } catch (e) {}
+
+      let nextCount = currentCacheCount + 1;
+      localStorage.setItem("email_otp_cache_" + email, JSON.stringify({ count: nextCount, startTime }));
+
+      const ref = db.collection("otp_limits").doc(email);
+      ref.get().then((snap) => {
+        let dbCount = 0;
+        let dbStart = Date.now();
+        if (snap.exists) {
+          let d = snap.data() || {};
+          if (d.startTime && (Date.now() - Number(d.startTime)) < WINDOW_24_HOURS) {
+            dbCount = Number(d.count || 0);
+            dbStart = Number(d.startTime);
+          }
+        }
+        let finalCount = Math.max(nextCount, dbCount + 1);
+        localStorage.setItem("email_otp_cache_" + email, JSON.stringify({ count: finalCount, startTime: dbStart }));
+        ref.set({
+          identifier: email,
+          count: finalCount,
+          startTime: dbStart,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true }).catch(() => {});
+      }).catch(() => {});
+    }
+
+    function clearEmailOtpLimitBackground(email) {
+      localStorage.removeItem("email_otp_cache_" + email);
+      db.collection("otp_limits").doc(email).delete().catch(() => {});
     }
 
     function showBottomLimitPopup() {
+      history.pushState({ popup: "limit" }, "");
       document.getElementById("bottomLimitPopup").style.display = "flex";
     }
 
     function closeBottomLimitPopup() {
       document.getElementById("bottomLimitPopup").style.display = "none";
+      focusEmailInput();
     }
 
     function showCustomAlert(message, callback) {
@@ -330,16 +401,11 @@
       popupCallback = callback;
     }
 
-    async function showOtpPopupModal(email) {
-      const status = await checkFirebaseEmailOtpLimit(email);
-      if (status.exceeded) {
-        showBottomLimitPopup();
-        return;
-      }
-
-      await recordFirebaseEmailOtpUsage(email);
+    function openOtpModalNow(email) {
+      incrementEmailOtpLimitBackground(email);
       activeOtpEmail = email;
 
+      history.pushState({ popup: "otp" }, "");
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
         <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
@@ -359,30 +425,26 @@
       setTimeout(() => {
         let inp = document.getElementById("popupOtpInput");
         if (inp) inp.focus();
-      }, 100);
+      }, 60);
     }
 
     function changeEmailFromOtp() {
       document.getElementById("customPopupModal").style.display = "none";
       popupCallback = null;
-      let emailInp = document.getElementById("emailInput");
-      if (emailInp) {
-        emailInp.focus();
-      }
+      focusEmailInput();
     }
 
-    async function resendPopupOtp() {
+    function resendPopupOtp() {
       let email = activeOtpEmail;
       if (!email) return;
 
-      const status = await checkFirebaseEmailOtpLimit(email);
-      if (status.exceeded) {
+      if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
         document.getElementById("customPopupModal").style.display = "none";
         showBottomLimitPopup();
         return;
       }
 
-      await recordFirebaseEmailOtpUsage(email);
+      incrementEmailOtpLimitBackground(email);
       let resendEl = document.getElementById("resendOtpText");
       if (resendEl) {
         resendEl.innerText = "verification code sent again!";
@@ -394,10 +456,9 @@
       }
     }
 
-    async function verifyPopupOtp() {
+    function verifyPopupOtp() {
       let email = activeOtpEmail;
-      const status = await checkFirebaseEmailOtpLimit(email);
-      if (status.exceeded) {
+      if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
         document.getElementById("customPopupModal").style.display = "none";
         showBottomLimitPopup();
         return;
@@ -413,7 +474,7 @@
         return;
       }
 
-      await clearFirebaseEmailOtpUsage(email);
+      clearEmailOtpLimitBackground(email);
       closeCustomPopup(false);
       window.location.replace("password.html");
     }
@@ -439,7 +500,7 @@
       window.location.replace("index.html");
     }
 
-    async function handleMainAction() {
+    function handleMainAction() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
 
       if (!email.includes("@") || !email.includes(".")) {
@@ -447,34 +508,34 @@
         return;
       }
 
-      const status = await checkFirebaseEmailOtpLimit(email);
-      if (status.exceeded) {
+      syncEmailOtpLimitFromFirebase(email);
+
+      if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
         showBottomLimitPopup();
         return;
       }
 
       localStorage.setItem("greedy_login_identifier", email);
       localStorage.setItem("greedy_login_source_page", "email.html");
-      document.getElementById("loadingOverlay").style.display = "flex";
 
-      db.collection("users").doc(email).get().then(async (doc) => {
-        document.getElementById("loadingOverlay").style.display = "none";
-
-        if (doc.exists) {
-          localStorage.setItem("greedy_is_new_user", "false");
-          window.location.replace("password.html");
-        } else {
+      db.collection("users").doc(email).get().then((doc) => {
+        if (!doc.exists) {
           localStorage.setItem("greedy_is_new_user", "true");
-          const freshStatus = await checkFirebaseEmailOtpLimit(email);
-          if (freshStatus.exceeded) {
+          if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
             showBottomLimitPopup();
             return;
           }
-          showOtpPopupModal(email);
+          openOtpModalNow(email);
+        } else {
+          localStorage.setItem("greedy_is_new_user", "false");
+          window.location.replace("password.html");
         }
-      }).catch((err) => {
-        document.getElementById("loadingOverlay").style.display = "none";
-        showCustomAlert("Error: " + err.message);
+      }).catch(() => {
+        if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
+          showBottomLimitPopup();
+          return;
+        }
+        openOtpModalNow(email);
       });
     }
 
