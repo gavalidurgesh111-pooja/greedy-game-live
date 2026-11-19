@@ -280,17 +280,20 @@
 
     history.replaceState({ page: "email_screen" }, "");
 
-    window.addEventListener("DOMContentLoaded", function() {
+    function applySavedIdentifierToEmailBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
-      if (restoreVal) {
-        localStorage.removeItem("greedy_restore_identifier");
-        let emailEl = document.getElementById("emailInput");
-        if (emailEl) {
-          emailEl.value = restoreVal;
-          checkInputState();
-        }
+      if (!restoreVal) return;
+
+      let emailEl = document.getElementById("emailInput");
+      if (emailEl) {
+        emailEl.value = restoreVal;
+        checkInputState();
       }
-    });
+      localStorage.removeItem("greedy_restore_identifier");
+    }
+
+    window.addEventListener("DOMContentLoaded", applySavedIdentifierToEmailBox);
+    window.addEventListener("pageshow", applySavedIdentifierToEmailBox);
 
     window.addEventListener("popstate", function() {
       window.scrollTo(0, 0);
