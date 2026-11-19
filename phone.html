@@ -335,30 +335,36 @@
     const MAX_OTP_LIMIT = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
 
-    function getOtpRecord(identifier) {
-      let raw = localStorage.getItem("otp_rec_" + identifier);
-      if (!raw) return { count: 0, startTime: Date.now() };
-      try {
-        let rec = JSON.parse(raw);
-        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
-          return { count: 0, startTime: Date.now() };
-        }
-        return rec;
-      } catch (e) {
-        return { count: 0, startTime: Date.now() };
+    async function checkFirebaseOtpLimit(identifier) {
+      const ref = db.collection("otp_limits").doc(identifier);
+      const snap = await ref.get();
+      if (!snap.exists) {
+        return { exceeded: false, count: 0, startTime: Date.now() };
       }
+      const data = snap.data() || {};
+      const startTime = Number(data.startTime || 0);
+      if (!startTime || (Date.now() - startTime) >= WINDOW_24_HOURS) {
+        await ref.set({ count: 0, startTime: Date.now() }, { merge: true });
+        return { exceeded: false, count: 0, startTime: Date.now() };
+      }
+      const count = Number(data.count || 0);
+      return { exceeded: count >= MAX_OTP_LIMIT, count, startTime };
     }
 
-    function hasExceededOtpLimit(identifier) {
-      let rec = getOtpRecord(identifier);
-      return rec.count >= MAX_OTP_LIMIT;
+    async function recordFirebaseOtpUsage(identifier) {
+      const ref = db.collection("otp_limits").doc(identifier);
+      const status = await checkFirebaseOtpLimit(identifier);
+      const nextCount = status.count + 1;
+      await ref.set({
+        identifier: identifier,
+        count: nextCount,
+        startTime: status.startTime || Date.now(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
     }
 
-    function recordOtpUsage(identifier) {
-      let rec = getOtpRecord(identifier);
-      rec.count = Number(rec.count || 0) + 1;
-      if (!rec.startTime) rec.startTime = Date.now();
-      localStorage.setItem("otp_rec_" + identifier, JSON.stringify(rec));
+    async function clearFirebaseOtpUsage(identifier) {
+      await db.collection("otp_limits").doc(identifier).delete().catch(() => {});
     }
 
     function showBottomLimitPopup() {
@@ -405,20 +411,19 @@
       popupCallback = callback;
     }
 
-    function showDemoOtpPrompt(fullIdentifier, onSuccessCallback) {
-      if (hasExceededOtpLimit(fullIdentifier)) {
+    async function showDemoOtpPrompt(fullIdentifier, onSuccessCallback) {
+      const status = await checkFirebaseOtpLimit(fullIdentifier);
+      if (status.exceeded) {
         showBottomLimitPopup();
         return;
       }
 
-      recordOtpUsage(fullIdentifier);
+      await recordFirebaseOtpUsage(fullIdentifier);
       let demoCode = "123456";
 
       document.getElementById("popupTitle").innerText = "OTP Verification";
       document.getElementById("popupMessage").innerHTML = `
-        New account registration.<br>
         Number: <b style="color:#1e3c72;">${fullIdentifier}</b><br>
-        <span style="font-size:12px; color:#666;">OTP not received? Check your number above.</span><br>
         <b>Demo OTP: ${demoCode}</b><br><br>
         <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
@@ -444,8 +449,9 @@
       }
     }
 
-    function verifyDemoOtp(correctCode, fullIdentifier) {
-      if (hasExceededOtpLimit(fullIdentifier)) {
+    async function verifyDemoOtp(correctCode, fullIdentifier) {
+      const status = await checkFirebaseOtpLimit(fullIdentifier);
+      if (status.exceeded) {
         document.getElementById("customPopupModal").style.display = "none";
         popupCallback = null;
         showBottomLimitPopup();
@@ -454,11 +460,12 @@
 
       let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
       if (enteredOtp === correctCode) {
-        localStorage.removeItem("otp_rec_" + fullIdentifier);
+        await clearFirebaseOtpUsage(fullIdentifier);
         closeCustomPopup(true);
       } else {
-        showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
-          if (hasExceededOtpLimit(fullIdentifier)) {
+        showCustomAlert("Invalid Demo OTP! Please enter 123456.", async function() {
+          const afterStatus = await checkFirebaseOtpLimit(fullIdentifier);
+          if (afterStatus.exceeded) {
             showBottomLimitPopup();
           } else {
             let otpInp = document.getElementById("demoOtpInput");
@@ -478,7 +485,7 @@
       }
     }
 
-    function handleNextStep() {
+    async function handleNextStep() {
       let countryCodeSelect = document.getElementById("countryCodeSelect");
       let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let identifier = document.getElementById("phoneInput").value.trim();
@@ -490,7 +497,8 @@
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
-      if (hasExceededOtpLimit(fullIdentifier)) {
+      const status = await checkFirebaseOtpLimit(fullIdentifier);
+      if (status.exceeded) {
         showBottomLimitPopup();
         return;
       }
@@ -498,10 +506,11 @@
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
       localStorage.setItem("greedy_login_source_page", "phone.html");
 
-      db.collection("users").doc(fullIdentifier).get().then((doc) => {
+      db.collection("users").doc(fullIdentifier).get().then(async (doc) => {
         if (!doc.exists) {
           localStorage.setItem("greedy_is_new_user", "true");
-          if (hasExceededOtpLimit(fullIdentifier)) {
+          const freshStatus = await checkFirebaseOtpLimit(fullIdentifier);
+          if (freshStatus.exceeded) {
             showBottomLimitPopup();
             return;
           }
