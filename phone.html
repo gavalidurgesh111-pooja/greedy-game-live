@@ -389,16 +389,14 @@
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
       syncOtpLimitFromFirebase(fullIdentifier);
 
-      if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
-        showBottomLimitPopup();
-        return;
-      }
-
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
       localStorage.setItem("greedy_login_source_page", "phone.html");
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
-        if (!doc.exists) {
+        if (doc.exists) {
+          localStorage.setItem("greedy_is_new_user", "false");
+          window.location.replace("password.html");
+        } else {
           localStorage.setItem("greedy_is_new_user", "true");
           if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
             showBottomLimitPopup();
@@ -409,20 +407,10 @@
               window.location.replace("password.html");
             }
           });
-        } else {
-          localStorage.setItem("greedy_is_new_user", "false");
-          window.location.replace("password.html");
         }
-      }).catch(() => {
-        if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
-          showBottomLimitPopup();
-          return;
-        }
-        openOtpModalNow(fullIdentifier, function(verified) {
-          if (verified) {
-            window.location.replace("password.html");
-          }
-        });
+      }).catch((err) => {
+        console.error("Firestore read error:", err);
+        showCustomAlert("Connection error while checking account. Please try again.");
       });
     }
   </script>
