@@ -160,6 +160,27 @@
     .my-custom-back-btn:active {
       transform: scale(0.9);
     }
+
+    /* नीचे से आने वाला 24 घंटे वाला पॉप-अप */
+    #bottomLimitPopup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2000;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .bottom-limit-sheet {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 24px 20px 28px;
+      text-align: center;
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
+    }
   </style>
 </head>
 <body>
@@ -225,6 +246,15 @@
     </div>
   </div>
 
+  <!-- नीचे से आने वाला 24 घंटे ट्राई पॉप-अप -->
+  <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
+    <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
+      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Please Try Again</h3>
+      <p style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">Please try again after 24 hours.</p>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#8a2be2; color:#fff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
+    </div>
+  </div>
+
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -243,11 +273,45 @@
     const db = firebase.firestore();
 
     let popupCallback = null;
-    const MAX_OTP_ATTEMPTS = 3;
-    const MAX_RESEND_COUNT = 3;
+    const MAX_OTP_LIMIT = 5;
+    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
     let activeOtpEmail = "";
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
+
+    function getEmailOtpRecord(email) {
+      let raw = localStorage.getItem("email_otp_rec_" + email);
+      if (!raw) return { count: 0, startTime: Date.now() };
+      try {
+        let rec = JSON.parse(raw);
+        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
+          return { count: 0, startTime: Date.now() };
+        }
+        return rec;
+      } catch (e) {
+        return { count: 0, startTime: Date.now() };
+      }
+    }
+
+    function hasExceededEmailOtpLimit(email) {
+      let rec = getEmailOtpRecord(email);
+      return rec.count >= MAX_OTP_LIMIT;
+    }
+
+    function recordEmailOtpUsage(email) {
+      let rec = getEmailOtpRecord(email);
+      rec.count = Number(rec.count || 0) + 1;
+      if (!rec.startTime) rec.startTime = Date.now();
+      localStorage.setItem("email_otp_rec_" + email, JSON.stringify(rec));
+    }
+
+    function showBottomLimitPopup() {
+      document.getElementById("bottomLimitPopup").style.display = "flex";
+    }
+
+    function closeBottomLimitPopup() {
+      document.getElementById("bottomLimitPopup").style.display = "none";
+    }
 
     function showCustomAlert(message, callback) {
       document.getElementById("popupTitle").innerText = "Notice";
@@ -260,32 +324,19 @@
       popupCallback = callback;
     }
 
-    function isEmailOtpLocked(email) {
-      let lockUntil = Number(localStorage.getItem("email_otp_lock_" + email) || "0");
-      if (Date.now() < lockUntil) {
-        return Math.ceil((lockUntil - Date.now()) / 1000);
-      }
-      return 0;
-    }
-
     function showOtpPopupModal(email) {
-      let lockSec = isEmailOtpLocked(email);
-      if (lockSec > 0) {
-        showCustomAlert("Too many OTP attempts! Try again after " + lockSec + " seconds.");
+      if (hasExceededEmailOtpLimit(email)) {
+        showBottomLimitPopup();
         return;
       }
 
+      recordEmailOtpUsage(email);
       activeOtpEmail = email;
-      let attempts = Number(localStorage.getItem("email_otp_attempts_" + email) || "0");
-      let resends = Number(localStorage.getItem("email_otp_resends_" + email) || "0");
-      let leftAttempts = MAX_OTP_ATTEMPTS - attempts;
-      let leftResends = MAX_RESEND_COUNT - resends;
 
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
         <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
-        <p style="margin-bottom:10px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
-        <p style="margin-bottom:10px; font-size:12px; color:#666;">Attempts left: <b>${leftAttempts}</b> | Resends left: <b>${leftResends}</b></p>
+        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
         <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
         <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
         <div style="margin-top:10px;">
@@ -315,27 +366,18 @@
 
     function resendPopupOtp() {
       let email = activeOtpEmail;
-      let resends = Number(localStorage.getItem("email_otp_resends_" + email) || "0");
-      let lastResend = Number(localStorage.getItem("email_otp_last_resend_" + email) || "0");
+      if (!email) return;
+
+      if (hasExceededEmailOtpLimit(email)) {
+        document.getElementById("customPopupModal").style.display = "none";
+        showBottomLimitPopup();
+        return;
+      }
+
+      recordEmailOtpUsage(email);
       let resendEl = document.getElementById("resendOtpText");
-
-      if (resends >= MAX_RESEND_COUNT) {
-        if (resendEl) resendEl.innerText = "resend limit reached (max 3)";
-        return;
-      }
-
-      if (Date.now() - lastResend < 30000) {
-        let waitSec = Math.ceil((30000 - (Date.now() - lastResend)) / 1000);
-        if (resendEl) resendEl.innerText = "wait " + waitSec + "s before resending";
-        return;
-      }
-
-      resends += 1;
-      localStorage.setItem("email_otp_resends_" + email, String(resends));
-      localStorage.setItem("email_otp_last_resend_" + email, String(Date.now()));
-
       if (resendEl) {
-        resendEl.innerText = "verification code sent again! (" + (MAX_RESEND_COUNT - resends) + " left)";
+        resendEl.innerText = "verification code sent again!";
         setTimeout(() => {
           if (document.getElementById("resendOtpText")) {
             document.getElementById("resendOtpText").innerText = "send verification code again";
@@ -346,30 +388,23 @@
 
     function verifyPopupOtp() {
       let email = activeOtpEmail;
+      if (hasExceededEmailOtpLimit(email)) {
+        document.getElementById("customPopupModal").style.display = "none";
+        showBottomLimitPopup();
+        return;
+      }
+
       let otp = document.getElementById("popupOtpInput").value.trim();
       if (otp !== "1234") {
-        let attempts = Number(localStorage.getItem("email_otp_attempts_" + email) || "0") + 1;
-        localStorage.setItem("email_otp_attempts_" + email, String(attempts));
-
-        if (attempts >= MAX_OTP_ATTEMPTS) {
-          localStorage.setItem("email_otp_lock_" + email, String(Date.now() + 60 * 1000));
-          localStorage.setItem("email_otp_attempts_" + email, "0");
-          closeCustomPopup(false);
-          showCustomAlert("OTP limit reached (3 wrong attempts)! Blocked for 60 seconds.");
-          return;
-        }
-
         let errEl = document.getElementById("popupOtpError");
         if (errEl) {
-          errEl.innerText = "Invalid OTP! (" + (MAX_OTP_ATTEMPTS - attempts) + " attempt(s) left)";
+          errEl.innerText = "Invalid OTP! (Demo OTP is 1234)";
           errEl.style.display = "block";
         }
         return;
       }
 
-      localStorage.removeItem("email_otp_attempts_" + email);
-      localStorage.removeItem("email_otp_lock_" + email);
-      localStorage.removeItem("email_otp_resends_" + email);
+      localStorage.removeItem("email_otp_rec_" + email);
       closeCustomPopup(false);
       window.location.replace("password.html");
     }
@@ -403,9 +438,8 @@
         return;
       }
 
-      let lockSec = isEmailOtpLocked(email);
-      if (lockSec > 0) {
-        showCustomAlert("Too many OTP attempts! Try again after " + lockSec + " seconds.");
+      if (hasExceededEmailOtpLimit(email)) {
+        showBottomLimitPopup();
         return;
       }
 
@@ -421,6 +455,10 @@
           window.location.replace("password.html");
         } else {
           localStorage.setItem("greedy_is_new_user", "true");
+          if (hasExceededEmailOtpLimit(email)) {
+            showBottomLimitPopup();
+            return;
+          }
           showOtpPopupModal(email);
         }
       }).catch((err) => {
