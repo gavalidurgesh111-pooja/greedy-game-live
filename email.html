@@ -510,28 +510,10 @@
 
       syncEmailOtpLimitFromFirebase(email);
 
-      if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
-        showBottomLimitPopup();
-        return;
-      }
-
       localStorage.setItem("greedy_login_identifier", email);
       localStorage.setItem("greedy_login_source_page", "email.html");
 
-      let navigated = false;
-      let fallbackTimer = setTimeout(() => {
-        if (!navigated && getCachedEmailOtpCount(email) < MAX_OTP_LIMIT) {
-          navigated = true;
-          localStorage.setItem("greedy_is_new_user", "true");
-          openOtpModalNow(email);
-        }
-      }, 400);
-
       db.collection("users").doc(email).get().then((doc) => {
-        clearTimeout(fallbackTimer);
-        if (navigated) return;
-        navigated = true;
-
         if (doc.exists) {
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
@@ -543,16 +525,9 @@
           }
           openOtpModalNow(email);
         }
-      }).catch(() => {
-        clearTimeout(fallbackTimer);
-        if (navigated) return;
-        navigated = true;
-        localStorage.setItem("greedy_is_new_user", "true");
-        if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
-          showBottomLimitPopup();
-          return;
-        }
-        openOtpModalNow(email);
+      }).catch((err) => {
+        console.error("Firestore read error:", err);
+        showCustomAlert("Connection error while checking account. Please try again.");
       });
     }
 
