@@ -133,12 +133,12 @@
     </div>
   </div>
 
-  <!-- नीचे से आने वाला 24 घंटे ट्राई पॉप-अप -->
+  <!-- नीचे से आने वाला लिमिट पॉप-अप -->
   <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
     <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
-      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Please Try Again</h3>
-      <p style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">Please try again after 24 hours.</p>
-      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#8a2be2; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
+      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Account Limit Reached</h3>
+      <p id="limitPopupText" style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">You have reached the limit of 5 phone numbers on this device. No more new accounts can be created from here for 24 hours.</p>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#FF631C; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
     </div>
   </div>
 
@@ -165,6 +165,103 @@
     }, false);
 
     history.replaceState({ page: "phone_screen" }, "");
+
+    let isCheckingUser = false;
+    const MAX_NEW_ACCOUNTS_PER_DEVICE = 5;
+    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+
+    function getDeviceId() {
+      try {
+        if (window.Android && typeof window.Android.getDeviceId === "function") {
+          let nativeId = String(window.Android.getDeviceId() || "").trim();
+          if (nativeId) return "dev_" + nativeId;
+        }
+        if (window.AndroidDeviceId) {
+          let injectedId = String(window.AndroidDeviceId || "").trim();
+          if (injectedId) return "dev_" + injectedId;
+        }
+      } catch (e) {}
+
+      let stored = localStorage.getItem("greedy_device_id");
+      if (stored) return stored;
+
+      let rawSig = [
+        navigator.userAgent || "",
+        navigator.language || "",
+        screen.width || 0,
+        screen.height || 0,
+        screen.colorDepth || 0,
+        (new Date().getTimezoneOffset())
+      ].join("|");
+
+      let hash = 0;
+      for (let i = 0; i < rawSig.length; i++) {
+        hash = ((hash << 5) - hash) + rawSig.charCodeAt(i);
+        hash |= 0;
+      }
+      let generated = "dev_" + Math.abs(hash) + "_" + Math.random().toString(36).slice(2, 8);
+      localStorage.setItem("greedy_device_id", generated);
+      return generated;
+    }
+
+    const DEVICE_ID = getDeviceId();
+
+    function getDevicePhoneRecord() {
+      let key = "greedy_dev_phones_" + DEVICE_ID;
+      try {
+        let raw = localStorage.getItem(key);
+        if (!raw) return { startTime: Date.now(), phones: [] };
+        let parsed = JSON.parse(raw);
+        if (!parsed.startTime || (Date.now() - Number(parsed.startTime)) >= WINDOW_24_HOURS) {
+          let fresh = { startTime: Date.now(), phones: [] };
+          localStorage.setItem(key, JSON.stringify(fresh));
+          return fresh;
+        }
+        return {
+          startTime: Number(parsed.startTime),
+          phones: Array.isArray(parsed.phones) ? parsed.phones : []
+        };
+      } catch (e) {
+        return { startTime: Date.now(), phones: [] };
+      }
+    }
+
+    function sendDeviceAlertToFirebase(rec, blockedAttemptIdentifier) {
+      db.collection("device_alerts").doc(DEVICE_ID).set({
+        deviceId: DEVICE_ID,
+        phoneCount24h: rec.phones.length,
+        phonesUsed24h: rec.phones,
+        lastBlockedPhone: blockedAttemptIdentifier || "",
+        limitReached: rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE,
+        alertMessage: "Multiple phone registrations/OTP attempts from single device",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).catch(() => {});
+    }
+
+    function canSendOtpToPhone(fullIdentifier) {
+      let rec = getDevicePhoneRecord();
+      if (rec.phones.includes(fullIdentifier)) {
+        return true;
+      }
+      if (rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE) {
+        sendDeviceAlertToFirebase(rec, fullIdentifier);
+        return false;
+      }
+      return true;
+    }
+
+    function registerPhoneAttemptOnDevice(fullIdentifier) {
+      let key = "greedy_dev_phones_" + DEVICE_ID;
+      let rec = getDevicePhoneRecord();
+      if (!rec.phones.includes(fullIdentifier)) {
+        rec.phones.push(fullIdentifier);
+      }
+      localStorage.setItem(key, JSON.stringify(rec));
+
+      if (rec.phones.length >= 3) {
+        sendDeviceAlertToFirebase(rec, "");
+      }
+    }
 
     function sanitizePhoneValue(rawVal) {
       return String(rawVal || "").replace(/\D/g, "").slice(0, 16);
@@ -221,8 +318,6 @@
     });
 
     let popupCallback = null;
-    const MAX_OTP_LIMIT = 5;
-    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
 
     function handleBackAction() {
       localStorage.removeItem("greedy_restore_identifier");
@@ -236,81 +331,11 @@
       }, 60);
     }
 
-    function syncOtpLimitFromFirebase(identifier) {
-      if (!identifier) return;
-      const ref = db.collection("otp_limits").doc(identifier);
-      ref.get().then((snap) => {
-        if (!snap.exists) return;
-        const data = snap.data() || {};
-        const startTime = Number(data.startTime || 0);
-        if (!startTime || (Date.now() - startTime) >= WINDOW_24_HOURS) {
-          localStorage.removeItem("otp_cache_" + identifier);
-          return;
-        }
-        const count = Number(data.count || 0);
-        localStorage.setItem("otp_cache_" + identifier, JSON.stringify({ count, startTime }));
-      }).catch(() => {});
-    }
-
-    function getCachedOtpCount(identifier) {
-      try {
-        let raw = localStorage.getItem("otp_cache_" + identifier);
-        if (!raw) return 0;
-        let rec = JSON.parse(raw);
-        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
-          localStorage.removeItem("otp_cache_" + identifier);
-          return 0;
-        }
-        return Number(rec.count || 0);
-      } catch (e) {
-        return 0;
+    function showBottomLimitPopup(customMsg) {
+      let textEl = document.getElementById("limitPopupText");
+      if (textEl && customMsg) {
+        textEl.innerText = customMsg;
       }
-    }
-
-    function incrementOtpLimitBackground(identifier) {
-      let currentCacheCount = getCachedOtpCount(identifier);
-      let startTime = Date.now();
-      try {
-        let raw = localStorage.getItem("otp_cache_" + identifier);
-        if (raw) {
-          let parsed = JSON.parse(raw);
-          if (parsed.startTime && (Date.now() - parsed.startTime) < WINDOW_24_HOURS) {
-            startTime = parsed.startTime;
-          }
-        }
-      } catch (e) {}
-
-      let nextCount = currentCacheCount + 1;
-      localStorage.setItem("otp_cache_" + identifier, JSON.stringify({ count: nextCount, startTime }));
-
-      const ref = db.collection("otp_limits").doc(identifier);
-      ref.get().then((snap) => {
-        let dbCount = 0;
-        let dbStart = Date.now();
-        if (snap.exists) {
-          let d = snap.data() || {};
-          if (d.startTime && (Date.now() - Number(d.startTime)) < WINDOW_24_HOURS) {
-            dbCount = Number(d.count || 0);
-            dbStart = Number(d.startTime);
-          }
-        }
-        let finalCount = Math.max(nextCount, dbCount + 1);
-        localStorage.setItem("otp_cache_" + identifier, JSON.stringify({ count: finalCount, startTime: dbStart }));
-        ref.set({
-          identifier: identifier,
-          count: finalCount,
-          startTime: dbStart,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true }).catch(() => {});
-      }).catch(() => {});
-    }
-
-    function clearOtpLimitBackground(identifier) {
-      localStorage.removeItem("otp_cache_" + identifier);
-      db.collection("otp_limits").doc(identifier).delete().catch(() => {});
-    }
-
-    function showBottomLimitPopup() {
       history.pushState({ popup: "limit" }, "");
       document.getElementById("bottomLimitPopup").style.display = "flex";
     }
@@ -356,7 +381,7 @@
     }
 
     function openOtpModalNow(fullIdentifier, onSuccessCallback) {
-      incrementOtpLimitBackground(fullIdentifier);
+      registerPhoneAttemptOnDevice(fullIdentifier);
       let demoCode = "123456";
 
       history.pushState({ popup: "otp" }, "");
@@ -388,17 +413,12 @@
     function verifyDemoOtp(correctCode, fullIdentifier) {
       let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
       if (enteredOtp === correctCode) {
-        clearOtpLimitBackground(fullIdentifier);
         closeCustomPopup(true);
       } else {
         showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
-          if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
-            showBottomLimitPopup();
-          } else {
-            let otpInp = document.getElementById("demoOtpInput");
-            document.getElementById("customPopupModal").style.display = "flex";
-            if (otpInp) otpInp.focus();
-          }
+          let otpInp = document.getElementById("demoOtpInput");
+          document.getElementById("customPopupModal").style.display = "flex";
+          if (otpInp) otpInp.focus();
         });
       }
     }
@@ -413,6 +433,8 @@
     }
 
     function handleNextStep() {
+      if (isCheckingUser) return;
+
       let countryCodeSelect = document.getElementById("countryCodeSelect");
       let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
       let phoneDigits = sanitizePhoneValue(document.getElementById("phoneInput").value);
@@ -424,17 +446,18 @@
 
       let fullIdentifier = countryCode + phoneDigits;
       localStorage.removeItem("greedy_restore_identifier");
+      isCheckingUser = true;
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
+        isCheckingUser = false;
         if (doc.exists) {
           localStorage.setItem("greedy_login_identifier", fullIdentifier);
           localStorage.setItem("greedy_login_source_page", "phone.html");
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          syncOtpLimitFromFirebase(fullIdentifier);
-          if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
-            showBottomLimitPopup();
+          if (!canSendOtpToPhone(fullIdentifier)) {
+            showBottomLimitPopup("5 phone numbers limit reached on this device. You cannot create more new accounts from this device right now.");
             return;
           }
           localStorage.setItem("greedy_login_identifier", fullIdentifier);
@@ -447,6 +470,7 @@
           });
         }
       }).catch((err) => {
+        isCheckingUser = false;
         console.error("Firestore read error:", err);
         showCustomAlert("Connection error while checking account. Please try again.");
       });
