@@ -166,33 +166,38 @@
 
     history.replaceState({ page: "phone_screen" }, "");
 
-    window.addEventListener("DOMContentLoaded", function() {
+    function applySavedIdentifierToPhoneBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
-      if (restoreVal) {
-        localStorage.removeItem("greedy_restore_identifier");
-        let inputEl = document.getElementById("phoneInput");
-        let selectEl = document.getElementById("countryCodeSelect");
-        if (restoreVal.startsWith("#")) {
-          inputEl.value = restoreVal;
-        } else if (restoreVal.startsWith("+") && selectEl) {
-          let matched = false;
-          for (let opt of selectEl.options) {
-            if (restoreVal.startsWith(opt.value)) {
-              selectEl.value = opt.value;
-              inputEl.value = restoreVal.slice(opt.value.length);
-              matched = true;
-              break;
-            }
+      if (!restoreVal) return;
+
+      let inputEl = document.getElementById("phoneInput");
+      let selectEl = document.getElementById("countryCodeSelect");
+      if (!inputEl) return;
+
+      if (restoreVal.startsWith("#")) {
+        inputEl.value = restoreVal;
+      } else if (restoreVal.startsWith("+") && selectEl) {
+        let matched = false;
+        for (let opt of selectEl.options) {
+          if (restoreVal.startsWith(opt.value)) {
+            selectEl.value = opt.value;
+            inputEl.value = restoreVal.slice(opt.value.length);
+            matched = true;
+            break;
           }
-          if (!matched) {
-            inputEl.value = restoreVal;
-          }
-        } else {
+        }
+        if (!matched) {
           inputEl.value = restoreVal;
         }
-        checkNumber();
+      } else {
+        inputEl.value = restoreVal;
       }
-    });
+      checkNumber();
+      localStorage.removeItem("greedy_restore_identifier");
+    }
+
+    window.addEventListener("DOMContentLoaded", applySavedIdentifierToPhoneBox);
+    window.addEventListener("pageshow", applySavedIdentifierToPhoneBox);
 
     window.addEventListener("popstate", function() {
       let bottomPopup = document.getElementById("bottomLimitPopup");
