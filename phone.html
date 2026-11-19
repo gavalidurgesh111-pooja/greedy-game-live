@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#ffffff">
-  <title>Greedy Coin - Phone Login</title>
+  <title>Greedy Coin - Sign in with Phone</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     * {
       -webkit-user-select: none;
@@ -17,11 +18,183 @@
     }
 
     html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
       background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      padding: 20px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 25px;
+    }
+
+    .country-code-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      border-radius: 32px;
+      padding: 0 15px;
+      height: 62px;
+      font-weight: 700;
+      color: #333;
+      font-size: 16px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+    }
+
+    .phone-input-row .input-box {
+      flex: 1;
+      max-width: 245px;
+      display: flex;
+      align-items: center;
+      background: #f0f0f0;
+      border-radius: 32px;
+      padding: 0 16px;
+      height: 62px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .bottom-fixed-btn-container {
+      position: fixed;
+      bottom: 25px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 25px;
+      box-sizing: border-box;
+      z-index: 100;
+    }
+
+    #mainActionBtn {
+      opacity: 0.55;
+      pointer-events: none;
+      transition: 0.2s;
+      background: #FFA375 !important;
+    }
+    #mainActionBtn.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: #FF631C !important;
+      box-shadow: 0 0 20px rgba(255, 99, 28, 0.55), 0 0 40px rgba(255, 99, 28, 0.35);
+    }
+
+    .social-login-section {
+      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 0 10px;
+    }
+    .or-divider {
+      font-size: 15px;
+      color: #999;
+      margin-bottom: 20px;
+      position: relative;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .or-divider::before, .or-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 0 15px;
+    }
+    .social-buttons-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      max-width: 400px;
+      padding: 0 10px;
+    }
+    .social-btn-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      width: 48%;
+    }
+    .social-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      background: #ffffff;
+      border: 1px solid #eaeaea;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .facebook-icon {
+      width: 26px;
+      height: 26px;
+      background: #1877f2;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      font-family: Arial, sans-serif;
+    }
+    .email-icon-envelope {
+      width: 26px;
+      height: 18px;
+      background: #ffa726;
+      border-radius: 3px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .email-icon-envelope::before {
+      content: "";
+      position: absolute;
+      top: -6px;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 11px solid #ffffff;
+    }
+    .social-btn-text {
+      font-size: 12px;
+      color: #666;
+      font-weight: 500;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    input::placeholder {
+      font-size: 14px;
+      color: #888;
     }
 
     .my-custom-back-btn {
@@ -36,31 +209,6 @@
     }
     .my-custom-back-btn:active {
       transform: scale(0.9);
-    }
-    
-    .bottom-fixed-btn-container {
-      position: fixed;
-      bottom: 25px;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
-      padding-right: 25px;
-      box-sizing: border-box;
-      z-index: 100;
-    }
-
-    #submitBtn {
-      opacity: 0.55;
-      pointer-events: none;
-      transition: 0.2s;
-      background: #FFA375 !important;
-    }
-    #submitBtn.active {
-      opacity: 1;
-      pointer-events: auto;
-      background: #FF631C !important;
-      box-shadow: 0 0 15px rgba(255, 99, 28, 0.55);
     }
 
     #bottomLimitPopup {
@@ -92,43 +240,53 @@
     </svg>
   </button>
 
-  <!-- Phone Login Screen -->
-  <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-
+  <div class="page-wrapper">
     <div style="margin-top: 65px;">
-      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
-      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number</div>
-      
-      <form onsubmit="handleIndexFormSubmit(event)">
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px;">
-          <select id="countryCodeSelect" class="country-code-select" onchange="checkNumber()" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
-            <option value="+91" selected>🇮🇳 (+91) India</option>
-            <option value="+1">🇺🇸 (+1) USA</option>
-            <option value="+44">🇬🇧 (+44) UK</option>
-            <option value="+971">🇦🇪 (+971) UAE</option>
-            <option value="+61">🇦🇺 (+61) Australia</option>
-            <option value="+1">🇨🇦 (+1) Canada</option>
-            <option value="+92">🇵🇰 (+92) Pakistan</option>
-            <option value="+880">🇧🇩 (+880) Bangladesh</option>
-            <option value="+977">🇳🇵 (+977) Nepal</option>
-            <option value="+94">🇱🇰 (+94) Sri Lanka</option>
-          </select>
-          <input type="text" inputmode="numeric" maxlength="16" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+      <div class="step-title" id="pageTitle" style="font-size:25px; font-weight:600; color:#000; letter-spacing:0.5px;">Sign in with Phone</div>
+      <div style="font-size:15px; color:#666; margin-top:8px; margin-bottom:35px;" id="pageSub">Enter your phone number to continue</div>
+
+      <form onsubmit="event.preventDefault(); handleMainAction();">
+        <div id="phoneContainer">
+          <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:12px; padding-left:10px;">Phone Number</div>
+          <div class="phone-input-row">
+            <div class="country-code-box">+91</div>
+            <div class="input-box">
+              <input type="tel" id="phoneInput" maxlength="10" oninput="checkInputState()" placeholder="Enter 10-digit mobile number" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%; -webkit-user-select:text; user-select:text;">
+            </div>
+          </div>
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
     </div>
-    
+
+    <div class="social-login-section" id="socialSection">
+      <div class="or-divider">or</div>
+      <div class="social-buttons-row">
+        <div class="social-btn-item" onclick="handleFacebookLogin()">
+          <div class="social-icon-circle">
+            <div class="facebook-icon">f</div>
+          </div>
+          <div class="social-btn-text">Sign in with Facebook</div>
+        </div>
+        <div class="social-btn-item" onclick="handleEmailLogin()">
+          <div class="social-icon-circle">
+            <div class="email-icon-envelope"></div>
+          </div>
+          <div class="social-btn-text">Login with email</div>
+        </div>
+      </div>
+    </div>
+
     <div class="bottom-fixed-btn-container">
-      <button class="btn-round-next" id="submitBtn" onclick="handleNextStep()" style="width:60px; height:60px; border-radius:50%; background:#FFA375; border:none; color:#ffffff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
+      <button class="btn-round-next" id="mainActionBtn" onclick="handleMainAction()" style="width:60px; height:60px; border-radius:50%; background:#FFA375; border:none; color:#ffffff; font-size:24px; cursor:pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">➔</button>
     </div>
   </div>
 
   <!-- Custom Popup Modal -->
   <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
     <div style="background:#ffffff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
-      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Notice</h3>
+      <div id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></div>
       <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
     </div>
   </div>
@@ -142,7 +300,6 @@
     </div>
   </div>
 
-  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -160,15 +317,14 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-    }, false);
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
     history.replaceState({ page: "phone_screen" }, "");
 
-    let isCheckingUser = false;
+    let isCheckingPhoneUser = false;
     const MAX_NEW_ACCOUNTS_PER_DEVICE = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+    let activeOtpPhone = "";
 
     function getDeviceId() {
       try {
@@ -226,72 +382,60 @@
       }
     }
 
-    function sendDeviceAlertToFirebase(rec, blockedAttemptIdentifier) {
+    function sendDevicePhoneAlertToFirebase(rec, blockedAttemptPhone) {
       db.collection("device_alerts").doc(DEVICE_ID).set({
         deviceId: DEVICE_ID,
         phoneCount24h: rec.phones.length,
         phonesUsed24h: rec.phones,
-        lastBlockedPhone: blockedAttemptIdentifier || "",
-        limitReached: rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE,
+        lastBlockedPhone: blockedAttemptPhone || "",
+        phoneLimitReached: rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE,
         alertMessage: "Multiple phone registrations/OTP attempts from single device",
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true }).catch(() => {});
     }
 
-    function canSendOtpToPhone(fullIdentifier) {
+    function canSendOtpToPhone(fullPhone) {
       let rec = getDevicePhoneRecord();
-      if (rec.phones.includes(fullIdentifier)) {
+      if (rec.phones.includes(fullPhone)) {
         return true;
       }
       if (rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE) {
-        sendDeviceAlertToFirebase(rec, fullIdentifier);
+        sendDevicePhoneAlertToFirebase(rec, fullPhone);
         return false;
       }
       return true;
     }
 
-    function registerPhoneAttemptOnDevice(fullIdentifier) {
+    function registerPhoneAttemptOnDevice(fullPhone) {
       let key = "greedy_dev_phones_" + DEVICE_ID;
       let rec = getDevicePhoneRecord();
-      if (!rec.phones.includes(fullIdentifier)) {
-        rec.phones.push(fullIdentifier);
+      if (!rec.phones.includes(fullPhone)) {
+        rec.phones.push(fullPhone);
       }
       localStorage.setItem(key, JSON.stringify(rec));
 
       if (rec.phones.length >= 3) {
-        sendDeviceAlertToFirebase(rec, "");
+        sendDevicePhoneAlertToFirebase(rec, "");
       }
     }
 
-    function sanitizePhoneValue(rawVal) {
-      return String(rawVal || "").replace(/\D/g, "").slice(0, 16);
+    function sanitizePhoneDigits(rawVal) {
+      let digits = String(rawVal || "").replace(/\D/g, "");
+      if (digits.startsWith("91") && digits.length > 10) {
+        digits = digits.slice(2);
+      }
+      return digits.slice(0, 10);
     }
 
     function applySavedIdentifierToPhoneBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
       if (!restoreVal) return;
 
-      let inputEl = document.getElementById("phoneInput");
-      let selectEl = document.getElementById("countryCodeSelect");
-      if (!inputEl) return;
-
-      if (restoreVal.startsWith("+") && selectEl) {
-        let matched = false;
-        for (let opt of selectEl.options) {
-          if (restoreVal.startsWith(opt.value)) {
-            selectEl.value = opt.value;
-            inputEl.value = sanitizePhoneValue(restoreVal.slice(opt.value.length));
-            matched = true;
-            break;
-          }
-        }
-        if (!matched) {
-          inputEl.value = sanitizePhoneValue(restoreVal);
-        }
-      } else {
-        inputEl.value = sanitizePhoneValue(restoreVal);
+      let phoneEl = document.getElementById("phoneInput");
+      if (phoneEl) {
+        phoneEl.value = sanitizePhoneDigits(restoreVal);
+        checkInputState();
       }
-      checkNumber();
       localStorage.removeItem("greedy_restore_identifier");
     }
 
@@ -299,11 +443,11 @@
     window.addEventListener("pageshow", applySavedIdentifierToPhoneBox);
 
     window.addEventListener("popstate", function() {
+      window.scrollTo(0, 0);
       let bottomPopup = document.getElementById("bottomLimitPopup");
       if (bottomPopup && bottomPopup.style.display === "flex") {
         history.pushState({ page: "phone_screen" }, "");
         bottomPopup.style.display = "none";
-        focusPhoneInput();
         return;
       }
 
@@ -312,7 +456,6 @@
         history.pushState({ page: "phone_screen" }, "");
         customModal.style.display = "none";
         popupCallback = null;
-        focusPhoneInput();
         return;
       }
     });
@@ -324,14 +467,8 @@
       window.location.replace("index.html");
     }
 
-    function focusPhoneInput() {
-      setTimeout(() => {
-        let inp = document.getElementById("phoneInput");
-        if (inp) inp.focus();
-      }, 60);
-    }
-
     function showBottomLimitPopup(customMsg) {
+      window.scrollTo(0, 0);
       let textEl = document.getElementById("limitPopupText");
       if (textEl && customMsg) {
         textEl.innerText = customMsg;
@@ -342,35 +479,12 @@
 
     function closeBottomLimitPopup() {
       document.getElementById("bottomLimitPopup").style.display = "none";
-      focusPhoneInput();
-    }
-
-    function checkNumber() {
-      let inputEl = document.getElementById("phoneInput");
-      let cleaned = sanitizePhoneValue(inputEl.value);
-      if (inputEl.value !== cleaned) {
-        inputEl.value = cleaned;
-      }
-
-      let btn = document.getElementById("submitBtn");
-      let isValid = /^\d{7,16}$/.test(cleaned);
-
-      if (isValid) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
-    }
-
-    function handleIndexFormSubmit(event) {
-      event.preventDefault();
-      let btn = document.getElementById("submitBtn");
-      if (btn.classList.contains("active")) {
-        handleNextStep();
-      }
+      window.scrollTo(0, 0);
     }
 
     function showCustomAlert(message, callback) {
+      window.scrollTo(0, 0);
+      document.getElementById("popupTitle").innerText = "Notice";
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
@@ -380,101 +494,128 @@
       popupCallback = callback;
     }
 
-    function openOtpModalNow(fullIdentifier, onSuccessCallback) {
-      registerPhoneAttemptOnDevice(fullIdentifier);
-      let demoCode = "123456";
+    function openOtpModalNow(fullPhone) {
+      window.scrollTo(0, 0);
+      registerPhoneAttemptOnDevice(fullPhone);
+      activeOtpPhone = fullPhone;
 
       history.pushState({ popup: "otp" }, "");
-      document.getElementById("popupTitle").innerText = "OTP Verification";
+      document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
-        Number: <b style="color:#1e3c72;">${fullIdentifier}</b><br>
-        <b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
+        <p style="margin-bottom:6px;">Phone: <b style="color:#1e3c72;">${fullPhone}</b></p>
+        <p style="margin-bottom:12px; font-size:13px;">Enter 6-digit OTP (Demo: 123456)</p>
+        <input type="text" id="popupOtpInput" maxlength="6" placeholder="123456" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
+        <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 123456)</div>
+        <div style="margin-top:10px;">
+          <span id="resendOtpText" onclick="resendPopupOtp()" style="color:#8a2be2; font-size:12px; text-transform:lowercase; cursor:pointer; font-weight:500;">send verification code again</span>
+        </div>
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="changePhoneNumberFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#ffffff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Number</button>
-        <button onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#ffffff;">Verify</button>
+        <button onclick="changePhoneFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#ffffff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Number</button>
+        <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#ffffff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
-      popupCallback = onSuccessCallback;
-      setTimeout(() => {
-        let otpInp = document.getElementById("demoOtpInput");
-        if (otpInp) otpInp.focus();
-      }, 60);
     }
 
-    function changePhoneNumberFromOtp() {
+    function changePhoneFromOtp() {
       document.getElementById("customPopupModal").style.display = "none";
       popupCallback = null;
-      focusPhoneInput();
+      window.scrollTo(0, 0);
     }
 
-    function verifyDemoOtp(correctCode, fullIdentifier) {
-      let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
-      if (enteredOtp === correctCode) {
-        closeCustomPopup(true);
-      } else {
-        showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
-          let otpInp = document.getElementById("demoOtpInput");
-          document.getElementById("customPopupModal").style.display = "flex";
-          if (otpInp) otpInp.focus();
-        });
+    function resendPopupOtp() {
+      let fullPhone = activeOtpPhone;
+      if (!fullPhone) return;
+
+      let resendEl = document.getElementById("resendOtpText");
+      if (resendEl) {
+        resendEl.innerText = "verification code sent again!";
+        setTimeout(() => {
+          if (document.getElementById("resendOtpText")) {
+            document.getElementById("resendOtpText").innerText = "send verification code again";
+          }
+        }, 2000);
       }
+    }
+
+    function verifyPopupOtp() {
+      let otp = document.getElementById("popupOtpInput").value.trim();
+      if (otp !== "123456") {
+        let errEl = document.getElementById("popupOtpError");
+        if (errEl) {
+          errEl.innerText = "Invalid OTP! (Demo OTP is 123456)";
+          errEl.style.display = "block";
+        }
+        return;
+      }
+
+      closeCustomPopup(false);
+      window.location.replace("password.html");
     }
 
     function closeCustomPopup(result) {
       document.getElementById("customPopupModal").style.display = "none";
       let cb = popupCallback;
       popupCallback = null;
-      if (result && cb) {
-        cb(true);
+      if (result && cb) cb(true);
+    }
+
+    function checkInputState() {
+      let phoneEl = document.getElementById("phoneInput");
+      let digits = sanitizePhoneDigits(phoneEl.value);
+      if (phoneEl.value !== digits) {
+        phoneEl.value = digits;
+      }
+
+      let btn = document.getElementById("mainActionBtn");
+      if (digits.length === 10) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
       }
     }
 
-    function handleNextStep() {
-      if (isCheckingUser) return;
+    function handleMainAction() {
+      if (isCheckingPhoneUser) return;
 
-      let countryCodeSelect = document.getElementById("countryCodeSelect");
-      let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
-      let phoneDigits = sanitizePhoneValue(document.getElementById("phoneInput").value);
-      
-      if(!phoneDigits) {
-        showCustomAlert("Please enter phone number!");
+      window.scrollTo(0, 0);
+      let phoneDigits = sanitizePhoneDigits(document.getElementById("phoneInput").value);
+      if (phoneDigits.length !== 10) {
+        showCustomAlert("Please enter a valid 10-digit mobile number!");
         return;
       }
 
-      let fullIdentifier = countryCode + phoneDigits;
+      let fullPhone = "+91" + phoneDigits;
       localStorage.removeItem("greedy_restore_identifier");
-      isCheckingUser = true;
+      isCheckingPhoneUser = true;
 
-      db.collection("users").doc(fullIdentifier).get().then((doc) => {
-        isCheckingUser = false;
+      db.collection("users").doc(fullPhone).get().then((doc) => {
+        isCheckingPhoneUser = false;
         if (doc.exists) {
-          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_identifier", fullPhone);
           localStorage.setItem("greedy_login_source_page", "phone.html");
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          if (!canSendOtpToPhone(fullIdentifier)) {
+          if (!canSendOtpToPhone(fullPhone)) {
             showBottomLimitPopup("5 phone numbers limit reached on this device. You cannot create more new accounts from this device right now.");
             return;
           }
-          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_identifier", fullPhone);
           localStorage.setItem("greedy_login_source_page", "phone.html");
           localStorage.setItem("greedy_is_new_user", "true");
-          openOtpModalNow(fullIdentifier, function(verified) {
-            if (verified) {
-              window.location.replace("password.html");
-            }
-          });
+          openOtpModalNow(fullPhone);
         }
       }).catch((err) => {
-        isCheckingUser = false;
+        isCheckingPhoneUser = false;
         console.error("Firestore read error:", err);
         showCustomAlert("Connection error while checking account. Please try again.");
       });
     }
+
+    function handleEmailLogin() { window.location.replace("email.html"); }
+    function handleFacebookLogin() { window.location.replace("index.html"); }
   </script>
 </body>
 </html>
