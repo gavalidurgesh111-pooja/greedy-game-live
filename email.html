@@ -17,12 +17,24 @@
       padding: 0;
     }
 
-    body { 
-      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #111 url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed; 
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), #111 url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=800&q=80') no-repeat center center fixed;
       background-size: cover;
-      margin: 0;
-      padding: 0;
       font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100vh;
+      padding: 20px;
+      background: #fafafa;
+      position: relative;
+      overflow: hidden;
     }
 
     .bottom-fixed-btn-container {
@@ -50,7 +62,7 @@
     }
 
     .social-login-section {
-      margin-top: 70px;
+      margin-top: 50px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -190,25 +202,18 @@
     </svg>
   </button>
 
-  <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-    
-    <div id="loadingOverlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:10;">
-      <div class="spinner" style="width:60px; height:60px; border-radius:50%; border:5px solid #fff; border-top-color:#8a2be2; animation:spin 1s linear infinite;"></div>
-    </div>
-    
-    <div style="margin-top: 70px;">
+  <div class="page-wrapper">
+    <div style="margin-top: 65px;">
       <div class="step-title" id="pageTitle" style="font-size:25px; font-weight:600; color:#000; letter-spacing:0.5px;">Sign in with Email</div>
-      <div style="font-size:15px; color:#666; margin-top:8px; margin-bottom:40px;" id="pageSub">Enter your email address to continue</div>
+      <div style="font-size:15px; color:#666; margin-top:8px; margin-bottom:35px;" id="pageSub">Enter your email address to continue</div>
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
-        
         <div id="emailContainer" style="margin-bottom:25px;">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:12px; padding-left:10px;">Email Address</div>
           <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 20px; height:56px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
-            <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:60%; font-size:17px; height:100%; -webkit-user-select:text; user-select:text;">
+            <input type="email" id="emailInput" oninput="checkInputState()" placeholder="Enter your email" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%; -webkit-user-select:text; user-select:text;">
           </div>
         </div>
-
         <button type="submit" style="display:none;"></button>
       </form>
     </div>
@@ -276,11 +281,11 @@
     history.replaceState({ page: "email_screen" }, "");
 
     window.addEventListener("popstate", function() {
+      window.scrollTo(0, 0);
       let bottomPopup = document.getElementById("bottomLimitPopup");
       if (bottomPopup && bottomPopup.style.display === "flex") {
         history.pushState({ page: "email_screen" }, "");
         bottomPopup.style.display = "none";
-        focusEmailInput();
         return;
       }
 
@@ -289,7 +294,6 @@
         history.pushState({ page: "email_screen" }, "");
         customModal.style.display = "none";
         popupCallback = null;
-        focusEmailInput();
         return;
       }
     });
@@ -299,11 +303,8 @@
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
     let activeOtpEmail = "";
 
-    function focusEmailInput() {
-      setTimeout(() => {
-        let inp = document.getElementById("emailInput");
-        if (inp) inp.focus();
-      }, 60);
+    function isValidEmail(val) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
     }
 
     function syncEmailOtpLimitFromFirebase(email) {
@@ -381,16 +382,18 @@
     }
 
     function showBottomLimitPopup() {
+      window.scrollTo(0, 0);
       history.pushState({ popup: "limit" }, "");
       document.getElementById("bottomLimitPopup").style.display = "flex";
     }
 
     function closeBottomLimitPopup() {
       document.getElementById("bottomLimitPopup").style.display = "none";
-      focusEmailInput();
+      window.scrollTo(0, 0);
     }
 
     function showCustomAlert(message, callback) {
+      window.scrollTo(0, 0);
       document.getElementById("popupTitle").innerText = "Notice";
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
@@ -402,6 +405,7 @@
     }
 
     function openOtpModalNow(email) {
+      window.scrollTo(0, 0);
       incrementEmailOtpLimitBackground(email);
       activeOtpEmail = email;
 
@@ -422,16 +426,12 @@
         <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
-      setTimeout(() => {
-        let inp = document.getElementById("popupOtpInput");
-        if (inp) inp.focus();
-      }, 60);
     }
 
     function changeEmailFromOtp() {
       document.getElementById("customPopupModal").style.display = "none";
       popupCallback = null;
-      focusEmailInput();
+      window.scrollTo(0, 0);
     }
 
     function resendPopupOtp() {
@@ -489,7 +489,7 @@
     function checkInputState() {
       let btn = document.getElementById("mainActionBtn");
       let emailVal = document.getElementById("emailInput").value.trim();
-      if (emailVal.includes("@") && emailVal.includes(".")) {
+      if (isValidEmail(emailVal)) {
         btn.classList.add("active");
       } else {
         btn.classList.remove("active");
@@ -501,9 +501,10 @@
     }
 
     function handleMainAction() {
+      window.scrollTo(0, 0);
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
 
-      if (!email.includes("@") || !email.includes(".")) {
+      if (!isValidEmail(email)) {
         showCustomAlert("Please enter a valid email address!");
         return;
       }
@@ -518,19 +519,36 @@
       localStorage.setItem("greedy_login_identifier", email);
       localStorage.setItem("greedy_login_source_page", "email.html");
 
+      let navigated = false;
+      let fallbackTimer = setTimeout(() => {
+        if (!navigated && getCachedEmailOtpCount(email) < MAX_OTP_LIMIT) {
+          navigated = true;
+          localStorage.setItem("greedy_is_new_user", "true");
+          openOtpModalNow(email);
+        }
+      }, 400);
+
       db.collection("users").doc(email).get().then((doc) => {
-        if (!doc.exists) {
+        clearTimeout(fallbackTimer);
+        if (navigated) return;
+        navigated = true;
+
+        if (doc.exists) {
+          localStorage.setItem("greedy_is_new_user", "false");
+          window.location.replace("password.html");
+        } else {
           localStorage.setItem("greedy_is_new_user", "true");
           if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
             showBottomLimitPopup();
             return;
           }
           openOtpModalNow(email);
-        } else {
-          localStorage.setItem("greedy_is_new_user", "false");
-          window.location.replace("password.html");
         }
       }).catch(() => {
+        clearTimeout(fallbackTimer);
+        if (navigated) return;
+        navigated = true;
+        localStorage.setItem("greedy_is_new_user", "true");
         if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
           showBottomLimitPopup();
           return;
