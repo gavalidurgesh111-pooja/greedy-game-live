@@ -210,6 +210,23 @@
       transform: scale(0.92);
     }
 
+    #csConfirmBtn {
+      background: #FFA375 !important;
+      color: #ffffff !important;
+      opacity: 0.6;
+      cursor: not-allowed;
+      transition: background-color 0.2s, opacity 0.2s;
+    }
+    #csConfirmBtn.active {
+      background: #FF631C !important;
+      opacity: 1;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 99, 28, 0.4);
+    }
+    #csConfirmBtn.active:active {
+      background: #FFA375 !important;
+    }
+
     #floatingToast {
       position: fixed;
       bottom: 25px;
@@ -326,17 +343,18 @@
         <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
         
         <form id="support-form">
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px;">
-            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333;" required>
-          </div>
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px; position:relative;">
-            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
+          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px; position:relative;">
+            <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif; -webkit-user-select:text; user-select:text;" required></textarea>
             <div id="csCharCount" style="text-align:right; font-size:12px; color:#999; margin-top:4px; font-weight:600;">0/300</div>
+          </div>
+
+          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px;">
+            <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; -webkit-user-select:text; user-select:text;" required>
           </div>
 
           <div style="display:flex; gap:12px; justify-content:center;">
             <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
-            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; background:#8a2be2; font-weight:700; color:#ffffff; font-size:15px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; font-weight:700; font-size:15px;" id="csConfirmBtn" disabled>Confirm</button>
           </div>
         </form>
 
@@ -417,12 +435,10 @@
       let confirmBtn = document.getElementById("csConfirmBtn");
       if (emailVal !== "") {
         confirmBtn.disabled = false;
-        confirmBtn.style.opacity = "1";
-        confirmBtn.style.cursor = "pointer";
+        confirmBtn.classList.add("active");
       } else {
         confirmBtn.disabled = true;
-        confirmBtn.style.opacity = "0.5";
-        confirmBtn.style.cursor = "not-allowed";
+        confirmBtn.classList.remove("active");
       }
     }
 
@@ -432,8 +448,7 @@
       let confirmBtn = document.getElementById("csConfirmBtn");
       confirmBtn.innerText = "Sending...";
       confirmBtn.disabled = true;
-      confirmBtn.style.opacity = "0.5";
-      confirmBtn.style.cursor = "not-allowed";
+      confirmBtn.classList.remove("active");
 
       emailjs.sendForm('service_ev242sn', 'template_bljp5uv', this)
         .then(function() {
