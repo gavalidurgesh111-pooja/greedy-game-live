@@ -28,12 +28,15 @@
       overflow: hidden !important;
       position: fixed !important;
       inset: 0 !important;
+      background-color: #6a0dad;
     }
 
     body {
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background: #6a0dad url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
       background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     #authFlowContainer {
@@ -44,6 +47,7 @@
       flex-direction: column;
       background: transparent !important;
       overflow: hidden;
+      transform: translateZ(0);
     }
 
     #screenMain {
@@ -108,8 +112,8 @@
       text-align: center;
     }
 
-     /* More options बटन के लिए कोड */
-     .more-options-btn { 
+    /* More options बटन के लिए कोड */
+    .more-options-btn { 
       background: none; 
       border: none; 
       color: #fff; 
@@ -119,10 +123,10 @@
       padding: 2px; 
       position: relative; 
       left: 10px; 
-     }
+    }
 
-     /* Last login टैग और उसके सफेद बॉर्डर, साइज व पोजीशन के लिए कोड */
-     .last-login-tag { 
+    /* Last login टैग और उसके सफेद बॉर्डर, साइज व पोजीशन के लिए कोड */
+    .last-login-tag { 
       background: #ff4081; 
       color: #fff; 
       font-size: 8px; 
@@ -133,7 +137,7 @@
       top: -6px; 
       left: -5px; 
       display: inline-block;
-     }
+    }
 
     /* फ़ोटो जैसा सेम Terms & Conditions डिज़ाइन */
     .terms-text { 
