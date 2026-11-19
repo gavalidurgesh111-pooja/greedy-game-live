@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#ffffff">
-  <title>Greedy Coin - Phone & ID Login</title>
+  <title>Greedy Coin - Phone Login</title>
   <style>
     * {
       -webkit-user-select: none;
@@ -92,12 +92,12 @@
     </svg>
   </button>
 
-  <!-- Phone / ID Login Screen -->
+  <!-- Phone Login Screen -->
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
 
     <div style="margin-top: 65px;">
       <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
-      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
+      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number</div>
       
       <form onsubmit="handleIndexFormSubmit(event)">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px;">
@@ -113,7 +113,7 @@
             <option value="+977">🇳🇵 (+977) Nepal</option>
             <option value="+94">🇱🇰 (+94) Sri Lanka</option>
           </select>
-          <input type="text" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number or #ID" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+          <input type="text" inputmode="numeric" maxlength="16" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
@@ -166,6 +166,10 @@
 
     history.replaceState({ page: "phone_screen" }, "");
 
+    function sanitizePhoneValue(rawVal) {
+      return String(rawVal || "").replace(/\D/g, "").slice(0, 16);
+    }
+
     function applySavedIdentifierToPhoneBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
       if (!restoreVal) return;
@@ -174,23 +178,21 @@
       let selectEl = document.getElementById("countryCodeSelect");
       if (!inputEl) return;
 
-      if (restoreVal.startsWith("#")) {
-        inputEl.value = restoreVal;
-      } else if (restoreVal.startsWith("+") && selectEl) {
+      if (restoreVal.startsWith("+") && selectEl) {
         let matched = false;
         for (let opt of selectEl.options) {
           if (restoreVal.startsWith(opt.value)) {
             selectEl.value = opt.value;
-            inputEl.value = restoreVal.slice(opt.value.length);
+            inputEl.value = sanitizePhoneValue(restoreVal.slice(opt.value.length));
             matched = true;
             break;
           }
         }
         if (!matched) {
-          inputEl.value = restoreVal;
+          inputEl.value = sanitizePhoneValue(restoreVal);
         }
       } else {
-        inputEl.value = restoreVal;
+        inputEl.value = sanitizePhoneValue(restoreVal);
       }
       checkNumber();
       localStorage.removeItem("greedy_restore_identifier");
@@ -319,15 +321,14 @@
     }
 
     function checkNumber() {
-      let identifier = document.getElementById("phoneInput").value.trim();
-      let btn = document.getElementById("submitBtn");
-      let isValid = false;
-
-      if (identifier.startsWith("#")) {
-        isValid = identifier.length >= 5;
-      } else if (/^\d+$/.test(identifier)) {
-        isValid = (identifier.length >= 7 && identifier.length <= 12);
+      let inputEl = document.getElementById("phoneInput");
+      let cleaned = sanitizePhoneValue(inputEl.value);
+      if (inputEl.value !== cleaned) {
+        inputEl.value = cleaned;
       }
+
+      let btn = document.getElementById("submitBtn");
+      let isValid = /^\d{7,16}$/.test(cleaned);
 
       if (isValid) {
         btn.classList.add("active");
@@ -414,14 +415,14 @@
     function handleNextStep() {
       let countryCodeSelect = document.getElementById("countryCodeSelect");
       let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
-      let identifier = document.getElementById("phoneInput").value.trim();
+      let phoneDigits = sanitizePhoneValue(document.getElementById("phoneInput").value);
       
-      if(!identifier) {
-        showCustomAlert("Please enter phone number or User ID!");
+      if(!phoneDigits) {
+        showCustomAlert("Please enter phone number!");
         return;
       }
 
-      let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
+      let fullIdentifier = countryCode + phoneDigits;
       localStorage.removeItem("greedy_restore_identifier");
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
