@@ -10,6 +10,8 @@
     :root {
       --sheet-icon-size: 22px;
       --sheet-icon-gap: 16px;
+      --soft-gray: #f2f2f2;
+      --purple-base: #6a0dad;
     }
 
     * {
@@ -28,11 +30,11 @@
       overflow: hidden !important;
       position: fixed !important;
       inset: 0 !important;
-      background-color: #6a0dad;
+      background-color: var(--purple-base);
     }
 
     body {
-      background: #6a0dad url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background: var(--purple-base) url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
       background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
       -webkit-backface-visibility: hidden;
@@ -94,8 +96,8 @@
       padding-left: 16px;
       cursor: pointer;
     }
-    .btn-facebook { background: #1877F2; color: #fff; }
-    .btn-google { background: #ffffff; color: #222; }
+    .btn-facebook { background: #1877F2; color: var(--soft-gray); }
+    .btn-google { background: var(--soft-gray); color: #222; }
 
     .btn-login .social-logo-svg {
       position: absolute;
@@ -116,7 +118,7 @@
     .more-options-btn { 
       background: none; 
       border: none; 
-      color: #fff; 
+      color: var(--soft-gray); 
       font-size: 13px; 
       font-weight: 700; 
       cursor: pointer; 
@@ -125,25 +127,25 @@
       left: 10px; 
     }
 
-    /* Last login टैग और उसके सफेद बॉर्डर, साइज व पोजीशन के लिए कोड */
+    /* Last login टैग */
     .last-login-tag { 
       background: #ff4081; 
-      color: #fff; 
+      color: var(--soft-gray); 
       font-size: 8px; 
       padding: 1px 4px; 
       border-radius: 10px; 
-      border: 1.2px solid #fff; 
+      border: 1.2px solid var(--soft-gray); 
       position: relative; 
       top: -6px; 
       left: -5px; 
       display: inline-block;
     }
 
-    /* फ़ोटो जैसा सेम Terms & Conditions डिज़ाइन */
+    /* Terms & Conditions डिज़ाइन */
     .terms-text { 
       font-size: 11px; 
       line-height: 1.35;
-      color: rgba(255, 255, 255, 0.65); 
+      color: rgba(242, 242, 242, 0.72); 
       text-align: left; 
       display: flex; 
       align-items: center; 
@@ -160,7 +162,7 @@
       height: 16px;
       min-width: 16px;
       border-radius: 50%;
-      border: 1.5px solid rgba(255, 255, 255, 0.5);
+      border: 1.5px solid rgba(242, 242, 242, 0.55);
       background-color: transparent;
       cursor: pointer;
       position: relative;
@@ -177,13 +179,13 @@
       content: '';
       width: 4px;
       height: 7.5px;
-      border: solid #ffffff;
+      border: solid var(--soft-gray);
       border-width: 0 1.8px 1.8px 0;
       transform: rotate(45deg);
       margin-bottom: 1.5px;
     }
     .terms-link {
-      color: #ffffff;
+      color: var(--soft-gray);
       font-weight: 700;
       text-decoration: underline;
       text-underline-offset: 2px;
@@ -196,7 +198,7 @@
       right: 20px !important;    
       width: 33px !important;
       height: 33px !important;
-      background: rgba(255, 255, 255, 0.95) !important;
+      background: rgba(242, 242, 242, 0.95) !important;
       border-radius: 50% !important;
       border: none !important;
       display: flex !important;
@@ -215,8 +217,8 @@
       bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      background: #ffffff;
-      color: #6a0dad;
+      background: var(--soft-gray);
+      color: var(--purple-base);
       padding: 8px 20px;
       border-radius: 20px;
       font-size: 14px;
@@ -264,11 +266,8 @@
  
   <button class="my-custom-support-btn" onclick="openCustomerServiceModal()">
     <svg width="24" height="24" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- चौड़ाई कम किया हुआ चैट बॉक्स (x: 135 से 377 तक) -->
       <path d="M377 104H135C104 104 80 128 80 158V344C80 374 104 398 135 398H195L256 462L317 398H377C408 398 432 374 432 344V158C432 128 408 104 377 104Z" stroke="#222222" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- प्रश्न चिह्न (बीच में संरेखित) -->
       <path transform="translate(38, 50) scale(0.85)" d="M192 196C192 162.863 218.863 136 252 136H260C293.137 136 320 162.863 320 196C320 216.7 308.2 234.6 291 243.8C274.6 252.5 264 269.4 264 288V300" stroke="#222222" stroke-width="25" stroke-linecap="round"/>
-      <!-- डॉट -->
       <circle cx="262" cy="348" r="10" fill="#222222"/>
     </svg>
   </button>
@@ -281,7 +280,7 @@
 
       <div class="auth-bottom-panel">
         <button class="btn-login btn-facebook" onclick="socialLoginNotice('Facebook')">
-          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#ffffff"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          <svg class="social-logo-svg" viewBox="0 0 24 24" fill="#f2f2f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           <span>Sign in with Facebook</span>
         </button>
         <button class="btn-login btn-google" onclick="socialLoginNotice('Google')">
@@ -299,22 +298,22 @@
 
     <!-- More Options Modal -->
     <div id="moreOptionsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:12000; align-items:flex-end; justify-content:center;">
-      <div class="options-sheet" style="width:100%; max-width:480px; background:#fff; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
+      <div class="options-sheet" style="width:100%; max-width:480px; background:#f2f2f2; border-top-left-radius:28px; border-top-right-radius:28px; padding:35px 20px 25px; display:flex; flex-direction:column; gap:15px;">
         
         <div style="position:relative; width:100%; overflow: visible; margin-top: 10px;">
-          <div style="position:absolute; top:-10px; right:-8px; z-index:10; background:#ff4081; color:#fff; font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #ffffff; box-shadow:0 1px 4px rgba(0,0,0,0.2);">Last login</div>
+          <div style="position:absolute; top:-10px; right:-8px; z-index:10; background:#ff4081; color:#f2f2f2; font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; border: 1.2px solid #f2f2f2; box-shadow:0 1px 4px rgba(0,0,0,0.2);">Last login</div>
           
-          <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#00d26a; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
+          <button class="btn-sheet-phone" onclick="selectPhoneOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#00d26a; color:#f2f2f2; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
             <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
-              <svg viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#f2f2f2"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
             </span>
             <span style="flex:1; text-align:center; padding-right:30px;">Sign in with Phone</span>
           </button>
         </div>
         
-        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#ffa726; color:#fff; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
+        <button class="btn-sheet-email" onclick="selectEmailOption()" style="width:100%; height:52px; border-radius:30px; border:none; background:#ffa726; color:#f2f2f2; font-size:16px; font-weight:700; display:flex; align-items:center; position:relative; padding-left:22px; cursor:pointer;">
           <span style="display:inline-flex; align-items:center; justify-content:center; width:var(--sheet-icon-size); margin-right:var(--sheet-icon-gap);">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="#ffffff"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="#f2f2f2"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
           </span>
           <span style="flex:1; text-align:center; padding-right:30px;">Sign in with Email</span>
         </button>
@@ -325,25 +324,25 @@
 
     <!-- Customer Service Center Modal -->
     <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#fff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
+      <div style="background:#f2f2f2; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
         <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
         
         <form id="support-form">
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px;">
+          <div style="background:#e8e8e8; border-radius:14px; padding:12px 14px; margin-bottom:12px;">
             <input type="email" id="csEmailInput" name="email" oninput="validateForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333;" required>
           </div>
-          <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px; position:relative;">
+          <div style="background:#e8e8e8; border-radius:14px; padding:12px 14px; margin-bottom:14px; position:relative;">
             <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif;" required></textarea>
-            <div id="csCharCount" style="text-align:right; font-size:12px; color:#999; margin-top:4px; font-weight:600;">0/300</div>
+            <div id="csCharCount" style="text-align:right; font-size:12px; color:#888; margin-top:4px; font-weight:600;">0/300</div>
           </div>
 
           <div style="display:flex; gap:12px; justify-content:center;">
-            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
-            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; background:#8a2be2; font-weight:700; color:#fff; font-size:15px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
+            <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#e2e2e2; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
+            <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; background:#6a0dad; font-weight:700; color:#f2f2f2; font-size:15px; opacity:0.5; cursor:not-allowed;" id="csConfirmBtn" disabled>Confirm</button>
           </div>
         </form>
 
-        <div style="font-size:11px; color:#aaa; margin-top:14px;">did:da41489e5bd3b3cf</div>
+        <div style="font-size:11px; color:#999; margin-top:14px;">did:da41489e5bd3b3cf</div>
       </div>
     </div>
   </div>
