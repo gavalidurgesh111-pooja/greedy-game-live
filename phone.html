@@ -23,6 +23,20 @@
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
     }
+
+    .my-custom-back-btn {
+      position: fixed !important;
+      top: 15px !important;     
+      left: 5px !important;    
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      z-index: 999999 !important;
+      padding: 5px;
+    }
+    .my-custom-back-btn:active {
+      transform: scale(0.9);
+    }
     
     .bottom-fixed-btn-container {
       position: fixed;
@@ -71,12 +85,16 @@
 </head>
 <body>
 
-  <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
-    <div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 15px;">
-      <div class="back-btn" onclick="window.location.replace('index.html')" style="font-size:24px; cursor:pointer;">❮</div>
-    </div>
+  <button class="my-custom-back-btn" onclick="handleBackAction()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#000000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
 
-    <div style="margin-top: 40px;">
+  <!-- Phone / ID Login Screen -->
+  <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#fafafa; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
+
+    <div style="margin-top: 65px;">
       <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
       <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number or User ID (e.g. #288630)</div>
       
@@ -123,6 +141,7 @@
     </div>
   </div>
 
+  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -168,6 +187,10 @@
     let popupCallback = null;
     const MAX_OTP_LIMIT = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+
+    function handleBackAction() {
+      window.location.replace("index.html");
+    }
 
     function focusPhoneInput() {
       setTimeout(() => {
