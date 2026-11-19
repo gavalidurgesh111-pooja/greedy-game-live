@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#6a0dad">
+  <meta name="theme-color" content="#120824">
   <title>Greedy Coin - Registration and Login</title>
   <link rel="preload" as="image" href="https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp" fetchpriority="high">
   <style>
@@ -28,10 +28,11 @@
       overflow: hidden !important;
       position: fixed !important;
       inset: 0 !important;
+      background-color: #120824 !important;
     }
 
     body {
-      background: url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
+      background: #120824 url('https://raw.githubusercontent.com/gavalidurgesh111-pooja/greedy-game-live/main/bg.webp') no-repeat center center fixed !important;
       background-size: cover !important;
       font-family: 'Segoe UI', Roboto, sans-serif;
     }
@@ -352,8 +353,15 @@
     window.onload = function() {
       localStorage.clear();
       sessionStorage.clear();
+      document.documentElement.style.backgroundColor = "#120824";
+      document.body.style.backgroundColor = "#120824";
       history.replaceState({page: "auth_secure"}, "", window.location.href);
     };
+
+    window.addEventListener("pageshow", function() {
+      document.documentElement.style.backgroundColor = "#120824";
+      document.body.style.backgroundColor = "#120824";
+    });
 
     window.addEventListener('popstate', function(event) {
       history.pushState({page: "auth_secure"}, "", window.location.href);
