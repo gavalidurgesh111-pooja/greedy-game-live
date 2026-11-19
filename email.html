@@ -279,30 +279,36 @@
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
-    function getEmailOtpRecord(email) {
-      let raw = localStorage.getItem("email_otp_rec_" + email);
-      if (!raw) return { count: 0, startTime: Date.now() };
-      try {
-        let rec = JSON.parse(raw);
-        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
-          return { count: 0, startTime: Date.now() };
-        }
-        return rec;
-      } catch (e) {
-        return { count: 0, startTime: Date.now() };
+    async function checkFirebaseEmailOtpLimit(email) {
+      const ref = db.collection("otp_limits").doc(email);
+      const snap = await ref.get();
+      if (!snap.exists) {
+        return { exceeded: false, count: 0, startTime: Date.now() };
       }
+      const data = snap.data() || {};
+      const startTime = Number(data.startTime || 0);
+      if (!startTime || (Date.now() - startTime) >= WINDOW_24_HOURS) {
+        await ref.set({ count: 0, startTime: Date.now() }, { merge: true });
+        return { exceeded: false, count: 0, startTime: Date.now() };
+      }
+      const count = Number(data.count || 0);
+      return { exceeded: count >= MAX_OTP_LIMIT, count, startTime };
     }
 
-    function hasExceededEmailOtpLimit(email) {
-      let rec = getEmailOtpRecord(email);
-      return rec.count >= MAX_OTP_LIMIT;
+    async function recordFirebaseEmailOtpUsage(email) {
+      const ref = db.collection("otp_limits").doc(email);
+      const status = await checkFirebaseEmailOtpLimit(email);
+      const nextCount = status.count + 1;
+      await ref.set({
+        identifier: email,
+        count: nextCount,
+        startTime: status.startTime || Date.now(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
     }
 
-    function recordEmailOtpUsage(email) {
-      let rec = getEmailOtpRecord(email);
-      rec.count = Number(rec.count || 0) + 1;
-      if (!rec.startTime) rec.startTime = Date.now();
-      localStorage.setItem("email_otp_rec_" + email, JSON.stringify(rec));
+    async function clearFirebaseEmailOtpUsage(email) {
+      await db.collection("otp_limits").doc(email).delete().catch(() => {});
     }
 
     function showBottomLimitPopup() {
@@ -324,19 +330,20 @@
       popupCallback = callback;
     }
 
-    function showOtpPopupModal(email) {
-      if (hasExceededEmailOtpLimit(email)) {
+    async function showOtpPopupModal(email) {
+      const status = await checkFirebaseEmailOtpLimit(email);
+      if (status.exceeded) {
         showBottomLimitPopup();
         return;
       }
 
-      recordEmailOtpUsage(email);
+      await recordFirebaseEmailOtpUsage(email);
       activeOtpEmail = email;
 
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
         <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
-        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
+        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP (Demo: 1234)</p>
         <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
         <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
         <div style="margin-top:10px;">
@@ -364,17 +371,18 @@
       }
     }
 
-    function resendPopupOtp() {
+    async function resendPopupOtp() {
       let email = activeOtpEmail;
       if (!email) return;
 
-      if (hasExceededEmailOtpLimit(email)) {
+      const status = await checkFirebaseEmailOtpLimit(email);
+      if (status.exceeded) {
         document.getElementById("customPopupModal").style.display = "none";
         showBottomLimitPopup();
         return;
       }
 
-      recordEmailOtpUsage(email);
+      await recordFirebaseEmailOtpUsage(email);
       let resendEl = document.getElementById("resendOtpText");
       if (resendEl) {
         resendEl.innerText = "verification code sent again!";
@@ -386,9 +394,10 @@
       }
     }
 
-    function verifyPopupOtp() {
+    async function verifyPopupOtp() {
       let email = activeOtpEmail;
-      if (hasExceededEmailOtpLimit(email)) {
+      const status = await checkFirebaseEmailOtpLimit(email);
+      if (status.exceeded) {
         document.getElementById("customPopupModal").style.display = "none";
         showBottomLimitPopup();
         return;
@@ -404,7 +413,7 @@
         return;
       }
 
-      localStorage.removeItem("email_otp_rec_" + email);
+      await clearFirebaseEmailOtpUsage(email);
       closeCustomPopup(false);
       window.location.replace("password.html");
     }
@@ -430,7 +439,7 @@
       window.location.replace("index.html");
     }
 
-    function handleMainAction() {
+    async function handleMainAction() {
       let email = document.getElementById("emailInput").value.trim().toLowerCase();
 
       if (!email.includes("@") || !email.includes(".")) {
@@ -438,7 +447,8 @@
         return;
       }
 
-      if (hasExceededEmailOtpLimit(email)) {
+      const status = await checkFirebaseEmailOtpLimit(email);
+      if (status.exceeded) {
         showBottomLimitPopup();
         return;
       }
@@ -447,7 +457,7 @@
       localStorage.setItem("greedy_login_source_page", "email.html");
       document.getElementById("loadingOverlay").style.display = "flex";
 
-      db.collection("users").doc(email).get().then((doc) => {
+      db.collection("users").doc(email).get().then(async (doc) => {
         document.getElementById("loadingOverlay").style.display = "none";
 
         if (doc.exists) {
@@ -455,7 +465,8 @@
           window.location.replace("password.html");
         } else {
           localStorage.setItem("greedy_is_new_user", "true");
-          if (hasExceededEmailOtpLimit(email)) {
+          const freshStatus = await checkFirebaseEmailOtpLimit(email);
+          if (freshStatus.exceeded) {
             showBottomLimitPopup();
             return;
           }
