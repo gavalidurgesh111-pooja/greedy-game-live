@@ -257,10 +257,11 @@
       popupCallback = callback;
     }
 
-    function showOtpPopupModal() {
+    function showOtpPopupModal(email) {
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
-        <p style="margin-bottom:12px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
+        <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
+        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
         <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
         <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
         <div style="margin-top:10px;">
@@ -269,7 +270,7 @@
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ddd; background:#fff; font-weight:700; cursor:pointer; color:#555;">Cancel</button>
+        <button onclick="changeEmailFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#fff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Email</button>
         <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
@@ -277,6 +278,15 @@
         let inp = document.getElementById("popupOtpInput");
         if (inp) inp.focus();
       }, 100);
+    }
+
+    function changeEmailFromOtp() {
+      document.getElementById("customPopupModal").style.display = "none";
+      popupCallback = null;
+      let emailInp = document.getElementById("emailInput");
+      if (emailInp) {
+        emailInp.focus();
+      }
     }
 
     function resendPopupOtp() {
@@ -331,6 +341,7 @@
       }
 
       localStorage.setItem("greedy_login_identifier", email);
+      localStorage.setItem("greedy_login_source_page", "email.html");
       document.getElementById("loadingOverlay").style.display = "flex";
 
       db.collection("users").doc(email).get().then((doc) => {
@@ -341,7 +352,7 @@
           window.location.replace("password.html");
         } else {
           localStorage.setItem("greedy_is_new_user", "true");
-          showOtpPopupModal();
+          showOtpPopupModal(email);
         }
       }).catch((err) => {
         document.getElementById("loadingOverlay").style.display = "none";
