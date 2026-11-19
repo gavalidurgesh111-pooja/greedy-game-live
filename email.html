@@ -292,9 +292,9 @@
       window.location.replace("index.html");
     }
 
-    function showCustomAlert(message, callback) {
+    function showCustomAlert(message, callback, titleText = "Notice") {
       window.scrollTo(0, 0);
-      document.getElementById("popupTitle").innerText = "Notice";
+      document.getElementById("popupTitle").innerText = titleText;
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
@@ -350,7 +350,11 @@
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          showCustomAlert("Registration Not available try to Google and Facebook");
+          showCustomAlert(
+            "New email registration is not available right now. Please use your phone number, Google, or Facebook.",
+            null,
+            "Registration Unavailable"
+          );
         }
       }).catch((err) => {
         isCheckingEmailUser = false;
