@@ -350,19 +350,36 @@
       popupCallback = callback;
     }
 
-    function showDemoOtpPrompt(onSuccessCallback) {
+    function showDemoOtpPrompt(fullIdentifier, onSuccessCallback) {
       let demoCode = "123456";
+      document.getElementById("popupTitle").innerText = "OTP Verification";
       document.getElementById("popupMessage").innerHTML = `
-        New account registration.<br><b>Demo OTP: ${demoCode}</b><br><br>
+        New account registration.<br>
+        Number: <b style="color:#1e3c72;">${fullIdentifier}</b><br>
+        <span style="font-size:12px; color:#666;">OTP not received? Check your number above.</span><br>
+        <b>Demo OTP: ${demoCode}</b><br><br>
         <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
+        <button onclick="changePhoneNumberFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#fff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Number</button>
         <button onclick="verifyDemoOtp('${demoCode}')" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = onSuccessCallback;
+      setTimeout(() => {
+        let otpInp = document.getElementById("demoOtpInput");
+        if (otpInp) otpInp.focus();
+      }, 100);
+    }
+
+    function changePhoneNumberFromOtp() {
+      document.getElementById("customPopupModal").style.display = "none";
+      popupCallback = null;
+      let phoneInp = document.getElementById("phoneInput");
+      if (phoneInp) {
+        phoneInp.focus();
+      }
     }
 
     function verifyDemoOtp(correctCode) {
@@ -396,11 +413,12 @@
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
       localStorage.setItem("greedy_login_identifier", fullIdentifier);
+      localStorage.setItem("greedy_login_source_page", "phone.html");
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         if (!doc.exists) {
           localStorage.setItem("greedy_is_new_user", "true");
-          showDemoOtpPrompt(function(verified) {
+          showDemoOtpPrompt(fullIdentifier, function(verified) {
             if (verified) {
               window.location.replace("password.html");
             }
