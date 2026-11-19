@@ -285,6 +285,20 @@
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
     let activeOtpEmail = "";
 
+    const COMMON_TYPO_DOMAINS = {
+      "gmial.com": "gmail.com",
+      "gamil.com": "gmail.com",
+      "gnail.com": "gmail.com",
+      "gmai.com": "gmail.com",
+      "gmail.con": "gmail.com",
+      "gmail.co": "gmail.com",
+      "yaho.com": "yahoo.com",
+      "yahoo.con": "yahoo.com",
+      "yhoo.com": "yahoo.com",
+      "hotmal.com": "hotmail.com",
+      "outlok.com": "outlook.com"
+    };
+
     function getDeviceId() {
       try {
         if (window.Android && typeof window.Android.getDeviceId === "function") {
@@ -382,6 +396,45 @@
       return String(rawVal || "").replace(/[^a-zA-Z0-9@._+-]/g, "").slice(0, 80);
     }
 
+    function getEmailValidationError(val) {
+      let email = String(val || "").trim().toLowerCase();
+      if (!email) return "Please enter your email address!";
+      if (!email.includes("@")) return "Please enter a valid email address with @.";
+
+      let parts = email.split("@");
+      if (parts.length !== 2) return "Please enter a valid email address!";
+
+      let localPart = parts[0];
+      let domainPart = parts[1];
+
+      if (!localPart || localPart.length < 2 || localPart.startsWith(".") || localPart.endsWith(".") || localPart.includes("..")) {
+        return "Please check the name part before @ in your email.";
+      }
+      if (!domainPart || !domainPart.includes(".") || domainPart.startsWith(".") || domainPart.endsWith(".") || domainPart.includes("..")) {
+        return "Please enter a valid email domain (like gmail.com).";
+      }
+
+      let domainParts = domainPart.split(".");
+      let tld = domainParts[domainParts.length - 1];
+      if (!/^[a-z]{2,10}$/.test(tld)) {
+        return "Please check the end of your email address (like .com or .in).";
+      }
+
+      if (COMMON_TYPO_DOMAINS[domainPart]) {
+        return "Did you mean " + localPart + "@" + COMMON_TYPO_DOMAINS[domainPart] + "? Please check your email.";
+      }
+
+      if (!/^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,10}$/.test(email)) {
+        return "Please enter a valid email address!";
+      }
+
+      return "";
+    }
+
+    function isValidEmail(val) {
+      return getEmailValidationError(val) === "";
+    }
+
     function applySavedIdentifierToEmailBox() {
       let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
       if (!restoreVal) return;
@@ -420,10 +473,6 @@
     function handleBackAction() {
       localStorage.removeItem("greedy_restore_identifier");
       window.location.replace("index.html");
-    }
-
-    function isValidEmail(val) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val);
     }
 
     function showBottomLimitPopup(customMsg) {
@@ -528,7 +577,7 @@
       }
 
       let btn = document.getElementById("mainActionBtn");
-      let emailVal = cleaned.trim();
+      let emailVal = cleaned.trim().toLowerCase();
       if (isValidEmail(emailVal)) {
         btn.classList.add("active");
       } else {
@@ -542,8 +591,9 @@
       window.scrollTo(0, 0);
       let email = sanitizeEmailValue(document.getElementById("emailInput").value).trim().toLowerCase();
 
-      if (!isValidEmail(email)) {
-        showCustomAlert("Please enter a valid email address!");
+      let validationError = getEmailValidationError(email);
+      if (validationError) {
+        showCustomAlert(validationError);
         return;
       }
 
