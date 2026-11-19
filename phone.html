@@ -36,40 +36,6 @@
       overflow: hidden;
     }
 
-    .phone-input-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 25px;
-    }
-
-    .country-code-box {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #f0f0f0;
-      border-radius: 32px;
-      padding: 0 15px;
-      height: 62px;
-      font-weight: 700;
-      color: #333;
-      font-size: 16px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-      flex-shrink: 0;
-    }
-
-    .phone-input-row .input-box {
-      flex: 1;
-      max-width: 245px;
-      display: flex;
-      align-items: center;
-      background: #f0f0f0;
-      border-radius: 32px;
-      padding: 0 16px;
-      height: 62px;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-    }
-
     .bottom-fixed-btn-container {
       position: fixed;
       bottom: 25px;
@@ -248,9 +214,9 @@
       <form onsubmit="event.preventDefault(); handleMainAction();">
         <div id="phoneContainer">
           <div style="font-size:13px; font-weight:700; color:#333; margin-bottom:12px; padding-left:10px;">Phone Number</div>
-          <div class="phone-input-row">
-            <div class="country-code-box">+91</div>
-            <div class="input-box">
+          <div class="phone-input-row" style="display:flex; align-items:center; gap:5px; margin-bottom:25px;">
+            <div class="country-code-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 14px; height:64px; font-weight:700; color:#333; font-size:16px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); flex-shrink:0;">+91</div>
+            <div class="input-box" style="width:235px; max-width:235px; display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:0 16px; height:64px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
               <input type="tel" id="phoneInput" maxlength="10" oninput="checkInputState()" placeholder="Enter 10-digit mobile number" style="border:none; background:transparent; outline:none; width:100%; font-size:17px; height:100%; -webkit-user-select:text; user-select:text;">
             </div>
           </div>
