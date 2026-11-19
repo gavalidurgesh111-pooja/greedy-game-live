@@ -96,11 +96,11 @@
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; min-height:100vh; box-sizing:border-box; overflow-y:auto;">
 
     <div style="margin-top: 65px;">
-      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
-      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number</div>
+      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration / log in</div>
+      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter your phone number</div>
       
       <form onsubmit="handleIndexFormSubmit(event)">
-        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px;">
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px; max-width:310px;">
           <select id="countryCodeSelect" class="country-code-select" onchange="checkNumber()" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
             <option value="+91" selected>🇮🇳 (+91) India</option>
             <option value="+1">🇺🇸 (+1) USA</option>
