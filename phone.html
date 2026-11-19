@@ -165,6 +165,34 @@
 
     history.replaceState({ page: "phone_screen" }, "");
 
+    window.addEventListener("DOMContentLoaded", function() {
+      let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
+      if (restoreVal) {
+        localStorage.removeItem("greedy_restore_identifier");
+        let inputEl = document.getElementById("phoneInput");
+        let selectEl = document.getElementById("countryCodeSelect");
+        if (restoreVal.startsWith("#")) {
+          inputEl.value = restoreVal;
+        } else if (restoreVal.startsWith("+") && selectEl) {
+          let matched = false;
+          for (let opt of selectEl.options) {
+            if (restoreVal.startsWith(opt.value)) {
+              selectEl.value = opt.value;
+              inputEl.value = restoreVal.slice(opt.value.length);
+              matched = true;
+              break;
+            }
+          }
+          if (!matched) {
+            inputEl.value = restoreVal;
+          }
+        } else {
+          inputEl.value = restoreVal;
+        }
+        checkNumber();
+      }
+    });
+
     window.addEventListener("popstate", function() {
       let bottomPopup = document.getElementById("bottomLimitPopup");
       if (bottomPopup && bottomPopup.style.display === "flex") {
@@ -189,6 +217,7 @@
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
 
     function handleBackAction() {
+      localStorage.removeItem("greedy_restore_identifier");
       window.location.replace("index.html");
     }
 
@@ -387,21 +416,23 @@
       }
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
-      syncOtpLimitFromFirebase(fullIdentifier);
-
-      localStorage.setItem("greedy_login_identifier", fullIdentifier);
-      localStorage.setItem("greedy_login_source_page", "phone.html");
+      localStorage.removeItem("greedy_restore_identifier");
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         if (doc.exists) {
+          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_source_page", "phone.html");
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          localStorage.setItem("greedy_is_new_user", "true");
+          syncOtpLimitFromFirebase(fullIdentifier);
           if (getCachedOtpCount(fullIdentifier) >= MAX_OTP_LIMIT) {
             showBottomLimitPopup();
             return;
           }
+          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_source_page", "phone.html");
+          localStorage.setItem("greedy_is_new_user", "true");
           openOtpModalNow(fullIdentifier, function(verified) {
             if (verified) {
               window.location.replace("password.html");
