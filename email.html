@@ -279,6 +279,18 @@
 
     history.replaceState({ page: "email_screen" }, "");
 
+    window.addEventListener("DOMContentLoaded", function() {
+      let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
+      if (restoreVal) {
+        localStorage.removeItem("greedy_restore_identifier");
+        let emailEl = document.getElementById("emailInput");
+        if (emailEl) {
+          emailEl.value = restoreVal;
+          checkInputState();
+        }
+      }
+    });
+
     window.addEventListener("popstate", function() {
       window.scrollTo(0, 0);
       let bottomPopup = document.getElementById("bottomLimitPopup");
@@ -303,6 +315,7 @@
     let activeOtpEmail = "";
 
     function handleBackAction() {
+      localStorage.removeItem("greedy_restore_identifier");
       window.location.replace("index.html");
     }
 
@@ -508,21 +521,23 @@
         return;
       }
 
-      syncEmailOtpLimitFromFirebase(email);
-
-      localStorage.setItem("greedy_login_identifier", email);
-      localStorage.setItem("greedy_login_source_page", "email.html");
+      localStorage.removeItem("greedy_restore_identifier");
 
       db.collection("users").doc(email).get().then((doc) => {
         if (doc.exists) {
+          localStorage.setItem("greedy_login_identifier", email);
+          localStorage.setItem("greedy_login_source_page", "email.html");
           localStorage.setItem("greedy_is_new_user", "false");
           window.location.replace("password.html");
         } else {
-          localStorage.setItem("greedy_is_new_user", "true");
+          syncEmailOtpLimitFromFirebase(email);
           if (getCachedEmailOtpCount(email) >= MAX_OTP_LIMIT) {
             showBottomLimitPopup();
             return;
           }
+          localStorage.setItem("greedy_login_identifier", email);
+          localStorage.setItem("greedy_login_source_page", "email.html");
+          localStorage.setItem("greedy_is_new_user", "true");
           openOtpModalNow(email);
         }
       }).catch((err) => {
