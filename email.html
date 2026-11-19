@@ -172,26 +172,6 @@
     .my-custom-back-btn:active {
       transform: scale(0.9);
     }
-
-    #bottomLimitPopup {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 2000;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .bottom-limit-sheet {
-      width: 100%;
-      max-width: 480px;
-      background: #ffffff;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      padding: 24px 20px 28px;
-      text-align: center;
-      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
-    }
   </style>
 </head>
 <body>
@@ -205,7 +185,7 @@
   <div class="page-wrapper">
     <div style="margin-top: 65px;">
       <div class="step-title" id="pageTitle" style="font-size:25px; font-weight:600; color:#000; letter-spacing:0.5px;">Sign in with Email</div>
-      <div style="font-size:15px; color:#666; margin-top:8px; margin-bottom:35px;" id="pageSub">Enter your email address to continue</div>
+      <div style="font-size:15px; color:#666; margin-top:8px; margin-bottom:35px;" id="pageSub">Log in with your email address</div>
 
       <form onsubmit="event.preventDefault(); handleMainAction();">
         <div id="emailContainer" style="margin-bottom:25px;">
@@ -250,15 +230,6 @@
     </div>
   </div>
 
-  <!-- नीचे से आने वाला लिमिट पॉप-अप -->
-  <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
-    <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
-      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Account Limit Reached</h3>
-      <p id="limitPopupText" style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">You have reached the limit of 5 emails on this device. No more new accounts can be created from here for 24 hours.</p>
-      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#FF631C; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
-    </div>
-  </div>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -281,158 +252,24 @@
     history.replaceState({ page: "email_screen" }, "");
 
     let isCheckingEmailUser = false;
-    const MAX_NEW_ACCOUNTS_PER_DEVICE = 5;
-    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
-    let activeOtpEmail = "";
-
-    const COMMON_TYPO_DOMAINS = {
-      "gmial.com": "gmail.com",
-      "gamil.com": "gmail.com",
-      "gnail.com": "gmail.com",
-      "gmai.com": "gmail.com",
-      "gmail.con": "gmail.com",
-      "gmail.co": "gmail.com",
-      "yaho.com": "yahoo.com",
-      "yahoo.con": "yahoo.com",
-      "yhoo.com": "yahoo.com",
-      "hotmal.com": "hotmail.com",
-      "outlok.com": "outlook.com"
-    };
-
-    function getDeviceId() {
-      try {
-        if (window.Android && typeof window.Android.getDeviceId === "function") {
-          let nativeId = String(window.Android.getDeviceId() || "").trim();
-          if (nativeId) return "dev_" + nativeId;
-        }
-        if (window.AndroidDeviceId) {
-          let injectedId = String(window.AndroidDeviceId || "").trim();
-          if (injectedId) return "dev_" + injectedId;
-        }
-      } catch (e) {}
-
-      let stored = localStorage.getItem("greedy_device_id");
-      if (stored) return stored;
-
-      let rawSig = [
-        navigator.userAgent || "",
-        navigator.language || "",
-        screen.width || 0,
-        screen.height || 0,
-        screen.colorDepth || 0,
-        (new Date().getTimezoneOffset())
-      ].join("|");
-
-      let hash = 0;
-      for (let i = 0; i < rawSig.length; i++) {
-        hash = ((hash << 5) - hash) + rawSig.charCodeAt(i);
-        hash |= 0;
-      }
-      let generated = "dev_" + Math.abs(hash) + "_" + Math.random().toString(36).slice(2, 8);
-      localStorage.setItem("greedy_device_id", generated);
-      return generated;
-    }
-
-    const DEVICE_ID = getDeviceId();
-
-    function getDeviceEmailRecord() {
-      let key = "greedy_dev_emails_" + DEVICE_ID;
-      try {
-        let raw = localStorage.getItem(key);
-        if (!raw) return { startTime: Date.now(), emails: [] };
-        let parsed = JSON.parse(raw);
-        if (!parsed.startTime || (Date.now() - Number(parsed.startTime)) >= WINDOW_24_HOURS) {
-          let fresh = { startTime: Date.now(), emails: [] };
-          localStorage.setItem(key, JSON.stringify(fresh));
-          return fresh;
-        }
-        return {
-          startTime: Number(parsed.startTime),
-          emails: Array.isArray(parsed.emails) ? parsed.emails : []
-        };
-      } catch (e) {
-        return { startTime: Date.now(), emails: [] };
-      }
-    }
-
-    function sendDeviceEmailAlertToFirebase(rec, blockedAttemptEmail) {
-      db.collection("device_alerts").doc(DEVICE_ID).set({
-        deviceId: DEVICE_ID,
-        emailCount24h: rec.emails.length,
-        emailsUsed24h: rec.emails,
-        lastBlockedEmail: blockedAttemptEmail || "",
-        emailLimitReached: rec.emails.length >= MAX_NEW_ACCOUNTS_PER_DEVICE,
-        alertMessage: "Multiple email registrations/OTP attempts from single device",
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true }).catch(() => {});
-    }
-
-    function canSendOtpToEmail(email) {
-      let rec = getDeviceEmailRecord();
-      if (rec.emails.includes(email)) {
-        return true;
-      }
-      if (rec.emails.length >= MAX_NEW_ACCOUNTS_PER_DEVICE) {
-        sendDeviceEmailAlertToFirebase(rec, email);
-        return false;
-      }
-      return true;
-    }
-
-    function registerEmailAttemptOnDevice(email) {
-      let key = "greedy_dev_emails_" + DEVICE_ID;
-      let rec = getDeviceEmailRecord();
-      if (!rec.emails.includes(email)) {
-        rec.emails.push(email);
-      }
-      localStorage.setItem(key, JSON.stringify(rec));
-
-      if (rec.emails.length >= 3) {
-        sendDeviceEmailAlertToFirebase(rec, "");
-      }
-    }
+    let popupCallback = null;
 
     function sanitizeEmailValue(rawVal) {
       return String(rawVal || "").replace(/[^a-zA-Z0-9@._+-]/g, "").slice(0, 80);
     }
 
-    function getEmailValidationError(val) {
-      let email = String(val || "").trim().toLowerCase();
-      if (!email) return "Please enter your email address!";
-      if (!email.includes("@")) return "Please enter a valid email address with @.";
-
-      let parts = email.split("@");
-      if (parts.length !== 2) return "Please enter a valid email address!";
-
-      let localPart = parts[0];
-      let domainPart = parts[1];
-
-      if (!localPart || localPart.length < 2 || localPart.startsWith(".") || localPart.endsWith(".") || localPart.includes("..")) {
-        return "Please check the name part before @ in your email.";
-      }
-      if (!domainPart || !domainPart.includes(".") || domainPart.startsWith(".") || domainPart.endsWith(".") || domainPart.includes("..")) {
-        return "Please enter a valid email domain (like gmail.com).";
-      }
-
-      let domainParts = domainPart.split(".");
-      let tld = domainParts[domainParts.length - 1];
-      if (!/^[a-z]{2,10}$/.test(tld)) {
-        return "Please check the end of your email address (like .com or .in).";
-      }
-
-      if (COMMON_TYPO_DOMAINS[domainPart]) {
-        return "Did you mean " + localPart + "@" + COMMON_TYPO_DOMAINS[domainPart] + "? Please check your email.";
-      }
-
-      if (!/^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,10}$/.test(email)) {
-        return "Please enter a valid email address!";
-      }
-
-      return "";
+    function isValidEmail(val) {
+      return /^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,10}$/.test(String(val || "").trim().toLowerCase());
     }
 
-    function isValidEmail(val) {
-      return getEmailValidationError(val) === "";
+    function getVerifiedSocialEmails() {
+      try {
+        let raw = localStorage.getItem("greedy_verified_social_emails");
+        let list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list.map(e => String(e).toLowerCase()) : [];
+      } catch (e) {
+        return [];
+      }
     }
 
     function applySavedIdentifierToEmailBox() {
@@ -452,42 +289,17 @@
 
     window.addEventListener("popstate", function() {
       window.scrollTo(0, 0);
-      let bottomPopup = document.getElementById("bottomLimitPopup");
-      if (bottomPopup && bottomPopup.style.display === "flex") {
-        history.pushState({ page: "email_screen" }, "");
-        bottomPopup.style.display = "none";
-        return;
-      }
-
       let customModal = document.getElementById("customPopupModal");
       if (customModal && customModal.style.display === "flex") {
         history.pushState({ page: "email_screen" }, "");
         customModal.style.display = "none";
         popupCallback = null;
-        return;
       }
     });
-
-    let popupCallback = null;
 
     function handleBackAction() {
       localStorage.removeItem("greedy_restore_identifier");
       window.location.replace("index.html");
-    }
-
-    function showBottomLimitPopup(customMsg) {
-      window.scrollTo(0, 0);
-      let textEl = document.getElementById("limitPopupText");
-      if (textEl && customMsg) {
-        textEl.innerText = customMsg;
-      }
-      history.pushState({ popup: "limit" }, "");
-      document.getElementById("bottomLimitPopup").style.display = "flex";
-    }
-
-    function closeBottomLimitPopup() {
-      document.getElementById("bottomLimitPopup").style.display = "none";
-      window.scrollTo(0, 0);
     }
 
     function showCustomAlert(message, callback) {
@@ -500,66 +312,6 @@
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
-    }
-
-    function openOtpModalNow(email) {
-      window.scrollTo(0, 0);
-      registerEmailAttemptOnDevice(email);
-      activeOtpEmail = email;
-
-      history.pushState({ popup: "otp" }, "");
-      document.getElementById("popupTitle").innerText = "Verification Code";
-      document.getElementById("popupMessage").innerHTML = `
-        <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
-        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP (Demo: 1234)</p>
-        <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
-        <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
-        <div style="margin-top:10px;">
-          <span id="resendOtpText" onclick="resendPopupOtp()" style="color:#8a2be2; font-size:12px; text-transform:lowercase; cursor:pointer; font-weight:500;">send verification code again</span>
-        </div>
-      `;
-      let btnContainer = document.getElementById("popupButtons");
-      btnContainer.innerHTML = `
-        <button onclick="changeEmailFromOtp()" style="flex:1; padding:12px; border-radius:12px; border:1px solid #8a2be2; background:#ffffff; font-weight:700; cursor:pointer; color:#8a2be2;">Change Email</button>
-        <button onclick="verifyPopupOtp()" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#ffffff;">Verify</button>
-      `;
-      document.getElementById("customPopupModal").style.display = "flex";
-    }
-
-    function changeEmailFromOtp() {
-      document.getElementById("customPopupModal").style.display = "none";
-      popupCallback = null;
-      window.scrollTo(0, 0);
-    }
-
-    function resendPopupOtp() {
-      let email = activeOtpEmail;
-      if (!email) return;
-
-      let resendEl = document.getElementById("resendOtpText");
-      if (resendEl) {
-        resendEl.innerText = "verification code sent again!";
-        setTimeout(() => {
-          if (document.getElementById("resendOtpText")) {
-            document.getElementById("resendOtpText").innerText = "send verification code again";
-          }
-        }, 2000);
-      }
-    }
-
-    function verifyPopupOtp() {
-      let otp = document.getElementById("popupOtpInput").value.trim();
-      if (otp !== "1234") {
-        let errEl = document.getElementById("popupOtpError");
-        if (errEl) {
-          errEl.innerText = "Invalid OTP! (Demo OTP is 1234)";
-          errEl.style.display = "block";
-        }
-        return;
-      }
-
-      closeCustomPopup(false);
-      window.location.replace("password.html");
     }
 
     function closeCustomPopup(result) {
@@ -591,9 +343,8 @@
       window.scrollTo(0, 0);
       let email = sanitizeEmailValue(document.getElementById("emailInput").value).trim().toLowerCase();
 
-      let validationError = getEmailValidationError(email);
-      if (validationError) {
-        showCustomAlert(validationError);
+      if (!isValidEmail(email)) {
+        showCustomAlert("Please enter a valid email address!");
         return;
       }
 
@@ -602,20 +353,15 @@
 
       db.collection("users").doc(email).get().then((doc) => {
         isCheckingEmailUser = false;
-        if (doc.exists) {
+        let verifiedSocialEmails = getVerifiedSocialEmails();
+
+        if (doc.exists || verifiedSocialEmails.includes(email)) {
           localStorage.setItem("greedy_login_identifier", email);
           localStorage.setItem("greedy_login_source_page", "email.html");
-          localStorage.setItem("greedy_is_new_user", "false");
+          localStorage.setItem("greedy_is_new_user", doc.exists ? "false" : "true");
           window.location.replace("password.html");
         } else {
-          if (!canSendOtpToEmail(email)) {
-            showBottomLimitPopup("5 emails limit reached on this device. You cannot create more new accounts from this device right now.");
-            return;
-          }
-          localStorage.setItem("greedy_login_identifier", email);
-          localStorage.setItem("greedy_login_source_page", "email.html");
-          localStorage.setItem("greedy_is_new_user", "true");
-          openOtpModalNow(email);
+          showCustomAlert("Please sign in with Google or Facebook first so your email is verified.");
         }
       }).catch((err) => {
         isCheckingEmailUser = false;
