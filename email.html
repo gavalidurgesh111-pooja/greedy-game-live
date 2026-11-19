@@ -243,6 +243,9 @@
     const db = firebase.firestore();
 
     let popupCallback = null;
+    const MAX_OTP_ATTEMPTS = 3;
+    const MAX_RESEND_COUNT = 3;
+    let activeOtpEmail = "";
 
     document.addEventListener('contextmenu', function(e) { e.preventDefault(); }, false);
 
@@ -257,11 +260,32 @@
       popupCallback = callback;
     }
 
+    function isEmailOtpLocked(email) {
+      let lockUntil = Number(localStorage.getItem("email_otp_lock_" + email) || "0");
+      if (Date.now() < lockUntil) {
+        return Math.ceil((lockUntil - Date.now()) / 1000);
+      }
+      return 0;
+    }
+
     function showOtpPopupModal(email) {
+      let lockSec = isEmailOtpLocked(email);
+      if (lockSec > 0) {
+        showCustomAlert("Too many OTP attempts! Try again after " + lockSec + " seconds.");
+        return;
+      }
+
+      activeOtpEmail = email;
+      let attempts = Number(localStorage.getItem("email_otp_attempts_" + email) || "0");
+      let resends = Number(localStorage.getItem("email_otp_resends_" + email) || "0");
+      let leftAttempts = MAX_OTP_ATTEMPTS - attempts;
+      let leftResends = MAX_RESEND_COUNT - resends;
+
       document.getElementById("popupTitle").innerText = "Verification Code";
       document.getElementById("popupMessage").innerHTML = `
         <p style="margin-bottom:6px;">Email: <b style="color:#1e3c72;">${email}</b></p>
-        <p style="margin-bottom:12px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
+        <p style="margin-bottom:10px; font-size:13px;">Enter 4-digit OTP sent to your email (Demo: 1234)</p>
+        <p style="margin-bottom:10px; font-size:12px; color:#666;">Attempts left: <b>${leftAttempts}</b> | Resends left: <b>${leftResends}</b></p>
         <input type="text" id="popupOtpInput" maxlength="4" placeholder="1234" style="width:100%; height:48px; border-radius:12px; border:1px solid #ddd; background:#f5f5f5; text-align:center; font-size:20px; font-weight:bold; letter-spacing:8px; outline:none; -webkit-user-select:text; user-select:text;">
         <div id="popupOtpError" style="color:#e53935; font-size:12px; margin-top:8px; display:none;">Invalid OTP! (Demo OTP is 1234)</div>
         <div style="margin-top:10px;">
@@ -290,9 +314,28 @@
     }
 
     function resendPopupOtp() {
+      let email = activeOtpEmail;
+      let resends = Number(localStorage.getItem("email_otp_resends_" + email) || "0");
+      let lastResend = Number(localStorage.getItem("email_otp_last_resend_" + email) || "0");
       let resendEl = document.getElementById("resendOtpText");
+
+      if (resends >= MAX_RESEND_COUNT) {
+        if (resendEl) resendEl.innerText = "resend limit reached (max 3)";
+        return;
+      }
+
+      if (Date.now() - lastResend < 30000) {
+        let waitSec = Math.ceil((30000 - (Date.now() - lastResend)) / 1000);
+        if (resendEl) resendEl.innerText = "wait " + waitSec + "s before resending";
+        return;
+      }
+
+      resends += 1;
+      localStorage.setItem("email_otp_resends_" + email, String(resends));
+      localStorage.setItem("email_otp_last_resend_" + email, String(Date.now()));
+
       if (resendEl) {
-        resendEl.innerText = "verification code sent again!";
+        resendEl.innerText = "verification code sent again! (" + (MAX_RESEND_COUNT - resends) + " left)";
         setTimeout(() => {
           if (document.getElementById("resendOtpText")) {
             document.getElementById("resendOtpText").innerText = "send verification code again";
@@ -302,11 +345,31 @@
     }
 
     function verifyPopupOtp() {
+      let email = activeOtpEmail;
       let otp = document.getElementById("popupOtpInput").value.trim();
       if (otp !== "1234") {
-        document.getElementById("popupOtpError").style.display = "block";
+        let attempts = Number(localStorage.getItem("email_otp_attempts_" + email) || "0") + 1;
+        localStorage.setItem("email_otp_attempts_" + email, String(attempts));
+
+        if (attempts >= MAX_OTP_ATTEMPTS) {
+          localStorage.setItem("email_otp_lock_" + email, String(Date.now() + 60 * 1000));
+          localStorage.setItem("email_otp_attempts_" + email, "0");
+          closeCustomPopup(false);
+          showCustomAlert("OTP limit reached (3 wrong attempts)! Blocked for 60 seconds.");
+          return;
+        }
+
+        let errEl = document.getElementById("popupOtpError");
+        if (errEl) {
+          errEl.innerText = "Invalid OTP! (" + (MAX_OTP_ATTEMPTS - attempts) + " attempt(s) left)";
+          errEl.style.display = "block";
+        }
         return;
       }
+
+      localStorage.removeItem("email_otp_attempts_" + email);
+      localStorage.removeItem("email_otp_lock_" + email);
+      localStorage.removeItem("email_otp_resends_" + email);
       closeCustomPopup(false);
       window.location.replace("password.html");
     }
@@ -337,6 +400,12 @@
 
       if (!email.includes("@") || !email.includes(".")) {
         showCustomAlert("Please enter a valid email address!");
+        return;
+      }
+
+      let lockSec = isEmailOtpLocked(email);
+      if (lockSec > 0) {
+        showCustomAlert("Too many OTP attempts! Try again after " + lockSec + " seconds.");
         return;
       }
 
