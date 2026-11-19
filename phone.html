@@ -47,6 +47,27 @@
       background: #00cd00 !important;
       box-shadow: 0 0 15px #00cd00;
     }
+
+    /* नीचे से आने वाला 24 घंटे वाला पॉप-अप */
+    #bottomLimitPopup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2000;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .bottom-limit-sheet {
+      width: 100%;
+      max-width: 480px;
+      background: #ffffff;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 24px 20px 28px;
+      text-align: center;
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
+    }
   </style>
 </head>
 <body>
@@ -279,6 +300,15 @@
     </div>
   </div>
 
+  <!-- नीचे से आने वाला 24 घंटे ट्राई पॉप-अप -->
+  <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
+    <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
+      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Please Try Again</h3>
+      <p style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">Please try again after 24 hours.</p>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:14px; border:none; background:#8a2be2; color:#fff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
+    </div>
+  </div>
+
   <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -302,8 +332,42 @@
     }, false);
 
     let popupCallback = null;
-    const MAX_OTP_ATTEMPTS = 3;
-    let otpAttempts = 0;
+    const MAX_OTP_LIMIT = 5;
+    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+
+    function getOtpRecord(identifier) {
+      let raw = localStorage.getItem("otp_rec_" + identifier);
+      if (!raw) return { count: 0, startTime: Date.now() };
+      try {
+        let rec = JSON.parse(raw);
+        if (!rec.startTime || (Date.now() - rec.startTime) >= WINDOW_24_HOURS) {
+          return { count: 0, startTime: Date.now() };
+        }
+        return rec;
+      } catch (e) {
+        return { count: 0, startTime: Date.now() };
+      }
+    }
+
+    function hasExceededOtpLimit(identifier) {
+      let rec = getOtpRecord(identifier);
+      return rec.count >= MAX_OTP_LIMIT;
+    }
+
+    function recordOtpUsage(identifier) {
+      let rec = getOtpRecord(identifier);
+      rec.count = Number(rec.count || 0) + 1;
+      if (!rec.startTime) rec.startTime = Date.now();
+      localStorage.setItem("otp_rec_" + identifier, JSON.stringify(rec));
+    }
+
+    function showBottomLimitPopup() {
+      document.getElementById("bottomLimitPopup").style.display = "flex";
+    }
+
+    function closeBottomLimitPopup() {
+      document.getElementById("bottomLimitPopup").style.display = "none";
+    }
 
     function checkNumber() {
       let identifier = document.getElementById("phoneInput").value.trim();
@@ -331,17 +395,6 @@
       }
     }
 
-    function showCustomConfirm(message, callback) {
-      document.getElementById("popupMessage").innerText = message;
-      let btnContainer = document.getElementById("popupButtons");
-      btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(false)" style="flex:1; padding:12px; border-radius:12px; border:1px solid #ccc; background:#f1f1f1; font-weight:700; cursor:pointer; color:#333;">Cancel</button>
-        <button onclick="closeCustomPopup(true)" style="flex:1; padding:12px; border-radius:12px; border:none; background:#8a2be2; font-weight:700; cursor:pointer; color:#fff;">OK</button>
-      `;
-      document.getElementById("customPopupModal").style.display = "flex";
-      popupCallback = callback;
-    }
-
     function showCustomAlert(message, callback) {
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
@@ -352,24 +405,13 @@
       popupCallback = callback;
     }
 
-    function isOtpLocked(identifier) {
-      let lockUntil = Number(localStorage.getItem("otp_lock_until_" + identifier) || "0");
-      if (Date.now() < lockUntil) {
-        let remainingSec = Math.ceil((lockUntil - Date.now()) / 1000);
-        return remainingSec;
-      }
-      return 0;
-    }
-
     function showDemoOtpPrompt(fullIdentifier, onSuccessCallback) {
-      let lockSec = isOtpLocked(fullIdentifier);
-      if (lockSec > 0) {
-        showCustomAlert("Too many wrong OTP attempts! Try again after " + lockSec + " seconds.");
+      if (hasExceededOtpLimit(fullIdentifier)) {
+        showBottomLimitPopup();
         return;
       }
 
-      otpAttempts = Number(localStorage.getItem("otp_attempts_" + fullIdentifier) || "0");
-      let remainingAttempts = MAX_OTP_ATTEMPTS - otpAttempts;
+      recordOtpUsage(fullIdentifier);
       let demoCode = "123456";
 
       document.getElementById("popupTitle").innerText = "OTP Verification";
@@ -377,7 +419,7 @@
         New account registration.<br>
         Number: <b style="color:#1e3c72;">${fullIdentifier}</b><br>
         <span style="font-size:12px; color:#666;">OTP not received? Check your number above.</span><br>
-        <b>Demo OTP: ${demoCode}</b> (Attempts left: ${remainingAttempts})<br><br>
+        <b>Demo OTP: ${demoCode}</b><br><br>
         <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
@@ -403,28 +445,27 @@
     }
 
     function verifyDemoOtp(correctCode, fullIdentifier) {
+      if (hasExceededOtpLimit(fullIdentifier)) {
+        document.getElementById("customPopupModal").style.display = "none";
+        popupCallback = null;
+        showBottomLimitPopup();
+        return;
+      }
+
       let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
       if (enteredOtp === correctCode) {
-        localStorage.removeItem("otp_attempts_" + fullIdentifier);
-        localStorage.removeItem("otp_lock_until_" + fullIdentifier);
+        localStorage.removeItem("otp_rec_" + fullIdentifier);
         closeCustomPopup(true);
       } else {
-        otpAttempts = Number(localStorage.getItem("otp_attempts_" + fullIdentifier) || "0") + 1;
-        localStorage.setItem("otp_attempts_" + fullIdentifier, String(otpAttempts));
-
-        if (otpAttempts >= MAX_OTP_ATTEMPTS) {
-          let lockTime = Date.now() + 60 * 1000; // 60 सेकंड का लॉक
-          localStorage.setItem("otp_lock_until_" + fullIdentifier, String(lockTime));
-          localStorage.setItem("otp_attempts_" + fullIdentifier, "0");
-          document.getElementById("customPopupModal").style.display = "none";
-          popupCallback = null;
-          showCustomAlert("OTP limit reached (3 wrong attempts)! Blocked for 60 seconds.");
-        } else {
-          let left = MAX_OTP_ATTEMPTS - otpAttempts;
-          showCustomAlert("Invalid Demo OTP! (" + left + " attempt(s) left)", function() {
-            showDemoOtpPrompt(fullIdentifier, popupCallback);
-          });
-        }
+        showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
+          if (hasExceededOtpLimit(fullIdentifier)) {
+            showBottomLimitPopup();
+          } else {
+            let otpInp = document.getElementById("demoOtpInput");
+            document.getElementById("customPopupModal").style.display = "flex";
+            if (otpInp) otpInp.focus();
+          }
+        });
       }
     }
 
@@ -449,9 +490,8 @@
 
       let fullIdentifier = identifier.startsWith("#") ? identifier : (countryCode + identifier);
 
-      let lockSec = isOtpLocked(fullIdentifier);
-      if (lockSec > 0) {
-        showCustomAlert("Too many OTP attempts! Please wait " + lockSec + " seconds.");
+      if (hasExceededOtpLimit(fullIdentifier)) {
+        showBottomLimitPopup();
         return;
       }
 
@@ -461,6 +501,10 @@
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         if (!doc.exists) {
           localStorage.setItem("greedy_is_new_user", "true");
+          if (hasExceededOtpLimit(fullIdentifier)) {
+            showBottomLimitPopup();
+            return;
+          }
           showDemoOtpPrompt(fullIdentifier, function(verified) {
             if (verified) {
               window.location.replace("password.html");
