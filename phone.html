@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#6a0dad">
+  <meta name="theme-color" content="#120824">
   <title>Greedy Coin - Phone & ID Login</title>
   <style>
     * {
@@ -16,12 +16,23 @@
       padding: 0;
     }
 
-    body {
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #111 url('https://res.cloudinary.com/wolpzhms/image/upload/bg.webp') no-repeat center center fixed;
+    html, body {
+      background-color: #120824 !important;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), #120824 url('https://res.cloudinary.com/wolpzhms/image/upload/bg.webp') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
+      min-height: 100vh;
       font-family: 'Segoe UI', sans-serif;
+    }
+
+    .exit-dark-flash-shield {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #120824;
+      z-index: 9999999;
+      pointer-events: none;
     }
 
     .my-custom-back-btn {
@@ -85,6 +96,8 @@
 </head>
 <body>
 
+  <div id="exitDarkFlashShield" class="exit-dark-flash-shield"></div>
+
   <button class="my-custom-back-btn" onclick="handleBackAction()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#000000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="15 18 9 12 15 6"></polyline>
@@ -141,7 +154,6 @@
     </div>
   </div>
 
-  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -184,11 +196,24 @@
       }
     });
 
+    window.addEventListener("pageshow", function() {
+      let shield = document.getElementById("exitDarkFlashShield");
+      if (shield) {
+        shield.style.display = "none";
+      }
+    });
+
     let popupCallback = null;
     const MAX_OTP_LIMIT = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
 
     function handleBackAction() {
+      let shield = document.getElementById("exitDarkFlashShield");
+      if (shield) {
+        shield.style.display = "block";
+      }
+      document.documentElement.style.backgroundColor = "#120824";
+      document.body.style.backgroundColor = "#120824";
       window.location.replace("index.html");
     }
 
