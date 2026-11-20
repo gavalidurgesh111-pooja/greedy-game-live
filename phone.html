@@ -6,19 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <title>Greedy Coin - Phone Login</title>
   <style>
-    /* ===== बॉक्स साइज़ कंट्रोल (यहाँ से चौड़ाई और मोटाई बदलें) ===== */
-    :root {
-      --box-width: 100%;   /* चौड़ाई: कम करनी हो तो 290px या 310px लिखें */
-      --box-height: 50px;  /* मोटाई/ऊँचाई: बढ़ानी हो तो 56px या 60px लिखें */
-    }
-    .input-box {
-      width: 100%;
-      max-width: var(--box-width);
-      height: var(--box-height);
-    }
-    /* ============================================================ */
-
-    * {
+   *{
       -webkit-user-select: none;
       user-select: none;
       -webkit-touch-callout: none;
@@ -62,7 +50,14 @@
       box-sizing: border-box;
       z-index: 100;
     }
-
+    .input-box {
+      box-width: 100%; 
+      box-height: 50px; 
+      width: 100%;
+      max-width: var(--box-width);
+      height: var(--box-height);
+    }
+  
     #submitBtn {
       opacity: 0.55;
       pointer-events: none;
