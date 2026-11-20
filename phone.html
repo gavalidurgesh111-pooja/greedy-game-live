@@ -52,26 +52,6 @@
     .my-custom-back-btn:active {
       transform: scale(0.9);
     }
-
-    .my-custom-support-btn {
-      position: fixed !important;
-      top: 18px !important;
-      right: 18px !important;
-      width: 33px !important;
-      height: 33px !important;
-      background: rgba(255, 255, 255, 0.95) !important;
-      border-radius: 50% !important;
-      border: 1px solid #eeeeee !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      cursor: pointer !important;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.18) !important;
-      z-index: 999999 !important;
-    }
-    .my-custom-support-btn:active {
-      transform: scale(0.92);
-    }
     
     .bottom-fixed-btn-container {
       position: fixed;
@@ -98,7 +78,6 @@
       box-shadow: 0 0 15px rgba(255, 99, 28, 0.55);
     }
 
-    /* OTP & Popup Buttons Theme Styling */
     .otp-change-btn {
       flex: 1;
       padding: 13px 12px;
@@ -134,45 +113,6 @@
       background: #FFA375;
     }
 
-    #customerServiceCard {
-      transition: transform 0.16s ease-out;
-    }
-
-    #csConfirmBtn {
-      background: #FFA375 !important;
-      color: #ffffff !important;
-      opacity: 0.6;
-      cursor: not-allowed;
-      transition: background-color 0.2s, opacity 0.2s;
-    }
-    #csConfirmBtn.active {
-      background: #FF631C !important;
-      opacity: 1;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(255, 99, 28, 0.4);
-    }
-    #csConfirmBtn.active:active {
-      background: #FFA375 !important;
-    }
-
-    #floatingToast {
-      position: fixed;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ffffff;
-      color: #1e3c72;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 800;
-      z-index: 9999999;
-      display: none;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
-      text-align: center;
-      border: none !important;
-    }
-
     #bottomLimitPopup {
       display: none;
       position: fixed;
@@ -193,14 +133,6 @@
       box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
     }
   </style>
-
-  <!-- EmailJS SDK -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  <script type="text/javascript">
-    (function(){
-      emailjs.init("LAQTW0O3jnMV4GyV4");
-    })();
-  </script>
 </head>
 <body>
 
@@ -209,16 +141,6 @@
       <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
   </button>
-
-  <button class="my-custom-support-btn" onclick="openCustomerServiceModal()">
-    <svg width="24" height="24" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M377 104H135C104 104 80 128 80 158V344C80 374 104 398 135 398H195L256 462L317 398H377C408 398 432 374 432 344V158C432 128 408 104 377 104Z" stroke="#222222" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
-      <path transform="translate(38, 50) scale(0.85)" d="M192 196C192 162.863 218.863 136 252 136H260C293.137 136 320 162.863 320 196C320 216.7 308.2 234.6 291 243.8C274.6 252.5 264 269.4 264 288V300" stroke="#222222" stroke-width="25" stroke-linecap="round"/>
-      <circle cx="262" cy="348" r="10" fill="#222222"/>
-    </svg>
-  </button>
-
-  <div id="floatingToast">Successfully</div>
 
   <!-- Phone Login Screen -->
   <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; height:100dvh; box-sizing:border-box; overflow:hidden;">
@@ -430,7 +352,7 @@
             <option value="+260">🇿🇲 (+260) Zambia</option>
             <option value="+263">🇿🇼 (+263) Zimbabwe</option>
           </select>
-          <input type="text" inputmode="numeric" maxlength="20" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; -webkit-user-select:text; user-select:text;">
+          <input type="text" inputmode="numeric" maxlength="20" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
@@ -441,62 +363,21 @@
     </div>
   </div>
 
-  <!-- Custom OTP & Alert Popup Modal -->
+  <!-- Custom Popup Modal -->
   <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#ffffff; width:100%; max-width:360px; border-radius:24px; padding:25px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.35); text-align:center;">
-      <h3 id="popupTitle" style="margin-top:0; color:#111; font-size:20px; font-weight:800;">Registration and Login</h3>
-      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 22px 0;"></p>
+    <div style="background:#ffffff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
+      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
+      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
       <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
-    </div>
-  </div>
-
-  <!-- Customer Service Center Modal -->
-  <div id="customerServiceModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999999; align-items:center; justify-content:center; padding:20px;">
-    <div id="customerServiceCard" style="background:#ffffff; width:100%; max-width:400px; border-radius:24px; padding:24px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.4); text-align:center; position:relative;">
-      <h3 style="margin-top:0; color:#111; font-size:22px; font-weight:800; margin-bottom:16px;">Customer Service Center</h3>
-      
-      <form id="support-form">
-        <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:12px; position:relative;">
-          <textarea id="csIssueInput" name="message" rows="3" maxlength="300" oninput="validateSupportForm()" placeholder="Please describe the issue here..." style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; resize:none; font-family:'Segoe UI', sans-serif; -webkit-user-select:text; user-select:text;" required></textarea>
-          <div id="csCharCount" style="text-align:right; font-size:12px; color:#999; margin-top:4px; font-weight:600;">0/300</div>
-        </div>
-
-        <div style="background:#f4f5f7; border-radius:14px; padding:12px 14px; margin-bottom:14px;">
-          <input type="email" id="csEmailInput" name="email" oninput="validateSupportForm()" placeholder="Please enter your email address" style="width:100%; border:none; background:transparent; outline:none; font-size:15px; color:#333; -webkit-user-select:text; user-select:text;" required>
-        </div>
-
-        <div style="display:flex; gap:12px; justify-content:center;">
-          <button type="button" onclick="closeCustomerServiceModal()" style="flex:1; padding:14px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:15px;">Cancel</button>
-          <button type="submit" style="flex:1; padding:14px; border-radius:22px; border:none; font-weight:700; font-size:15px;" id="csConfirmBtn" disabled>Confirm</button>
-        </div>
-      </form>
-
-      <div style="font-size:11px; color:#aaa; margin-top:14px;">did:da41489e5bd3b3cf</div>
-    </div>
-  </div>
-
-  <!-- Unregistered Warning Modal -->
-  <div id="unregisteredWarningModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:1000000; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#ffffff; width:100%; max-width:360px; border-radius:24px; padding:26px 20px; box-shadow:0 15px 40px rgba(0,0,0,0.45); text-align:center;">
-      <div style="width:48px; height:48px; border-radius:50%; background:#fff3e0; color:#ff631c; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:24px; font-weight:900;">!</div>
-      <h3 style="margin:0 0 8px; color:#111; font-size:20px; font-weight:800;">Registration Required</h3>
-      <p style="margin:0 0 18px; color:#555; font-size:14px; line-height:1.45; font-weight:600;">
-        This email is not registered.<br>
-        <span style="color:#ff631c; font-weight:800;">fast registration try again later</span>
-      </p>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <button type="button" onclick="closeUnregisteredWarningModal()" style="flex:1; padding:13px; border-radius:22px; border:none; background:#f1f2f6; font-weight:700; cursor:pointer; color:#555; font-size:14px;">Close</button>
-        <button type="button" onclick="goToFastRegistration()" style="flex:1; padding:13px; border-radius:22px; border:none; background:#FF631C; font-weight:700; cursor:pointer; color:#ffffff; font-size:14px; box-shadow:0 4px 12px rgba(255, 99, 28, 0.35);">Register Now</button>
-      </div>
     </div>
   </div>
 
   <!-- नीचे से आने वाला लिमिट पॉप-अप -->
   <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
     <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
-      <h3 style="color:#111; font-size:19px; font-weight:800; margin-bottom:10px;">Account Limit Reached</h3>
+      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Account Limit Reached</h3>
       <p id="limitPopupText" style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">You have reached the limit of 5 phone numbers on this device. No more new accounts can be created from here for 24 hours.</p>
-      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:22px; border:none; background:#FF631C; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer; box-shadow: 0 4px 12px rgba(255, 99, 28, 0.35);">OK</button>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:22px; border:none; background:#FF631C; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
     </div>
   </div>
 
@@ -624,7 +505,6 @@
       }
     }
 
-    // 20 अंकों की फोन नंबर लिमिट
     function sanitizePhoneValue(rawVal) {
       return String(rawVal || "").replace(/\D/g, "").slice(0, 20);
     }
@@ -661,21 +541,6 @@
     window.addEventListener("pageshow", applySavedIdentifierToPhoneBox);
 
     window.addEventListener("popstate", function() {
-      let warnModal = document.getElementById("unregisteredWarningModal");
-      if (warnModal && warnModal.style.display === "flex") {
-        history.pushState({ page: "phone_screen" }, "");
-        warnModal.style.display = "none";
-        return;
-      }
-
-      let csModal = document.getElementById("customerServiceModal");
-      if (csModal && csModal.style.display === "flex") {
-        history.pushState({ page: "phone_screen" }, "");
-        csModal.style.display = "none";
-        resetHelpModalShift();
-        return;
-      }
-
       let bottomPopup = document.getElementById("bottomLimitPopup");
       if (bottomPopup && bottomPopup.style.display === "flex") {
         history.pushState({ page: "phone_screen" }, "");
@@ -748,7 +613,6 @@
     }
 
     function showCustomAlert(message, callback) {
-      document.getElementById("popupTitle").innerText = "Registration and Login";
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
@@ -767,12 +631,12 @@
       document.getElementById("popupMessage").innerHTML = `
         Number: <b style="color:#FF631C;">${fullIdentifier}</b><br>
         <b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" inputmode="numeric" placeholder="Enter OTP (123456)" style="width:82%; padding:11px; border-radius:12px; border:1.5px solid #e0e0e0; background:#f8f9fa; text-align:center; font-size:16px; font-weight:bold; outline:none; -webkit-user-select:text; user-select:text;" maxlength="6">
+        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button type="button" onclick="changePhoneNumberFromOtp()" class="otp-change-btn">Change Number</button>
-        <button type="button" onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" class="otp-verify-btn">Verify</button>
+        <button onclick="changePhoneNumberFromOtp()" class="otp-change-btn">Change Number</button>
+        <button onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" class="otp-verify-btn">Verify</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = onSuccessCallback;
@@ -791,7 +655,6 @@
     function verifyDemoOtp(correctCode, fullIdentifier) {
       let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
       if (enteredOtp === correctCode) {
-        // Save verified phone registration record in Firebase Firestore
         db.collection("users").doc(fullIdentifier).set({
           phone: fullIdentifier,
           provider: "phone",
@@ -803,7 +666,9 @@
         closeCustomPopup(true);
       } else {
         showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
-          openOtpModalNow(fullIdentifier, popupCallback);
+          let otpInp = document.getElementById("demoOtpInput");
+          document.getElementById("customPopupModal").style.display = "flex";
+          if (otpInp) otpInp.focus();
         });
       }
     }
@@ -835,20 +700,10 @@
 
       db.collection("users").doc(fullIdentifier).get().then((doc) => {
         isCheckingUser = false;
-        if (doc.exists && doc.data() && doc.data().passwordSet) {
+        if (doc.exists) {
           localStorage.setItem("greedy_login_identifier", fullIdentifier);
           localStorage.setItem("greedy_login_source_page", "phone.html");
           localStorage.setItem("greedy_is_new_user", "false");
-          window.location.replace("password.html");
-        } else if (doc.exists && !doc.data().otpVerified) {
-          localStorage.setItem("greedy_login_identifier", fullIdentifier);
-          localStorage.setItem("greedy_login_source_page", "phone.html");
-          localStorage.setItem("greedy_is_new_user", "false");
-          window.location.replace("password.html");
-        } else if (doc.exists && doc.data().otpVerified && !doc.data().passwordSet) {
-          localStorage.setItem("greedy_login_identifier", fullIdentifier);
-          localStorage.setItem("greedy_login_source_page", "phone.html");
-          localStorage.setItem("greedy_is_new_user", "true");
           window.location.replace("password.html");
         } else {
           if (!canSendOtpToPhone(fullIdentifier)) {
@@ -870,147 +725,6 @@
         showCustomAlert("Connection error while checking account. Please try again.");
       });
     }
-
-    /* ===== Customer Service / Support Firebase Check Logic ===== */
-    function resetHelpModalShift() {
-      let card = document.getElementById("customerServiceCard");
-      if (card) {
-        card.style.transform = "translateY(0px)";
-      }
-    }
-
-    function syncHelpModalWithKeyboard() {
-      let csModal = document.getElementById("customerServiceModal");
-      let card = document.getElementById("customerServiceCard");
-      if (!csModal || !card || csModal.style.display !== "flex") return;
-
-      if (window.visualViewport) {
-        const vv = window.visualViewport;
-        const keyboardHeight = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-        if (keyboardHeight > 80) {
-          const shiftUp = Math.min(keyboardHeight * 0.45, 130);
-          card.style.transform = `translateY(-${shiftUp}px)`;
-        } else {
-          card.style.transform = "translateY(0px)";
-        }
-      }
-    }
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", syncHelpModalWithKeyboard);
-      window.visualViewport.addEventListener("scroll", syncHelpModalWithKeyboard);
-    }
-    window.addEventListener("resize", syncHelpModalWithKeyboard);
-
-    function openCustomerServiceModal() {
-      history.pushState({ modalOpen: true }, "");
-      document.getElementById("csEmailInput").value = "";
-      document.getElementById("csIssueInput").value = "";
-      document.getElementById("csCharCount").innerText = "0/300";
-      resetHelpModalShift();
-      validateSupportForm();
-      document.getElementById("customerServiceModal").style.display = "flex";
-      setTimeout(syncHelpModalWithKeyboard, 80);
-    }
-
-    function closeCustomerServiceModal() {
-      document.getElementById("customerServiceModal").style.display = "none";
-      resetHelpModalShift();
-    }
-
-    function openUnregisteredWarningModal() {
-      history.pushState({ modalOpen: true }, "");
-      document.getElementById("unregisteredWarningModal").style.display = "flex";
-    }
-
-    function closeUnregisteredWarningModal() {
-      document.getElementById("unregisteredWarningModal").style.display = "none";
-    }
-
-    function goToFastRegistration() {
-      closeUnregisteredWarningModal();
-      focusPhoneInput();
-    }
-
-    function validateSupportForm() {
-      let emailVal = document.getElementById("csEmailInput").value.trim();
-      let textarea = document.getElementById("csIssueInput");
-      let msgVal = textarea.value.trim();
-      let len = textarea.value.length;
-      document.getElementById("csCharCount").innerText = len + "/300";
-
-      let confirmBtn = document.getElementById("csConfirmBtn");
-      if (msgVal.length >= 1 && emailVal.length >= 1) {
-        confirmBtn.disabled = false;
-        confirmBtn.classList.add("active");
-      } else {
-        confirmBtn.disabled = true;
-        confirmBtn.classList.remove("active");
-      }
-    }
-
-    async function checkEmailRegisteredInDB(email) {
-      const normalizedEmail = email.trim().toLowerCase();
-      const snapshot = await db
-        .collection("users")
-        .where("email", "==", normalizedEmail)
-        .limit(1)
-        .get();
-
-      return !snapshot.empty;
-    }
-
-    document.getElementById('support-form').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      const formEl = this;
-      const emailVal = document.getElementById("csEmailInput").value.trim().toLowerCase();
-      let confirmBtn = document.getElementById("csConfirmBtn");
-
-      confirmBtn.innerText = "Checking...";
-      confirmBtn.disabled = true;
-      confirmBtn.classList.remove("active");
-
-      try {
-        const isRegistered = await checkEmailRegisteredInDB(emailVal);
-
-        if (!isRegistered) {
-          confirmBtn.innerText = "Confirm";
-          closeCustomerServiceModal();
-          openUnregisteredWarningModal();
-          return;
-        }
-
-        confirmBtn.innerText = "Sending...";
-
-        emailjs.sendForm('service_ev242sn', 'template_bljp5uv', formEl)
-          .then(function() {
-            confirmBtn.innerText = "Confirm";
-            closeCustomerServiceModal();
-            
-            formEl.reset();
-            document.getElementById("csCharCount").innerText = "0/300";
-            validateSupportForm();
-
-            let toast = document.getElementById("floatingToast");
-            toast.style.display = "block";
-            setTimeout(function() {
-              toast.style.display = "none";
-            }, 2000);
-
-          }, function(error) {
-            confirmBtn.innerText = "Confirm";
-            validateSupportForm();
-            console.log('FAILED...', error);
-            alert("Failed to send message. Please try again later.");
-          });
-      } catch (err) {
-        confirmBtn.innerText = "Confirm";
-        validateSupportForm();
-        console.error("Firebase check error:", err);
-        alert("Unable to verify email in Firebase right now. Please try again later.");
-      }
-    });
   </script>
 </body>
 </html>
