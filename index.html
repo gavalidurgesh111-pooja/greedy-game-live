@@ -59,7 +59,6 @@
       padding: 15px 15px 10px;
     }
 
-    /* फ़ोटो जैसा दानेदार गोल्ड ग्लिटर */
     .brand-title { 
       font-size: 30px; 
       font-weight: 900; 
@@ -112,7 +111,6 @@
       text-align: center;
     }
 
-    /* More options बटन के लिए कोड */
     .more-options-btn { 
       background: none; 
       border: none; 
@@ -125,7 +123,6 @@
       left: 10px; 
     }
 
-    /* Last login टैग */
     .last-login-tag { 
       background: #ff4081; 
       color: #ffffff; 
@@ -139,7 +136,6 @@
       display: inline-block;
     }
 
-    /* Terms & Conditions डिज़ाइन */
     .terms-text { 
       font-size: 11px; 
       line-height: 1.35;
@@ -189,7 +185,6 @@
       text-underline-offset: 2px;
     }
 
-    /* सपोर्ट बटन */
     .my-custom-support-btn {
       position: fixed !important;
       top: 20px !important;     
@@ -250,16 +245,39 @@
     }
   </style>
 
+  <!-- EmailJS SDK -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <script type="text/javascript">
-     (function(){
-        emailjs.init("LAQTW0O3jnMV4GyV4");
-     })();
+    (function(){
+      emailjs.init("LAQTW0O3jnMV4GyV4");
+    })();
+  </script>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
+      authDomain: "greedy--coin-game.firebaseapp.com",
+      databaseURL: "https://greedy--coin-game-default-rtdb.firebaseio.com",
+      projectId: "greedy--coin-game",
+      storageBucket: "greedy--coin-game.firebasestorage.app",
+      messagingSenderId: "735941940431",
+      appId: "1:735941940431:web:7b60d621cd9966516ad3ba",
+      measurementId: "G-8LFKW4W3CP"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    const rtdb = firebase.database();
   </script>
 </head>
 <body>
 
-  <!-- गोल्ड ग्लिटर टेक्सचर बनाने वाला SVG फ़िल्टर -->
   <svg width="0" height="0" style="position:absolute; pointer-events:none;">
     <defs>
       <filter id="goldGlitterFilter" x="-10%" y="-10%" width="120%" height="120%">
@@ -517,22 +535,16 @@
       }
     }
 
-    // Check if email exists in database / registered storage
+    // Direct check in Firebase Firestore ("users" collection)
     async function checkEmailRegisteredInDB(email) {
       const normalizedEmail = email.trim().toLowerCase();
+      const snapshot = await db
+        .collection("users")
+        .where("email", "==", normalizedEmail)
+        .limit(1)
+        .get();
 
-      // If you connect Firebase Firestore / Realtime DB or backend API, check here:
-      // Example Firestore:
-      // const snap = await firebase.firestore().collection("users").where("email", "==", normalizedEmail).limit(1).get();
-      // return !snap.empty;
-
-      const registeredEmails = JSON.parse(localStorage.getItem("registeredEmails") || "[]");
-      const singleEmail = (localStorage.getItem("registeredEmail") || localStorage.getItem("userEmail") || "").trim().toLowerCase();
-
-      return (
-        registeredEmails.map(e => String(e).trim().toLowerCase()).includes(normalizedEmail) ||
-        (singleEmail !== "" && singleEmail === normalizedEmail)
-      );
+      return !snapshot.empty;
     }
 
     document.getElementById('support-form').addEventListener('submit', async function(event) {
@@ -582,8 +594,8 @@
       } catch (err) {
         confirmBtn.innerText = "Confirm";
         validateForm();
-        console.error("Database check error:", err);
-        alert("Unable to verify registration right now. Please try again later.");
+        console.error("Firebase check error:", err);
+        alert("Unable to verify email in Firebase right now. Please try again later.");
       }
     });
   </script>
