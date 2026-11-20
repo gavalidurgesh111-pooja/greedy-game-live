@@ -2,10 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#ffffff">
   <title>Greedy Coin - Phone Login</title>
   <style>
+    /* ===== बॉक्स साइज़ कंट्रोल (यहाँ से चौड़ाई और मोटाई बदलें) ===== */
+    :root {
+      --box-width: 100%;   /* चौड़ाई: कम करनी हो तो 290px या 310px लिखें */
+      --box-height: 50px;  /* मोटाई/ऊँचाई: बढ़ानी हो तो 56px या 60px लिखें */
+    }
+    .input-box {
+      width: 100%;
+      max-width: var(--box-width);
+      height: var(--box-height);
+    }
+    /* ============================================================ */
+
     * {
       -webkit-user-select: none;
       user-select: none;
@@ -17,10 +29,13 @@
     }
 
     html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
       background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      touch-action: none;
       font-family: 'Segoe UI', sans-serif;
     }
 
@@ -49,15 +64,7 @@
       box-sizing: border-box;
       z-index: 100;
     }
-    
-    .input-box {
-      box-width: 80%; 
-      box-height: 60px; 
-      width: 100%;
-      max-width: var(--box-width);
-      height: var(--box-height);
-    }
-  
+
     #submitBtn {
       opacity: 0.55;
       pointer-events: none;
@@ -120,6 +127,7 @@
             <option value="+880">🇧🇩 (+880) Bangladesh</option>
             <option value="+977">🇳🇵 (+977) Nepal</option>
             <option value="+94">🇱🇰 (+94) Sri Lanka</option>
+            <option value="+190">🌐 (+190)</option>
           </select>
           <input type="text" inputmode="numeric" maxlength="16" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
         </div>
