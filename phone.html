@@ -78,9 +78,29 @@
       box-shadow: 0 0 15px rgba(255, 99, 28, 0.55);
     }
 
+    .area-code-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      font-size: 15px;
+      color: #111111;
+      outline: none;
+      cursor: pointer;
+      padding-right: 10px;
+      margin-right: 10px;
+      border-right: 1px solid #d5d5d5;
+      flex-shrink: 0;
+    }
+    .area-code-trigger:active {
+      opacity: 0.7;
+    }
+
     .otp-change-btn {
       flex: 1;
-      padding: 13px 12px;
+      padding: 12px;
       border-radius: 22px;
       border: 1.5px solid #FF631C;
       background: #FFF4EE;
@@ -88,16 +108,14 @@
       font-size: 14px;
       cursor: pointer;
       color: #FF631C;
-      transition: transform 0.12s ease, background-color 0.2s ease;
     }
     .otp-change-btn:active {
-      transform: scale(0.96);
       background: #FFE5D6;
     }
 
     .otp-verify-btn {
       flex: 1;
-      padding: 13px 12px;
+      padding: 12px;
       border-radius: 22px;
       border: none;
       background: #FF631C;
@@ -106,10 +124,8 @@
       cursor: pointer;
       color: #ffffff;
       box-shadow: 0 4px 12px rgba(255, 99, 28, 0.35);
-      transition: transform 0.12s ease, background-color 0.2s ease;
     }
     .otp-verify-btn:active {
-      transform: scale(0.96);
       background: #FFA375;
     }
 
@@ -151,208 +167,13 @@
       
       <form onsubmit="handleIndexFormSubmit(event)">
         <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px;">
-          <select id="countryCodeSelect" class="country-code-select" onchange="checkNumber()" style="border:none; background:transparent; font-weight:bold; font-size:14px; max-width:140px; outline:none; cursor:pointer; margin-right:8px;">
-            <option value="+91" selected>🇮🇳 (+91) India</option>
-            <option value="+1">🇺🇸 (+1) USA</option>
-            <option value="+44">🇬🇧 (+44) UK</option>
-            <option value="+971">🇦🇪 (+971) UAE</option>
-            <option value="+61">🇦🇺 (+61) Australia</option>
-            <option value="+1">🇨🇦 (+1) Canada</option>
-            <option value="+92">🇵🇰 (+92) Pakistan</option>
-            <option value="+880">🇧🇩 (+880) Bangladesh</option>
-            <option value="+977">🇳🇵 (+977) Nepal</option>
-            <option value="+94">🇱🇰 (+94) Sri Lanka</option>
-            <option value="+93">🇦🇫 (+93) Afghanistan</option>
-            <option value="+355">🇦🇱 (+355) Albania</option>
-            <option value="+213">🇩🇿 (+213) Algeria</option>
-            <option value="+376">🇦🇩 (+376) Andorra</option>
-            <option value="+244">🇦🇴 (+244) Angola</option>
-            <option value="+1268">🇦🇬 (+1268) Antigua & Barbuda</option>
-            <option value="+54">🇦🇷 (+54) Argentina</option>
-            <option value="+374">🇦🇲 (+374) Armenia</option>
-            <option value="+43">🇦🇹 (+43) Austria</option>
-            <option value="+994">🇦🇿 (+994) Azerbaijan</option>
-            <option value="+1242">🇧🇸 (+1242) Bahamas</option>
-            <option value="+973">🇧🇭 (+973) Bahrain</option>
-            <option value="+1246">🇧🇧 (+1246) Barbados</option>
-            <option value="+375">🇧🇾 (+375) Belarus</option>
-            <option value="+32">🇧🇪 (+32) Belgium</option>
-            <option value="+501">🇧🇿 (+501) Belize</option>
-            <option value="+229">🇧🇯 (+229) Benin</option>
-            <option value="+975">🇧🇹 (+975) Bhutan</option>
-            <option value="+591">🇧🇴 (+591) Bolivia</option>
-            <option value="+387">🇧🇦 (+387) Bosnia & Herzegovina</option>
-            <option value="+267">🇧🇼 (+267) Botswana</option>
-            <option value="+55">🇧🇷 (+55) Brazil</option>
-            <option value="+673">🇧🇳 (+673) Brunei</option>
-            <option value="+359">🇧🇬 (+359) Bulgaria</option>
-            <option value="+226">🇧🇫 (+226) Burkina Faso</option>
-            <option value="+257">🇧🇮 (+257) Burundi</option>
-            <option value="+238">🇨🇻 (+238) Cabo Verde</option>
-            <option value="+855">🇰🇭 (+855) Cambodia</option>
-            <option value="+237">🇨🇲 (+237) Cameroon</option>
-            <option value="+236">🇨🇫 (+236) Central African Rep.</option>
-            <option value="+235">🇹🇩 (+235) Chad</option>
-            <option value="+56">🇨🇱 (+56) Chile</option>
-            <option value="+86">🇨🇳 (+86) China</option>
-            <option value="+57">🇨🇴 (+57) Colombia</option>
-            <option value="+269">🇰🇲 (+269) Comoros</option>
-            <option value="+242">🇨🇬 (+242) Congo</option>
-            <option value="+243">🇨🇩 (+243) DR Congo</option>
-            <option value="+506">🇨🇷 (+506) Costa Rica</option>
-            <option value="+225">🇨🇮 (+225) Côte d'Ivoire</option>
-            <option value="+385">🇭🇷 (+385) Croatia</option>
-            <option value="+53">🇨🇺 (+53) Cuba</option>
-            <option value="+357">🇨🇾 (+357) Cyprus</option>
-            <option value="+420">🇨🇿 (+420) Czechia</option>
-            <option value="+45">🇩🇰 (+45) Denmark</option>
-            <option value="+253">🇩🇯 (+253) Djibouti</option>
-            <option value="+1767">🇩🇲 (+1767) Dominica</option>
-            <option value="+1809">🇩🇴 (+1809) Dominican Rep.</option>
-            <option value="+593">🇪🇨 (+593) Ecuador</option>
-            <option value="+20">🇪🇬 (+20) Egypt</option>
-            <option value="+503">🇸🇻 (+503) El Salvador</option>
-            <option value="+240">🇬🇶 (+240) Equatorial Guinea</option>
-            <option value="+291">🇪🇷 (+291) Eritrea</option>
-            <option value="+372">🇪🇪 (+372) Estonia</option>
-            <option value="+268">🇸🇿 (+268) Eswatini</option>
-            <option value="+251">🇪🇹 (+251) Ethiopia</option>
-            <option value="+679">🇫🇯 (+679) Fiji</option>
-            <option value="+358">🇫🇮 (+358) Finland</option>
-            <option value="+33">🇫🇷 (+33) France</option>
-            <option value="+241">🇬🇦 (+241) Gabon</option>
-            <option value="+220">🇬🇲 (+220) Gambia</option>
-            <option value="+995">🇬🇪 (+995) Georgia</option>
-            <option value="+49">🇩🇪 (+49) Germany</option>
-            <option value="+233">🇬🇭 (+233) Ghana</option>
-            <option value="+30">🇬🇷 (+30) Greece</option>
-            <option value="+1473">🇬🇩 (+1473) Grenada</option>
-            <option value="+502">🇬🇹 (+502) Guatemala</option>
-            <option value="+224">🇬🇳 (+224) Guinea</option>
-            <option value="+245">🇬🇼 (+245) Guinea-Bissau</option>
-            <option value="+592">🇬🇾 (+592) Guyana</option>
-            <option value="+509">🇭🇹 (+509) Haiti</option>
-            <option value="+504">🇭🇳 (+504) Honduras</option>
-            <option value="+852">🇭🇰 (+852) Hong Kong</option>
-            <option value="+36">🇭🇺 (+36) Hungary</option>
-            <option value="+354">🇮🇸 (+354) Iceland</option>
-            <option value="+62">🇮🇩 (+62) Indonesia</option>
-            <option value="+98">🇮🇷 (+98) Iran</option>
-            <option value="+964">🇮🇶 (+964) Iraq</option>
-            <option value="+353">🇮🇪 (+353) Ireland</option>
-            <option value="+972">🇮🇱 (+972) Israel</option>
-            <option value="+39">🇮🇹 (+39) Italy</option>
-            <option value="+1876">🇯🇲 (+1876) Jamaica</option>
-            <option value="+81">🇯🇵 (+81) Japan</option>
-            <option value="+962">🇯🇴 (+962) Jordan</option>
-            <option value="+7">🇰🇿 (+7) Kazakhstan</option>
-            <option value="+254">🇰🇪 (+254) Kenya</option>
-            <option value="+686">🇰🇮 (+686) Kiribati</option>
-            <option value="+850">🇰🇵 (+850) North Korea</option>
-            <option value="+82">🇰🇷 (+82) South Korea</option>
-            <option value="+383">🇽🇰 (+383) Kosovo</option>
-            <option value="+965">🇰🇼 (+965) Kuwait</option>
-            <option value="+996">🇰🇬 (+996) Kyrgyzstan</option>
-            <option value="+856">🇱🇦 (+856) Laos</option>
-            <option value="+371">🇱🇻 (+371) Latvia</option>
-            <option value="+961">🇱🇧 (+961) Lebanon</option>
-            <option value="+266">🇱🇸 (+266) Lesotho</option>
-            <option value="+231">🇱🇷 (+231) Liberia</option>
-            <option value="+218">🇱🇾 (+218) Libya</option>
-            <option value="+423">🇱🇮 (+423) Liechtenstein</option>
-            <option value="+370">🇱🇹 (+370) Lithuania</option>
-            <option value="+352">🇱🇺 (+352) Luxembourg</option>
-            <option value="+853">🇲🇴 (+853) Macao</option>
-            <option value="+261">🇲🇬 (+261) Madagascar</option>
-            <option value="+265">🇲🇼 (+265) Malawi</option>
-            <option value="+60">🇲🇾 (+60) Malaysia</option>
-            <option value="+960">🇲🇻 (+960) Maldives</option>
-            <option value="+223">🇲🇱 (+223) Mali</option>
-            <option value="+356">🇲🇹 (+356) Malta</option>
-            <option value="+692">🇲🇭 (+692) Marshall Islands</option>
-            <option value="+222">🇲🇷 (+222) Mauritania</option>
-            <option value="+230">🇲🇺 (+230) Mauritius</option>
-            <option value="+52">🇲🇽 (+52) Mexico</option>
-            <option value="+691">🇫🇲 (+691) Micronesia</option>
-            <option value="+373">🇲🇩 (+373) Moldova</option>
-            <option value="+377">🇲🇨 (+377) Monaco</option>
-            <option value="+976">🇲🇳 (+976) Mongolia</option>
-            <option value="+382">🇲🇪 (+382) Montenegro</option>
-            <option value="+212">🇲🇦 (+212) Morocco</option>
-            <option value="+258">🇲🇿 (+258) Mozambique</option>
-            <option value="+95">🇲🇲 (+95) Myanmar</option>
-            <option value="+264">🇳🇦 (+264) Namibia</option>
-            <option value="+674">🇳🇷 (+674) Nauru</option>
-            <option value="+31">🇳🇱 (+31) Netherlands</option>
-            <option value="+64">🇳🇿 (+64) New Zealand</option>
-            <option value="+505">🇳🇮 (+505) Nicaragua</option>
-            <option value="+227">🇳🇪 (+227) Niger</option>
-            <option value="+234">🇳🇬 (+234) Nigeria</option>
-            <option value="+389">🇲🇰 (+389) North Macedonia</option>
-            <option value="+47">🇳🇴 (+47) Norway</option>
-            <option value="+968">🇴🇲 (+968) Oman</option>
-            <option value="+680">🇵🇼 (+680) Palau</option>
-            <option value="+970">🇵🇸 (+970) Palestine</option>
-            <option value="+507">🇵🇦 (+507) Panama</option>
-            <option value="+675">🇵🇬 (+675) Papua New Guinea</option>
-            <option value="+595">🇵🇾 (+595) Paraguay</option>
-            <option value="+51">🇵🇪 (+51) Peru</option>
-            <option value="+63">🇵🇭 (+63) Philippines</option>
-            <option value="+48">🇵🇱 (+48) Poland</option>
-            <option value="+351">🇵🇹 (+351) Portugal</option>
-            <option value="+974">🇶🇦 (+974) Qatar</option>
-            <option value="+40">🇷🇴 (+40) Romania</option>
-            <option value="+7">🇷🇺 (+7) Russia</option>
-            <option value="+250">🇷🇼 (+250) Rwanda</option>
-            <option value="+1869">🇰🇳 (+1869) Saint Kitts & Nevis</option>
-            <option value="+1758">🇱🇨 (+1758) Saint Lucia</option>
-            <option value="+1784">🇻🇨 (+1784) St. Vincent & Grenadines</option>
-            <option value="+685">🇼🇸 (+685) Samoa</option>
-            <option value="+378">🇸🇲 (+378) San Marino</option>
-            <option value="+239">🇸🇹 (+239) São Tomé & Príncipe</option>
-            <option value="+966">🇸🇦 (+966) Saudi Arabia</option>
-            <option value="+221">🇸🇳 (+221) Senegal</option>
-            <option value="+381">🇷🇸 (+381) Serbia</option>
-            <option value="+248">🇸🇨 (+248) Seychelles</option>
-            <option value="+232">🇸🇱 (+232) Sierra Leone</option>
-            <option value="+65">🇸🇬 (+65) Singapore</option>
-            <option value="+421">🇸🇰 (+421) Slovakia</option>
-            <option value="+386">🇸🇮 (+386) Slovenia</option>
-            <option value="+677">🇸🇧 (+677) Solomon Islands</option>
-            <option value="+252">🇸🇴 (+252) Somalia</option>
-            <option value="+27">🇿🇦 (+27) South Africa</option>
-            <option value="+211">🇸🇸 (+211) South Sudan</option>
-            <option value="+34">🇪🇸 (+34) Spain</option>
-            <option value="+249">🇸🇩 (+249) Sudan</option>
-            <option value="+597">🇸🇷 (+597) Suriname</option>
-            <option value="+46">🇸🇪 (+46) Sweden</option>
-            <option value="+41">🇨🇭 (+41) Switzerland</option>
-            <option value="+963">🇸🇾 (+963) Syria</option>
-            <option value="+886">🇹🇼 (+886) Taiwan</option>
-            <option value="+992">🇹🇯 (+992) Tajikistan</option>
-            <option value="+255">🇹🇿 (+255) Tanzania</option>
-            <option value="+66">🇹🇭 (+66) Thailand</option>
-            <option value="+670">🇹🇱 (+670) Timor-Leste</option>
-            <option value="+228">🇹🇬 (+228) Togo</option>
-            <option value="+676">🇹🇴 (+676) Tonga</option>
-            <option value="+1868">🇹🇹 (+1868) Trinidad & Tobago</option>
-            <option value="+216">🇹🇳 (+216) Tunisia</option>
-            <option value="+90">🇹🇷 (+90) Turkey</option>
-            <option value="+993">🇹🇲 (+993) Turkmenistan</option>
-            <option value="+688">🇹🇻 (+688) Tuvalu</option>
-            <option value="+256">🇺🇬 (+256) Uganda</option>
-            <option value="+380">🇺🇦 (+380) Ukraine</option>
-            <option value="+598">🇺🇾 (+598) Uruguay</option>
-            <option value="+998">🇺🇿 (+998) Uzbekistan</option>
-            <option value="+678">🇻🇺 (+678) Vanuatu</option>
-            <option value="+379">🇻🇦 (+379) Vatican City</option>
-            <option value="+58">🇻🇪 (+58) Venezuela</option>
-            <option value="+84">🇻🇳 (+84) Vietnam</option>
-            <option value="+967">🇾🇪 (+967) Yemen</option>
-            <option value="+260">🇿🇲 (+260) Zambia</option>
-            <option value="+263">🇿🇼 (+263) Zimbabwe</option>
-          </select>
-          <input type="text" inputmode="numeric" maxlength="20" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px;">
+          <button type="button" class="area-code-trigger" onclick="openAreaCodeSelectorPage()">
+            <span id="selectedCodeDisplay">+91</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <input type="text" inputmode="numeric" maxlength="20" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; -webkit-user-select:text; user-select:text;">
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
@@ -382,14 +203,13 @@
   </div>
 
   <!-- Firebase SDK Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDHKW5KqfQ1zTW62-I6TbeV1GtNj2k3EP8",
       authDomain: "greedy--coin-game.firebaseapp.com",
-      databaseURL: "https://greedy--coin-game-default-rtdb.firebaseio.com",
       projectId: "greedy--coin-game",
       storageBucket: "greedy--coin-game.firebasestorage.app",
       messagingSenderId: "735941940431",
@@ -397,9 +217,7 @@
       measurementId: "G-8LFKW4W3CP"
     };
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     document.addEventListener('contextmenu', function(e) {
@@ -408,9 +226,63 @@
 
     history.replaceState({ page: "phone_screen" }, "");
 
+    let selectedCountryCode = "+91";
     let isCheckingUser = false;
     const MAX_NEW_ACCOUNTS_PER_DEVICE = 5;
     const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+
+    function setCountryCodeValue(codeVal) {
+      let digits = String(codeVal || "").replace(/\D/g, "");
+      if (!digits) digits = "91";
+      selectedCountryCode = "+" + digits;
+      let displayEl = document.getElementById("selectedCodeDisplay");
+      if (displayEl) displayEl.innerText = selectedCountryCode;
+      checkNumber();
+    }
+
+    function openAreaCodeSelectorPage() {
+      let currentPhone = sanitizePhoneValue(document.getElementById("phoneInput").value);
+      if (currentPhone) {
+        localStorage.setItem("greedy_draft_phone_digits", currentPhone);
+      }
+      window.location.href = "area-code.html";
+    }
+
+    function syncSelectedCodeAndDraft() {
+      let pickedCode = (localStorage.getItem("greedy_selected_area_code") || "").trim();
+      if (pickedCode) {
+        setCountryCodeValue(pickedCode);
+        localStorage.removeItem("greedy_selected_area_code");
+      }
+
+      let draftDigits = (localStorage.getItem("greedy_draft_phone_digits") || "").trim();
+      let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
+      let inputEl = document.getElementById("phoneInput");
+
+      if (restoreVal && inputEl) {
+        if (restoreVal.startsWith("+")) {
+          let match = restoreVal.match(/^(\+\d{1,4})(\d+)$/);
+          if (match) {
+            setCountryCodeValue(match[1]);
+            inputEl.value = sanitizePhoneValue(match[2]);
+          } else {
+            inputEl.value = sanitizePhoneValue(restoreVal);
+          }
+        } else {
+          inputEl.value = sanitizePhoneValue(restoreVal);
+        }
+        localStorage.removeItem("greedy_restore_identifier");
+        localStorage.removeItem("greedy_draft_phone_digits");
+        checkNumber();
+        return;
+      }
+
+      if (draftDigits && inputEl && !inputEl.value) {
+        inputEl.value = sanitizePhoneValue(draftDigits);
+        localStorage.removeItem("greedy_draft_phone_digits");
+      }
+      checkNumber();
+    }
 
     function getDeviceId() {
       try {
@@ -509,36 +381,8 @@
       return String(rawVal || "").replace(/\D/g, "").slice(0, 20);
     }
 
-    function applySavedIdentifierToPhoneBox() {
-      let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
-      if (!restoreVal) return;
-
-      let inputEl = document.getElementById("phoneInput");
-      let selectEl = document.getElementById("countryCodeSelect");
-      if (!inputEl) return;
-
-      if (restoreVal.startsWith("+") && selectEl) {
-        let matched = false;
-        for (let opt of selectEl.options) {
-          if (restoreVal.startsWith(opt.value)) {
-            selectEl.value = opt.value;
-            inputEl.value = sanitizePhoneValue(restoreVal.slice(opt.value.length));
-            matched = true;
-            break;
-          }
-        }
-        if (!matched) {
-          inputEl.value = sanitizePhoneValue(restoreVal);
-        }
-      } else {
-        inputEl.value = sanitizePhoneValue(restoreVal);
-      }
-      checkNumber();
-      localStorage.removeItem("greedy_restore_identifier");
-    }
-
-    window.addEventListener("DOMContentLoaded", applySavedIdentifierToPhoneBox);
-    window.addEventListener("pageshow", applySavedIdentifierToPhoneBox);
+    window.addEventListener("DOMContentLoaded", syncSelectedCodeAndDraft);
+    window.addEventListener("pageshow", syncSelectedCodeAndDraft);
 
     window.addEventListener("popstate", function() {
       let bottomPopup = document.getElementById("bottomLimitPopup");
@@ -563,6 +407,7 @@
 
     function handleBackAction() {
       localStorage.removeItem("greedy_restore_identifier");
+      localStorage.removeItem("greedy_draft_phone_digits");
       window.location.replace("index.html");
     }
 
@@ -655,14 +500,6 @@
     function verifyDemoOtp(correctCode, fullIdentifier) {
       let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
       if (enteredOtp === correctCode) {
-        db.collection("users").doc(fullIdentifier).set({
-          phone: fullIdentifier,
-          provider: "phone",
-          otpVerified: true,
-          deviceId: DEVICE_ID,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge: true }).catch(() => {});
-
         closeCustomPopup(true);
       } else {
         showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
@@ -685,8 +522,7 @@
     function handleNextStep() {
       if (isCheckingUser) return;
 
-      let countryCodeSelect = document.getElementById("countryCodeSelect");
-      let countryCode = countryCodeSelect ? countryCodeSelect.value : "+91";
+      let countryCode = selectedCountryCode || "+91";
       let phoneDigits = sanitizePhoneValue(document.getElementById("phoneInput").value);
       
       if(!phoneDigits) {
