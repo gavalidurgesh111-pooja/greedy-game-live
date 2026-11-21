@@ -1,0 +1,58 @@
+/* =========================================================
+   RESPONSIVE.CSS — Mobile, Tablet & Laptop/Desktop Layout
+   ========================================================= */
+
+/* 1. MOBILE (600px से छोटी स्क्रीन): जैसा है वैसा ही */
+@media (max-width: 599px) {
+  .phone-screen-wrap,
+  .page-wrap,
+  .app-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* 2. TABLET / IPAD (600px से 1024px तक) */
+@media (min-width: 600px) and (max-width: 1024px) {
+  .phone-screen-wrap,
+  .page-wrap,
+  .app-container {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+    box-shadow: 0 0 28px rgba(0, 0, 0, 0.08);
+  }
+
+  .my-custom-back-btn {
+    left: calc(50% - 310px) !important;
+  }
+
+  .bottom-fixed-btn-container {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 640px;
+  }
+}
+
+/* 3. LAPTOP & DESKTOP / COMPUTER (1025px और उससे बड़ी स्क्रीन) */
+@media (min-width: 1025px) {
+  .phone-screen-wrap,
+  .page-wrap,
+  .app-container {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+  }
+
+  .my-custom-back-btn {
+    left: calc(50% - 445px) !important;
+  }
+
+  .bottom-fixed-btn-container {
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 920px;
+  }
+}
