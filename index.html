@@ -409,11 +409,27 @@
       e.preventDefault();
     }, false);
 
-    window.onload = function() {
+    function clearFreshAuthDrafts() {
       sessionStorage.clear();
+      localStorage.removeItem("greedy_last_phone_digits");
+      localStorage.removeItem("greedy_last_country_code");
+      localStorage.removeItem("greedy_selected_country_code");
+      localStorage.removeItem("greedy_restore_identifier");
+      localStorage.removeItem("greedy_login_identifier");
+      localStorage.removeItem("greedy_is_new_user");
+    }
+
+    clearFreshAuthDrafts();
+
+    window.onload = function() {
+      clearFreshAuthDrafts();
       history.replaceState({page: "auth_secure"}, "", window.location.href);
       syncHelpModalWithKeyboard();
     };
+
+    window.addEventListener("pageshow", function() {
+      clearFreshAuthDrafts();
+    });
 
     window.addEventListener('popstate', function(event) {
       history.pushState({page: "auth_secure"}, "", window.location.href);
@@ -469,11 +485,13 @@
     window.addEventListener("resize", syncHelpModalWithKeyboard);
 
     function selectPhoneOption() {
+      clearFreshAuthDrafts();
       document.getElementById("moreOptionsModal").style.display = "none";
       window.location.replace("phone.html");
     }
 
     function selectEmailOption() {
+      clearFreshAuthDrafts();
       document.getElementById("moreOptionsModal").style.display = "none";
       window.location.replace("email.html");
     }
