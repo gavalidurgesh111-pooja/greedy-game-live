@@ -459,7 +459,7 @@
       }
 
       let btn = document.getElementById("submitBtn");
-      let isValid = /^\d{7,20}$/.test(cleaned);
+      let isValid = /^\d{1,20}$/.test(cleaned);
 
       if (isValid) {
         btn.classList.add("active");
