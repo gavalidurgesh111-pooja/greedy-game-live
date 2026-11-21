@@ -244,43 +244,34 @@
       let currentPhone = sanitizePhoneValue(document.getElementById("phoneInput").value);
       if (currentPhone) {
         localStorage.setItem("greedy_draft_phone_digits", currentPhone);
+        localStorage.setItem("greedy_last_phone_digits", currentPhone);
       }
+      localStorage.setItem("greedy_last_country_code", selectedCountryCode);
       window.location.href = "area-code.html";
     }
 
     function syncSelectedCodeAndDraft() {
       let pickedCode = (localStorage.getItem("greedy_selected_area_code") || "").trim();
+      let savedCode = (localStorage.getItem("greedy_last_country_code") || "").trim();
+      let savedPhone = (localStorage.getItem("greedy_last_phone_digits") || "").trim();
+      let draftDigits = (localStorage.getItem("greedy_draft_phone_digits") || "").trim();
+      let inputEl = document.getElementById("phoneInput");
+
       if (pickedCode) {
         setCountryCodeValue(pickedCode);
         localStorage.removeItem("greedy_selected_area_code");
+        localStorage.setItem("greedy_last_country_code", pickedCode);
+      } else if (savedCode) {
+        setCountryCodeValue(savedCode);
       }
 
-      let draftDigits = (localStorage.getItem("greedy_draft_phone_digits") || "").trim();
-      let restoreVal = (localStorage.getItem("greedy_restore_identifier") || "").trim();
-      let inputEl = document.getElementById("phoneInput");
-
-      if (restoreVal && inputEl) {
-        if (restoreVal.startsWith("+")) {
-          let match = restoreVal.match(/^(\+\d{1,4})(\d+)$/);
-          if (match) {
-            setCountryCodeValue(match[1]);
-            inputEl.value = sanitizePhoneValue(match[2]);
-          } else {
-            inputEl.value = sanitizePhoneValue(restoreVal);
-          }
-        } else {
-          inputEl.value = sanitizePhoneValue(restoreVal);
-        }
-        localStorage.removeItem("greedy_restore_identifier");
-        localStorage.removeItem("greedy_draft_phone_digits");
-        checkNumber();
-        return;
+      let phoneToRestore = savedPhone || draftDigits;
+      if (phoneToRestore && inputEl) {
+        inputEl.value = sanitizePhoneValue(phoneToRestore);
       }
 
-      if (draftDigits && inputEl && !inputEl.value) {
-        inputEl.value = sanitizePhoneValue(draftDigits);
-        localStorage.removeItem("greedy_draft_phone_digits");
-      }
+      localStorage.removeItem("greedy_restore_identifier");
+      localStorage.removeItem("greedy_draft_phone_digits");
       checkNumber();
     }
 
@@ -408,6 +399,8 @@
     function handleBackAction() {
       localStorage.removeItem("greedy_restore_identifier");
       localStorage.removeItem("greedy_draft_phone_digits");
+      localStorage.removeItem("greedy_last_country_code");
+      localStorage.removeItem("greedy_last_phone_digits");
       window.location.replace("index.html");
     }
 
@@ -531,6 +524,8 @@
       }
 
       let fullIdentifier = countryCode + phoneDigits;
+      localStorage.setItem("greedy_last_country_code", countryCode);
+      localStorage.setItem("greedy_last_phone_digits", phoneDigits);
       localStorage.removeItem("greedy_restore_identifier");
       isCheckingUser = true;
 
