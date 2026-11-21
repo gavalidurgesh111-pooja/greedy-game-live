@@ -3,482 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#6a0dad">
-  <title>Greedy Coin - Home</title>
+  <meta name="theme-color" content="#ffffff">
+  <title>Greedy Coin - Phone Login</title>
   <link rel="stylesheet" href="responsive.css">
-
   <style>
+    /* ===== बॉक्स साइज़ कंट्रोल (यहाँ से चौड़ाई और मोटाई बदलें) ===== */
+    :root {
+      --box-width: 100%;   /* चौड़ाई: कम करनी हो तो 290px या 310px लिखें */
+      --box-height: 50px;  /* मोटाई/ऊँचाई: बढ़ानी हो तो 56px या 60px लिखें */
+    }
+    .input-box {
+      width: 100%;
+      max-width: var(--box-width);
+      height: var(--box-height);
+    }
+    /* ============================================================ */
+
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
       -webkit-user-select: none;
       user-select: none;
       -webkit-touch-callout: none;
       -webkit-tap-highlight-color: transparent;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body {
-      background: #ffffff;
-      display: flex;
-      justify-content: center;
-      color: #333;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .page-container {
+    html, body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
       width: 100%;
-      max-width: 480px;
-      min-height: 100vh;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-      isolation: isolate;
-      background: #ffffff;
-      padding-bottom: 70px;
-    }
-
-    .background {
-      position: absolute;
-      z-index: 1;
-      inset: 0;
-      height: 45vh;
-      min-height: 350px;
+      height: 100dvh;
       overflow: hidden;
-      background: #ffffff;
+      touch-action: none;
+      font-family: 'Segoe UI', sans-serif;
     }
 
-    .background::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      pointer-events: none;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0) 40%,
-        rgba(255, 255, 255, 0.8) 80%,
-        #ffffff 100%
-      );
+    .my-custom-back-btn {
+      position: fixed !important;
+      top: 15px !important;     
+      left: 5px !important;    
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      z-index: 999999 !important;
+      padding: 5px;
     }
-
-    .mesh {
-      position: absolute;
-      width: 45vw;
-      height: 45vw;
-      min-width: 280px;
-      min-height: 280px;
-      border-radius: 50%;
-      filter: blur(50px);
-      opacity: 0.85;
+    .my-custom-back-btn:active {
+      transform: scale(0.9);
     }
-
-    .mesh-peach { top: -15%; left: -10%; background: rgba(186, 85, 211, 0.9); animation: colorScroll1 7s ease-in-out infinite alternate; }
-    .mesh-pink { top: -20%; left: 25%; background: rgba(255, 20, 147, 0.85); animation: colorScroll2 9s ease-in-out infinite alternate; }
-    .mesh-purple { top: -15%; right: -10%; background: rgba(255, 0, 255, 0.8); animation: colorScroll3 8s ease-in-out infinite alternate; }
-    .mesh-blue { width: 35vw; height: 35vw; top: 0%; right: 20%; background: rgba(255, 140, 0, 0.85); filter: blur(60px); animation: colorScroll4 10s ease-in-out infinite alternate; }
-
-    @keyframes colorScroll1 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(10vw, 4vh) scale(1.1); } 100% { transform: translate(5vw, 8vh) scale(0.95); } }
-    @keyframes colorScroll2 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-10vw, 6vh) scale(1.15); } 100% { transform: translate(6vw, 3vh) scale(1); } }
-    @keyframes colorScroll3 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-12vw, 5vh) scale(0.95); } 100% { transform: translate(-4vw, 7vh) scale(1.1); } }
-    @keyframes colorScroll4 { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(8vw, -4vh) scale(1.2); } 100% { transform: translate(-8vw, 4vh) scale(0.9); } }
-
-    .profile-top-bar {
+    
+    .bottom-fixed-btn-container {
+      position: fixed;
+      bottom: 25px;
+      left: 0;
+      width: 100%;
       display: flex;
       justify-content: flex-end;
-      align-items: center;
-      gap: 10px;
-      padding: 16px 20px;
-      position: relative;
-      z-index: 20;
+      padding-right: 25px;
+      box-sizing: border-box;
+      z-index: 100;
     }
 
-    .top-icon-btn {
-      background: transparent !important;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    #submitBtn {
+      opacity: 0.55;
+      pointer-events: none;
+      transition: 0.2s;
+      background: #FFA375 !important;
+    }
+    #submitBtn.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: #FF631C !important;
+      box-shadow: 0 0 15px rgba(255, 99, 28, 0.55);
     }
 
-    .top-icon-btn svg {
-      width: 22px;
-      height: 22px;
-      stroke: #ffffff !important;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .profile-info-section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 20;
-      margin-top: 5px;
-    }
-
-    .profile-avatar-container {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .profile-avatar {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      background: #ddd;
-      position: relative;
-      z-index: 3;
-    }
-
-    .profile-avatar-frame {
-      position: absolute !important;
-      top: -14px !important;
-      left: -14px !important;
-      right: -14px !important;
-      bottom: -14px !important;
-      width: calc(100% + 28px) !important;
-      height: calc(100% + 28px) !important;
-      border-radius: 50% !important;
-      pointer-events: none !important;
-      box-sizing: border-box !important;
-      background-size: 100% 100% !important;
-      background-repeat: no-repeat !important;
-      background-position: center !important;
-      z-index: 25 !important;
-      display: none;
-    }
-
-    .frame-peacock { border: 4px dashed #00b09b; box-shadow: 0 0 15px #00f0ff, inset 0 0 10px #00b09b; }
-    .frame-lion { border: 4px solid #ff4500; box-shadow: 0 0 15px #ff8c00, inset 0 0 10px #ff4500; }
-    .frame-star { border: 4px double #ffd700; box-shadow: 0 0 15px #ffff00, inset 0 0 10px #ffd700; }
-    .frame-sun { border: 4px dotted #ff007f; box-shadow: 0 0 15px #ff1493, inset 0 0 10px #ff007f; }
-    .frame-custom1 { background-image: url('frame1.png') !important; }
-    .frame-custom2 { background-image: url('frame2.png') !important; }
-    .frame-custom3 { background-image: url('frame3.png') !important; }
-    .frame-custom4 { background-image: url('tiger-frame4.webp') !important; }
-
-    .profile-name {
-      font-size: 18px;
-      font-weight: 800;
-      color: #111;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 4px;
-      margin-bottom: 6px;
-      cursor: default;
-    }
-
-    .profile-id {
-      font-size: 12px;
-      color: #555;
-      background: transparent !important;
-      padding: 2px 6px;
-      margin-top: 2px;
-      border-radius: 0;
-      backdrop-filter: none;
-      display: flex;
+    .area-code-trigger {
+      display: inline-flex;
       align-items: center;
       gap: 5px;
-      cursor: pointer;
-      box-shadow: none;
-      font-weight: 600;
-    }
-
-    .profile-id svg {
-      width: 13px;
-      height: 13px;
-      stroke: #555;
-      fill: none;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .profile-stats-row {
-      display: flex;
-      justify-content: space-around;
-      width: 100%;
-      padding: 20px 20px 10px 20px;
-      position: relative;
-      z-index: 20;
-      text-align: center;
-    }
-
-    .stat-item {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .stat-num {
-      font-size: 16px;
+      border: none;
+      background: transparent;
       font-weight: 700;
-      color: #111;
+      font-size: 15px;
+      color: #111111;
+      outline: none;
+      cursor: pointer;
+      padding-right: 10px;
+      margin-right: 10px;
+      border-right: 1px solid #d5d5d5;
+      flex-shrink: 0;
+    }
+    .area-code-trigger:active {
+      opacity: 0.7;
     }
 
-    .stat-label {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .promo-banners-container {
-      display: flex;
-      gap: 12px;
-      padding: 10px 20px;
-      position: relative;
-      z-index: 20;
-    }
-
-    .promo-banner {
+    .otp-change-btn {
       flex: 1;
-      padding: 14px;
-      border-radius: 14px;
-      color: #fff;
+      padding: 12px;
+      border-radius: 22px;
+      border: 1.5px solid #FF631C;
+      background: #FFF4EE;
       font-weight: 700;
-      font-size: 13px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      color: #FF631C;
+    }
+    .otp-change-btn:active {
+      background: #FFE5D6;
     }
 
-    .banner-coins { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
-    .banner-streamer { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      padding: 15px 20px 30px 20px;
-      position: relative;
-      z-index: 20;
-    }
-
-    .feature-card {
-      background: #f8f9fa;
-      border: 1px solid #eee;
-      border-radius: 16px;
-      padding: 18px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
+    .otp-verify-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 22px;
+      border: none;
+      background: #FF631C;
+      font-weight: 700;
+      font-size: 14px;
       cursor: pointer;
-      transition: transform 0.2s;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(255, 99, 28, 0.35);
+    }
+    .otp-verify-btn:active {
+      background: #FFA375;
     }
 
-    .feature-card:active {
-      transform: scale(0.95);
-      background: #f1f2f3;
-    }
-
-    .feature-icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.05);
-      font-size: 20px;
-    }
-
-    .feature-title {
-      font-size: 11px;
-      font-weight: 600;
-      color: #444;
-      text-align: center;
-    }
-
-    .bottom-nav-bar {
+    #bottomLimitPopup {
+      display: none;
       position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 2000;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .bottom-limit-sheet {
       width: 100%;
       max-width: 480px;
       background: #ffffff;
-      border-top: 1px solid #eee;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 30;
-    }
-
-    .nav-item {
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .nav-item svg {
-      width: 22px;
-      height: 22px;
-      stroke: #888;
-      fill: none;
-      stroke-width: 2;
-    }
-
-    .nav-item.active svg { stroke: #a18cd1; }
-
-    /* 🌟 पूरी तरह फिक्स: सिर्फ एक लाइन में दिखने वाला पॉप-अप (बिना किसी लोगो के) */
-    #successToast {
-      display: none;
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ffffff;
-      color: #111;
-      padding: 14px 28px;
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
-      font-size: 14px;
-      font-weight: 600;
-      z-index: 1000;
-      white-space: nowrap;
-      width: max-content;
-      max-width: 90vw;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 24px 20px 28px;
       text-align: center;
-      animation: fadeInOut 1.5s ease;
-    }
-
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, 20px); }
-      20% { opacity: 1; transform: translate(-50%, 0); }
-      80% { opacity: 1; transform: translate(-50%, 0); }
-      100% { opacity: 0; transform: translate(-50%, -10px); }
+      box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
     }
   </style>
 </head>
-
 <body>
 
-  <div class="page-container page-wrap">
-    <div class="background" aria-hidden="true">
-      <div class="mesh mesh-peach"></div>
-      <div class="mesh mesh-pink"></div>
-      <div class="mesh mesh-purple"></div>
-      <div class="mesh mesh-blue"></div>
-    </div>
+  <button class="my-custom-back-btn" onclick="handleBackAction()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#000000" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+  </button>
 
-    <!-- टॉप बार जिसमें एडिट और सेटिंग्स आइकॉन हैं -->
-    <div class="profile-top-bar">
-      <button class="top-icon-btn" onclick="location.href='edit-profile.html'">
-        <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-      </button>
-      <button class="top-icon-btn" onclick="openProfilePage()">
-        <svg viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4,13C19.45,12.67 19.5,12.34 19.5,12C19.5,11.66 19.45,11.33 19.4,11L21.52,9.35C21.71,9.2 21.76,8.93 21.64,8.71L19.64,5.25C19.52,5.03 19.26,4.95 19.03,5.03L16.51,6.05C15.98,5.63 15.41,5.28 14.78,5.02L14.41,2.37C14.37,2.13 14.17,1.95 13.93,1.95H9.93C9.69,1.95 9.49,2.13 9.45,2.37L9.08,5.02C8.45,5.28 7.88,5.63 7.35,6.05L4.83,5.03C4.6,4.95 4.34,5.03 4.22,5.25L2.22,8.71C2.1,8.93 2.15,9.2 2.34,9.35L4.46,11C4.41,11.33 4.36,11.66 4.36,12C4.36,12.34 4.41,12.67 4.46,13L2.34,14.65C2.15,14.8 2.1,15.07 2.22,15.29L4.22,18.75C4.34,18.97 4.6,19.05 4.83,18.97L7.35,17.95C7.88,18.37 8.45,18.72 9.08,18.98L9.45,21.63C9.49,21.87 9.69,22.05 9.93,22.05H13.93C14.17,22.05 14.37,21.87 14.41,21.63L14.78,18.98C15.41,18.72 15.98,18.37 16.51,17.95L19.03,18.97C19.26,19.05 19.52,18.97 19.64,18.75L21.64,15.29C21.76,15.07 21.71,14.8 21.52,14.65L19.4,13Z"></path>
-        </svg>
-      </button>
-    </div>
+  <!-- Phone Login Screen -->
+  <div class="phone-screen-wrap" style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; height:100dvh; box-sizing:border-box; overflow:hidden;">
 
-    <div class="profile-info-section">
-      <div class="profile-avatar-container" onclick="openProfilePage()">
-        <img src="" alt="Avatar" class="profile-avatar" id="homeAvatarImg" style="display:none;">
-        <div id="homeAvatarPlaceholder" style="width:100%; height:100%; border-radius:50%; background:#ddd; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:bold; color:#666;">👤</div>
-        <div class="profile-avatar-frame" id="homeAvatarFrame"></div>
-      </div>
+    <div style="margin-top: 65px;">
+      <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
+      <div style="font-size:12px; color:#666; margin-top:4px; margin-bottom:15px;">Enter Phone Number</div>
       
-      <div class="profile-name" id="homeNameDisplay">User</div>
-      
-      <div class="profile-id" onclick="copyMyId()">
-        <span id="homeIdDisplay">GREEDYCOIN ID: #288630</span>
-        <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-      </div>
+      <form onsubmit="handleIndexFormSubmit(event)">
+        <div class="input-box" style="display:flex; align-items:center; background:#f0f0f0; border-radius:30px; padding:12px 16px; margin-top:30px;">
+          <button type="button" class="area-code-trigger" onclick="openAreaCodeSelectorPage()">
+            <span id="selectedCodeDisplay">+91</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <input type="text" inputmode="numeric" maxlength="20" autocomplete="off" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; -webkit-user-select:text; user-select:text;">
+        </div>
+        <button type="submit" style="display:none;"></button>
+      </form>
     </div>
-
-    <div class="profile-stats-row">
-      <div class="stat-item">
-        <span class="stat-num" id="homeFriends">0</span>
-        <span class="stat-label">Friends</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" id="homeFollowings">0</span>
-        <span class="stat-label">Followings</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" id="homeFollowers">0</span>
-        <span class="stat-label">Followers</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num" id="homeGroups">0</span>
-        <span class="stat-label">Groups</span>
-      </div>
-    </div>
-
-    <div class="promo-banners-container">
-      <div class="promo-banner banner-coins" onclick="alert('Recharge Coins clicked')">
-        <span>Recharge Coins</span>
-        <span>🪙</span>
-      </div>
-      <div class="promo-banner banner-streamer" onclick="alert('Live streamer center clicked')">
-        <span>Live streamer center</span>
-        <span>📹</span>
-      </div>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card" onclick="openFeature('Recent Visitors')"><div class="feature-icon-box">👻</div><span class="feature-title">Recent Visitors</span></div>
-      <div class="feature-card" onclick="openFeature('User Level')"><div class="feature-icon-box">⭐</div><span class="feature-title">User Level</span></div>
-      <div class="feature-card" onclick="openFeature('Backpack')"><div class="feature-icon-box">🎒</div><span class="feature-title">Backpack</span></div>
-      <div class="feature-card" onclick="openFeature('Lucky Cat')"><div class="feature-icon-box">🐱</div><span class="feature-title">Lucky cat</span></div>
-      <div class="feature-card" onclick="openFeature('Family')"><div class="feature-icon-box">🛡️</div><span class="feature-title">Family</span></div>
-      <div class="feature-card" onclick="openFeature('Games Lobby')"><div class="feature-icon-box">🎮</div><span class="feature-title">Games Lobby</span></div>
-      <div class="feature-card" onclick="openFeature('SVIP')"><div class="feature-icon-box">👑</div><span class="feature-title">SVIP</span></div>
-      <div class="feature-card" onclick="openFeature('Activity')"><div class="feature-icon-box">🎉</div><span class="feature-title">Activity</span></div>
-      <div class="feature-card" onclick="openFeature('Aristocracy Center')"><div class="feature-icon-box">🦁</div><span class="feature-title">Aristocracy Center</span></div>
-      <div class="feature-card" onclick="openFeature('Mall')"><div class="feature-icon-box">🛍️</div><span class="feature-title">Mall</span></div>
-      <div class="feature-card" onclick="openFeature('Point Center')"><span class="feature-icon-box">🟢</span><span class="feature-title">Point Center</span></div>
-      <div class="feature-card" onclick="openFeature('Broadcasts watched')"><div class="feature-icon-box">📺</div><span class="feature-title">Broadcasts watched</span></div>
-    </div>
-
-    <div class="bottom-nav-bar">
-      <button class="nav-item" onclick="location.href='message.html'">
-        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-      </button>
-      <button class="nav-item active" onclick="location.href='home.html'">
-        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-      </button>
-      <button class="nav-item" onclick="openProfilePage()">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-      </button>
+    
+    <div class="bottom-fixed-btn-container">
+      <button class="btn-round-next" id="submitBtn" onclick="handleNextStep()" style="width:60px; height:60px; border-radius:50%; background:#FFA375; border:none; color:#ffffff; font-size:24px; cursor:pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">➔</button>
     </div>
   </div>
 
-  <!-- 🌟 एक लाइन में और बिना लोगो के साफ़-सुथरा पॉप-अप मेसेज -->
-  <div id="successToast">Profile update successfully</div>
+  <!-- Custom Popup Modal -->
+  <div id="customPopupModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#ffffff; width:100%; max-width:360px; border-radius:20px; padding:25px; box-shadow:0 10px 25px rgba(0,0,0,0.3); text-align:center;">
+      <h3 id="popupTitle" style="margin-top:0; color:#1e3c72; font-size:20px; font-weight:800;">Registration and Login</h3>
+      <p id="popupMessage" style="color:#444; font-size:14px; line-height:1.6; margin:15px 0 25px 0;"></p>
+      <div id="popupButtons" style="display:flex; gap:12px; justify-content:center;"></div>
+    </div>
+  </div>
 
+  <!-- नीचे से आने वाला लिमिट पॉप-अप -->
+  <div id="bottomLimitPopup" onclick="closeBottomLimitPopup()">
+    <div class="bottom-limit-sheet" onclick="event.stopPropagation()">
+      <h3 style="color:#1e3c72; font-size:19px; font-weight:800; margin-bottom:10px;">Account Limit Reached</h3>
+      <p id="limitPopupText" style="color:#444; font-size:14px; line-height:1.5; margin-bottom:20px;">You have reached the limit of 5 phone numbers on this device. No more new accounts can be created from here for 24 hours.</p>
+      <button onclick="closeBottomLimitPopup()" style="width:100%; padding:13px; border-radius:22px; border:none; background:#FF631C; color:#ffffff; font-size:15px; font-weight:700; cursor:pointer;">OK</button>
+    </div>
+  </div>
+
+  <!-- Firebase SDK Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
@@ -496,116 +221,350 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let currentIdentifier = localStorage.getItem("greedy_login_identifier") || "default_user";
-    let rawUserId = "#288630";
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+    }, false);
 
-    window.onload = function() {
-      history.replaceState({ page: "home_secure" }, "", window.location.href);
-      loadHomeData();
-      checkUpdateToast();
-    };
+    history.replaceState({ page: "phone_screen" }, "");
 
-    window.addEventListener('popstate', function(event) {
-      window.location.replace("index.html");
+    let selectedCountryCode = "+91";
+    let isCheckingUser = false;
+    const MAX_NEW_ACCOUNTS_PER_DEVICE = 5;
+    const WINDOW_24_HOURS = 24 * 60 * 60 * 1000;
+
+    function setCountryCodeValue(codeVal) {
+      let digits = String(codeVal || "").replace(/\D/g, "");
+      if (!digits) digits = "91";
+      selectedCountryCode = "+" + digits;
+      let displayEl = document.getElementById("selectedCodeDisplay");
+      if (displayEl) displayEl.innerText = selectedCountryCode;
+      checkNumber();
+    }
+
+    function openAreaCodeSelectorPage() {
+      let currentPhone = sanitizePhoneValue(document.getElementById("phoneInput").value);
+      if (currentPhone) {
+        localStorage.setItem("greedy_draft_phone_digits", currentPhone);
+        localStorage.setItem("greedy_last_phone_digits", currentPhone);
+      }
+      localStorage.setItem("greedy_last_country_code", selectedCountryCode);
+      window.location.href = "area-code.html";
+    }
+
+    function syncSelectedCodeAndDraft() {
+      let pickedCode = (localStorage.getItem("greedy_selected_area_code") || "").trim();
+      let savedCode = (localStorage.getItem("greedy_last_country_code") || "").trim();
+      let savedPhone = (localStorage.getItem("greedy_last_phone_digits") || "").trim();
+      let draftDigits = (localStorage.getItem("greedy_draft_phone_digits") || "").trim();
+      let inputEl = document.getElementById("phoneInput");
+
+      if (pickedCode) {
+        setCountryCodeValue(pickedCode);
+        localStorage.removeItem("greedy_selected_area_code");
+        localStorage.setItem("greedy_last_country_code", pickedCode);
+      } else if (savedCode) {
+        setCountryCodeValue(savedCode);
+      }
+
+      let phoneToRestore = savedPhone || draftDigits;
+      if (phoneToRestore && inputEl) {
+        inputEl.value = sanitizePhoneValue(phoneToRestore);
+      }
+
+      localStorage.removeItem("greedy_restore_identifier");
+      localStorage.removeItem("greedy_draft_phone_digits");
+      checkNumber();
+    }
+
+    function getDeviceId() {
+      try {
+        if (window.Android && typeof window.Android.getDeviceId === "function") {
+          let nativeId = String(window.Android.getDeviceId() || "").trim();
+          if (nativeId) return "dev_" + nativeId;
+        }
+        if (window.AndroidDeviceId) {
+          let injectedId = String(window.AndroidDeviceId || "").trim();
+          if (injectedId) return "dev_" + injectedId;
+        }
+      } catch (e) {}
+
+      let stored = localStorage.getItem("greedy_device_id");
+      if (stored) return stored;
+
+      let rawSig = [
+        navigator.userAgent || "",
+        navigator.language || "",
+        screen.width || 0,
+        screen.height || 0,
+        screen.colorDepth || 0,
+        (new Date().getTimezoneOffset())
+      ].join("|");
+
+      let hash = 0;
+      for (let i = 0; i < rawSig.length; i++) {
+        hash = ((hash << 5) - hash) + rawSig.charCodeAt(i);
+        hash |= 0;
+      }
+      let generated = "dev_" + Math.abs(hash) + "_" + Math.random().toString(36).slice(2, 8);
+      localStorage.setItem("greedy_device_id", generated);
+      return generated;
+    }
+
+    const DEVICE_ID = getDeviceId();
+
+    function getDevicePhoneRecord() {
+      let key = "greedy_dev_phones_" + DEVICE_ID;
+      try {
+        let raw = localStorage.getItem(key);
+        if (!raw) return { startTime: Date.now(), phones: [] };
+        let parsed = JSON.parse(raw);
+        if (!parsed.startTime || (Date.now() - Number(parsed.startTime)) >= WINDOW_24_HOURS) {
+          let fresh = { startTime: Date.now(), phones: [] };
+          localStorage.setItem(key, JSON.stringify(fresh));
+          return fresh;
+        }
+        return {
+          startTime: Number(parsed.startTime),
+          phones: Array.isArray(parsed.phones) ? parsed.phones : []
+        };
+      } catch (e) {
+        return { startTime: Date.now(), phones: [] };
+      }
+    }
+
+    function sendDeviceAlertToFirebase(rec, blockedAttemptIdentifier) {
+      db.collection("device_alerts").doc(DEVICE_ID).set({
+        deviceId: DEVICE_ID,
+        phoneCount24h: rec.phones.length,
+        phonesUsed24h: rec.phones,
+        lastBlockedPhone: blockedAttemptIdentifier || "",
+        limitReached: rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE,
+        alertMessage: "Multiple phone registrations/OTP attempts from single device",
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true }).catch(() => {});
+    }
+
+    function canSendOtpToPhone(fullIdentifier) {
+      let rec = getDevicePhoneRecord();
+      if (rec.phones.includes(fullIdentifier)) {
+        return true;
+      }
+      if (rec.phones.length >= MAX_NEW_ACCOUNTS_PER_DEVICE) {
+        sendDeviceAlertToFirebase(rec, fullIdentifier);
+        return false;
+      }
+      return true;
+    }
+
+    function registerPhoneAttemptOnDevice(fullIdentifier) {
+      let key = "greedy_dev_phones_" + DEVICE_ID;
+      let rec = getDevicePhoneRecord();
+      if (!rec.phones.includes(fullIdentifier)) {
+        rec.phones.push(fullIdentifier);
+      }
+      localStorage.setItem(key, JSON.stringify(rec));
+
+      if (rec.phones.length >= 3) {
+        sendDeviceAlertToFirebase(rec, "");
+      }
+    }
+
+    function sanitizePhoneValue(rawVal) {
+      return String(rawVal || "").replace(/\D/g, "").slice(0, 20);
+    }
+
+    window.addEventListener("DOMContentLoaded", syncSelectedCodeAndDraft);
+    window.addEventListener("pageshow", syncSelectedCodeAndDraft);
+
+    window.addEventListener("popstate", function() {
+      let bottomPopup = document.getElementById("bottomLimitPopup");
+      if (bottomPopup && bottomPopup.style.display === "flex") {
+        history.pushState({ page: "phone_screen" }, "");
+        bottomPopup.style.display = "none";
+        focusPhoneInput();
+        return;
+      }
+
+      let customModal = document.getElementById("customPopupModal");
+      if (customModal && customModal.style.display === "flex") {
+        history.pushState({ page: "phone_screen" }, "");
+        customModal.style.display = "none";
+        popupCallback = null;
+        focusPhoneInput();
+        return;
+      }
     });
 
-    function checkUpdateToast() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('updated') === 'true') {
-        let toast = document.getElementById("successToast");
-        if (toast) {
-          toast.style.display = "flex";
-          setTimeout(() => {
-            toast.style.display = "none";
-            window.history.replaceState({}, document.title, window.location.pathname);
-          }, 1500);
-        }
+    let popupCallback = null;
+
+    function handleBackAction() {
+      localStorage.removeItem("greedy_restore_identifier");
+      localStorage.removeItem("greedy_draft_phone_digits");
+      localStorage.removeItem("greedy_last_country_code");
+      localStorage.removeItem("greedy_last_phone_digits");
+      window.location.replace("index.html");
+    }
+
+    function focusPhoneInput() {
+      setTimeout(() => {
+        let inp = document.getElementById("phoneInput");
+        if (inp) inp.focus();
+      }, 60);
+    }
+
+    function showBottomLimitPopup(customMsg) {
+      let textEl = document.getElementById("limitPopupText");
+      if (textEl && customMsg) {
+        textEl.innerText = customMsg;
+      }
+      history.pushState({ popup: "limit" }, "");
+      document.getElementById("bottomLimitPopup").style.display = "flex";
+    }
+
+    function closeBottomLimitPopup() {
+      document.getElementById("bottomLimitPopup").style.display = "none";
+      focusPhoneInput();
+    }
+
+    function checkNumber() {
+      let inputEl = document.getElementById("phoneInput");
+      let cleaned = sanitizePhoneValue(inputEl.value);
+      if (inputEl.value !== cleaned) {
+        inputEl.value = cleaned;
+      }
+
+      let btn = document.getElementById("submitBtn");
+      let isValid = /^\d{7,20}$/.test(cleaned);
+
+      if (isValid) {
+        btn.classList.add("active");
+      } else {
+        btn.classList.remove("active");
       }
     }
 
-    function loadHomeData() {
-      let savedName = localStorage.getItem("prof_name_" + currentIdentifier) || "User";
-      let savedId = localStorage.getItem("prof_userid_" + currentIdentifier) || "#288630";
-      let savedAvatar = localStorage.getItem("prof_avatar_" + currentIdentifier) || "";
-      let savedFrame = localStorage.getItem("prof_frame_" + currentIdentifier) || "none";
-      let savedFriends = localStorage.getItem("prof_friends_" + currentIdentifier) || "0";
-      let savedFollowings = localStorage.getItem("prof_followings_" + currentIdentifier) || "0";
-      let savedFollowers = localStorage.getItem("prof_followers_" + currentIdentifier) || "0";
-      let savedGroups = localStorage.getItem("prof_groups_" + currentIdentifier) || "0";
+    function handleIndexFormSubmit(event) {
+      event.preventDefault();
+      let btn = document.getElementById("submitBtn");
+      if (btn.classList.contains("active")) {
+        handleNextStep();
+      }
+    }
 
-      rawUserId = savedId;
-      updateHomeUI(savedName, savedId, savedAvatar, savedFrame, savedFriends, savedFollowings, savedFollowers, savedGroups);
+    function showCustomAlert(message, callback) {
+      document.getElementById("popupMessage").innerText = message;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="closeCustomPopup(true)" class="otp-verify-btn" style="width:100%;">Confirm</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = callback;
+    }
 
-      db.collection("users").doc(currentIdentifier).get().then((doc) => {
+    function openOtpModalNow(fullIdentifier, onSuccessCallback) {
+      registerPhoneAttemptOnDevice(fullIdentifier);
+      let demoCode = "123456";
+
+      history.pushState({ popup: "otp" }, "");
+      document.getElementById("popupTitle").innerText = "OTP Verification";
+      document.getElementById("popupMessage").innerHTML = `
+        Number: <b style="color:#FF631C;">${fullIdentifier}</b><br>
+        <b>Demo OTP: ${demoCode}</b><br><br>
+        <input type="text" id="demoOtpInput" autocomplete="one-time-code" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none; -webkit-user-select:text; user-select:text;" maxlength="6">
+      `;
+      let btnContainer = document.getElementById("popupButtons");
+      btnContainer.innerHTML = `
+        <button onclick="changePhoneNumberFromOtp()" class="otp-change-btn">Change Number</button>
+        <button onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" class="otp-verify-btn">Confirm</button>
+      `;
+      document.getElementById("customPopupModal").style.display = "flex";
+      popupCallback = onSuccessCallback;
+
+      setTimeout(() => {
+        let otpInp = document.getElementById("demoOtpInput");
+        if (otpInp) {
+          otpInp.focus();
+          otpInp.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" || e.keyCode === 13) {
+              e.preventDefault();
+              verifyDemoOtp(demoCode, fullIdentifier);
+            }
+          });
+        }
+      }, 60);
+    }
+
+    function changePhoneNumberFromOtp() {
+      document.getElementById("customPopupModal").style.display = "none";
+      popupCallback = null;
+      focusPhoneInput();
+    }
+
+    function verifyDemoOtp(correctCode, fullIdentifier) {
+      let enteredOtp = document.getElementById("demoOtpInput") ? document.getElementById("demoOtpInput").value.trim() : "";
+      if (enteredOtp === correctCode) {
+        closeCustomPopup(true);
+      } else {
+        showCustomAlert("Invalid Demo OTP! Please enter 123456.", function() {
+          let otpInp = document.getElementById("demoOtpInput");
+          document.getElementById("customPopupModal").style.display = "flex";
+          if (otpInp) otpInp.focus();
+        });
+      }
+    }
+
+    function closeCustomPopup(result) {
+      document.getElementById("customPopupModal").style.display = "none";
+      let cb = popupCallback;
+      popupCallback = null;
+      if (result && cb) {
+        cb(true);
+      }
+    }
+
+    function handleNextStep() {
+      if (isCheckingUser) return;
+
+      let countryCode = selectedCountryCode || "+91";
+      let phoneDigits = sanitizePhoneValue(document.getElementById("phoneInput").value);
+      
+      if(!phoneDigits) {
+        showCustomAlert("Please enter phone number!");
+        return;
+      }
+
+      let fullIdentifier = countryCode + phoneDigits;
+      localStorage.setItem("greedy_last_country_code", countryCode);
+      localStorage.setItem("greedy_last_phone_digits", phoneDigits);
+      localStorage.removeItem("greedy_restore_identifier");
+      isCheckingUser = true;
+
+      db.collection("users").doc(fullIdentifier).get().then((doc) => {
+        isCheckingUser = false;
         if (doc.exists) {
-          let data = doc.data();
-          let name = data.name || "User";
-          let userId = data.uniqueId || "#288630";
-          let avatar = data.avatar || "";
-          let frame = data.frame || "none";
-          let friends = data.friends || 0;
-          let followings = data.followings || 0;
-          let followers = data.followers || 0;
-          let groups = data.groups || 0;
-
-          rawUserId = userId;
-          localStorage.setItem("prof_name_" + currentIdentifier, name);
-          localStorage.setItem("prof_userid_" + currentIdentifier, userId);
-          localStorage.setItem("prof_avatar_" + currentIdentifier, avatar);
-          localStorage.setItem("prof_frame_" + currentIdentifier, frame);
-          localStorage.setItem("prof_friends_" + currentIdentifier, friends);
-          localStorage.setItem("prof_followings_" + currentIdentifier, followings);
-          localStorage.setItem("prof_followers_" + currentIdentifier, followers);
-          localStorage.setItem("prof_groups_" + currentIdentifier, groups);
-
-          updateHomeUI(name, userId, avatar, frame, friends, followings, followers, groups);
+          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_source_page", "phone.html");
+          localStorage.setItem("greedy_is_new_user", "false");
+          window.location.replace("password.html");
+        } else {
+          if (!canSendOtpToPhone(fullIdentifier)) {
+            showBottomLimitPopup("5 phone numbers limit reached on this device. You cannot create more new accounts from this device right now.");
+            return;
+          }
+          localStorage.setItem("greedy_login_identifier", fullIdentifier);
+          localStorage.setItem("greedy_login_source_page", "phone.html");
+          localStorage.setItem("greedy_is_new_user", "true");
+          openOtpModalNow(fullIdentifier, function(verified) {
+            if (verified) {
+              window.location.replace("password.html");
+            }
+          });
         }
       }).catch((err) => {
-        console.error("Error loading home data:", err);
+        isCheckingUser = false;
+        console.error("Firestore read error:", err);
+        showCustomAlert("Connection error while checking account. Please try again.");
       });
-    }
-
-    function updateHomeUI(name, userId, avatar, frame, friends, followings, followers, groups) {
-      document.getElementById("homeNameDisplay").innerText = name;
-      document.getElementById("homeIdDisplay").innerText = "GREEDYCOIN ID: " + userId;
-      document.getElementById("homeFriends").innerText = friends;
-      document.getElementById("homeFollowings").innerText = followings;
-      document.getElementById("homeFollowers").innerText = followers;
-      document.getElementById("homeGroups").innerText = groups;
-
-      const avatarImg = document.getElementById("homeAvatarImg");
-      const placeholder = document.getElementById("homeAvatarPlaceholder");
-      if (avatar && avatar.trim() !== "") {
-        avatarImg.src = avatar;
-        avatarImg.style.display = "block";
-        placeholder.style.display = "none";
-      } else {
-        avatarImg.style.display = "none";
-        placeholder.style.display = "flex";
-      }
-
-      const frameEl = document.getElementById("homeAvatarFrame");
-      frameEl.className = "profile-avatar-frame";
-      ['frame-peacock', 'frame-lion', 'frame-star', 'frame-sun', 'frame-custom1', 'frame-custom2', 'frame-custom3', 'frame-custom4'].forEach(cls => frameEl.classList.remove(cls));
-      
-      if (frame && frame !== "none") {
-        frameEl.style.display = "block";
-        frameEl.classList.add("frame-" + frame);
-      } else {
-        frameEl.style.display = "none";
-      }
-    }
-
-    function copyMyId() {
-      navigator.clipboard.writeText(rawUserId);
-    }
-
-    function openProfilePage() {
-      window.location.replace("profile.html");
-    }
-
-    function openFeature(name) {
-      alert(name + " clicked!");
     }
   </script>
 </body>
