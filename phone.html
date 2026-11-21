@@ -148,6 +148,24 @@
       text-align: center;
       box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.25);
     }
+
+    /* कंप्यूटर / लैपटॉप / टैबलेट के लिए साफ बीच में सेट लेआउट */
+    @media (min-width: 600px) {
+      .phone-screen-wrap {
+        max-width: 440px;
+        margin: 0 auto;
+        width: 100%;
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.06);
+      }
+      .my-custom-back-btn {
+        left: calc(50% - 215px) !important;
+      }
+      .bottom-fixed-btn-container {
+        left: 50%;
+        transform: translateX(-50%);
+        max-width: 440px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -159,7 +177,7 @@
   </button>
 
   <!-- Phone Login Screen -->
-  <div style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; height:100dvh; box-sizing:border-box; overflow:hidden;">
+  <div class="phone-screen-wrap" style="display:flex; flex-direction:column; flex:1; padding:20px; background:#ffffff; position:relative; color:#333; height:100dvh; box-sizing:border-box; overflow:hidden;">
 
     <div style="margin-top: 65px;">
       <div class="step-title" style="font-size:22px; font-weight:800; color:#000;">Registration and Login</div>
@@ -173,7 +191,7 @@
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>
           </button>
-          <input type="text" inputmode="numeric" maxlength="20" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; -webkit-user-select:text; user-select:text;">
+          <input type="text" inputmode="numeric" maxlength="20" autocomplete="off" class="phone-input" id="phoneInput" oninput="checkNumber()" placeholder="Phone number" style="border:none; background:transparent; outline:none; width:100%; font-size:16px; -webkit-user-select:text; user-select:text;">
         </div>
         <button type="submit" style="display:none;"></button>
       </form>
@@ -469,7 +487,7 @@
       document.getElementById("popupMessage").innerHTML = `
         Number: <b style="color:#FF631C;">${fullIdentifier}</b><br>
         <b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" inputmode="numeric" enterkeyhint="done" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none; -webkit-user-select:text; user-select:text;" maxlength="6">
+        <input type="text" id="demoOtpInput" autocomplete="one-time-code" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none; -webkit-user-select:text; user-select:text;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
