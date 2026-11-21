@@ -454,7 +454,7 @@
       document.getElementById("popupMessage").innerText = message;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
-        <button onclick="closeCustomPopup(true)" class="otp-verify-btn" style="width:100%;">OK</button>
+        <button onclick="closeCustomPopup(true)" class="otp-verify-btn" style="width:100%;">Confirm</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = callback;
@@ -469,18 +469,27 @@
       document.getElementById("popupMessage").innerHTML = `
         Number: <b style="color:#FF631C;">${fullIdentifier}</b><br>
         <b>Demo OTP: ${demoCode}</b><br><br>
-        <input type="text" id="demoOtpInput" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none;" maxlength="6">
+        <input type="text" id="demoOtpInput" inputmode="numeric" enterkeyhint="done" placeholder="Enter OTP (123456)" style="width:80%; padding:10px; border-radius:8px; border:1px solid #ccc; background:#ffffff; text-align:center; font-size:16px; font-weight:bold; outline:none; -webkit-user-select:text; user-select:text;" maxlength="6">
       `;
       let btnContainer = document.getElementById("popupButtons");
       btnContainer.innerHTML = `
         <button onclick="changePhoneNumberFromOtp()" class="otp-change-btn">Change Number</button>
-        <button onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" class="otp-verify-btn">Verify</button>
+        <button onclick="verifyDemoOtp('${demoCode}', '${fullIdentifier}')" class="otp-verify-btn">Confirm</button>
       `;
       document.getElementById("customPopupModal").style.display = "flex";
       popupCallback = onSuccessCallback;
+
       setTimeout(() => {
         let otpInp = document.getElementById("demoOtpInput");
-        if (otpInp) otpInp.focus();
+        if (otpInp) {
+          otpInp.focus();
+          otpInp.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" || e.keyCode === 13) {
+              e.preventDefault();
+              verifyDemoOtp(demoCode, fullIdentifier);
+            }
+          });
+        }
       }, 60);
     }
 
